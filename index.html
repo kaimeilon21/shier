@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>俱乐大玩家 · 迪城修正版</title>
+    <title>俱乐大玩家 · 迪城最终版</title>
     <style>
         * {
             margin: 0;
@@ -47,6 +47,7 @@
             border-radius: 4px;
         }
 
+        /* ===== 验证覆盖层 ===== */
         #authOverlay {
             position: fixed;
             inset: 0;
@@ -156,6 +157,7 @@
             margin-top: 4px;
         }
 
+        /* ===== 主界面 ===== */
         #appWrap {
             max-width: 820px;
             margin: 0 auto;
@@ -529,7 +531,7 @@
             gap: 5px;
             padding: 4px 2px;
             border-bottom: 1px solid rgba(42, 58, 90, 0.05);
-            flex-wrap: nowrap;
+            flex-wrap: wrap;
         }
         .row:last-child {
             border-bottom: none;
@@ -539,149 +541,28 @@
             font-weight: 600;
             font-size: 12px;
             color: var(--text-primary);
+        }
+        .row .qty {
+            width: 56px;
             flex-shrink: 0;
         }
-        .row .lbl .dot {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            margin-right: 4px;
-            vertical-align: middle;
-            flex-shrink: 0;
-        }
-        .row .lbl .dot.red {
-            background: #e05555;
-        }
-        .row .lbl .dot.orange {
-            background: #e8943a;
-        }
-        .row .lbl .dot.purple {
-            background: #a66be0;
-        }
-        .row .lbl .dot.blue {
-            background: #4a9ae8;
-        }
-        .row .lbl .dot.green {
-            background: #4ec97a;
-        }
-
-        .row .input-wrap {
-            display: flex;
-            align-items: center;
-            gap: 4px;
+        .row .sub {
             flex: 1;
-            min-width: 0;
-        }
-        .row .input-wrap input[type="number"] {
-            width: 54px;
-            padding: 5px 3px;
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-primary);
-            font-size: 13px;
-            font-weight: 600;
-            text-align: center;
-            outline: none;
-            -moz-appearance: textfield;
-            transition: border-color var(--transition), box-shadow var(--transition);
-            font-family: inherit;
-            flex-shrink: 0;
-        }
-        .row .input-wrap input[type="number"]:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(232, 196, 104, 0.05);
-        }
-        .row .input-wrap input[type="number"]::-webkit-outer-spin-button,
-        .row .input-wrap input[type="number"]::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        .row .adj-group {
-            display: inline-flex;
-            align-items: center;
-            gap: 2px;
-            flex-shrink: 0;
-            margin: 0 2px;
-        }
-        .row .adj-group .adj-btn {
-            padding: 3px 8px;
-            border: 1px solid rgba(42, 58, 90, 0.25);
-            border-radius: 4px;
-            background: rgba(0, 0, 0, 0.2);
-            color: var(--text-secondary);
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.12s;
-            font-family: inherit;
-            line-height: 1.6;
-            min-width: 26px;
-            text-align: center;
-            user-select: none;
-        }
-        .row .adj-group .adj-btn:hover {
-            background: rgba(232, 196, 104, 0.10);
-            border-color: var(--accent);
-            color: var(--accent2);
-        }
-        .row .adj-group .adj-btn:active {
-            transform: scale(0.85);
-            background: rgba(232, 196, 104, 0.20);
-        }
-        .row .adj-group .adj-btn.minus {
-            color: #f87171;
-            border-color: rgba(248, 113, 113, 0.2);
-        }
-        .row .adj-group .adj-btn.minus:hover {
-            background: rgba(248, 113, 113, 0.10);
-            border-color: #f87171;
-            color: #f87171;
-        }
-        .row .adj-group .adj-btn.minus:active {
-            background: rgba(248, 113, 113, 0.20);
-        }
-        .row .adj-group .adj-btn.plus {
-            color: #4ec97a;
-            border-color: rgba(78, 201, 122, 0.2);
-        }
-        .row .adj-group .adj-btn.plus:hover {
-            background: rgba(78, 201, 122, 0.10);
-            border-color: #4ec97a;
-            color: #4ec97a;
-        }
-        .row .adj-group .adj-btn.plus:active {
-            background: rgba(78, 201, 122, 0.20);
-        }
-        .row .adj-group .adj-divider {
-            display: inline-block;
-            width: 4px;
-            flex-shrink: 0;
-        }
-
-        .row .sub-value {
+            text-align: right;
             font-weight: 700;
             font-size: 13px;
             color: var(--accent2);
             font-variant-numeric: tabular-nums;
-            min-width: 50px;
-            text-align: right;
-            flex-shrink: 0;
+            min-width: 44px;
         }
 
-        .row .qty-wide {
-            flex: 1;
-            min-width: 60px;
-            max-width: 100px;
-        }
-        .row .qty-wide input[type="number"] {
+        input[type="number"],
+        input[type="text"] {
             width: 100%;
-            padding: 4px 2px;
+            padding: 5px 3px;
             background: var(--bg-input);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             color: var(--text-primary);
             font-size: 12px;
             font-weight: 600;
@@ -691,39 +572,15 @@
             transition: border-color var(--transition), box-shadow var(--transition);
             font-family: inherit;
         }
-        .row .qty-wide input[type="number"]:focus {
+        input[type="number"]:focus,
+        input[type="text"]:focus {
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(232, 196, 104, 0.05);
         }
-        .row .qty-wide input[type="number"]::-webkit-outer-spin-button,
-        .row .qty-wide input[type="number"]::-webkit-inner-spin-button {
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
             margin: 0;
-        }
-        .row .inline-group {
-            display: inline-flex;
-            gap: 3px;
-            flex-shrink: 0;
-        }
-        .row .inline-group .quick-btn {
-            padding: 1px 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background: var(--bg-input);
-            color: var(--accent2);
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: inherit;
-            white-space: nowrap;
-        }
-        .row .inline-group .quick-btn:hover {
-            background: rgba(232, 196, 104, 0.10);
-            border-color: var(--accent);
-        }
-        .row .inline-group .quick-btn:active {
-            transform: scale(0.95);
         }
 
         .total-bar {
@@ -815,11 +672,29 @@
             color: #f87171;
         }
 
-        #huoCalibrateInfo {
-            font-size: 11px;
-            color: var(--text-secondary);
-            padding: 2px 0;
-            min-height: 18px;
+        .dot {
+            display: inline-block;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            margin-right: 3px;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        .dot.red {
+            background: #e05555;
+        }
+        .dot.orange {
+            background: #e8943a;
+        }
+        .dot.purple {
+            background: #a66be0;
+        }
+        .dot.blue {
+            background: #4a9ae8;
+        }
+        .dot.green {
+            background: #4ec97a;
         }
 
         .page {
@@ -880,7 +755,7 @@
             padding: 8px 4px;
         }
         .btn-gold {
-            padding: 4px 20px;
+            padding: 6px 14px;
             background: linear-gradient(135deg, var(--accent), #c9a23e);
             color: #0b1526;
             border: none;
@@ -888,8 +763,13 @@
             font-size: 13px;
             font-weight: 700;
             cursor: pointer;
-            min-height: 30px;
+            min-height: 34px;
             font-family: inherit;
+        }
+        .field label {
+            display: block;
+            font-size: 10px;
+            color: var(--text-secondary);
         }
 
         .collapse-toggle {
@@ -904,6 +784,34 @@
             color: var(--accent2);
         }
 
+        .quick-btn {
+            padding: 2px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--accent2);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .quick-btn:hover {
+            background: rgba(232, 196, 104, 0.10);
+            border-color: var(--accent);
+        }
+        .quick-btn:active {
+            transform: scale(0.95);
+        }
+        .inline-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+
+        /* ===== 响应式 ===== */
         @media (max-width: 480px) {
             .top-nav .nav-group button[data-tab] {
                 font-size: 13px;
@@ -929,25 +837,18 @@
                 min-width: 42px;
                 font-size: 11px;
             }
-            .row .input-wrap input[type="number"] {
-                width: 44px;
-                font-size: 11px;
-                padding: 4px 2px;
-            }
-            .row .adj-group .adj-btn {
-                font-size: 9px;
-                padding: 2px 5px;
-                min-width: 20px;
-            }
-            .row .sub-value {
-                font-size: 11px;
-                min-width: 40px;
+            .row .qty {
+                width: 48px;
             }
             .total-bar .t-item {
                 font-size: 10px;
             }
             #appWrap {
                 padding: 0 6px 16px;
+            }
+            .car-pool-btns .car-btn {
+                padding: 3px 8px;
+                font-size: 10px;
             }
             .quick-actions {
                 grid-template-columns: 1fr 1fr;
@@ -968,13 +869,9 @@
                 padding: 4px 2px;
                 min-width: 30px;
             }
-            .row .qty-wide {
-                min-width: 50px;
-                max-width: 80px;
-            }
-            .row .inline-group .quick-btn {
-                font-size: 9px;
-                padding: 1px 5px;
+            .quick-btn {
+                font-size: 10px;
+                padding: 1px 6px;
             }
         }
         @media (min-width: 600px) {
@@ -989,12 +886,13 @@
 </head>
 <body>
 
+    <!-- ===== 验证覆盖层 ===== -->
     <div id="authOverlay">
         <div class="auth-box">
             <span class="auth-icon">🔐</span>
-            <div class="auth-title">俱乐大玩家 · 迪城修正版</div>
-            <div class="auth-badge">🌟 超级AI定制版</div>
-            <div class="auth-sub">请输入卡密激活</div>
+            <div class="auth-title" id="authTitle">俱乐大玩家 · 迪城最终版</div>
+            <div class="auth-badge" id="authBadge">🌟 超级AI定制版</div>
+            <div class="auth-sub" id="authSub">请输入卡密激活</div>
             <div class="auth-input-wrap">
                 <input id="cardInput" type="text" placeholder="请输入卡密" autocomplete="off" spellcheck="false" />
             </div>
@@ -1003,6 +901,7 @@
         </div>
     </div>
 
+    <!-- ===== 主界面 ===== -->
     <div id="appWrap">
         <nav class="top-nav" id="topNav">
             <div class="nav-group">
@@ -1014,19 +913,18 @@
             </div>
             <div class="nav-group">
                 <span class="label">模式</span>
-                <button class="mode-btn active" data-mode="balanced">⚖️ 均衡</button>
-                <button class="mode-btn" data-mode="conservative">🛡️ 保守</button>
-                <button class="mode-btn" data-mode="aggressive">🔥 赌大红</button>
+                <button class="mode-btn active" data-mode="classic">⚖️ 经典</button>
+                <button class="mode-btn" data-mode="aggressive">🔥 激烈</button>
             </div>
             <div class="nav-right">
-                <span class="vip-tag">📊 迪城修正版</span>
+                <span class="vip-tag">📊 迪城最终版</span>
             </div>
         </nav>
 
         <div class="header">
             <div class="main-title">
-                俱乐大玩家 · 迪城修正版
-                <span class="super-tag">📊 真实数据校准 + 自动学习</span>
+                俱乐大玩家 · 迪城最终版
+                <span class="super-tag">📊 经典/激烈模式</span>
             </div>
             <div class="sub-title"></div>
             <div class="header-actions">
@@ -1044,9 +942,8 @@
                 <button class="on" data-map="dicheng">迪城 ⭐</button>
             </div>
             <div class="mode-switch" id="modeSwitchBottom">
-                <button class="mode-btn active" data-mode="balanced">⚖️ 均衡</button>
-                <button class="mode-btn" data-mode="conservative">🛡️ 保守</button>
-                <button class="mode-btn" data-mode="aggressive">🔥 赌大红</button>
+                <button class="mode-btn active" data-mode="classic">⚖️ 经典</button>
+                <button class="mode-btn" data-mode="aggressive">🔥 激烈</button>
             </div>
         </div>
 
@@ -1086,14 +983,14 @@
                 }
             }
             setInterval(detectDebugger, 2000);
+
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'F12') { e.preventDefault(); return false; }
-                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i')) { e.preventDefault();
-                    return false; }
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i')) { e.preventDefault(); return false; }
                 if ((e.ctrlKey || e.metaKey) && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
-                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'J' || e.key === 'j')) { e.preventDefault();
-                    return false; }
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'J' || e.key === 'j')) { e.preventDefault(); return false; }
             });
+
             document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
 
             function guardGlobals() {
@@ -1113,17 +1010,73 @@
                 });
             }
             setInterval(guardGlobals, 3000);
+
             console.log('🛡️ 反破解保护已启用');
         })();
 
         // ============================================================
-        // ★ 安全验证系统
+        // ★ 文字配置（统一管理，不写入代码逻辑）
+        // ============================================================
+        var UI_TEXT = {
+            authTitle: '俱乐大玩家 · 迪城最终版',
+            authBadge: '🌟 超级AI定制版',
+            authSub: '请输入卡密激活',
+            authPlaceholder: '请输入卡密',
+            verifyBtn: '✅ 激活',
+            remainPermanent: '♾️ 永久有效',
+            remainFormat: '⏱ 剩余 {time} · {type}',
+            errorEmpty: '请输入卡密',
+            errorInvalid: '❌ 卡密无效或已过期',
+            errorNetwork: '⚠️ 网络异常，请检查后重试',
+            unbindConfirm: '确定要解绑此设备吗？\n解绑后需要重新激活。',
+            huoTitle: '霍姑姑 · 颜色格数估值（加权精准）',
+            huoRole: '推荐道具：红格怀表，巨物价值，四件放大镜，奢品扫描仪，古董扫描仪，全藏放大镜',
+            huoTip: '建议使用奢品扫描仪和古董扫描仪。如红格数过多建议用奢品扫描仪确认是否有车身，有则用车身池出价；古董价值可用古董扫描仪确认。',
+            gaoTitle: '高晋 · 红品件数估值（加权精准）',
+            gaoRole: '推荐道具：全域扫描枪，橙估价平板，紫估价平板，巨物价值，全藏放大镜。',
+            gaoTip: '推荐使用紫色和橙色估价平板，最后一轮使用全域扫描枪',
+            suTitle: '苏琦 · 颜色件数估值（加权精准）',
+            suRole: '推荐道具：紫件数观光棒，橙件数观光棒，红格怀表，四件放大镜，全藏放大镜',
+            suTip: '用红品件数估算误差较大，建议使用红格道具，用格数算。',
+            anTitle: '安可 · 红品均格反查（精准匹配）',
+            anRole: '第一回合用红格道具，每回合看到轮廊后把格数输进去缩小范围。',
+            carLabel: '🚗 车零件池（减项）',
+            antiqueLabel: '🏺 古董价值（减项）',
+            recLabel: '建议出价',
+            totalLabel: '仓库预估',
+            confidenceLabel: '📊 置信度',
+            resetLabel: '重置数据',
+            carBtn1: '+1(9万)',
+            carBtn2: '+2(18万)',
+            carBtn3: '+3(30万)',
+            antiqueBtn1: '+1(9万)',
+            antiqueBtn2: '+2(18万)',
+            antiqueBtn3: '+3(30万)',
+            infoDefault: '💡 车零件和古董为减项，将从总价中扣除',
+            gridLabel: '格（件数）',
+            purpleLabel: '紫色估价',
+            orangeLabel: '橙色估价',
+            redPieceLabel: '红色（件数）',
+            redGridLabel: '红色（格数）',
+            colorGreen: '绿色',
+            colorBlue: '蓝色',
+            colorPurple: '紫色',
+            colorOrange: '橙色',
+            colorRed: '红色',
+            expandMore: '展开更多格数 ▼',
+            collapseMore: '收起更多格数 ▲',
+            modeClassic: '⚖️ 经典',
+            modeAggressive: '🔥 激烈'
+        };
+
+        // ============================================================
+        // ★ 安全验证系统（Keyt + 本地持久化）
         // ============================================================
 
         var _0x = {
             encode: function(s) {
-                try { return CryptoJS.AES.encrypt(s, 'd7k9x2m4n8p6w3q1').toString(); } catch (e) { return btoa(
-                        encodeURIComponent(s)); }
+                try { return CryptoJS.AES.encrypt(s, 'd7k9x2m4n8p6w3q1').toString(); } catch (e) { return btoa(encodeURIComponent(
+                        s)); }
             },
             decode: function(s) {
                 try { var dec = CryptoJS.AES.decrypt(s, 'd7k9x2m4n8p6w3q1'); return dec.toString(CryptoJS.enc.Utf8); } catch (
@@ -1134,12 +1087,13 @@
             hash: function(s) { return CryptoJS.SHA256(s + 's3cure_k3y_2026').toString().substring(0, 16); }
         };
         var APP_SECRET = 'd7k9x2m4n8p6w3q1';
+        var PERMANENT_DAYS = 999999;
 
         function encryptData(raw) { return CryptoJS.AES.encrypt(JSON.stringify(raw), APP_SECRET).toString(); }
 
         function decryptData(encrypted) {
-            try { var dec = CryptoJS.AES.decrypt(encrypted, APP_SECRET); return JSON.parse(dec.toString(CryptoJS.enc
-                .Utf8)); } catch (e) { return null; }
+            try { var dec = CryptoJS.AES.decrypt(encrypted, APP_SECRET); return JSON.parse(dec.toString(CryptoJS.enc.Utf8)); } catch (
+                e) { return null; }
         }
 
         function saveSecureVerify(card, data) {
@@ -1209,8 +1163,8 @@
 
         function verifyWithKeyt(card, callback) {
             var fp = getDeviceFingerprint();
-            var url = CONFIG.API_URL + '?card=' + encodeURIComponent(card) + '&mac=' + encodeURIComponent(fp) + '&app=' +
-                CONFIG.APP_NAME;
+            var url = CONFIG.API_URL + '?card=' + encodeURIComponent(card) + '&mac=' + encodeURIComponent(fp) + '&app=' + CONFIG
+                .APP_NAME;
             var xhr = new XMLHttpRequest();
             var timer = setTimeout(function() { xhr.abort();
                 callback(false, null, null, null, 'timeout'); }, CONFIG.REQUEST_TIMEOUT);
@@ -1220,32 +1174,14 @@
                     clearTimeout(timer);
                     if (xhr.status === 200) {
                         var response = xhr.responseText;
-
-                        // ★ 智能识别：包含"终身卡"或"永久"就判定为永久卡
-                        if (response.includes('终身卡') || response.includes('永久卡') ||
-                            response.includes('Permanent') || response.includes('forever') ||
-                            response.includes('终身') || response.includes('永久')) {
-                            callback(true, '永久', 999999, '永久卡', null);
-                            return;
-                        }
-
                         var pos = response.indexOf('|sign=');
                         if (pos !== -1) response = response.substring(0, pos);
                         var parts = response.split('|');
                         if (parts[0] === 'ok') {
                             var days = parts[2] || '未知';
                             var minutes = parseInt(parts[3]) || 0;
-
-                            // 兜底：再次检查天数
-                            if (String(days).includes('永久') || String(days).includes('终身') ||
-                                parseInt(days) >= 36500) {
-                                callback(true, '永久', 999999, '永久卡', null);
-                                return;
-                            }
-
                             var cardType = '天卡';
-                            if (minutes >= 999999) cardType = '永久卡';
-                            else if (minutes >= 525600) cardType = '年卡';
+                            if (minutes >= PERMANENT_DAYS * 1440) cardType = '永久卡';
                             else if (minutes >= 43200) cardType = '月卡';
                             else if (minutes >= 10080) cardType = '周卡';
                             else if (minutes >= 1440) cardType = '天卡';
@@ -1262,14 +1198,10 @@
             xhr.send();
         }
 
-        var AUTH_TEXT = {
-            remainPermanent: '♾️ 永久有效',
-            remainFormat: '⏱ 剩余 {time} · {type}',
-            errorEmpty: '请输入卡密',
-            errorInvalid: '❌ 卡密无效或已过期',
-            errorNetwork: '⚠️ 网络异常，请检查后重试',
-            unbindConfirm: '确定要解绑此设备吗？\n解绑后需要重新激活。'
-        };
+        // ============================================================
+        // ★ UI 控制
+        // ============================================================
+
         var appWrap = document.getElementById('appWrap');
         var authOverlay = document.getElementById('authOverlay');
         var cardInput = document.getElementById('cardInput');
@@ -1277,11 +1209,16 @@
         var authError = document.getElementById('authError');
         var headerRemain = document.getElementById('headerRemain');
 
-        function showApp(data) { authOverlay.classList.add('hidden');
-            appWrap.classList.add('show'); if (data) updateRemainDisplay(data); }
+        function showApp(data) {
+            authOverlay.classList.add('hidden');
+            appWrap.classList.add('show');
+            if (data) updateRemainDisplay(data);
+        }
 
-        function showAuth() { authOverlay.classList.remove('hidden');
-            appWrap.classList.remove('show'); }
+        function showAuth() {
+            authOverlay.classList.remove('hidden');
+            appWrap.classList.remove('show');
+        }
 
         function setAuthError(msg) { authError.textContent = msg; }
 
@@ -1291,7 +1228,7 @@
             var elapsed = (now - data.verifyTime) / 1000;
             var remainMin = Math.max(0, data.minutes - elapsed / 60);
             if (data.cardType === '永久卡') {
-                headerRemain.textContent = AUTH_TEXT.remainPermanent;
+                headerRemain.textContent = UI_TEXT.remainPermanent;
                 headerRemain.className = 'remain-time permanent';
                 return;
             }
@@ -1303,13 +1240,14 @@
             if (hours > 0) parts.push(hours + '时');
             if (mins > 0) parts.push(mins + '分');
             if (parts.length === 0) parts.push('0分');
-            var text = AUTH_TEXT.remainFormat.replace('{time}', parts.join('')).replace('{type}', data.cardType);
+            var text = UI_TEXT.remainFormat.replace('{time}', parts.join('')).replace('{type}', data.cardType);
             headerRemain.textContent = text;
             var type = 'active';
             if (days < 1 && hours < 6) type = 'warning';
             if (days < 1 && hours < 1) type = 'danger';
             headerRemain.className = 'remain-time ' + type;
         }
+
         var remainTimer = null;
 
         function startRemainTimer(data) {
@@ -1337,8 +1275,9 @@
                 }
             }, 10000);
         }
+
         document.getElementById('unbindBtn').addEventListener('click', function() {
-            if (confirm(AUTH_TEXT.unbindConfirm)) {
+            if (confirm(UI_TEXT.unbindConfirm)) {
                 clearSecureVerify();
                 if (remainTimer) clearInterval(remainTimer);
                 showAuth();
@@ -1350,15 +1289,31 @@
         });
 
         function initAuthUI() {
+            var cached = getSecureVerify();
+            if (cached) {
+                var elapsed = (Date.now() - cached.timestamp) / 1000;
+                var remainMin = Math.max(0, cached.data.minutes - elapsed / 60);
+                if (remainMin > 0) {
+                    showApp({ cardType: cached.data.cardType, minutes: cached.data.minutes, verifyTime: cached
+                            .timestamp });
+                    startRemainTimer({ cardType: cached.data.cardType, minutes: cached.data.minutes,
+                        verifyTime: cached.timestamp });
+                    setTimeout(function() { if (typeof renderMainApp === 'function') renderMainApp(); }, 100);
+                    return;
+                } else {
+                    clearSecureVerify();
+                }
+            }
+
             verifyBtn.onclick = function() {
                 var card = cardInput.value.trim();
-                if (!card) { setAuthError(AUTH_TEXT.errorEmpty); return; }
+                if (!card) { setAuthError(UI_TEXT.errorEmpty); return; }
                 setAuthError('');
                 verifyBtn.disabled = true;
                 verifyBtn.textContent = '⏳ 验证中...';
                 verifyWithKeyt(card, function(success, days, minutes, cardType, error) {
                     verifyBtn.disabled = false;
-                    verifyBtn.textContent = '✅ 激活';
+                    verifyBtn.textContent = UI_TEXT.verifyBtn;
                     if (success) {
                         var data = { card: card, cardType: cardType, minutes: minutes, days: days,
                             verifyTime: Date.now() };
@@ -1367,144 +1322,35 @@
                         startRemainTimer(data);
                         if (typeof renderMainApp === 'function') renderMainApp();
                     } else {
-                        if (error === 'timeout' || error === 'network') setAuthError(AUTH_TEXT
-                        .errorNetwork);
-                        else setAuthError(AUTH_TEXT.errorInvalid);
+                        if (error === 'timeout' || error === 'network') setAuthError(UI_TEXT.errorNetwork);
+                        else setAuthError(UI_TEXT.errorInvalid);
                     }
                 });
             };
             cardInput.onkeydown = function(e) { if (e.key === 'Enter') verifyBtn.click(); };
-        }
-
-        (function() {
             showAuth();
-            var cached = getSecureVerify();
-            if (cached) {
-                var elapsed = (Date.now() - cached.timestamp) / 1000;
-                var remainMin = Math.max(0, cached.data.minutes - elapsed / 60);
-                if (remainMin > 0) {
-                    showApp({ cardType: cached.data.cardType, minutes: cached.data.minutes,
-                        verifyTime: cached.timestamp });
-                    startRemainTimer({ cardType: cached.data.cardType, minutes: cached.data.minutes,
-                        verifyTime: cached.timestamp });
-                    setTimeout(function() { if (typeof renderMainApp === 'function') renderMainApp(); }, 100);
-                    return;
-                } else clearSecureVerify();
-            }
-            showAuth();
-            initAuthUI();
-        })();
-
-        console.log('✅ 迪城修正版已启动 — 带自动学习校准 + 微调按钮');
-
-        // ============================================================
-        // ★ 文字配置
-        // ============================================================
-        var UI_TEXT = {
-            huoTitle: '霍姑姑 · 颜色格数估值（加权精准 + 自动学习校准）',
-            huoRole: '推荐道具：红格怀表，巨物价值，四件放大镜，奢品扫描仪，古董扫描仪，全藏放大镜',
-            huoTip: '建议使用奢品扫描仪和古董扫描仪。如红格数过多建议用奢品扫描仪确认是否有车身，有则用车身池出价；古董价值可用古董扫描仪确认。',
-            carLabel: '🚗 车零件池',
-            antiqueLabel: '🏺 古董价值',
-            calibrateLabel: '📊 实际揭示总价值',
-            calibratePlaceholder: '输入游戏揭示值',
-            calibrateBtn: '校准',
-            resetBtn: '重置数据',
-            recLabel: '建议出价',
-            totalLabel: '仓库预估',
-            confidenceLabel: '📊 置信度',
-            carBtn1: '+1(9万)',
-            carBtn2: '+2(18万)',
-            carBtn3: '+3(30万)',
-            antiqueBtn1: '+1(9万)',
-            antiqueBtn2: '+2(18万)',
-            antiqueBtn3: '+3(30万)',
-            infoDefault: '💡 输入实际揭示值点击校准，工具将自动学习该地图的偏差系数',
-            infoLearned: '🤖 自动学习系数：{factor}（已应用）',
-            infoReset: '🔄 已清空输入，学习系数保留（{factor}）',
-            infoErrorEmpty: '⚠️ 请输入有效的实际揭示总价值',
-            infoErrorNoEst: '⚠️ 请先输入物品格数，让工具计算出估值',
-            infoCalibrated: '✅ 学习成功！系数已更新为 {factor}（自动应用于后续计算）'
-        };
-
-        // ============================================================
-        // ★ 核心算法
-        // ============================================================
-
-        function getCalibrationFactor(mapKey) {
-            try {
-                var data = JSON.parse(localStorage.getItem('calibration_factor') || '{}');
-                return data[mapKey] || 1.0;
-            } catch (e) { return 1.0; }
         }
 
-        function saveCalibrationFactor(mapKey, factor) {
-            try {
-                var data = JSON.parse(localStorage.getItem('calibration_factor') || '{}');
-                var old = data[mapKey] || 1.0;
-                var newFactor = old * 0.6 + factor * 0.4;
-                newFactor = Math.min(5.0, Math.max(0.5, newFactor));
-                data[mapKey] = newFactor;
-                localStorage.setItem('calibration_factor', JSON.stringify(data));
-                return newFactor;
-            } catch (e) { return factor; }
-        }
+        // ============================================================
+        // ★ 核心算法（完全套用定制版19.html）
+        // ============================================================
 
-        // ★ 根据格数计算红品均价（格数越少均价越高，格数越多均价越低）
-        function getRedPriceByGrid(grid) {
-            if (grid <= 0) return 0;
-            // 1格 ~ 7.5万，16格 ~ 3.9万，格数越多单价越低
-            // 使用指数衰减模型：价格 = a * grid^(-b) + c
-            // 1格: 75000, 4格: 43000, 8格: 38000, 16格: 39000, 超过16格按39000
-            if (grid >= 16) return 39000;
-            // 插值表
-            var table = {
-                1: 75000,
-                2: 62000,
-                3: 50000,
-                4: 43000,
-                5: 41000,
-                6: 40000,
-                7: 39000,
-                8: 38000,
-                9: 37000,
-                10: 36500,
-                11: 36000,
-                12: 36000,
-                13: 38500,
-                14: 38500,
-                15: 38500,
-                16: 39000
-            };
-            if (table[grid]) return table[grid];
-            // 如果不在表中，用相邻插值
-            var keys = Object.keys(table).map(Number);
-            var lower = keys.filter(function(k) { return k <= grid; });
-            var upper = keys.filter(function(k) { return k >= grid; });
-            if (lower.length === 0) return table[keys[0]];
-            if (upper.length === 0) return table[keys[keys.length - 1]];
-            var l = lower[lower.length - 1];
-            var u = upper[0];
-            if (l === u) return table[l];
-            var ratio = (grid - l) / (u - l);
-            return table[l] + (table[u] - table[l]) * ratio;
-        }
-
+        // 地图数据 — 迪城完整保留，其他地图也保留
         var CFG = {
             maps: {
                 xunhui: {
                     name: '巡回',
                     redByGrid: {
-                        1: { avg: 75000, med: 72000, min: 60000 },
-                        2: { avg: 124000, med: 120000, min: 100000 },
-                        3: { avg: 150000, med: 145000, min: 130000 },
-                        4: { avg: 172000, med: 168000, min: 150000 },
-                        6: { avg: 240000, med: 235000, min: 210000 },
-                        8: { avg: 304000, med: 300000, min: 280000 },
-                        9: { avg: 333000, med: 330000, min: 310000 },
-                        12: { avg: 432000, med: 428000, min: 400000 },
-                        15: { avg: 577500, med: 570000, min: 540000 },
-                        16: { avg: 624000, med: 620000, min: 590000 }
+                        1: { avg: 95746, med: 74970, min: 63950 },
+                        2: { avg: 209475, med: 124100, min: 105000 },
+                        3: { avg: 149100, med: 149100, min: 140700 },
+                        4: { avg: 235450, med: 190500, min: 80250 },
+                        6: { avg: 342343, med: 251900, min: 188000 },
+                        8: { avg: 333400, med: 333400, min: 333400 },
+                        9: { avg: 423625, med: 388300, min: 280600 },
+                        12: { avg: 269650, med: 269650, min: 231800 },
+                        15: { avg: 386400, med: 386400, min: 386400 },
+                        16: { avg: 607300, med: 656700, min: 475600 }
                     },
                     colors: {
                         purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
@@ -1519,16 +1365,16 @@
                 yanjing: {
                     name: '燕京',
                     redByGrid: {
-                        1: { avg: 75000, med: 72000, min: 60000 },
-                        2: { avg: 124000, med: 120000, min: 100000 },
-                        3: { avg: 150000, med: 145000, min: 130000 },
-                        4: { avg: 172000, med: 168000, min: 150000 },
-                        6: { avg: 240000, med: 235000, min: 210000 },
-                        8: { avg: 304000, med: 300000, min: 280000 },
-                        9: { avg: 333000, med: 330000, min: 310000 },
-                        12: { avg: 432000, med: 428000, min: 400000 },
-                        15: { avg: 577500, med: 570000, min: 540000 },
-                        16: { avg: 624000, med: 620000, min: 590000 }
+                        1: { avg: 95746, med: 74970, min: 63950 },
+                        2: { avg: 209475, med: 124100, min: 105000 },
+                        3: { avg: 149100, med: 149100, min: 140700 },
+                        4: { avg: 229352, med: 188650, min: 80250 },
+                        6: { avg: 324638, med: 247500, min: 188000 },
+                        8: { avg: 324400, med: 324400, min: 315400 },
+                        9: { avg: 386740, med: 354100, min: 239200 },
+                        12: { avg: 269650, med: 269650, min: 231800 },
+                        15: { avg: 386400, med: 386400, min: 386400 },
+                        16: { avg: 607300, med: 656700, min: 475600 }
                     },
                     colors: {
                         purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
@@ -1543,16 +1389,16 @@
                 xiangjiang: {
                     name: '香江',
                     redByGrid: {
-                        1: { avg: 75000, med: 72000, min: 60000 },
-                        2: { avg: 124000, med: 120000, min: 100000 },
-                        3: { avg: 150000, med: 145000, min: 130000 },
-                        4: { avg: 172000, med: 168000, min: 150000 },
-                        6: { avg: 240000, med: 235000, min: 210000 },
-                        8: { avg: 304000, med: 300000, min: 280000 },
-                        9: { avg: 333000, med: 330000, min: 310000 },
-                        12: { avg: 432000, med: 428000, min: 400000 },
-                        15: { avg: 577500, med: 570000, min: 540000 },
-                        16: { avg: 624000, med: 620000, min: 590000 }
+                        1: { avg: 93964, med: 74605, min: 63660 },
+                        2: { avg: 194621, med: 122150, min: 99990 },
+                        3: { avg: 149100, med: 149100, min: 140700 },
+                        4: { avg: 233781, med: 191200, min: 80250 },
+                        6: { avg: 329750, med: 247500, min: 188000 },
+                        8: { avg: 333400, med: 333400, min: 333400 },
+                        9: { avg: 423625, med: 388300, min: 280600 },
+                        12: { avg: 269650, med: 269650, min: 231800 },
+                        15: { avg: 386400, med: 386400, min: 386400 },
+                        16: { avg: 607300, med: 656700, min: 475600 }
                     },
                     colors: {
                         purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
@@ -1567,16 +1413,16 @@
                 nicheng: {
                     name: '霓城',
                     redByGrid: {
-                        1: { avg: 75000, med: 72000, min: 60000 },
-                        2: { avg: 124000, med: 120000, min: 100000 },
-                        3: { avg: 150000, med: 145000, min: 130000 },
-                        4: { avg: 172000, med: 168000, min: 150000 },
-                        6: { avg: 240000, med: 235000, min: 210000 },
-                        8: { avg: 304000, med: 300000, min: 280000 },
-                        9: { avg: 333000, med: 330000, min: 310000 },
-                        12: { avg: 432000, med: 428000, min: 400000 },
-                        15: { avg: 577500, med: 570000, min: 540000 },
-                        16: { avg: 624000, med: 620000, min: 590000 }
+                        1: { avg: 95746, med: 74970, min: 63950 },
+                        2: { avg: 200897, med: 123500, min: 97960 },
+                        3: { avg: 149100, med: 149100, min: 140700 },
+                        4: { avg: 226960, med: 180200, min: 80250 },
+                        6: { avg: 342343, med: 251900, min: 188000 },
+                        8: { avg: 333400, med: 333400, min: 333400 },
+                        9: { avg: 406580, med: 354100, min: 280600 },
+                        12: { avg: 269650, med: 269650, min: 231800 },
+                        15: { avg: 386400, med: 386400, min: 386400 },
+                        16: { avg: 559650, med: 566150, min: 416700 }
                     },
                     colors: {
                         purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
@@ -1588,19 +1434,20 @@
                     gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
                     redAvgGrid: 4.5
                 },
+                // ★ 迪城数据完整保留（来自第一个文件） ★
                 dicheng: {
                     name: '迪城',
                     redByGrid: {
-                        1: { avg: 75000, med: 72000, min: 60000 },
-                        2: { avg: 124000, med: 120000, min: 100000 },
-                        3: { avg: 150000, med: 145000, min: 130000 },
-                        4: { avg: 172000, med: 168000, min: 150000 },
-                        6: { avg: 240000, med: 235000, min: 210000 },
-                        8: { avg: 304000, med: 300000, min: 280000 },
-                        9: { avg: 333000, med: 330000, min: 310000 },
-                        12: { avg: 432000, med: 428000, min: 400000 },
-                        15: { avg: 577500, med: 570000, min: 540000 },
-                        16: { avg: 624000, med: 620000, min: 590000 }
+                        1: { avg: 95746, med: 74970, min: 63950 },
+                        2: { avg: 209475, med: 124100, min: 105000 },
+                        3: { avg: 149100, med: 149100, min: 140700 },
+                        4: { avg: 235450, med: 190500, min: 80250 },
+                        6: { avg: 342343, med: 251900, min: 188000 },
+                        8: { avg: 333400, med: 333400, min: 333400 },
+                        9: { avg: 423625, med: 388300, min: 280600 },
+                        12: { avg: 269650, med: 269650, min: 231800 },
+                        15: { avg: 386400, med: 386400, min: 386400 },
+                        16: { avg: 607300, med: 656700, min: 475600 }
                     },
                     colors: {
                         purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
@@ -1614,10 +1461,10 @@
                 }
             },
             recDiscount: 0.85,
-            carRedGridPrice: 38000,
             gaoCollapseThreshold: 6
         };
 
+        // ---- 加权价格函数（来自定制版19.html） ----
         function weightedPrice(stat) {
             if (!stat) return 0;
             var avg = stat.avg || 0;
@@ -1645,11 +1492,10 @@
             return 0.74;
         }
 
-        // ★ 使用动态价格函数替代静态查表
         function getRedGridPrice(grid, map) {
-            // 使用动态计算：格数越少单价越高
-            var pricePerGrid = getRedPriceByGrid(grid);
-            return pricePerGrid * grid;
+            var entry = map.redByGrid[grid];
+            if (!entry) return 0;
+            return weightedPrice(entry);
         }
 
         function getColorGridPrice(colorKey, map) {
@@ -1669,9 +1515,7 @@
         }
 
         function getRedGridAvgPrice(map) {
-            // 使用动态均价：根据平均格数计算
-            var avgGrid = map.redAvgGrid || 4.3;
-            return getRedPriceByGrid(Math.round(avgGrid));
+            return weightedPrice(map.redStat.grid);
         }
 
         function getMap() { return CFG.maps[currentMap]; }
@@ -1679,7 +1523,7 @@
         function fmt(n) { if (n === undefined || n === null || isNaN(n)) return '0'; return Math.round(n).toLocaleString(); }
 
         // ---- 全局状态 ----
-        var currentMode = 'balanced';
+        var currentMode = 'classic';
         var currentMap = 'dicheng';
         var currentTab = 'huo';
 
@@ -1742,137 +1586,75 @@
         });
 
         // ============================================================
-        // ★ 工具函数：为输入框添加微调按钮（内联布局，按钮放大）
-        // ============================================================
-        function addInlineAdjustButtons(inputId, steps) {
-            var input = document.getElementById(inputId);
-            if (!input) return null;
-            var wrapper = input.closest('.input-wrap');
-            if (!wrapper) return input;
-            var existing = wrapper.querySelector('.adj-group');
-            if (existing) return input;
-
-            var group = document.createElement('span');
-            group.className = 'adj-group';
-
-            var minusSteps = steps.filter(function(s) { return s < 0; });
-            var plusSteps = steps.filter(function(s) { return s > 0; });
-
-            minusSteps.forEach(function(step) {
-                var btn = document.createElement('button');
-                btn.className = 'adj-btn minus';
-                btn.textContent = step;
-                btn.type = 'button';
-                btn.onmousedown = function(e) { e.preventDefault(); };
-                btn.onclick = function() {
-                    var current = parseFloat(input.value) || 0;
-                    var newVal = current + step;
-                    if (newVal < 0) newVal = 0;
-                    input.value = newVal;
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
-                };
-                group.appendChild(btn);
-            });
-
-            var div = document.createElement('span');
-            div.className = 'adj-divider';
-            group.appendChild(div);
-
-            plusSteps.forEach(function(step) {
-                var btn = document.createElement('button');
-                btn.className = 'adj-btn plus';
-                btn.textContent = '+' + step;
-                btn.type = 'button';
-                btn.onmousedown = function(e) { e.preventDefault(); };
-                btn.onclick = function() {
-                    var current = parseFloat(input.value) || 0;
-                    var newVal = current + step;
-                    if (newVal < 0) newVal = 0;
-                    input.value = newVal;
-                    input.dispatchEvent(new Event('input', { bubbles: true }));
-                };
-                group.appendChild(btn);
-            });
-
-            wrapper.appendChild(group);
-            return input;
-        }
-
-        // ============================================================
-        // ★ 渲染各角色页面（保持原有逻辑，使用新价格）
+        // ★ 渲染函数（霍姑姑、高晋、苏琦、安可）
         // ============================================================
 
-        // --- 霍姑姑 ---
+        // --- 霍姑姑（含车零件和古董作为减项） ---
         function renderHuo() {
             var el = document.getElementById('page-huo');
             var map = getMap();
-            var mapKey = currentMap;
             var colors = [
-                { key: 'green', label: '绿色', dot: 'green', priceFn: function() { return getColorGridPrice('green',
+                { key: 'green', label: UI_TEXT.colorGreen, dot: 'green', priceFn: function() { return getColorGridPrice('green',
                         map); } },
-                { key: 'blue', label: '蓝色', dot: 'blue', priceFn: function() { return getColorGridPrice('blue',
+                { key: 'blue', label: UI_TEXT.colorBlue, dot: 'blue', priceFn: function() { return getColorGridPrice('blue',
                         map); } },
-                { key: 'purple', label: '紫色', dot: 'purple', priceFn: function() { return getColorGridPrice('purple',
-                        map); } },
-                { key: 'orange', label: '橙色', dot: 'orange', priceFn: function() { return getColorGridPrice('orange',
-                        map); } },
-                { key: 'red', label: '红色', dot: 'red', priceFn: function() { return getRedGridAvgPrice(map); } }
+                { key: 'purple', label: UI_TEXT.colorPurple, dot: 'purple', priceFn: function() { return getColorGridPrice(
+                        'purple', map); } },
+                { key: 'orange', label: UI_TEXT.colorOrange, dot: 'orange', priceFn: function() { return getColorGridPrice(
+                        'orange', map); } },
+                { key: 'red', label: UI_TEXT.colorRed, dot: 'red', priceFn: function() { return getRedGridAvgPrice(map); } }
             ];
-            var autoFactor = getCalibrationFactor(mapKey);
+
             var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4a9ae8,#2a6ab0);">霍</div><div><div class="name">' +
-                UI_TEXT.huoTitle + '</div><div class="role">' + UI_TEXT.huoRole + '<span class="tip2">' + UI_TEXT
-                .huoTip + '</span></div></div></div></div><div class="sec-body">';
+                UI_TEXT.huoTitle + '</div><div class="role">' + UI_TEXT.huoRole +
+                '<span class="tip2">' + UI_TEXT.huoTip + '</span></div></div></div></div><div class="sec-body">';
 
             colors.forEach(function(col) {
                 var price = col.priceFn();
-                html += '<div class="row"><span class="lbl"><span class="dot ' + col.dot +
-                    '"></span>' + col.label + '（格数）</span><div class="input-wrap"><input type="number" id="huo_' +
-                    col.key + '" min="0" step="1" value="" data-price="' + price +
-                    '"></div><span class="sub-value" id="huo_' + col.key + '_sub">0</span></div>';
+                html += '<div class="row"><span class="lbl"><span class="dot ' + col.dot + '"></span>' + col.label +
+                    '（格数）</span>' +
+                    '<div class="qty"><input type="number" id="huo_' + col.key + '" min="0" step="1" value="" data-price="' +
+                    price + '"></div>' +
+                    '<span class="sub" id="huo_' + col.key + '_sub">0</span></div>';
             });
 
-            html += '<div class="row"><span class="lbl">' + UI_TEXT.carLabel +
-                '</span><div class="input-wrap" style="flex:2;"><input type="number" id="huoCarPool" min="0" step="1000" value="" style="width:80px;"></div>' +
+            // 车零件池（减项）
+            html += '<div class="row"><span class="lbl">' + UI_TEXT.carLabel + '</span>' +
+                '<div class="qty" style="flex:1; width:auto; min-width:80px;"><input type="number" id="huoCarPool" min="0" step="1000" value="" style="width:100%;"></div>' +
                 '<span class="inline-group">' +
                 '<button class="quick-btn" id="carPlus1">' + UI_TEXT.carBtn1 + '</button>' +
                 '<button class="quick-btn" id="carPlus2">' + UI_TEXT.carBtn2 + '</button>' +
                 '<button class="quick-btn" id="carPlus3">' + UI_TEXT.carBtn3 + '</button>' +
                 '</span></div>';
 
-            html += '<div class="row"><span class="lbl">' + UI_TEXT.antiqueLabel +
-                '</span><div class="input-wrap" style="flex:2;"><input type="number" id="huoAntique" min="0" step="1000" value="" style="width:80px;"></div>' +
+            // 古董价值（减项）
+            html += '<div class="row"><span class="lbl">' + UI_TEXT.antiqueLabel + '</span>' +
+                '<div class="qty" style="flex:1; width:auto; min-width:80px;"><input type="number" id="huoAntique" min="0" step="1000" value="" style="width:100%;"></div>' +
                 '<span class="inline-group">' +
                 '<button class="quick-btn" id="antiquePlus1">' + UI_TEXT.antiqueBtn1 + '</button>' +
                 '<button class="quick-btn" id="antiquePlus2">' + UI_TEXT.antiqueBtn2 + '</button>' +
                 '<button class="quick-btn" id="antiquePlus3">' + UI_TEXT.antiqueBtn3 + '</button>' +
                 '</span></div>';
 
-            html += '<div class="row" style="border-top:1px solid rgba(42,58,90,0.15); margin-top:6px; padding-top:6px;"><span class="lbl">' +
-                UI_TEXT.calibrateLabel +
-                '</span><div class="input-wrap" style="flex:2;"><input type="number" id="huoActualTotal" min="0" step="1000" value="" placeholder="' +
-                UI_TEXT.calibratePlaceholder + '" style="width:80px;"></div>' +
-                '<span class="sub-value" id="huoCalibrateBtn" style="cursor:pointer; color:var(--accent2); font-size:12px; min-width:auto; padding:0 8px;">' +
-                UI_TEXT.calibrateBtn + '</span></div>';
-            html += '<div id="huoCalibrateInfo">' +
-                (autoFactor !== 1.0 ? UI_TEXT.infoLearned.replace('{factor}', autoFactor.toFixed(2)) : UI_TEXT
-                .infoDefault) + '</div>';
+            // 提示
+            html += '<div style="font-size:11px;color:var(--text-secondary);padding:4px 0 2px;">' + UI_TEXT.infoDefault +
+                '</div>';
 
-            html += '<div class="total-bar"><div class="t-item"><span class="label">' + UI_TEXT.recLabel +
-                '</span><span class="value rec" id="huoRec">0</span></div><div class="t-item"><span class="label">' +
-                UI_TEXT.totalLabel + '</span><span class="value" id="huoTotal">0</span></div></div>';
-            html += '<div class="confidence-bar"><span>' + UI_TEXT.confidenceLabel +
-                '</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:90%"></div></div><span class="label" id="huoConfidenceLabel">90%</span></div>';
-            html += '<div class="reset-row"><button class="btn-reset" id="huoReset">' + UI_TEXT.resetBtn +
-                '</button></div></div></div>';
+            html += '<div class="total-bar">' +
+                '<div class="t-item"><span class="label">' + UI_TEXT.recLabel + '</span><span class="value rec" id="huoRec">0</span></div>' +
+                '<div class="t-item"><span class="label">' + UI_TEXT.totalLabel + '</span><span class="value" id="huoTotal">0</span></div>' +
+                '</div>';
+            html +=
+                '<div class="confidence-bar"><span>' + UI_TEXT.confidenceLabel +
+                '</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:85%"></div></div><span class="label" id="huoConfidenceLabel">85%</span></div>';
+            html +=
+            '<div class="reset-row"><button class="btn-reset" id="huoReset">' + UI_TEXT.resetLabel + '</button></div>';
+            html += '</div></div>';
             el.innerHTML = html;
 
-            colors.forEach(function(col) {
-                addInlineAdjustButtons('huo_' + col.key, [-10, -5, -1, 1, 5, 10]);
-            });
-
             function calcHuo() {
-                var total = 0,
-                    stats = [];
+                var total = 0;
+                var stats = [];
                 colors.forEach(function(col) {
                     var inp = document.getElementById('huo_' + col.key);
                     if (!inp) return;
@@ -1884,41 +1666,50 @@
                     total += sub;
                     if (val > 0) stats.push({ val: val });
                 });
-                var carPool = parseFloat(document.getElementById('huoCarPool').value) || 0;
-                total += carPool;
-                var antique = parseFloat(document.getElementById('huoAntique').value) || 0;
-                total += antique;
 
-                var factor = getCalibrationFactor(currentMap);
-                var adjustedTotal = total * factor;
-                document.getElementById('huoTotal').textContent = fmt(adjustedTotal);
-                var disc = dynamicRecDiscount(adjustedTotal);
-                var rec = adjustedTotal * disc;
-                if (currentMode === 'aggressive') rec = adjustedTotal * 0.95;
-                if (currentMode === 'conservative') rec = adjustedTotal * 0.75;
+                // ★ 车零件和古董作为减项 ★
+                var carPool = parseFloat(document.getElementById('huoCarPool').value) || 0;
+                var antique = parseFloat(document.getElementById('huoAntique').value) || 0;
+                var deductTotal = carPool + antique;
+                var finalTotal = Math.max(0, total - deductTotal);
+
+                document.getElementById('huoTotal').textContent = fmt(finalTotal);
+
+                // 经典模式：使用动态折扣
+                var disc = dynamicRecDiscount(finalTotal);
+                var rec = finalTotal * disc;
+
+                // 激烈模式：更高出价系数
+                if (currentMode === 'aggressive') {
+                    rec = finalTotal * 0.95;
+                }
+
                 document.getElementById('huoRec').textContent = fmt(rec);
 
-                var conf = 0.90;
+                // 置信度
+                var conf = 0.85;
                 if (stats.length > 0) {
                     var vals = stats.map(function(s) { return s.val; });
                     var maxV = Math.max.apply(null, vals);
                     var minV = Math.min.apply(null, vals);
                     var spread = (maxV - minV) / (maxV + 0.01);
-                    conf = 0.92 - spread * 0.30;
-                    conf = Math.max(0.65, Math.min(0.96, conf));
+                    conf = 0.90 - spread * 0.35;
+                    conf = Math.max(0.60, Math.min(0.96, conf));
                 }
                 var fill = document.getElementById('huoConfidenceFill');
                 var label = document.getElementById('huoConfidenceLabel');
                 if (fill) {
                     fill.style.width = (conf * 100) + '%';
-                    fill.style.background = conf > 0.85 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.70 ?
+                    fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
                         'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
                 }
                 if (label) label.textContent = Math.round(conf * 100) + '%';
-                var high = adjustedTotal * 1.2;
-                updateQuickActions(rec, adjustedTotal, carPool, high);
+
+                var high = finalTotal * 1.2;
+                updateQuickActions(rec, finalTotal, carPool, high);
             }
 
+            // ---- 快捷按钮事件 ----
             document.getElementById('carPlus1').onclick = function() {
                 document.getElementById('huoCarPool').value = 90000;
                 calcHuo();
@@ -1944,19 +1735,7 @@
                 calcHuo();
             };
 
-            document.getElementById('huoCalibrateBtn').onclick = function() {
-                var actual = parseFloat(document.getElementById('huoActualTotal').value);
-                var estimated = parseFloat(document.getElementById('huoTotal').textContent.replace(/,/g, '')) || 0;
-                var info = document.getElementById('huoCalibrateInfo');
-                if (!actual || actual <= 0) { info.textContent = UI_TEXT.infoErrorEmpty; return; }
-                if (estimated <= 0) { info.textContent = UI_TEXT.infoErrorNoEst; return; }
-                var ratio = actual / estimated;
-                var newFactor = saveCalibrationFactor(currentMap, ratio);
-                info.textContent = UI_TEXT.infoCalibrated.replace('{factor}', newFactor.toFixed(2));
-                document.getElementById('huoActualTotal').value = '';
-                calcHuo();
-            };
-
+            // ---- 绑定输入事件 ----
             colors.forEach(function(col) {
                 var inp = document.getElementById('huo_' + col.key);
                 if (inp) inp.addEventListener('input', calcHuo);
@@ -1964,15 +1743,11 @@
             document.getElementById('huoCarPool').addEventListener('input', calcHuo);
             document.getElementById('huoAntique').addEventListener('input', calcHuo);
 
+            // ---- 重置 ----
             document.getElementById('huoReset').onclick = function() {
-                colors.forEach(function(col) { var inp = document.getElementById('huo_' + col.key); if (inp) inp
-                        .value = ''; });
+                colors.forEach(function(col) { var inp = document.getElementById('huo_' + col.key); if (inp) inp.value = ''; });
                 document.getElementById('huoCarPool').value = '';
                 document.getElementById('huoAntique').value = '';
-                document.getElementById('huoActualTotal').value = '';
-                var info = document.getElementById('huoCalibrateInfo');
-                var f = getCalibrationFactor(currentMap);
-                info.textContent = UI_TEXT.infoReset.replace('{factor}', f.toFixed(2));
                 calcHuo();
             };
             calcHuo();
@@ -1984,62 +1759,81 @@
             var map = getMap();
             var gridOptions = map.gridOptions || [];
             var threshold = 6;
-            el.innerHTML = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e05555,#b03030);">晋</div><div><div class="name">高晋 · 红品件数估值（加权精准）</div><div class="role">推荐道具：全域扫描枪，橙估价平板，紫估价平板，巨物价值，全藏放大镜。<span class="tip2">推荐使用紫色和橙色估价平板，最后一轮使用全域扫描枪</span></div></div></div></div><div class="sec-body" id="gaoBody"></div></div>';
+            el.innerHTML =
+                '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e05555,#b03030);">晋</div><div><div class="name">' +
+                UI_TEXT.gaoTitle + '</div><div class="role">' + UI_TEXT.gaoRole +
+                '<span class="tip2">' + UI_TEXT.gaoTip + '</span></div></div></div></div><div class="sec-body" id="gaoBody"></div></div>';
             var body = document.getElementById('gaoBody');
             var html = '';
             var visibleGrids = gridOptions.filter(function(g) { return g <= threshold; });
             var hiddenGrids = gridOptions.filter(function(g) { return g > threshold; });
+
             visibleGrids.forEach(function(g) {
                 var price = getRedGridPrice(g, map);
-                html += '<div class="row"><span class="lbl">' + g +
-                    '格</span><div class="input-wrap"><input type="number" id="gao_grid_' + g +
-                    '" min="0" step="1" value="" data-price="' + price +
-                    '"></div><span class="sub-value" id="gao_grid_' + g + '_sub">0</span></div>';
+                html += '<div class="row"><span class="lbl">' + g + UI_TEXT.gridLabel + '</span>' +
+                    '<div class="qty"><input type="number" id="gao_grid_' + g + '" min="0" step="1" value="" data-price="' +
+                    price + '"></div>' +
+                    '<span class="sub" id="gao_grid_' + g + '_sub">0</span></div>';
             });
+
             html += '<div class="collapsed-rows" id="gaoCollapsedRows">';
             hiddenGrids.forEach(function(g) {
                 var price = getRedGridPrice(g, map);
-                html += '<div class="row"><span class="lbl">' + g +
-                    '格</span><div class="input-wrap"><input type="number" id="gao_grid_' + g +
-                    '" min="0" step="1" value="" data-price="' + price +
-                    '"></div><span class="sub-value" id="gao_grid_' + g + '_sub">0</span></div>';
+                html += '<div class="row"><span class="lbl">' + g + UI_TEXT.gridLabel + '</span>' +
+                    '<div class="qty"><input type="number" id="gao_grid_' + g + '" min="0" step="1" value="" data-price="' +
+                    price + '"></div>' +
+                    '<span class="sub" id="gao_grid_' + g + '_sub">0</span></div>';
             });
             html += '</div>';
-            if (hiddenGrids.length > 0) html +=
-                '<div class="collapse-toggle" id="gaoCollapseToggle">展开更多格数 ▼</div>';
-            html += '<div class="row"><span class="lbl">紫色估价</span><div class="input-wrap"><input type="number" id="gao_purple" min="0" step="100" value=""></div><span class="sub-value" id="gao_purple_sub">0</span></div>';
-            html += '<div class="row"><span class="lbl">橙色估价</span><div class="input-wrap"><input type="number" id="gao_orange" min="0" step="100" value=""></div><span class="sub-value" id="gao_orange_sub">0</span></div>';
-            var redPiecePrice = getRedPiecePrice(map);
-            html += '<div class="row"><span class="lbl">红色（件数）</span><div class="input-wrap"><input type="number" id="gao_red_piece_cnt" min="0" step="1" value="" data-price="' +
-                redPiecePrice + '"></div><span class="sub-value" id="gao_red_piece_sub">0</span></div>';
-            var redGridPrice = getRedGridAvgPrice(map);
-            html += '<div class="row"><span class="lbl">红色（格数）</span><div class="input-wrap" style="flex:2; gap:3px;"><input type="number" id="gao_red_grid_avg" min="0" step="0.1" placeholder="均格数" value="" style="width:56px;"><input type="number" id="gao_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:56px;"></div><span class="sub-value" id="gao_red_grid_sub">0</span></div>';
-            html += '<div class="total-bar"><div class="t-item"><span class="label">建议出价</span><span class="value rec" id="gaoRec">0</span></div><div class="t-item"><span class="label">仓库预估</span><span class="value" id="gaoTotal">0</span></div></div>';
-            html += '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="gaoConfidenceFill" style="width:90%"></div></div><span class="label" id="gaoConfidenceLabel">90%</span></div>';
-            html += '<div class="reset-row"><button class="btn-reset" id="gaoReset">重置数据</button></div>';
-            body.innerHTML = html;
 
-            gridOptions.forEach(function(g) {
-                addInlineAdjustButtons('gao_grid_' + g, [-1, 1]);
-            });
-            addInlineAdjustButtons('gao_purple', [-1, 1]);
-            addInlineAdjustButtons('gao_orange', [-1, 1]);
-            addInlineAdjustButtons('gao_red_piece_cnt', [-1, 1]);
-            addInlineAdjustButtons('gao_red_grid_avg', [-1, 1]);
-            addInlineAdjustButtons('gao_red_grid_cnt', [-1, 1]);
+            if (hiddenGrids.length > 0) {
+                html += '<div class="collapse-toggle" id="gaoCollapseToggle">' + UI_TEXT.expandMore + '</div>';
+            }
+
+            html +=
+                '<div class="row"><span class="lbl">' + UI_TEXT.purpleLabel +
+                '</span><div class="qty"><input type="number" id="gao_purple" min="0" step="100" value=""></div><span class="sub" id="gao_purple_sub">0</span></div>';
+            html +=
+                '<div class="row"><span class="lbl">' + UI_TEXT.orangeLabel +
+                '</span><div class="qty"><input type="number" id="gao_orange" min="0" step="100" value=""></div><span class="sub" id="gao_orange_sub">0</span></div>';
+
+            var redPiecePrice = getRedPiecePrice(map);
+            html += '<div class="row"><span class="lbl">' + UI_TEXT.redPieceLabel + '</span>' +
+                '<div class="qty"><input type="number" id="gao_red_piece_cnt" min="0" step="1" value="" data-price="' +
+                redPiecePrice + '"></div>' +
+                '<span class="sub" id="gao_red_piece_sub">0</span></div>';
+
+            var redGridPrice = getRedGridAvgPrice(map);
+            html += '<div class="row"><span class="lbl">' + UI_TEXT.redGridLabel + '</span>' +
+                '<div class="rg-fields">' +
+                '<input type="number" id="gao_red_grid_avg" min="0" step="0.1" placeholder="均格数" value="" style="width:64px;">' +
+                '<input type="number" id="gao_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:64px;">' +
+                '</div>' +
+                '<span class="sub" id="gao_red_grid_sub">0</span></div>';
+
+            html += '<div class="total-bar">' +
+                '<div class="t-item"><span class="label">' + UI_TEXT.recLabel + '</span><span class="value rec" id="gaoRec">0</span></div>' +
+                '<div class="t-item"><span class="label">' + UI_TEXT.totalLabel + '</span><span class="value" id="gaoTotal">0</span></div>' +
+                '</div>';
+            html +=
+                '<div class="confidence-bar"><span>' + UI_TEXT.confidenceLabel +
+                '</span><div class="bar-track"><div class="bar-fill" id="gaoConfidenceFill" style="width:85%"></div></div><span class="label" id="gaoConfidenceLabel">85%</span></div>';
+            html +=
+            '<div class="reset-row"><button class="btn-reset" id="gaoReset">' + UI_TEXT.resetLabel + '</button></div>';
+            body.innerHTML = html;
 
             var toggle = document.getElementById('gaoCollapseToggle');
             var collapsedRows = document.getElementById('gaoCollapsedRows');
             if (toggle) {
                 toggle.onclick = function() {
                     var isOpen = collapsedRows.classList.toggle('open');
-                    toggle.textContent = isOpen ? '收起更多格数 ▲' : '展开更多格数 ▼';
+                    toggle.textContent = isOpen ? UI_TEXT.collapseMore : UI_TEXT.expandMore;
                 };
             }
 
             function calcGao() {
-                var total = 0,
-                    inputCount = 0;
+                var total = 0;
+                var inputCount = 0;
                 gridOptions.forEach(function(g) {
                     var inp = document.getElementById('gao_grid_' + g);
                     if (inp) {
@@ -2059,8 +1853,8 @@
                 document.getElementById('gao_orange_sub').textContent = fmt(orange);
                 total += orange;
                 var redPieceCnt = parseFloat(document.getElementById('gao_red_piece_cnt').value) || 0;
-                var redPiecePrice2 = parseFloat(document.getElementById('gao_red_piece_cnt').dataset.price) ||
-                    getRedPiecePrice(map);
+                var redPiecePrice2 = parseFloat(document.getElementById('gao_red_piece_cnt').dataset.price) || getRedPiecePrice(
+                    map);
                 var redPieceSub = redPieceCnt * redPiecePrice2;
                 document.getElementById('gao_red_piece_sub').textContent = fmt(redPieceSub);
                 total += redPieceSub;
@@ -2071,23 +1865,20 @@
                 var redGridSub = gridTotal * redGridPrice2;
                 document.getElementById('gao_red_grid_sub').textContent = fmt(redGridSub);
                 total += redGridSub;
+
                 document.getElementById('gaoTotal').textContent = fmt(total);
                 var disc = dynamicRecDiscount(total);
                 var rec = total * disc;
                 if (currentMode === 'aggressive') rec = total * 0.95;
-                if (currentMode === 'conservative') rec = total * 0.75;
                 document.getElementById('gaoRec').textContent = fmt(rec);
 
-                var conf = 0.90;
-                if (inputCount > 0) {
-                    conf = 0.88 + Math.min(0.08, inputCount * 0.012);
-                    conf = Math.max(0.70, Math.min(0.96, conf));
-                }
+                var conf = 0.82 + Math.min(0.12, inputCount * 0.02);
+                conf = Math.max(0.65, Math.min(0.95, conf));
                 var fill = document.getElementById('gaoConfidenceFill');
                 var label = document.getElementById('gaoConfidenceLabel');
                 if (fill) {
                     fill.style.width = (conf * 100) + '%';
-                    fill.style.background = conf > 0.85 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.70 ?
+                    fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
                         'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
                 }
                 if (label) label.textContent = Math.round(conf * 100) + '%';
@@ -2095,16 +1886,20 @@
                 updateQuickActions(rec, total, 0, high);
             }
 
-            gridOptions.forEach(function(g) { var inp = document.getElementById('gao_grid_' + g); if (inp) inp
-                    .addEventListener('input', calcGao); });
+            gridOptions.forEach(function(g) {
+                var inp = document.getElementById('gao_grid_' + g);
+                if (inp) inp.addEventListener('input', calcGao);
+            });
             document.getElementById('gao_purple').addEventListener('input', calcGao);
             document.getElementById('gao_orange').addEventListener('input', calcGao);
             document.getElementById('gao_red_piece_cnt').addEventListener('input', calcGao);
             document.getElementById('gao_red_grid_avg').addEventListener('input', calcGao);
             document.getElementById('gao_red_grid_cnt').addEventListener('input', calcGao);
             document.getElementById('gaoReset').onclick = function() {
-                gridOptions.forEach(function(g) { var inp = document.getElementById('gao_grid_' + g); if (inp) inp
-                        .value = ''; });
+                gridOptions.forEach(function(g) {
+                    var inp = document.getElementById('gao_grid_' + g);
+                    if (inp) inp.value = '';
+                });
                 document.getElementById('gao_purple').value = '';
                 document.getElementById('gao_orange').value = '';
                 document.getElementById('gao_red_piece_cnt').value = '';
@@ -2120,33 +1915,45 @@
             var el = document.getElementById('page-su');
             var map = getMap();
             var colorKeys = ['green', 'blue', 'purple', 'orange', 'red'];
-            var colorLabels = ['绿色', '蓝色', '紫色', '橙色', '红色'];
+            var colorLabels = [UI_TEXT.colorGreen, UI_TEXT.colorBlue, UI_TEXT.colorPurple, UI_TEXT.colorOrange, UI_TEXT
+                .colorRed
+            ];
             var colorDots = ['green', 'blue', 'purple', 'orange', 'red'];
-            el.innerHTML = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#a66be0,#7a3fbf);">苏</div><div><div class="name">苏琦 · 颜色件数估值（加权精准）</div><div class="role">推荐道具：紫件数观光棒，橙件数观光棒，红格怀表，四件放大镜，全藏放大镜<span class="tip2">用红品件数估算误差较大，建议使用红格道具，用格数算。</span></div></div></div></div><div class="sec-body" id="suBody"></div></div>';
+            el.innerHTML =
+                '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#a66be0,#7a3fbf);">苏</div><div><div class="name">' +
+                UI_TEXT.suTitle + '</div><div class="role">' + UI_TEXT.suRole +
+                '<span class="tip2">' + UI_TEXT.suTip + '</span></div></div></div></div><div class="sec-body" id="suBody"></div></div>';
             var body = document.getElementById('suBody');
             var html = '';
             colorKeys.forEach(function(key, idx) {
                 var price = (key === 'red') ? getRedPiecePrice(map) : getColorPiecePrice(key, map);
-                html += '<div class="row"><span class="lbl"><span class="dot ' + colorDots[idx] +
-                    '"></span>' + colorLabels[idx] + '（件数）</span><div class="input-wrap"><input type="number" id="su_' +
-                    key + '" min="0" step="1" value="" data-price="' + price +
-                    '"></div><span class="sub-value" id="su_' + key + '_sub">0</span></div>';
+                html += '<div class="row"><span class="lbl"><span class="dot ' + colorDots[idx] + '"></span>' +
+                    colorLabels[idx] + '（件数）</span>' +
+                    '<div class="qty"><input type="number" id="su_' + key + '" min="0" step="1" value="" data-price="' +
+                    price + '"></div>' +
+                    '<span class="sub" id="su_' + key + '_sub">0</span></div>';
             });
-            html += '<div class="row"><span class="lbl"><span class="dot red"></span>红色（格数）</span><div class="input-wrap" style="flex:2; gap:3px;"><input type="number" id="su_red_grid_avg" min="0" step="0.1" placeholder="均格数" value="" style="width:56px;"><input type="number" id="su_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:56px;"></div><span class="sub-value" id="su_red_grid_sub">0</span></div>';
-            html += '<div class="total-bar"><div class="t-item"><span class="label">建议出价</span><span class="value rec" id="suRec">0</span></div><div class="t-item"><span class="label">仓库预估</span><span class="value" id="suTotal">0</span></div></div>';
-            html += '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="suConfidenceFill" style="width:90%"></div></div><span class="label" id="suConfidenceLabel">90%</span></div>';
-            html += '<div class="reset-row"><button class="btn-reset" id="suReset">重置数据</button></div>';
+            html += '<div class="row"><span class="lbl"><span class="dot red"></span>' + UI_TEXT.colorRed + '（格数）</span>' +
+                '<div class="rg-fields">' +
+                '<input type="number" id="su_red_grid_avg" min="0" step="0.1" placeholder="均格数" value="" style="width:64px;">' +
+                '<input type="number" id="su_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:64px;">' +
+                '</div>' +
+                '<span class="sub" id="su_red_grid_sub">0</span></div>';
+
+            html += '<div class="total-bar">' +
+                '<div class="t-item"><span class="label">' + UI_TEXT.recLabel + '</span><span class="value rec" id="suRec">0</span></div>' +
+                '<div class="t-item"><span class="label">' + UI_TEXT.totalLabel + '</span><span class="value" id="suTotal">0</span></div>' +
+                '</div>';
+            html +=
+                '<div class="confidence-bar"><span>' + UI_TEXT.confidenceLabel +
+                '</span><div class="bar-track"><div class="bar-fill" id="suConfidenceFill" style="width:85%"></div></div><span class="label" id="suConfidenceLabel">85%</span></div>';
+            html +=
+            '<div class="reset-row"><button class="btn-reset" id="suReset">' + UI_TEXT.resetLabel + '</button></div>';
             body.innerHTML = html;
 
-            colorKeys.forEach(function(key) {
-                addInlineAdjustButtons('su_' + key, [-1, 1]);
-            });
-            addInlineAdjustButtons('su_red_grid_avg', [-1, 1]);
-            addInlineAdjustButtons('su_red_grid_cnt', [-1, 1]);
-
             function calcSu() {
-                var total = 0,
-                    inputCount = 0;
+                var total = 0;
+                var inputCount = 0;
                 colorKeys.forEach(function(key) {
                     var inp = document.getElementById('su_' + key);
                     var val = parseFloat(inp.value) || 0;
@@ -2167,19 +1974,14 @@
                 var disc = dynamicRecDiscount(total);
                 var rec = total * disc;
                 if (currentMode === 'aggressive') rec = total * 0.95;
-                if (currentMode === 'conservative') rec = total * 0.75;
                 document.getElementById('suRec').textContent = fmt(rec);
-
-                var conf = 0.90;
-                if (inputCount > 0) {
-                    conf = 0.87 + Math.min(0.09, inputCount * 0.015);
-                    conf = Math.max(0.68, Math.min(0.96, conf));
-                }
+                var conf = 0.80 + Math.min(0.15, inputCount * 0.025);
+                conf = Math.max(0.60, Math.min(0.95, conf));
                 var fill = document.getElementById('suConfidenceFill');
                 var label = document.getElementById('suConfidenceLabel');
                 if (fill) {
                     fill.style.width = (conf * 100) + '%';
-                    fill.style.background = conf > 0.85 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.70 ?
+                    fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
                         'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
                 }
                 if (label) label.textContent = Math.round(conf * 100) + '%';
@@ -2187,8 +1989,9 @@
                 updateQuickActions(rec, total, 0, high);
             }
 
-            colorKeys.forEach(function(key) { document.getElementById('su_' + key).addEventListener('input',
-                calcSu); });
+            colorKeys.forEach(function(key) {
+                document.getElementById('su_' + key).addEventListener('input', calcSu);
+            });
             document.getElementById('su_red_grid_avg').addEventListener('input', calcSu);
             document.getElementById('su_red_grid_cnt').addEventListener('input', calcSu);
             document.getElementById('suReset').onclick = function() {
@@ -2206,25 +2009,19 @@
             var map = getMap();
             var grids = map.gridOptions || [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
             var gridSet = new Set(grids);
-            el.innerHTML = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4ec97a,#2a9a5a);">安</div><div><div class="name">安可 · 红品均格反查（精准匹配）</div><div class="role">第一回合用红格道具，每回合看到轮廊后把格数输进去缩小范围。</div></div></div></div><div class="sec-body" id="anBody"></div></div>';
+            el.innerHTML =
+                '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4ec97a,#2a9a5a);">安</div><div><div class="name">' +
+                UI_TEXT.anTitle + '</div><div class="role">' + UI_TEXT.anRole + '</div></div></div></div><div class="sec-body" id="anBody"></div></div>';
             var body = document.getElementById('anBody');
             body.innerHTML =
-                '<div class="row"><span class="lbl">平均格数</span><div class="input-wrap"><input type="number" id="anAvg" step="0.1" min="1" max="16" placeholder="如 3.5"></div></div>' +
-                '<div class="row"><span class="lbl">红品数量</span><div class="input-wrap"><input type="number" id="anCount" min="1" max="50" placeholder="可选"></div></div>' +
-                '<div class="row"><span class="lbl">已知格数</span><div class="input-wrap" style="flex:2;"><input type="text" id="anKnown" placeholder="用逗号分隔，如 4,6,8" style="width:100%;padding:4px 6px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:6px;color:var(--text-primary);outline:none;"></div></div>' +
-                '<div class="row" style="border-top:1px solid rgba(42,58,90,0.10); padding-top:6px;"><button class="btn-gold" id="anBtn" style="padding:4px 20px;font-size:13px;min-height:30px;">推算</button></div>' +
-                '<div class="rev-result" id="anResult"></div>' +
-                '<div class="reset-row"><button class="btn-reset" id="anReset">重置数据</button></div>';
-
-            addInlineAdjustButtons('anAvg', [-1, 1]);
-            addInlineAdjustButtons('anCount', [-1, 1]);
+                '<div class="rev-input"><div class="field"><label>平均格数</label><input type="number" id="anAvg" step="0.1" min="1" max="16" placeholder="如 3.5"></div><div class="field"><label>红品数量（可选）</label><input type="number" id="anCount" min="1" max="50" placeholder="不限"></div><button class="btn-gold" id="anBtn">推算</button></div><div class="known-box"><label>已知格数（选填，用逗号分隔）</label><input type="text" id="anKnown" placeholder="如 4,6,8" style="width:100%;padding:7px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);outline:none;"></div><div class="rev-result" id="anResult"></div><div class="reset-row"><button class="btn-reset" id="anReset">重置数据</button></div>';
 
             document.getElementById('anBtn').onclick = function() {
                 var avg = parseFloat(document.getElementById('anAvg').value);
                 var count = parseInt(document.getElementById('anCount').value) || 0;
                 var knownStr = document.getElementById('anKnown').value.trim();
-                var known = knownStr ? knownStr.split(',').map(function(s) { return parseInt(s.trim()); })
-                    .filter(function(n) { return !isNaN(n) && n > 0; }) : [];
+                var known = knownStr ? knownStr.split(',').map(function(s) { return parseInt(s.trim()); }).filter(
+                    function(n) { return !isNaN(n) && n > 0; }) : [];
                 var result = document.getElementById('anResult');
                 if (isNaN(avg) || avg < 1) { result.innerHTML = '<div class="empty">请输入有效的平均格数</div>';
                     return; }
@@ -2233,8 +2030,7 @@
                 var minN = count > 0 ? count : 1;
                 for (var n = minN; n <= maxN; n++) {
                     var knownOk = true;
-                    for (var ki = 0; ki < known.length; ki++) { if (!gridSet.has(known[ki])) { knownOk = false;
-                            break; } }
+                    for (var ki = 0; ki < known.length; ki++) { if (!gridSet.has(known[ki])) { knownOk = false; break; } }
                     if (!knownOk) continue;
                     var totalGrids = Math.round(avg * n);
                     var combosForN = [];
@@ -2282,18 +2078,16 @@
                     var valueLabel = '预估价值：' + fmt(estValue);
                     if (minValue > 0) valueLabel = '最低价值：' + fmt(minValue) + ' | 预估价值：' + fmt(estValue);
                     html += '<div class="rev-group"><div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')"><span class="g-title">' +
-                        item.n + ' 个红品（' + valueLabel + '）</span><span class="g-meta">总格数 ' + item.total +
-                        ' | 共 ' + (item.combos ? item.combos.length : '多种') +
-                        ' 种组合 <span class="arrow">▶</span></span></div><div class="g-body">';
+                        item.n + ' 个红品（' + valueLabel + '）</span><span class="g-meta">总格数 ' + item.total + ' | 共 ' + (item
+                        .combos ? item.combos.length : '多种') + ' 种组合 <span class="arrow">▶</span></span></div><div class="g-body">';
                     if (item.approx || !item.combos || item.combos.length === 0) {
                         html +=
                             '<span style="color:var(--text-secondary);font-size:12px;">组合较多，请减少红品数量或增加已知格数限制</span>';
                     } else {
                         var show = item.combos.slice(0, maxShow);
-                        show.forEach(function(c) { html += '<span class="combo">' + c.join(' + ') +
-                            '</span>'; });
-                        if (item.combos.length > maxShow) html += '<span class="more-tag">…共 ' + item
-                            .combos.length + ' 种</span>';
+                        show.forEach(function(c) { html += '<span class="combo">' + c.join(' + ') + '</span>'; });
+                        if (item.combos.length > maxShow) html += '<span class="more-tag">…共 ' + item.combos.length +
+                            ' 种</span>';
                     }
                     html += '</div></div>';
                 });
@@ -2321,8 +2115,12 @@
             if (fn[currentTab]) fn[currentTab]();
         }
 
-        setTimeout(renderMainApp, 200);
-        console.log('✅ 迪城修正版已加载 — 动态红品价格（格数少单价高）+ 置信度90%');
+        // 启动
+        initAuthUI();
+        setTimeout(renderMainApp, 300);
+
+        console.log('✅ 迪城最终版已加载 — 经典/激烈模式，车零件/古董为减项，迪城数据完整保留');
+        console.log('💡 车零件和古董为减项（从总价中扣除），点击 +1/+2/+3 快速填入对应金额');
     </script>
 </body>
 </html>
