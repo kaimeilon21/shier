@@ -3,128 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>俱乐大玩家 · 迪城修正版（带自动学习校准 + 车电池/古董）</title>
+    <title>俱乐大玩家 · 迪城修正版（最终版）</title>
     <style>
-        /* 样式与之前完全相同，此处省略以节省篇幅，但保留全部样式 */
-        /* 实际使用时请复制完整样式（与之前版本一致） */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        /* ===== 样式与之前完全相同 ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         :root {
-            --bg-page: #0a0e1a;
-            --bg-card: #111827;
-            --bg-card2: #1a2332;
-            --bg-input: #0d1422;
-            --border-color: #2a3a5a;
-            --text-primary: #e8eef8;
-            --text-secondary: #8aa0c8;
-            --accent: #e8c468;
-            --accent2: #f5dd9a;
-            --shadow: rgba(0,0,0,0.5);
-            --radius: 14px;
-            --transition: 0.2s ease;
-            --nav-height: 52px;
+            --bg-page: #0a0e1a; --bg-card: #111827; --bg-card2: #1a2332; --bg-input: #0d1422;
+            --border-color: #2a3a5a; --text-primary: #e8eef8; --text-secondary: #8aa0c8;
+            --accent: #e8c468; --accent2: #f5dd9a; --shadow: rgba(0,0,0,0.5);
+            --radius: 14px; --transition: 0.2s ease; --nav-height: 52px;
         }
-        body {
-            background: var(--bg-page);
-            color: var(--text-primary);
-            font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
-            min-height: 100vh;
-            font-size: 14px;
-            line-height: 1.6;
-            padding-bottom: 40px;
-        }
+        body { background: var(--bg-page); color: var(--text-primary); font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; min-height: 100vh; font-size: 14px; line-height: 1.6; padding-bottom: 40px; }
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: var(--bg-page); }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
-        #authOverlay {
-            position: fixed;
-            inset: 0;
-            z-index: 999999;
-            background: var(--bg-page);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            transition: opacity 0.4s ease;
-        }
+        #authOverlay { position: fixed; inset: 0; z-index: 999999; background: var(--bg-page); display: flex; align-items: center; justify-content: center; padding: 20px; transition: opacity 0.4s ease; }
         #authOverlay.hidden { opacity: 0; pointer-events: none; }
-        .auth-box {
-            width: 420px;
-            max-width: 100%;
-            background: var(--bg-card);
-            border: 1px solid rgba(232,196,104,0.12);
-            border-radius: var(--radius);
-            padding: 34px 28px 24px;
-            text-align: center;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-        }
+        .auth-box { width: 420px; max-width: 100%; background: var(--bg-card); border: 1px solid rgba(232,196,104,0.12); border-radius: var(--radius); padding: 34px 28px 24px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.6); }
         .auth-box .auth-icon { font-size: 44px; display: block; margin-bottom: 2px; }
-        .auth-box .auth-title {
-            font-size: 22px;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent2), var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin-bottom: 2px;
-        }
-        .auth-box .auth-badge {
-            display: inline-block;
-            background: linear-gradient(135deg, #ffd700, #f5a623);
-            color: #0b1526;
-            font-weight: 800;
-            padding: 3px 20px;
-            border-radius: 30px;
-            font-size: 13px;
-            box-shadow: 0 0 30px rgba(255,215,0,0.15);
-            border: 1px solid rgba(255,215,0,0.15);
-            margin: 4px 0 12px;
-        }
-        .auth-box .auth-sub {
-            color: var(--text-secondary);
-            font-size: 13px;
-            margin-bottom: 10px;
-            line-height: 1.7;
-        }
+        .auth-box .auth-title { font-size: 22px; font-weight: 800; background: linear-gradient(135deg, var(--accent2), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 2px; }
+        .auth-box .auth-badge { display: inline-block; background: linear-gradient(135deg, #ffd700, #f5a623); color: #0b1526; font-weight: 800; padding: 3px 20px; border-radius: 30px; font-size: 13px; box-shadow: 0 0 30px rgba(255,215,0,0.15); border: 1px solid rgba(255,215,0,0.15); margin: 4px 0 12px; }
+        .auth-box .auth-sub { color: var(--text-secondary); font-size: 13px; margin-bottom: 10px; line-height: 1.7; }
         .auth-box .auth-input-wrap { position: relative; margin-bottom: 12px; }
-        .auth-box .auth-input-wrap input {
-            width: 100%;
-            padding: 13px 18px;
-            background: var(--bg-input);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 17px;
-            font-weight: 600;
-            text-align: center;
-            letter-spacing: 4px;
-            font-family: 'SF Mono', 'Menlo', monospace;
-            outline: none;
-            transition: border-color var(--transition), box-shadow var(--transition);
-        }
-        .auth-box .auth-input-wrap input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(232,196,104,0.06);
-        }
-        .auth-box .auth-btn {
-            width: 100%;
-            padding: 13px 0;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 700;
-            color: #0b1526;
-            background: linear-gradient(135deg, var(--accent), #c9a23e);
-            cursor: pointer;
-            transition: transform 0.15s, box-shadow 0.3s;
-            box-shadow: 0 4px 20px rgba(232,196,104,0.15);
-            letter-spacing: 0.5px;
-        }
+        .auth-box .auth-input-wrap input { width: 100%; padding: 13px 18px; background: var(--bg-input); border: 2px solid var(--border-color); border-radius: 12px; color: var(--text-primary); font-size: 17px; font-weight: 600; text-align: center; letter-spacing: 4px; font-family: 'SF Mono', 'Menlo', monospace; outline: none; transition: border-color var(--transition), box-shadow var(--transition); }
+        .auth-box .auth-input-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px rgba(232,196,104,0.06); }
+        .auth-box .auth-btn { width: 100%; padding: 13px 0; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; color: #0b1526; background: linear-gradient(135deg, var(--accent), #c9a23e); cursor: pointer; transition: transform 0.15s, box-shadow 0.3s; box-shadow: 0 4px 20px rgba(232,196,104,0.15); letter-spacing: 0.5px; }
         .auth-box .auth-btn:active { transform: scale(0.97); }
         .auth-box .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
         .auth-box .auth-error { color: #f87171; font-size: 13px; min-height: 22px; margin-top: 4px; }
@@ -132,106 +36,18 @@
         #appWrap { max-width: 820px; margin: 0 auto; padding: 0 12px 20px; display: none; }
         #appWrap.show { display: block; }
 
-        .top-nav {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: var(--bg-page);
-            border-bottom: 1px solid rgba(42,58,90,0.25);
-            padding: 0 10px;
-            height: var(--nav-height);
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            box-shadow: 0 2px 20px rgba(0,0,0,0.3);
-            flex-wrap: nowrap;
-            overflow-x: auto;
-        }
+        .top-nav { position: sticky; top: 0; z-index: 1000; background: var(--bg-page); border-bottom: 1px solid rgba(42,58,90,0.25); padding: 0 10px; height: var(--nav-height); display: flex; align-items: center; gap: 6px; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); box-shadow: 0 2px 20px rgba(0,0,0,0.3); flex-wrap: nowrap; overflow-x: auto; }
         .top-nav::-webkit-scrollbar { display: none; }
-        .top-nav .nav-group {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex-shrink: 0;
-            padding: 0 6px;
-            border-right: 1px solid rgba(42,58,90,0.15);
-        }
+        .top-nav .nav-group { display: flex; align-items: center; gap: 4px; flex-shrink: 0; padding: 0 6px; border-right: 1px solid rgba(42,58,90,0.15); }
         .top-nav .nav-group:last-child { border-right: none; }
-        .top-nav .nav-group .label {
-            font-size: 10px;
-            color: var(--text-secondary);
-            opacity: 0.5;
-            padding-right: 2px;
-            font-weight: 600;
-            display: none;
-        }
-        .top-nav .nav-group button[data-tab] {
-            padding: 6px 16px;
-            font-size: 15px;
-            font-weight: 700;
-            min-height: 36px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            cursor: pointer;
-            border-radius: 8px;
-            white-space: nowrap;
-            font-family: inherit;
-            transition: all 0.15s;
-            line-height: 1.4;
-        }
+        .top-nav .nav-group .label { font-size: 10px; color: var(--text-secondary); opacity: 0.5; padding-right: 2px; font-weight: 600; display: none; }
+        .top-nav .nav-group button[data-tab] { padding: 6px 16px; font-size: 15px; font-weight: 700; min-height: 36px; border: none; background: transparent; color: var(--text-secondary); cursor: pointer; border-radius: 8px; white-space: nowrap; font-family: inherit; transition: all 0.15s; line-height: 1.4; }
         .top-nav .nav-group button[data-tab].active { color: var(--accent2); background: rgba(232,196,104,0.06); }
-        .top-nav .nav-group button[data-tab].active::after {
-            content: '';
-            display: block;
-            height: 2px;
-            background: var(--accent);
-            border-radius: 2px;
-            margin-top: 2px;
-            width: 60%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .top-nav .nav-group button.mode-btn {
-            padding: 5px 14px;
-            font-size: 13px;
-            font-weight: 700;
-            min-height: 32px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            cursor: pointer;
-            border-radius: 6px;
-            white-space: nowrap;
-            font-family: inherit;
-            transition: all 0.15s;
-            line-height: 1.4;
-        }
-        .top-nav .nav-group button.mode-btn.active {
-            background: rgba(232,196,104,0.12);
-            border: 1px solid rgba(232,196,104,0.15);
-            color: var(--accent2);
-        }
-        .top-nav .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex-shrink: 0;
-            padding-left: 6px;
-            border-left: 1px solid rgba(42,58,90,0.15);
-            margin-left: auto;
-        }
-        .top-nav .nav-right .vip-tag {
-            font-size: 9px;
-            color: var(--accent2);
-            border: 1px solid rgba(232,196,104,0.2);
-            padding: 1px 8px;
-            border-radius: 12px;
-            font-weight: 700;
-            white-space: nowrap;
-        }
+        .top-nav .nav-group button[data-tab].active::after { content: ''; display: block; height: 2px; background: var(--accent); border-radius: 2px; margin-top: 2px; width: 60%; margin-left: auto; margin-right: auto; }
+        .top-nav .nav-group button.mode-btn { padding: 5px 14px; font-size: 13px; font-weight: 700; min-height: 32px; border: none; background: transparent; color: var(--text-secondary); cursor: pointer; border-radius: 6px; white-space: nowrap; font-family: inherit; transition: all 0.15s; line-height: 1.4; }
+        .top-nav .nav-group button.mode-btn.active { background: rgba(232,196,104,0.12); border: 1px solid rgba(232,196,104,0.15); color: var(--accent2); }
+        .top-nav .nav-right { display: flex; align-items: center; gap: 4px; flex-shrink: 0; padding-left: 6px; border-left: 1px solid rgba(42,58,90,0.15); margin-left: auto; }
+        .top-nav .nav-right .vip-tag { font-size: 9px; color: var(--accent2); border: 1px solid rgba(232,196,104,0.2); padding: 1px 8px; border-radius: 12px; font-weight: 700; white-space: nowrap; }
 
         .header { padding: 10px 4px 6px; display: flex; flex-direction: column; align-items: center; text-align: center; border-bottom: 1px solid rgba(42,58,90,0.10); margin-bottom: 6px; }
         .header .main-title { font-size: 18px; font-weight: 800; color: var(--accent2); letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: center; }
@@ -330,34 +146,11 @@
         .btn-gold { padding: 6px 14px; background: linear-gradient(135deg, var(--accent), #c9a23e); color: #0b1526; border: none; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer; min-height: 34px; font-family: inherit; }
         .field label { display: block; font-size: 10px; color: var(--text-secondary); }
 
-        .collapse-toggle {
-            padding: 4px 6px;
-            text-align: center;
-            font-size: 11px;
-            color: var(--accent);
-            cursor: pointer;
-            border-top: 1px dashed rgba(42,58,90,0.12);
-        }
+        .collapse-toggle { padding: 4px 6px; text-align: center; font-size: 11px; color: var(--accent); cursor: pointer; border-top: 1px dashed rgba(42,58,90,0.12); }
         .collapse-toggle:hover { color: var(--accent2); }
 
-        /* 新增快捷按钮样式 */
-        .quick-btn {
-            padding: 2px 10px;
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            background: var(--bg-input);
-            color: var(--accent2);
-            font-size: 11px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: inherit;
-            white-space: nowrap;
-        }
-        .quick-btn:hover {
-            background: rgba(232,196,104,0.10);
-            border-color: var(--accent);
-        }
+        .quick-btn { padding: 2px 10px; border: 1px solid var(--border-color); border-radius: 6px; background: var(--bg-input); color: var(--accent2); font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.15s; font-family: inherit; white-space: nowrap; }
+        .quick-btn:hover { background: rgba(232,196,104,0.10); border-color: var(--accent); }
         .quick-btn:active { transform: scale(0.95); }
         .inline-group { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
 
@@ -732,7 +525,37 @@
             initAuthUI();
         })();
 
-        console.log('✅ 迪城修正版已启动 — 带自动学习校准 + 车电池/古董快捷');
+        console.log('✅ 迪城修正版已启动 — 带自动学习校准 + 车电池/古董快捷（含+3）');
+
+        // ============================================================
+        // ★ 文字配置（统一管理，方便修改）
+        // ============================================================
+        var UI_TEXT = {
+            huoTitle: '霍姑姑 · 颜色格数估值（加权精准 + 自动学习校准）',
+            huoRole: '推荐道具：红格怀表，巨物价值，四件放大镜，奢品扫描仪，古董扫描仪，全藏放大镜',
+            huoTip: '建议使用奢品扫描仪和古董扫描仪。如红格数过多建议用奢品扫描仪确认是否有车身，有则用车身池出价；古董价值可用古董扫描仪确认。',
+            carLabel: '🚗 车零件池',
+            antiqueLabel: '🏺 古董价值',
+            calibrateLabel: '📊 实际揭示总价值',
+            calibratePlaceholder: '输入游戏揭示值',
+            calibrateBtn: '校准',
+            resetBtn: '重置数据',
+            recLabel: '建议出价',
+            totalLabel: '仓库预估',
+            confidenceLabel: '📊 置信度',
+            carBtn1: '+1(9万)',
+            carBtn2: '+2(18万)',
+            carBtn3: '+3(30万)',
+            antiqueBtn1: '+1(9万)',
+            antiqueBtn2: '+2(18万)',
+            antiqueBtn3: '+3(30万)',
+            infoDefault: '💡 输入实际揭示值点击校准，工具将自动学习该地图的偏差系数',
+            infoLearned: '🤖 自动学习系数：{factor}（已应用）',
+            infoReset: '🔄 已清空输入，学习系数保留（{factor}）',
+            infoErrorEmpty: '⚠️ 请输入有效的实际揭示总价值',
+            infoErrorNoEst: '⚠️ 请先输入物品格数，让工具计算出估值',
+            infoCalibrated: '✅ 学习成功！系数已更新为 {factor}（自动应用于后续计算）'
+        };
 
         // ============================================================
         // ★ 核心算法 — 加权均衡算法
@@ -1003,7 +826,7 @@
         });
 
         // ============================================================
-        // ★ 渲染各角色页面（霍姑姑新增车电池/古董快捷）
+        // ★ 渲染各角色页面（霍姑姑使用 UI_TEXT 配置）
         // ============================================================
 
         // --- 霍姑姑 ---
@@ -1019,35 +842,37 @@
                 { key: 'red', label: '红色', dot: 'red', priceFn: function(){ return getRedGridAvgPrice(map); } }
             ];
             var autoFactor = getCalibrationFactor(mapKey);
-            var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4a9ae8,#2a6ab0);">霍</div><div><div class="name">霍姑姑 · 颜色格数估值（加权精准 + 自动学习校准）</div><div class="role">推荐道具：红格怀表，巨物价值，四件放大镜，奢侈扫描仪，全藏放大镜<span class="tip2">如红格数过多建议用奢侈扫描仪确认是否有车身，有则用车身池出价</span></div></div></div></div><div class="sec-body">';
+            var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4a9ae8,#2a6ab0);">霍</div><div><div class="name">' + UI_TEXT.huoTitle + '</div><div class="role">' + UI_TEXT.huoRole + '<span class="tip2">' + UI_TEXT.huoTip + '</span></div></div></div></div><div class="sec-body">';
             colors.forEach(function(col) {
                 var price = col.priceFn();
                 html += '<div class="row"><span class="lbl"><span class="dot '+col.dot+'"></span>'+col.label+'（格数）</span><div class="qty"><input type="number" id="huo_'+col.key+'" min="0" step="1" value="" data-price="'+price+'"></div><span class="sub" id="huo_'+col.key+'_sub">0</span></div>';
             });
 
-            // ---- 车零件池 + 车电池快捷 ----
-            html += '<div class="row"><span class="lbl">🚗 车零件池</span>' +
+            // ---- 车零件池（含+3） ----
+            html += '<div class="row"><span class="lbl">' + UI_TEXT.carLabel + '</span>' +
                 '<div class="qty" style="flex:1; width:auto; min-width:80px;"><input type="number" id="huoCarPool" min="0" step="1000" value="" style="width:100%;"></div>' +
                 '<span class="inline-group">' +
-                '<button class="quick-btn" id="carPlus1">+1(9万)</button>' +
-                '<button class="quick-btn" id="carPlus2">+2(18万)</button>' +
+                '<button class="quick-btn" id="carPlus1">' + UI_TEXT.carBtn1 + '</button>' +
+                '<button class="quick-btn" id="carPlus2">' + UI_TEXT.carBtn2 + '</button>' +
+                '<button class="quick-btn" id="carPlus3">' + UI_TEXT.carBtn3 + '</button>' +
                 '</span></div>';
 
-            // ---- 古董价值 + 快捷 ----
-            html += '<div class="row"><span class="lbl">🏺 古董价值</span>' +
+            // ---- 古董价值（含+3） ----
+            html += '<div class="row"><span class="lbl">' + UI_TEXT.antiqueLabel + '</span>' +
                 '<div class="qty" style="flex:1; width:auto; min-width:80px;"><input type="number" id="huoAntique" min="0" step="1000" value="" style="width:100%;"></div>' +
                 '<span class="inline-group">' +
-                '<button class="quick-btn" id="antiquePlus1">+1(2万)</button>' +
-                '<button class="quick-btn" id="antiquePlus2">+2(4万)</button>' +
+                '<button class="quick-btn" id="antiquePlus1">' + UI_TEXT.antiqueBtn1 + '</button>' +
+                '<button class="quick-btn" id="antiquePlus2">' + UI_TEXT.antiqueBtn2 + '</button>' +
+                '<button class="quick-btn" id="antiquePlus3">' + UI_TEXT.antiqueBtn3 + '</button>' +
                 '</span></div>';
 
             // ---- 校准行 ----
-            html += '<div class="row" style="border-top:1px solid rgba(42,58,90,0.15); margin-top:6px; padding-top:6px;"><span class="lbl">📊 实际揭示总价值</span><div class="qty" style="flex:1; width:auto;"><input type="number" id="huoActualTotal" min="0" step="1000" value="" placeholder="输入游戏揭示值" style="width:100%;"></div><span class="sub" id="huoCalibrateBtn" style="cursor:pointer; color:var(--accent2); font-size:12px;">校准</span></div>';
-            html += '<div id="huoCalibrateInfo" style="font-size:11px; color:var(--text-secondary); padding:2px 0; min-height:18px;">' + (autoFactor !== 1.0 ? '🤖 自动学习系数：'+autoFactor.toFixed(2)+'（已应用）' : '💡 输入实际揭示值点击校准，工具将自动学习该地图的偏差系数') + '</div>';
+            html += '<div class="row" style="border-top:1px solid rgba(42,58,90,0.15); margin-top:6px; padding-top:6px;"><span class="lbl">' + UI_TEXT.calibrateLabel + '</span><div class="qty" style="flex:1; width:auto;"><input type="number" id="huoActualTotal" min="0" step="1000" value="" placeholder="' + UI_TEXT.calibratePlaceholder + '" style="width:100%;"></div><span class="sub" id="huoCalibrateBtn" style="cursor:pointer; color:var(--accent2); font-size:12px;">' + UI_TEXT.calibrateBtn + '</span></div>';
+            html += '<div id="huoCalibrateInfo" style="font-size:11px; color:var(--text-secondary); padding:2px 0; min-height:18px;">' + (autoFactor !== 1.0 ? UI_TEXT.infoLearned.replace('{factor}', autoFactor.toFixed(2)) : UI_TEXT.infoDefault) + '</div>';
 
-            html += '<div class="total-bar"><div class="t-item"><span class="label">建议出价</span><span class="value rec" id="huoRec">0</span></div><div class="t-item"><span class="label">仓库预估</span><span class="value" id="huoTotal">0</span></div></div>';
-            html += '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:85%"></div></div><span class="label" id="huoConfidenceLabel">85%</span></div>';
-            html += '<div class="reset-row"><button class="btn-reset" id="huoReset">重置数据</button></div></div></div>';
+            html += '<div class="total-bar"><div class="t-item"><span class="label">' + UI_TEXT.recLabel + '</span><span class="value rec" id="huoRec">0</span></div><div class="t-item"><span class="label">' + UI_TEXT.totalLabel + '</span><span class="value" id="huoTotal">0</span></div></div>';
+            html += '<div class="confidence-bar"><span>' + UI_TEXT.confidenceLabel + '</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:85%"></div></div><span class="label" id="huoConfidenceLabel">85%</span></div>';
+            html += '<div class="reset-row"><button class="btn-reset" id="huoReset">' + UI_TEXT.resetBtn + '</button></div></div></div>';
             el.innerHTML = html;
 
             // ---- 计算函数 ----
@@ -1064,10 +889,8 @@
                     total += sub;
                     if (val > 0) stats.push({val:val});
                 });
-                // 车零件池
                 var carPool = parseFloat(document.getElementById('huoCarPool').value) || 0;
                 total += carPool;
-                // 古董价值
                 var antique = parseFloat(document.getElementById('huoAntique').value) || 0;
                 total += antique;
 
@@ -1105,12 +928,20 @@
                 document.getElementById('huoCarPool').value = 180000;
                 calcHuo();
             };
+            document.getElementById('carPlus3').onclick = function() {
+                document.getElementById('huoCarPool').value = 300000;
+                calcHuo();
+            };
             document.getElementById('antiquePlus1').onclick = function() {
-                document.getElementById('huoAntique').value = 20000;
+                document.getElementById('huoAntique').value = 90000;
                 calcHuo();
             };
             document.getElementById('antiquePlus2').onclick = function() {
-                document.getElementById('huoAntique').value = 40000;
+                document.getElementById('huoAntique').value = 180000;
+                calcHuo();
+            };
+            document.getElementById('antiquePlus3').onclick = function() {
+                document.getElementById('huoAntique').value = 300000;
                 calcHuo();
             };
 
@@ -1119,11 +950,11 @@
                 var actual = parseFloat(document.getElementById('huoActualTotal').value);
                 var estimated = parseFloat(document.getElementById('huoTotal').textContent.replace(/,/g,'')) || 0;
                 var info = document.getElementById('huoCalibrateInfo');
-                if (!actual || actual <= 0) { info.textContent = '⚠️ 请输入有效的实际揭示总价值'; return; }
-                if (estimated <= 0) { info.textContent = '⚠️ 请先输入物品格数，让工具计算出估值'; return; }
+                if (!actual || actual <= 0) { info.textContent = UI_TEXT.infoErrorEmpty; return; }
+                if (estimated <= 0) { info.textContent = UI_TEXT.infoErrorNoEst; return; }
                 var ratio = actual / estimated;
                 var newFactor = saveCalibrationFactor(currentMap, ratio);
-                info.textContent = '✅ 学习成功！系数已更新为 ' + newFactor.toFixed(2) + '（自动应用于后续计算）';
+                info.textContent = UI_TEXT.infoCalibrated.replace('{factor}', newFactor.toFixed(2));
                 document.getElementById('huoActualTotal').value = '';
                 calcHuo();
             };
@@ -1144,13 +975,13 @@
                 document.getElementById('huoActualTotal').value = '';
                 var info = document.getElementById('huoCalibrateInfo');
                 var f = getCalibrationFactor(currentMap);
-                info.textContent = '🔄 已清空输入，学习系数保留（' + f.toFixed(2) + '）';
+                info.textContent = UI_TEXT.infoReset.replace('{factor}', f.toFixed(2));
                 calcHuo();
             };
             calcHuo();
         }
 
-        // --- 高晋（保持不变）---
+        // --- 高晋 ---
         function renderGao() {
             var el = document.getElementById('page-gao');
             var map = getMap();
@@ -1426,8 +1257,8 @@
         }
 
         setTimeout(renderMainApp, 200);
-        console.log('✅ 迪城修正版已完全加载 — 车电池/古董快捷 + 自动学习 + 反破解');
-        console.log('💡 车电池+1/+2 和 古董+1/+2 按钮可快速填入预设值。');
+        console.log('✅ 迪城修正版最终版已加载 — 包含车电池/古董+3、文字配置化、反破解');
+        console.log('💡 所有界面文字已统一从 UI_TEXT 对象读取，方便后续修改。');
     </script>
 </body>
 </html>
