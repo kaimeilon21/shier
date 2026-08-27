@@ -539,6 +539,7 @@
             padding: 6px 8px 8px;
         }
 
+        /* ===== 调整行布局：按钮紧挨输入框 ===== */
         .row {
             display: flex;
             align-items: center;
@@ -558,6 +559,7 @@
             display: flex;
             align-items: center;
             gap: 2px;
+            flex-shrink: 0;
         }
         .row .lbl .dot {
             width: 6px;
@@ -566,21 +568,11 @@
             display: inline-block;
             flex-shrink: 0;
         }
-        .row .lbl .dot.red {
-            background: #e05555;
-        }
-        .row .lbl .dot.orange {
-            background: #e8943a;
-        }
-        .row .lbl .dot.purple {
-            background: #a66be0;
-        }
-        .row .lbl .dot.blue {
-            background: #4a9ae8;
-        }
-        .row .lbl .dot.green {
-            background: #4ec97a;
-        }
+        .row .lbl .dot.red { background: #e05555; }
+        .row .lbl .dot.orange { background: #e8943a; }
+        .row .lbl .dot.purple { background: #a66be0; }
+        .row .lbl .dot.blue { background: #4a9ae8; }
+        .row .lbl .dot.green { background: #4ec97a; }
 
         .row .qty {
             width: 48px;
@@ -611,23 +603,14 @@
             margin: 0;
         }
 
-        .row .sub {
-            flex: 1;
-            text-align: right;
-            font-weight: 700;
-            font-size: 12px;
-            color: var(--accent2);
-            font-variant-numeric: tabular-nums;
-            min-width: 36px;
-        }
-
-        /* 快速调整按钮 */
-        .btn-group {
+        /* 按钮组紧挨着输入框 */
+        .row .btn-group {
             display: flex;
             gap: 2px;
             flex-wrap: nowrap;
+            flex-shrink: 0;
         }
-        .btn-group .qbtn {
+        .row .btn-group .qbtn {
             padding: 0 5px;
             min-width: 22px;
             height: 22px;
@@ -647,34 +630,46 @@
             user-select: none;
             touch-action: manipulation;
         }
-        .btn-group .qbtn:active {
+        .row .btn-group .qbtn:active {
             transform: scale(0.92);
             background: rgba(232, 196, 104, 0.10);
             border-color: var(--accent);
             color: var(--accent2);
         }
-        .btn-group .qbtn:hover {
+        .row .btn-group .qbtn:hover {
             border-color: var(--accent);
             color: var(--accent2);
         }
-        .btn-group .qbtn.neg {
+        .row .btn-group .qbtn.neg {
             color: #f87171;
         }
-        .btn-group .qbtn.neg:hover {
+        .row .btn-group .qbtn.neg:hover {
             border-color: #f87171;
             color: #f87171;
         }
-        .btn-group .qbtn.pos {
+        .row .btn-group .qbtn.pos {
             color: #4ec97a;
         }
-        .btn-group .qbtn.pos:hover {
+        .row .btn-group .qbtn.pos:hover {
             border-color: #4ec97a;
             color: #4ec97a;
         }
-        .btn-group .qbtn.big {
+        .row .btn-group .qbtn.big {
             font-size: 9px;
             min-width: 20px;
             padding: 0 3px;
+        }
+
+        /* 计算值显示在右侧 */
+        .row .sub {
+            flex: 1;
+            text-align: right;
+            font-weight: 700;
+            font-size: 12px;
+            color: var(--accent2);
+            font-variant-numeric: tabular-nums;
+            min-width: 36px;
+            margin-left: auto;
         }
 
         .special-row {
@@ -810,14 +805,8 @@
             display: block;
         }
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .rev-group .g-body {
@@ -896,9 +885,11 @@
             flex-wrap: wrap;
         }
 
+        /* 高晋/苏琦 简单按钮组，也紧挨输入框 */
         .simple-btn-group {
             display: flex;
             gap: 2px;
+            flex-shrink: 0;
         }
         .simple-btn-group .sbtn {
             padding: 0 4px;
@@ -978,6 +969,16 @@
                 font-size: 10px;
                 min-width: 30px;
             }
+            .row .btn-group .qbtn {
+                min-width: 18px;
+                height: 18px;
+                font-size: 8px;
+                padding: 0 3px;
+            }
+            .row .btn-group .qbtn.big {
+                min-width: 16px;
+                font-size: 7px;
+            }
             .total-bar .t-item {
                 font-size: 9px;
             }
@@ -1002,16 +1003,6 @@
                 font-size: 9px;
                 padding: 3px 2px;
                 min-width: 26px;
-            }
-            .btn-group .qbtn {
-                min-width: 18px;
-                height: 18px;
-                font-size: 8px;
-                padding: 0 3px;
-            }
-            .btn-group .qbtn.big {
-                min-width: 16px;
-                font-size: 7px;
             }
             .special-row .btn-group .qbtn {
                 min-width: 24px;
@@ -1742,10 +1733,10 @@
         });
 
         // ============================================================
-        // ★ 渲染函数
+        // ★ 渲染函数（霍姑姑：按钮紧挨输入框）
         // ============================================================
 
-        // --- 霍姑姑（含 -10 -5 -1 +1 +5 +10 快速按钮） ---
+        // --- 霍姑姑（快速按钮紧挨输入框） ---
         function renderHuo() {
             var el = document.getElementById('page-huo');
             var map = getMap();
@@ -1767,11 +1758,11 @@
 
             colors.forEach(function(col) {
                 var price = col.priceFn();
-                html += '<div class="row"><span class="lbl"><span class="dot ' + col.dot + '"></span>' + col.label +
-                    '（格数）</span>' +
+                html += '<div class="row">' +
+                    '<span class="lbl"><span class="dot ' + col.dot + '"></span>' + col.label + '（格数）</span>' +
                     '<div class="qty"><input type="number" id="huo_' + col.key + '" min="0" step="1" value="" data-price="' +
                     price + '"></div>' +
-                    '<span class="sub" id="huo_' + col.key + '_sub">0</span>' +
+                    // ★ 按钮组放在输入框和计算值中间 ★
                     '<span class="btn-group">' +
                     '<button class="qbtn neg big" data-target="huo_' + col.key + '" data-delta="-10">-10</button>' +
                     '<button class="qbtn neg" data-target="huo_' + col.key + '" data-delta="-5">-5</button>' +
@@ -1779,7 +1770,9 @@
                     '<button class="qbtn pos" data-target="huo_' + col.key + '" data-delta="1">+1</button>' +
                     '<button class="qbtn pos" data-target="huo_' + col.key + '" data-delta="5">+5</button>' +
                     '<button class="qbtn pos big" data-target="huo_' + col.key + '" data-delta="10">+10</button>' +
-                    '</span></div>';
+                    '</span>' +
+                    '<span class="sub" id="huo_' + col.key + '_sub">0</span>' +
+                    '</div>';
             });
 
             // 车零件池
@@ -1865,7 +1858,7 @@
                 updateQuickActions(rec, finalTotal, carPool, high);
             }
 
-            // ---- 快速调整按钮（使用事件委托，更高效） ----
+            // ---- 快速调整按钮 ----
             el.querySelectorAll('.qbtn[data-target]').forEach(function(btn) {
                 btn.onclick = function() {
                     var targetId = this.dataset.target;
@@ -1925,7 +1918,7 @@
             calcHuo();
         }
 
-        // --- 高晋（含 +1 -1 简单按钮） ---
+        // --- 高晋（按钮紧挨输入框） ---
         function renderGao() {
             var el = document.getElementById('page-gao');
             var map = getMap();
@@ -1942,27 +1935,31 @@
 
             visibleGrids.forEach(function(g) {
                 var price = getRedGridPrice(g, map);
-                html += '<div class="row"><span class="lbl">' + g + UI_TEXT.gridLabel + '</span>' +
+                html += '<div class="row">' +
+                    '<span class="lbl">' + g + UI_TEXT.gridLabel + '</span>' +
                     '<div class="qty"><input type="number" id="gao_grid_' + g + '" min="0" step="1" value="" data-price="' +
                     price + '"></div>' +
-                    '<span class="sub" id="gao_grid_' + g + '_sub">0</span>' +
                     '<span class="simple-btn-group">' +
                     '<button class="sbtn neg" data-target="gao_grid_' + g + '" data-delta="-1">-1</button>' +
                     '<button class="sbtn pos" data-target="gao_grid_' + g + '" data-delta="1">+1</button>' +
-                    '</span></div>';
+                    '</span>' +
+                    '<span class="sub" id="gao_grid_' + g + '_sub">0</span>' +
+                    '</div>';
             });
 
             html += '<div class="collapsed-rows" id="gaoCollapsedRows">';
             hiddenGrids.forEach(function(g) {
                 var price = getRedGridPrice(g, map);
-                html += '<div class="row"><span class="lbl">' + g + UI_TEXT.gridLabel + '</span>' +
+                html += '<div class="row">' +
+                    '<span class="lbl">' + g + UI_TEXT.gridLabel + '</span>' +
                     '<div class="qty"><input type="number" id="gao_grid_' + g + '" min="0" step="1" value="" data-price="' +
                     price + '"></div>' +
-                    '<span class="sub" id="gao_grid_' + g + '_sub">0</span>' +
                     '<span class="simple-btn-group">' +
                     '<button class="sbtn neg" data-target="gao_grid_' + g + '" data-delta="-1">-1</button>' +
                     '<button class="sbtn pos" data-target="gao_grid_' + g + '" data-delta="1">+1</button>' +
-                    '</span></div>';
+                    '</span>' +
+                    '<span class="sub" id="gao_grid_' + g + '_sub">0</span>' +
+                    '</div>';
             });
             html += '</div>';
 
@@ -1978,26 +1975,30 @@
                 '</span><div class="qty"><input type="number" id="gao_orange" min="0" step="100" value=""></div><span class="sub" id="gao_orange_sub">0</span></div>';
 
             var redPiecePrice = getRedPiecePrice(map);
-            html += '<div class="row"><span class="lbl">' + UI_TEXT.redPieceLabel + '</span>' +
+            html += '<div class="row">' +
+                '<span class="lbl">' + UI_TEXT.redPieceLabel + '</span>' +
                 '<div class="qty"><input type="number" id="gao_red_piece_cnt" min="0" step="1" value="" data-price="' +
                 redPiecePrice + '"></div>' +
-                '<span class="sub" id="gao_red_piece_sub">0</span>' +
                 '<span class="simple-btn-group">' +
                 '<button class="sbtn neg" data-target="gao_red_piece_cnt" data-delta="-1">-1</button>' +
                 '<button class="sbtn pos" data-target="gao_red_piece_cnt" data-delta="1">+1</button>' +
-                '</span></div>';
+                '</span>' +
+                '<span class="sub" id="gao_red_piece_sub">0</span>' +
+                '</div>';
 
             var redGridPrice = getRedGridAvgPrice(map);
-            html += '<div class="row"><span class="lbl">' + UI_TEXT.redGridLabel + '</span>' +
+            html += '<div class="row">' +
+                '<span class="lbl">' + UI_TEXT.redGridLabel + '</span>' +
                 '<div class="rg-fields" style="display:flex;gap:3px;flex:1;">' +
                 '<input type="number" id="gao_red_grid_avg" min="0" step="0.1" placeholder="均格" value="" style="width:50px;">' +
                 '<input type="number" id="gao_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:50px;">' +
                 '</div>' +
-                '<span class="sub" id="gao_red_grid_sub">0</span>' +
                 '<span class="simple-btn-group">' +
                 '<button class="sbtn neg" data-target="gao_red_grid_cnt" data-delta="-1">-1</button>' +
                 '<button class="sbtn pos" data-target="gao_red_grid_cnt" data-delta="1">+1</button>' +
-                '</span></div>';
+                '</span>' +
+                '<span class="sub" id="gao_red_grid_sub">0</span>' +
+                '</div>';
 
             html += '<div class="total-bar">' +
                 '<div class="t-item"><span class="label">' + UI_TEXT.recLabel + '</span><span class="value rec" id="gaoRec">0</span></div>' +
@@ -2113,7 +2114,7 @@
             calcGao();
         }
 
-        // --- 苏琦（含 +1 -1 简单按钮） ---
+        // --- 苏琦（按钮紧挨输入框） ---
         function renderSu() {
             var el = document.getElementById('page-su');
             var map = getMap();
@@ -2130,27 +2131,31 @@
             var html = '';
             colorKeys.forEach(function(key, idx) {
                 var price = (key === 'red') ? getRedPiecePrice(map) : getColorPiecePrice(key, map);
-                html += '<div class="row"><span class="lbl"><span class="dot ' + colorDots[idx] + '"></span>' +
+                html += '<div class="row">' +
+                    '<span class="lbl"><span class="dot ' + colorDots[idx] + '"></span>' +
                     colorLabels[idx] + '（件数）</span>' +
                     '<div class="qty"><input type="number" id="su_' + key + '" min="0" step="1" value="" data-price="' +
                     price + '"></div>' +
-                    '<span class="sub" id="su_' + key + '_sub">0</span>' +
                     '<span class="simple-btn-group">' +
                     '<button class="sbtn neg" data-target="su_' + key + '" data-delta="-1">-1</button>' +
                     '<button class="sbtn pos" data-target="su_' + key + '" data-delta="1">+1</button>' +
-                    '</span></div>';
+                    '</span>' +
+                    '<span class="sub" id="su_' + key + '_sub">0</span>' +
+                    '</div>';
             });
 
-            html += '<div class="row"><span class="lbl"><span class="dot red"></span>' + UI_TEXT.colorRed + '（格数）</span>' +
+            html += '<div class="row">' +
+                '<span class="lbl"><span class="dot red"></span>' + UI_TEXT.colorRed + '（格数）</span>' +
                 '<div class="rg-fields" style="display:flex;gap:3px;flex:1;">' +
                 '<input type="number" id="su_red_grid_avg" min="0" step="0.1" placeholder="均格" value="" style="width:50px;">' +
                 '<input type="number" id="su_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:50px;">' +
                 '</div>' +
-                '<span class="sub" id="su_red_grid_sub">0</span>' +
                 '<span class="simple-btn-group">' +
                 '<button class="sbtn neg" data-target="su_red_grid_cnt" data-delta="-1">-1</button>' +
                 '<button class="sbtn pos" data-target="su_red_grid_cnt" data-delta="1">+1</button>' +
-                '</span></div>';
+                '</span>' +
+                '<span class="sub" id="su_red_grid_sub">0</span>' +
+                '</div>';
 
             html += '<div class="total-bar">' +
                 '<div class="t-item"><span class="label">' + UI_TEXT.recLabel + '</span><span class="value rec" id="suRec">0</span></div>' +
@@ -2229,7 +2234,7 @@
             calcSu();
         }
 
-        // --- 安可（含 +1 -1 简单按钮） ---
+        // --- 安可（无 +/- 按钮） ---
         function renderAn() {
             var el = document.getElementById('page-an');
             var map = getMap();
@@ -2352,8 +2357,8 @@
         initAuthUI();
         setTimeout(renderMainApp, 300);
 
-        console.log('✅ 俱乐大玩家 · 超级AI 已加载');
-        console.log('💡 霍姑姑支持 -10/-5/-1/+1/+5/+10 一键调整');
+        console.log('✅ 俱乐大玩家 · 超级AI 已加载（按钮紧挨输入框）');
+        console.log('💡 霍姑姑支持 -10/-5/-1/+1/+5/+10 快速调整，按钮在输入框右侧');
     </script>
 </body>
 </html>
