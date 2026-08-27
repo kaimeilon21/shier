@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>俱乐大玩家 · 超级AI</title>
+    <title>俱乐大玩家 · 超级AI v3.1</title>
     <style>
-        /* ===== 样式保持不变 ===== */
+        /* ===== 样式 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -36,17 +36,9 @@
             line-height: 1.6;
             padding-bottom: 40px;
         }
-        ::-webkit-scrollbar {
-            width: 4px;
-            height: 4px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-page);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--accent);
-            border-radius: 4px;
-        }
+        ::-webkit-scrollbar { width: 4px; height: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg-page); }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
 
         #authOverlay {
             position: fixed;
@@ -59,10 +51,7 @@
             padding: 20px;
             transition: opacity 0.4s ease;
         }
-        #authOverlay.hidden {
-            opacity: 0;
-            pointer-events: none;
-        }
+        #authOverlay.hidden { opacity: 0; pointer-events: none; }
         .auth-box {
             width: 420px;
             max-width: 100%;
@@ -73,11 +62,7 @@
             text-align: center;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
         }
-        .auth-box .auth-icon {
-            font-size: 44px;
-            display: block;
-            margin-bottom: 2px;
-        }
+        .auth-box .auth-icon { font-size: 44px; display: block; margin-bottom: 2px; }
         .auth-box .auth-title {
             font-size: 22px;
             font-weight: 800;
@@ -99,16 +84,8 @@
             border: 1px solid rgba(255, 215, 0, 0.15);
             margin: 4px 0 12px;
         }
-        .auth-box .auth-sub {
-            color: var(--text-secondary);
-            font-size: 13px;
-            margin-bottom: 10px;
-            line-height: 1.7;
-        }
-        .auth-box .auth-input-wrap {
-            position: relative;
-            margin-bottom: 12px;
-        }
+        .auth-box .auth-sub { color: var(--text-secondary); font-size: 13px; margin-bottom: 10px; line-height: 1.7; }
+        .auth-box .auth-input-wrap { position: relative; margin-bottom: 12px; }
         .auth-box .auth-input-wrap input {
             width: 100%;
             padding: 13px 18px;
@@ -140,46 +117,17 @@
             cursor: pointer;
             transition: transform 0.15s, box-shadow 0.3s;
             box-shadow: 0 4px 20px rgba(232, 196, 104, 0.15);
-            letter-spacing: 0.5px;
         }
-        .auth-box .auth-btn:active {
-            transform: scale(0.97);
-        }
-        .auth-box .auth-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none;
-        }
-        .auth-box .auth-error {
-            color: #f87171;
-            font-size: 13px;
-            min-height: 22px;
-            margin-top: 4px;
-        }
-        .auth-box .auth-footer {
-            margin-top: 16px;
-            color: var(--text-secondary);
-            font-size: 11px;
-            opacity: 0.5;
-            line-height: 1.8;
-        }
-        .auth-box .auth-footer .author {
-            font-size: 12px;
-            opacity: 0.8;
-            color: var(--accent2);
-            margin-top: 4px;
-        }
+        .auth-box .auth-btn:active { transform: scale(0.97); }
+        .auth-box .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .auth-box .auth-error { color: #f87171; font-size: 13px; min-height: 22px; margin-top: 4px; }
+        .auth-box .auth-footer { margin-top: 16px; color: var(--text-secondary); font-size: 11px; opacity: 0.5; line-height: 1.8; }
+        .auth-box .auth-footer .author { font-size: 12px; opacity: 0.8; color: var(--accent2); margin-top: 4px; }
 
-        #appWrap {
-            max-width: 820px;
-            margin: 0 auto;
-            padding: 0 10px 20px;
-            display: none;
-        }
-        #appWrap.show {
-            display: block;
-        }
+        #appWrap { max-width: 820px; margin: 0 auto; padding: 0 10px 20px; display: none; }
+        #appWrap.show { display: block; }
 
+        /* ===== 导航样式 ===== */
         .top-nav {
             position: sticky;
             top: 0;
@@ -197,9 +145,7 @@
             flex-wrap: nowrap;
             overflow-x: auto;
         }
-        .top-nav::-webkit-scrollbar {
-            display: none;
-        }
+        .top-nav::-webkit-scrollbar { display: none; }
         .top-nav .nav-group {
             display: flex;
             align-items: center;
@@ -208,9 +154,7 @@
             padding: 0 4px;
             border-right: 1px solid rgba(42, 58, 90, 0.15);
         }
-        .top-nav .nav-group:last-child {
-            border-right: none;
-        }
+        .top-nav .nav-group:last-child { border-right: none; }
         .top-nav .nav-group .label {
             font-size: 9px;
             color: var(--text-secondary);
@@ -320,13 +264,7 @@
             display: inline-block;
             line-height: 1.6;
         }
-        .header .sub-title {
-            font-size: 10px;
-            color: var(--text-secondary);
-            margin-top: 1px;
-            opacity: 0.5;
-            letter-spacing: 0.5px;
-        }
+        .header .sub-title { font-size: 10px; color: var(--text-secondary); margin-top: 1px; opacity: 0.5; letter-spacing: 0.5px; }
         .header .header-actions {
             margin-top: 3px;
             display: flex;
@@ -344,26 +282,10 @@
             border: 1px solid rgba(78, 201, 122, 0.08);
             transition: color 0.3s, border-color 0.3s;
         }
-        .header .header-actions .remain-time.permanent {
-            color: #fbbf24;
-            border-color: rgba(251, 191, 36, 0.15);
-            background: rgba(251, 191, 36, 0.06);
-        }
-        .header .header-actions .remain-time.active {
-            color: #4ec97a;
-            border-color: rgba(78, 201, 122, 0.15);
-            background: rgba(78, 201, 122, 0.06);
-        }
-        .header .header-actions .remain-time.warning {
-            color: #fbbf24;
-            border-color: rgba(251, 191, 36, 0.15);
-            background: rgba(251, 191, 36, 0.06);
-        }
-        .header .header-actions .remain-time.danger {
-            color: #f87171;
-            border-color: rgba(248, 113, 113, 0.15);
-            background: rgba(248, 113, 113, 0.06);
-        }
+        .header .header-actions .remain-time.permanent { color: #fbbf24; border-color: rgba(251, 191, 36, 0.15); background: rgba(251, 191, 36, 0.06); }
+        .header .header-actions .remain-time.active { color: #4ec97a; border-color: rgba(78, 201, 122, 0.15); background: rgba(78, 201, 122, 0.06); }
+        .header .header-actions .remain-time.warning { color: #fbbf24; border-color: rgba(251, 191, 36, 0.15); background: rgba(251, 191, 36, 0.06); }
+        .header .header-actions .remain-time.danger { color: #f87171; border-color: rgba(248, 113, 113, 0.15); background: rgba(248, 113, 113, 0.06); }
         .header .header-actions .unbind-btn {
             font-size: 10px;
             color: #f87171;
@@ -376,12 +298,8 @@
             user-select: none;
             font-weight: 500;
         }
-        .header .header-actions .unbind-btn:hover {
-            background: rgba(248, 113, 113, 0.12);
-        }
-        .header .header-actions .unbind-btn:active {
-            transform: scale(0.95);
-        }
+        .header .header-actions .unbind-btn:hover { background: rgba(248, 113, 113, 0.12); }
+        .header .header-actions .unbind-btn:active { transform: scale(0.95); }
         .header .header-actions .calibrate-status {
             font-size: 10px;
             padding: 2px 8px;
@@ -486,22 +404,9 @@
             font-weight: 600;
             line-height: 1.2;
         }
-        .quick-actions .qa-btn .qa-icon {
-            display: block;
-            font-size: 14px;
-            margin-bottom: 1px;
-        }
-        .quick-actions .qa-btn .qa-value {
-            color: var(--accent2);
-            font-weight: 800;
-            font-size: 11px;
-            display: block;
-            margin-top: 1px;
-        }
-        .quick-actions .qa-btn .qa-label {
-            font-size: 8px;
-            opacity: 0.6;
-        }
+        .quick-actions .qa-btn .qa-icon { display: block; font-size: 14px; margin-bottom: 1px; }
+        .quick-actions .qa-btn .qa-value { color: var(--accent2); font-weight: 800; font-size: 11px; display: block; margin-top: 1px; }
+        .quick-actions .qa-btn .qa-label { font-size: 8px; opacity: 0.6; }
 
         .section {
             background: var(--bg-card);
@@ -516,11 +421,7 @@
             border-bottom: 1px solid rgba(42, 58, 90, 0.10);
             background: rgba(0, 0, 0, 0.10);
         }
-        .sec-title {
-            display: flex;
-            align-items: flex-start;
-            gap: 6px;
-        }
+        .sec-title { display: flex; align-items: flex-start; gap: 6px; }
         .sec-title .icon {
             width: 24px;
             height: 24px;
@@ -533,26 +434,10 @@
             color: #0b1526;
             flex-shrink: 0;
         }
-        .sec-title .name {
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-        .sec-title .role {
-            font-size: 10px;
-            color: var(--text-secondary);
-            opacity: 0.8;
-            line-height: 1.4;
-        }
-        .sec-title .role .tip2 {
-            color: var(--accent);
-            display: block;
-            font-size: 10px;
-            opacity: 0.9;
-        }
-        .sec-body {
-            padding: 6px 8px 8px;
-        }
+        .sec-title .name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
+        .sec-title .role { font-size: 10px; color: var(--text-secondary); opacity: 0.8; line-height: 1.4; }
+        .sec-title .role .tip2 { color: var(--accent); display: block; font-size: 10px; opacity: 0.9; }
+        .sec-body { padding: 6px 8px 8px; }
 
         .row {
             display: flex;
@@ -562,9 +447,7 @@
             border-bottom: 1px solid rgba(42, 58, 90, 0.05);
             flex-wrap: wrap;
         }
-        .row:last-child {
-            border-bottom: none;
-        }
+        .row:last-child { border-bottom: none; }
         .row .lbl {
             min-width: 44px;
             font-weight: 600;
@@ -582,26 +465,13 @@
             display: inline-block;
             flex-shrink: 0;
         }
-        .row .lbl .dot.red {
-            background: #e05555;
-        }
-        .row .lbl .dot.orange {
-            background: #e8943a;
-        }
-        .row .lbl .dot.purple {
-            background: #a66be0;
-        }
-        .row .lbl .dot.blue {
-            background: #4a9ae8;
-        }
-        .row .lbl .dot.green {
-            background: #4ec97a;
-        }
+        .row .lbl .dot.red { background: #e05555; }
+        .row .lbl .dot.orange { background: #e8943a; }
+        .row .lbl .dot.purple { background: #a66be0; }
+        .row .lbl .dot.blue { background: #4a9ae8; }
+        .row .lbl .dot.green { background: #4ec97a; }
 
-        .row .qty {
-            width: 48px;
-            flex-shrink: 0;
-        }
+        .row .qty { width: 48px; flex-shrink: 0; }
         .row .qty input {
             width: 100%;
             padding: 3px 2px;
@@ -663,20 +533,10 @@
             border-color: var(--accent);
             color: var(--accent2);
         }
-        .row .btn-group .qbtn.neg {
-            color: #f87171;
-        }
-        .row .btn-group .qbtn.neg:hover {
-            border-color: #f87171;
-            color: #f87171;
-        }
-        .row .btn-group .qbtn.pos {
-            color: #4ec97a;
-        }
-        .row .btn-group .qbtn.pos:hover {
-            border-color: #4ec97a;
-            color: #4ec97a;
-        }
+        .row .btn-group .qbtn.neg { color: #f87171; }
+        .row .btn-group .qbtn.neg:hover { border-color: #f87171; color: #f87171; }
+        .row .btn-group .qbtn.pos { color: #4ec97a; }
+        .row .btn-group .qbtn.pos:hover { border-color: #4ec97a; color: #4ec97a; }
 
         .row .sub {
             flex: 1;
@@ -697,16 +557,8 @@
             flex-wrap: wrap;
             border-top: 1px solid rgba(42, 58, 90, 0.08);
         }
-        .special-row .lbl {
-            min-width: 44px;
-            font-weight: 600;
-            font-size: 11px;
-            color: var(--text-primary);
-        }
-        .special-row .qty {
-            width: 70px;
-            flex-shrink: 0;
-        }
+        .special-row .lbl { min-width: 44px; font-weight: 600; font-size: 11px; color: var(--text-primary); }
+        .special-row .qty { width: 70px; flex-shrink: 0; }
         .special-row .qty input {
             width: 100%;
             padding: 3px 2px;
@@ -724,12 +576,7 @@
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(232, 196, 104, 0.05);
         }
-        .special-row .btn-group .qbtn {
-            min-width: 34px;
-            height: 28px;
-            font-size: 11px;
-            padding: 0 8px;
-        }
+        .special-row .btn-group .qbtn { min-width: 34px; height: 28px; font-size: 11px; padding: 0 8px; }
 
         .simple-btn-group {
             display: flex;
@@ -762,20 +609,10 @@
             border-color: var(--accent);
             color: var(--accent2);
         }
-        .simple-btn-group .sbtn.neg {
-            color: #f87171;
-        }
-        .simple-btn-group .sbtn.neg:hover {
-            border-color: #f87171;
-            color: #f87171;
-        }
-        .simple-btn-group .sbtn.pos {
-            color: #4ec97a;
-        }
-        .simple-btn-group .sbtn.pos:hover {
-            border-color: #4ec97a;
-            color: #4ec97a;
-        }
+        .simple-btn-group .sbtn.neg { color: #f87171; }
+        .simple-btn-group .sbtn.neg:hover { border-color: #f87171; color: #f87171; }
+        .simple-btn-group .sbtn.pos { color: #4ec97a; }
+        .simple-btn-group .sbtn.pos:hover { border-color: #4ec97a; color: #4ec97a; }
 
         .total-bar {
             margin-top: 6px;
@@ -789,24 +626,10 @@
             flex-wrap: wrap;
             gap: 2px;
         }
-        .total-bar .t-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 10px;
-        }
-        .total-bar .t-item .label {
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-        .total-bar .t-item .value {
-            font-weight: 800;
-            color: var(--accent2);
-            font-variant-numeric: tabular-nums;
-        }
-        .total-bar .t-item .value.rec {
-            color: #4ec97a;
-        }
+        .total-bar .t-item { display: flex; align-items: center; gap: 4px; font-size: 10px; }
+        .total-bar .t-item .label { color: var(--text-secondary); font-weight: 500; }
+        .total-bar .t-item .value { font-weight: 800; color: var(--accent2); font-variant-numeric: tabular-nums; }
+        .total-bar .t-item .value.rec { color: #4ec97a; }
 
         .confidence-bar {
             display: flex;
@@ -831,18 +654,9 @@
             transition: width 0.3s ease;
             background: linear-gradient(90deg, #f87171, #fbbf24, #34d399);
         }
-        .confidence-bar .label {
-            font-weight: 500;
-            min-width: 28px;
-            text-align: right;
-            color: var(--accent2);
-        }
+        .confidence-bar .label { font-weight: 500; min-width: 28px; text-align: right; color: var(--accent2); }
 
-        .reset-row {
-            margin-top: 5px;
-            display: flex;
-            justify-content: flex-end;
-        }
+        .reset-row { margin-top: 5px; display: flex; justify-content: flex-end; }
         .btn-reset {
             padding: 2px 10px;
             background: transparent;
@@ -855,27 +669,13 @@
             font-weight: 500;
             font-family: inherit;
         }
-        .btn-reset:hover {
-            border-color: #f87171;
-            color: #f87171;
-        }
+        .btn-reset:hover { border-color: #f87171; color: #f87171; }
 
-        .page {
-            display: none;
-            animation: fadeUp 0.2s ease;
-        }
-        .page.active {
-            display: block;
-        }
+        .page { display: none; animation: fadeUp 0.2s ease; }
+        .page.active { display: block; }
         @keyframes fadeUp {
-            from {
-                opacity: 0;
-                transform: translateY(6px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .an-combo-group {
@@ -896,15 +696,8 @@
             flex-wrap: wrap;
             gap: 3px;
         }
-        .an-combo-group .g-head .g-title {
-            font-weight: 700;
-            font-size: 12px;
-            color: var(--accent2);
-        }
-        .an-combo-group .g-head .g-meta {
-            font-size: 10px;
-            color: var(--text-secondary);
-        }
+        .an-combo-group .g-head .g-title { font-weight: 700; font-size: 12px; color: var(--accent2); }
+        .an-combo-group .g-head .g-meta { font-size: 10px; color: var(--text-secondary); }
         .an-combo-group .g-head .arrow {
             display: inline-block;
             margin-left: 3px;
@@ -912,20 +705,9 @@
             transition: transform 0.2s;
             font-size: 10px;
         }
-        .an-combo-group.open .g-head .arrow {
-            transform: rotate(90deg);
-        }
-        .an-combo-group .g-body {
-            display: none;
-            padding: 4px 10px 8px;
-            flex-wrap: wrap;
-            gap: 3px;
-        }
-        .an-combo-group.open .g-body {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 3px;
-        }
+        .an-combo-group.open .g-head .arrow { transform: rotate(90deg); }
+        .an-combo-group .g-body { display: none; padding: 4px 10px 8px; flex-wrap: wrap; gap: 3px; }
+        .an-combo-group.open .g-body { display: flex; flex-wrap: wrap; gap: 3px; }
         .an-combo-item {
             display: inline-block;
             background: rgba(0, 0, 0, 0.2);
@@ -936,19 +718,9 @@
             font-variant-numeric: tabular-nums;
             white-space: nowrap;
         }
-        .an-combo-item .val {
-            color: #4ec97a;
-            font-weight: 600;
-        }
-        .an-combo-item .grids {
-            color: var(--text-secondary);
-        }
-        .an-empty {
-            text-align: center;
-            padding: 16px 10px;
-            color: var(--text-secondary);
-            font-size: 12px;
-        }
+        .an-combo-item .val { color: #4ec97a; font-weight: 600; }
+        .an-combo-item .grids { color: var(--text-secondary); }
+        .an-empty { text-align: center; padding: 16px 10px; color: var(--text-secondary); font-size: 12px; }
 
         .an-result-summary {
             display: flex;
@@ -962,131 +734,101 @@
             border-radius: 6px;
             border: 1px solid rgba(232, 196, 104, 0.06);
         }
-        .an-result-summary .item {
-            font-size: 11px;
+        .an-result-summary .item { font-size: 11px; }
+        .an-result-summary .item .label { color: var(--text-secondary); }
+        .an-result-summary .item .value { font-weight: 700; color: var(--accent2); }
+        .an-result-summary .item .value.rec { color: #4ec97a; }
+
+        .an-input-row {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            flex-wrap: wrap;
+            padding: 4px 0;
         }
-        .an-result-summary .item .label {
+        .an-input-row .input-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 3px 8px 3px 6px;
+            border-radius: 8px;
+            border: 1px solid rgba(42, 58, 90, 0.10);
+            flex: 1;
+            min-width: 140px;
+        }
+        .an-input-row .input-group .label {
+            font-size: 10px;
             color: var(--text-secondary);
+            font-weight: 600;
+            white-space: nowrap;
         }
-        .an-result-summary .item .value {
+        .an-input-row .input-group input {
+            width: 60px;
+            padding: 3px 4px;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 13px;
             font-weight: 700;
-            color: var(--accent2);
+            text-align: center;
+            outline: none;
+            font-family: inherit;
         }
-        .an-result-summary .item .value.rec {
-            color: #4ec97a;
+        .an-input-row .input-group input:focus {
+            background: rgba(232, 196, 104, 0.05);
+            border-radius: 4px;
         }
+        .an-input-row .input-group .unit {
+            font-size: 10px;
+            color: var(--text-secondary);
+            opacity: 0.5;
+        }
+        .an-input-row .input-group .clear-btn {
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            opacity: 0.3;
+            padding: 0 2px;
+            transition: opacity 0.2s;
+        }
+        .an-input-row .input-group .clear-btn:hover { opacity: 0.8; }
 
         @media (max-width: 480px) {
-            .top-nav .nav-group button[data-tab] {
-                font-size: 12px;
-                padding: 3px 8px;
-                min-height: 26px;
-            }
-            .top-nav .nav-group button.mode-btn {
-                font-size: 10px;
-                padding: 3px 6px;
-                min-height: 24px;
-            }
-            .top-nav .nav-group .label {
-                display: none;
-            }
-            .top-nav .nav-right .vip-tag {
-                font-size: 7px;
-                padding: 1px 5px;
-            }
-            .sec-body {
-                padding: 4px 4px 6px;
-            }
-            .row {
-                gap: 4px;
-                padding: 4px 2px;
-            }
-            .row .lbl {
-                min-width: 36px;
-                font-size: 10px;
-            }
-            .row .qty {
-                width: 38px;
-            }
-            .row .qty input {
-                font-size: 10px;
-                padding: 2px 1px;
-            }
-            .row .sub {
-                font-size: 10px;
-                min-width: 30px;
-            }
-            .row .btn-group .qbtn {
-                min-width: 26px;
-                height: 24px;
-                font-size: 10px;
-                padding: 0 4px;
-            }
-            .row .btn-group {
-                gap: 3px;
-            }
-            .simple-btn-group .sbtn {
-                min-width: 22px;
-                height: 22px;
-                font-size: 10px;
-                padding: 0 4px;
-            }
-            .simple-btn-group {
-                gap: 3px;
-            }
-            .special-row .btn-group .qbtn {
-                min-width: 28px;
-                height: 24px;
-                font-size: 10px;
-                padding: 0 6px;
-            }
-            .special-row .qty {
-                width: 56px;
-            }
-            .total-bar .t-item {
-                font-size: 9px;
-            }
-            #appWrap {
-                padding: 0 4px 16px;
-            }
-            .quick-actions {
-                grid-template-columns: 1fr 1fr;
-            }
-            .header .main-title {
-                font-size: 15px;
-            }
-            .map-mode-row {
-                flex-direction: column;
-            }
+            .top-nav .nav-group button[data-tab] { font-size: 12px; padding: 3px 8px; min-height: 26px; }
+            .top-nav .nav-group button.mode-btn { font-size: 10px; padding: 3px 6px; min-height: 24px; }
+            .top-nav .nav-group .label { display: none; }
+            .top-nav .nav-right .vip-tag { font-size: 7px; padding: 1px 5px; }
+            .sec-body { padding: 4px 4px 6px; }
+            .row { gap: 4px; padding: 4px 2px; }
+            .row .lbl { min-width: 36px; font-size: 10px; }
+            .row .qty { width: 38px; }
+            .row .qty input { font-size: 10px; padding: 2px 1px; }
+            .row .sub { font-size: 10px; min-width: 30px; }
+            .row .btn-group .qbtn { min-width: 26px; height: 24px; font-size: 10px; padding: 0 4px; }
+            .row .btn-group { gap: 3px; }
+            .simple-btn-group .sbtn { min-width: 22px; height: 22px; font-size: 10px; padding: 0 4px; }
+            .simple-btn-group { gap: 3px; }
+            .special-row .btn-group .qbtn { min-width: 28px; height: 24px; font-size: 10px; padding: 0 6px; }
+            .special-row .qty { width: 56px; }
+            .total-bar .t-item { font-size: 9px; }
+            #appWrap { padding: 0 4px 16px; }
+            .quick-actions { grid-template-columns: 1fr 1fr; }
+            .header .main-title { font-size: 15px; }
+            .map-mode-row { flex-direction: column; }
             .map-mode-row .map-switch,
-            .map-mode-row .mode-switch {
-                flex: 1;
-            }
+            .map-mode-row .mode-switch { flex: 1; }
             .map-mode-row .map-switch button,
-            .map-mode-row .mode-switch button {
-                font-size: 9px;
-                padding: 3px 2px;
-                min-width: 26px;
-            }
-            .an-result-summary .item {
-                font-size: 10px;
-            }
-            .an-combo-item {
-                font-size: 10px;
-                padding: 2px 6px;
-            }
-            .header .header-actions .calibrate-status {
-                font-size: 8px;
-                padding: 1px 5px;
-            }
+            .map-mode-row .mode-switch button { font-size: 9px; padding: 3px 2px; min-width: 26px; }
+            .an-result-summary .item { font-size: 10px; }
+            .an-combo-item { font-size: 10px; padding: 2px 6px; }
+            .header .header-actions .calibrate-status { font-size: 8px; padding: 1px 5px; }
+            .an-input-row .input-group { min-width: 100px; }
+            .an-input-row .input-group input { width: 50px; font-size: 12px; }
         }
         @media (min-width: 600px) {
-            .top-nav .nav-group .label {
-                display: inline-block;
-            }
-            .quick-actions {
-                grid-template-columns: 1fr 1fr 1fr 1fr;
-            }
+            .top-nav .nav-group .label { display: inline-block; }
+            .quick-actions { grid-template-columns: 1fr 1fr 1fr 1fr; }
         }
     </style>
 </head>
@@ -1095,8 +837,8 @@
     <div id="authOverlay">
         <div class="auth-box">
             <span class="auth-icon">🎯</span>
-            <div class="auth-title" id="authTitle">俱乐大玩家 · 超级AI</div>
-            <div class="auth-badge" id="authBadge">🌟 超级AI定制版</div>
+            <div class="auth-title" id="authTitle">俱乐大玩家 · 超级AI v3.1</div>
+            <div class="auth-badge" id="authBadge">🌟 智能双模反查</div>
             <div class="auth-sub" id="authSub">请输入卡密激活</div>
             <div class="auth-input-wrap">
                 <input id="cardInput" type="text" placeholder="请输入卡密" autocomplete="off" spellcheck="false" />
@@ -1125,14 +867,14 @@
                 <button class="mode-btn" data-mode="aggressive">🔥 激烈</button>
             </div>
             <div class="nav-right">
-                <span class="vip-tag">📊 超级AI版</span>
+                <span class="vip-tag">📊 v3.1 双模反查</span>
             </div>
         </nav>
 
         <div class="header">
             <div class="main-title">
                 俱乐大玩家 · 超级AI
-                <span class="super-tag">⚡ 分段校准</span>
+                <span class="super-tag">⚡ 分段自适应校准</span>
             </div>
             <div class="sub-title"></div>
             <div class="header-actions">
@@ -1175,7 +917,7 @@
     </script>
     <script>
         // ============================================================
-        // ★ 虚拟控制流混淆 + 深度混淆
+        // ★ 虚拟控制流混淆 + 反调试保护（完整保留）
         // ============================================================
         (function() {
             'use strict';
@@ -1202,21 +944,13 @@
                     }
                     return this._ctx._result;
                 },
-                _reset: function() {
-                    this._state = 0;
+                _reset: function() { this._state = 0;
                     this._ops = [];
-                    this._ctx = {};
-                },
-                _add: function(fn) {
-                    this._ops.push(fn);
-                    return this;
-                },
-                _exec: function(ctx) {
-                    return this._run(ctx);
-                }
+                    this._ctx = {}; },
+                _add: function(fn) { this._ops.push(fn); return this; },
+                _exec: function(ctx) { return this._run(ctx); }
             };
 
-            // ---- 虚拟控制流构建器 ----
             function _buildVCF(ops) {
                 var v = Object.create(_vcf);
                 v._ops = ops || [];
@@ -1225,7 +959,6 @@
                 return v;
             }
 
-            // ---- 控制流混淆包装器 ----
             function _wrapWithVCF(fn, name) {
                 return function() {
                     var args = Array.prototype.slice.call(arguments);
@@ -1238,27 +971,11 @@
                         _name: name || 'anonymous'
                     };
                     var ops = [
-                        function(c, pc) {
-                            try {
-                                c._result = c._fn.apply(c._this, c._args);
-                            } catch (e) {
-                                c._error = e;
-                            }
-                            return pc + 1;
-                        },
-                        function(c, pc) {
-                            return pc + 1;
-                        },
-                        function(c, pc) {
-                            if (c._error) {
-                                c._result = null;
-                            }
-                            return pc + 1;
-                        },
-                        function(c, pc) {
-                            c._break = true;
-                            return pc + 1;
-                        }
+                        function(c, pc) { try { c._result = c._fn.apply(c._this, c._args); } catch (e) { c._error =
+                                e; } return pc + 1; },
+                        function(c, pc) { return pc + 1; },
+                        function(c, pc) { if (c._error) { c._result = null; } return pc + 1; },
+                        function(c, pc) { c._break = true; return pc + 1; }
                     ];
                     var v = _buildVCF(ops);
                     v._exec(ctx);
@@ -1267,15 +984,9 @@
                 };
             }
 
-            // ---- 混淆工具函数 ----
             var _0x = {
-                _xor: function(s, k) {
-                    var r = '';
-                    for (var i = 0; i < s.length; i++) {
-                        r += String.fromCharCode(s.charCodeAt(i) ^ (k.charCodeAt(i % k.length) || 0x3f));
-                    }
-                    return r;
-                },
+                _xor: function(s, k) { var r = ''; for (var i = 0; i < s.length; i++) { r += String.fromCharCode(s
+                            .charCodeAt(i) ^ (k.charCodeAt(i % k.length) || 0x3f)); } return r; },
                 _enc: function(s) {
                     try { return CryptoJS.AES.encrypt(s, 'd7k9x2m4n8p6w3q1').toString(); } catch (e) { return btoa(
                             encodeURIComponent(s)); }
@@ -1292,90 +1003,24 @@
                 _clamp: function(v, mn, mx) { return Math.min(Math.max(v, mn), mx); }
             };
 
-            // ---- 虚拟控制流核心配置 ----
-            var _vcfConfig = {
-                _segments: [
-                    { _k: 's1', _l: '0-50万', _min: 0, _max: 500000 },
-                    { _k: 's2', _l: '50-100万', _min: 500000, _max: 1000000 },
-                    { _k: 's3', _l: '100-200万', _min: 1000000, _max: 2000000 },
-                    { _k: 's4', _l: '200万以上', _min: 2000000, _max: Infinity }
-                ],
-                _calKey: 'calibration_factor_seg_v1',
-                _appSecret: 'd7k9x2m4n8p6w3q1',
-                _permDays: 999999
-            };
-
-            // ---- 虚拟控制流包装的关键函数 ----
-            var _getSegKey = _wrapWithVCF(function(v) {
-                var segs = _vcfConfig._segments;
-                for (var i = 0; i < segs.length; i++) {
-                    if (v >= segs[i]._min && v < segs[i]._max) return segs[i]._k;
-                }
-                return 's1';
-            }, '_getSegKey');
-
-            var _getCalFactor = _wrapWithVCF(function(mapKey, val) {
-                try {
-                    var d = JSON.parse(localStorage.getItem(_vcfConfig._calKey) || '{}');
-                    var sk = _getSegKey(val);
-                    if (d[mapKey] && d[mapKey][sk] !== undefined) return d[mapKey][sk];
-                    return 1.0;
-                } catch (e) { return 1.0; }
-            }, '_getCalFactor');
-
-            var _setCalFactor = _wrapWithVCF(function(mapKey, val, ratio) {
-                try {
-                    var d = JSON.parse(localStorage.getItem(_vcfConfig._calKey) || '{}');
-                    if (!d[mapKey]) d[mapKey] = {};
-                    var sk = _getSegKey(val);
-                    var old = d[mapKey][sk] || 1.0;
-                    var w = 0.8;
-                    var nf = old * (1 - w) + ratio * w;
-                    nf = _0x._clamp(nf, 0.5, 5.0);
-                    d[mapKey][sk] = nf;
-                    localStorage.setItem(_vcfConfig._calKey, JSON.stringify(d));
-                    return nf;
-                } catch (e) { return ratio; }
-            }, '_setCalFactor');
-
-            var _getCalStatus = _wrapWithVCF(function(mapKey) {
-                try {
-                    var d = JSON.parse(localStorage.getItem(_vcfConfig._calKey) || '{}');
-                    if (!d[mapKey]) return '未校准';
-                    var parts = [];
-                    var hasAny = false;
-                    var segs = _vcfConfig._segments;
-                    for (var i = 0; i < segs.length; i++) {
-                        var v = d[mapKey][segs[i]._k];
-                        if (v !== undefined && Math.abs(v - 1.0) > 0.01) {
-                            hasAny = true;
-                            parts.push(segs[i]._l + ':' + v.toFixed(2));
-                        }
-                    }
-                    return hasAny ? parts.join(' | ') : '未校准';
-                } catch (e) { return '未校准'; }
-            }, '_getCalStatus');
-
-            // ---- 虚拟控制流加密工具 ----
+            // ---- 混淆后的核心函数 ----
             var _encryptData = _wrapWithVCF(function(raw) {
-                return CryptoJS.AES.encrypt(JSON.stringify(raw), _vcfConfig._appSecret).toString();
+                return CryptoJS.AES.encrypt(JSON.stringify(raw), 'd7k9x2m4n8p6w3q1').toString();
             }, '_encryptData');
 
             var _decryptData = _wrapWithVCF(function(encrypted) {
                 try {
-                    var d = CryptoJS.AES.decrypt(encrypted, _vcfConfig._appSecret);
+                    var d = CryptoJS.AES.decrypt(encrypted, 'd7k9x2m4n8p6w3q1');
                     return JSON.parse(d.toString(CryptoJS.enc.Utf8));
                 } catch (e) { return null; }
             }, '_decryptData');
 
-            // ---- 虚拟控制流验证系统 ----
+            var _hash = _wrapWithVCF(function(s) {
+                return CryptoJS.SHA256(s + 's3cure_k3y_2026').toString().substring(0, 16);
+            }, '_hash');
+
             var _saveSecure = _wrapWithVCF(function(card, data) {
-                var payload = {
-                    _c: card,
-                    _d: data,
-                    _t: Date.now(),
-                    _chk: _0x._hash(card + data._ct + data._m)
-                };
+                var payload = { _c: card, _d: data, _t: Date.now(), _chk: _hash(card + data._ct + data._m) };
                 var encrypted = _encryptData(payload);
                 try { localStorage.setItem('secure_verify', encrypted);
                     localStorage.setItem('card', card); } catch (e) {}
@@ -1387,7 +1032,7 @@
                     if (!raw) return null;
                     var dec = _decryptData(raw);
                     if (!dec || !dec._c || !dec._d) return null;
-                    if (_0x._hash(dec._c + dec._d._ct + dec._d._m) !== dec._chk) return null;
+                    if (_hash(dec._c + dec._d._ct + dec._d._m) !== dec._chk) return null;
                     if (Date.now() - dec._t > 7 * 24 * 60 * 60 * 1000) return null;
                     return dec;
                 } catch (e) { return null; }
@@ -1398,7 +1043,6 @@
                     localStorage.removeItem('card'); } catch (e) {}
             }, '_clearSecure');
 
-            // ---- 虚拟控制流设备指纹 ----
             var _getDeviceFP = _wrapWithVCF(function() {
                 var saved = localStorage.getItem('device_fp');
                 if (saved) return saved;
@@ -1435,11 +1079,10 @@
                 return fp;
             }, '_getDeviceFP');
 
-            // ---- 虚拟控制流验证请求 ----
             var _verifyWithKeyt = _wrapWithVCF(function(card, callback) {
                 var fp = _getDeviceFP();
-                var url = 'https://www.keyt.cn/kami/qq204443214/check.php?card=' + encodeURIComponent(card) + '&mac=' +
-                    encodeURIComponent(fp) + '&app=a';
+                var url = 'https://www.keyt.cn/kami/qq204443214/check.php?card=' + encodeURIComponent(card) +
+                    '&mac=' + encodeURIComponent(fp) + '&app=a';
                 var xhr = new XMLHttpRequest();
                 var timer = setTimeout(function() { xhr.abort();
                     callback(false, null, null, null, 'timeout'); }, 8000);
@@ -1456,7 +1099,7 @@
                                 var days = parts[2] || '未知';
                                 var minutes = parseInt(parts[3]) || 0;
                                 var cardType = '天卡';
-                                if (minutes >= _vcfConfig._permDays * 1440) cardType = '永久卡';
+                                if (minutes >= 999999 * 1440) cardType = '永久卡';
                                 else if (minutes >= 43200) cardType = '月卡';
                                 else if (minutes >= 10080) cardType = '周卡';
                                 else if (minutes >= 1440) cardType = '天卡';
@@ -1473,36 +1116,7 @@
                 xhr.send();
             }, '_verifyWithKeyt');
 
-            // ---- 暴露混淆后的全局接口 ----
-            window._vcf = {
-                _getSegKey: _getSegKey,
-                _getCalFactor: _getCalFactor,
-                _setCalFactor: _setCalFactor,
-                _getCalStatus: _getCalStatus,
-                _encryptData: _encryptData,
-                _decryptData: _decryptData,
-                _saveSecure: _saveSecure,
-                _getSecure: _getSecure,
-                _clearSecure: _clearSecure,
-                _getDeviceFP: _getDeviceFP,
-                _verifyWithKeyt: _verifyWithKeyt,
-                _fmt: _0x._fmt,
-                _clamp: _0x._clamp,
-                _hash: _0x._hash,
-                _config: _vcfConfig,
-                _wrap: _wrapWithVCF
-            };
-
-            console.log('🔐 虚拟控制流混淆已启用');
-        })();
-
-        // ============================================================
-        // ★ 原始功能代码（已通过虚拟控制流包装）
-        // ============================================================
-        (function() {
-            'use strict';
-
-            // ---- 反调试保护（保留） ----
+            // ---- 反调试保护（完整保留） ----
             function detectDebugger() {
                 var threshold = 160;
                 var start = performance.now();
@@ -1535,1235 +1149,1364 @@
                                 window.localStorage.setItem('__guard_test', 'ok');
                                 window.localStorage.removeItem('__guard_test');
                             }
-                        } catch (e) {
-                            location.reload();
-                        }
+                        } catch (e) { location.reload(); }
                     }
                 });
             }
             setInterval(guardGlobals, 3000);
 
-            // ---- 使用虚拟控制流包装的工具函数 ----
-            var _vcf = window._vcf || {};
-            var _getSegKey = _vcf._getSegKey || function(v) { return 's1'; };
-            var _getCalFactor = _vcf._getCalFactor || function(k, v) { return 1.0; };
-            var _setCalFactor = _vcf._setCalFactor || function(k, v, r) { return r; };
-            var _getCalStatus = _vcf._getCalStatus || function(k) { return '未校准'; };
-            var _fmt = _vcf._fmt || function(n) { return (n === undefined || n === null || isNaN(n)) ? '0' : Math.round(n)
-                    .toLocaleString(); };
-            var _verifyWithKeyt = _vcf._verifyWithKeyt || function(c, cb) { cb(false, null, null, null, 'invalid'); };
-            var _saveSecure = _vcf._saveSecure || function(c, d) {};
-            var _getSecure = _vcf._getSecure || function() { return null; };
-            var _clearSecure = _vcf._clearSecure || function() {};
+            // ---- 暴露混淆接口 ----
+            window._vcf = {
+                _encryptData: _encryptData,
+                _decryptData: _decryptData,
+                _hash: _hash,
+                _saveSecure: _saveSecure,
+                _getSecure: _getSecure,
+                _clearSecure: _clearSecure,
+                _getDeviceFP: _getDeviceFP,
+                _verifyWithKeyt: _verifyWithKeyt,
+                _fmt: _0x._fmt,
+                _clamp: _0x._clamp,
+                _wrap: _wrapWithVCF
+            };
 
-            // ---- UI 文本 ----
-            var UI_TEXT = {
-                authTitle: '俱乐大玩家 · 超级AI',
-                authBadge: '🌟 超级AI定制版',
-                authSub: '请输入卡密激活',
-                authPlaceholder: '请输入卡密',
-                verifyBtn: '✅ 激活',
-                remainPermanent: '♾️ 永久有效',
-                remainFormat: '⏱ 剩余 {time} · {type}',
-                errorEmpty: '请输入卡密',
-                errorInvalid: '❌ 卡密无效或已过期',
-                errorNetwork: '⚠️ 网络异常，请检查后重试',
-                unbindConfirm: '确定要解绑此设备吗？\n解绑后需要重新激活。',
-                huoTitle: '霍姑姑 · 颜色格数估值（分段校准）',
-                huoRole: '推荐道具：红格怀表，巨物价值，四件放大镜，奢品扫描仪，古董扫描仪，全藏放大镜',
-                huoTip: '建议使用奢品扫描仪和古董扫描仪。如红格数过多建议用奢品扫描仪确认是否有车身，有则用车身池出价；古董价值可用古董扫描仪确认。',
-                gaoTitle: '高晋 · 红品件数估值（分段校准）',
-                gaoRole: '推荐道具：全域扫描枪，橙估价平板，紫估价平板，巨物价值，全藏放大镜。',
-                gaoTip: '推荐使用紫色和橙色估价平板，最后一轮使用全域扫描枪',
-                suTitle: '苏琦 · 颜色件数估值（分段校准）',
-                suRole: '推荐道具：紫件数观光棒，橙件数观光棒，红格怀表，四件放大镜，全藏放大镜',
-                suTip: '用红品件数估算误差较大，建议使用红格道具，用格数算。',
-                anTitle: '安可 · 红品均格反查（分段校准）',
-                anRole: '输入平均格数，自动推算所有可能的红品组合及估值',
+            console.log('🔐 虚拟控制流混淆已启用 v3.1');
+        })();
+
+        // ============================================================
+        // ★ 数据配置层（完全独立，可单独修改）
+        // ============================================================
+        var APP_DATA = {
+            maps: {
+                xunhui: {
+                    name: '巡回',
+                    redByGrid: { 1: { avg: 95746, med: 74970, min: 63950 }, 2: { avg: 209475, med: 124100,
+                            min: 105000 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 235450,
+                            med: 190500, min: 80250 }, 6: { avg: 342343, med: 251900, min: 188000 }, 8: { avg: 333400,
+                            med: 333400, min: 333400 }, 9: { avg: 423625, med: 388300, min: 280600 }, 12: { avg: 269650,
+                            med: 269650, min: 231800 }, 15: { avg: 386400, med: 386400, min: 386400 }, 16: { avg: 607300,
+                            med: 656700, min: 475600 } },
+                    colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
+                        orange: { piece: { avg: 37925, med: 32630 }, grid: { avg: 12053.07, med: 10110 } },
+                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } }, blue: { piece: { avg: 2596,
+                                med: 2210 }, grid: { avg: 694, med: 606 } } },
+                    redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
+                    gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                    redAvgGrid: 4.3
+                },
+                yanjing: {
+                    name: '燕京',
+                    redByGrid: { 1: { avg: 95746, med: 74970, min: 63950 }, 2: { avg: 209475, med: 124100,
+                            min: 105000 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 229352,
+                            med: 188650, min: 80250 }, 6: { avg: 324638, med: 247500, min: 188000 }, 8: { avg: 324400,
+                            med: 324400, min: 315400 }, 9: { avg: 386740, med: 354100, min: 239200 }, 12: { avg: 269650,
+                            med: 269650, min: 231800 }, 15: { avg: 386400, med: 386400, min: 386400 }, 16: { avg: 607300,
+                            med: 656700, min: 475600 } },
+                    colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
+                        orange: { piece: { avg: 37159, med: 32130 }, grid: { avg: 11838.7, med: 9890 } },
+                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } }, blue: { piece: { avg: 2596,
+                                med: 2210 }, grid: { avg: 694, med: 606 } } },
+                    redStat: { piece: { avg: 234999, med: 189250 }, grid: { avg: 52824, med: 52700 } },
+                    gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                    redAvgGrid: 4.4
+                },
+                xiangjiang: {
+                    name: '香江',
+                    redByGrid: { 1: { avg: 93964, med: 74605, min: 63660 }, 2: { avg: 194621, med: 122150,
+                            min: 99990 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 233781,
+                            med: 191200, min: 80250 }, 6: { avg: 329750, med: 247500, min: 188000 }, 8: { avg: 333400,
+                            med: 333400, min: 333400 }, 9: { avg: 423625, med: 388300, min: 280600 }, 12: { avg: 269650,
+                            med: 269650, min: 231800 }, 15: { avg: 386400, med: 386400, min: 386400 }, 16: { avg: 607300,
+                            med: 656700, min: 475600 } },
+                    colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
+                        orange: { piece: { avg: 36867, med: 31550 }, grid: { avg: 11948.39, med: 9980 } },
+                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } }, blue: { piece: { avg: 2596,
+                                med: 2210 }, grid: { avg: 694, med: 606 } } },
+                    redStat: { piece: { avg: 230370, med: 186800 }, grid: { avg: 54246, med: 53475 } },
+                    gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                    redAvgGrid: 4.2
+                },
+                nicheng: {
+                    name: '霓城',
+                    redByGrid: { 1: { avg: 95746, med: 74970, min: 63950 }, 2: { avg: 200897, med: 123500,
+                            min: 97960 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 226960,
+                            med: 180200, min: 80250 }, 6: { avg: 342343, med: 251900, min: 188000 }, 8: { avg: 333400,
+                            med: 333400, min: 333400 }, 9: { avg: 406580, med: 354100, min: 280600 }, 12: { avg: 269650,
+                            med: 269650, min: 231800 }, 15: { avg: 386400, med: 386400, min: 386400 }, 16: { avg: 559650,
+                            med: 566150, min: 416700 } },
+                    colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
+                        orange: { piece: { avg: 36490, med: 31840 }, grid: { avg: 11998.41, med: 10408 } },
+                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } }, blue: { piece: { avg: 2596,
+                                med: 2210 }, grid: { avg: 694, med: 606 } } },
+                    redStat: { piece: { avg: 235455, med: 180200 }, grid: { avg: 52323, med: 52500 } },
+                    gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                    redAvgGrid: 4.5
+                },
+                dicheng: {
+                    name: '迪城',
+                    redByGrid: { 1: { avg: 95746, med: 74970, min: 63950 }, 2: { avg: 209475, med: 124100,
+                            min: 105000 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 235450,
+                            med: 190500, min: 80250 }, 6: { avg: 342343, med: 251900, min: 188000 }, 8: { avg: 333400,
+                            med: 333400, min: 333400 }, 9: { avg: 423625, med: 388300, min: 280600 }, 12: { avg: 269650,
+                            med: 269650, min: 231800 }, 15: { avg: 386400, med: 386400, min: 386400 }, 16: { avg: 607300,
+                            med: 656700, min: 475600 } },
+                    colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
+                        orange: { piece: { avg: 37925, med: 32630 }, grid: { avg: 12053.07, med: 10110 } },
+                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } }, blue: { piece: { avg: 2596,
+                                med: 2210 }, grid: { avg: 694, med: 606 } } },
+                    redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
+                    gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                    redAvgGrid: 4.3
+                }
+            },
+            segments: [
+                { key: 's1', label: '0-50万', min: 0, max: 500000 },
+                { key: 's2', label: '50-100万', min: 500000, max: 1000000 },
+                { key: 's3', label: '100-200万', min: 1000000, max: 2000000 },
+                { key: 's4', label: '200万以上', min: 2000000, max: Infinity }
+            ],
+            algo: {
+                priceWeight: { avgMin: 0.25, avgMax: 0.60, medMin: 0.25, medMax: 0.55, minMin: 0.05, minMax: 0.30 },
+                discount: [
+                    { threshold: 0, rate: 0.85 },
+                    { threshold: 500000, rate: 0.83 },
+                    { threshold: 1000000, rate: 0.80 },
+                    { threshold: 2000000, rate: 0.76 },
+                    { threshold: 5000000, rate: 0.70 }
+                ],
+                confidence: { base: 0.75, countBonus: 0.025, valueFactor: 0.08, spreadPenalty: 0.25, min: 0.55,
+                    max: 0.97 },
+                calibration: { smoothWeight: 0.75, outlierThreshold: 2.0, outlierWeight: 0.3, minFactor: 0.5,
+                    maxFactor: 5.0 },
+                aggressiveDiscount: 0.95
+            },
+            text: {
                 carLabel: '🚗 车零件池（减项）',
                 antiqueLabel: '🏺 古董价值（减项）',
-                recLabel: '建议出价',
-                totalLabel: '仓库预估',
+                infoDefault: '💡 车零件和古董为减项，将从总价中扣除',
+                gridLabel: '格',
+                purpleLabel: '💜 紫色估价',
+                orangeLabel: '🧡 橙色估价',
+                redPieceLabel: '🔴 红色（件数）',
+                redGridLabel: '🔴 红色（格数）',
+                colorGreen: '绿色',
+                colorBlue: '蓝色',
+                colorPurple: '紫色',
+                colorOrange: '橙色',
+                colorRed: '红色',
+                recLabel: '💰 建议出价',
+                totalLabel: '📦 仓库预估',
                 confidenceLabel: '📊 置信度',
                 resetLabel: '重置数据',
+                expandMore: '展开更多格数 ▼',
+                collapseMore: '收起更多格数 ▲',
                 carBtn1: '+1(9万)',
                 carBtn2: '+2(18万)',
                 carBtn3: '+3(30万)',
                 antiqueBtn1: '+1(9万)',
                 antiqueBtn2: '+2(18万)',
                 antiqueBtn3: '+3(30万)',
-                infoDefault: '💡 车零件和古董为减项，将从总价中扣除',
-                gridLabel: '格',
-                purpleLabel: '紫色估价',
-                orangeLabel: '橙色估价',
-                redPieceLabel: '红色（件数）',
-                redGridLabel: '红色（格数）',
-                colorGreen: '绿色',
-                colorBlue: '蓝色',
-                colorPurple: '紫色',
-                colorOrange: '橙色',
-                colorRed: '红色',
-                expandMore: '展开更多格数 ▼',
-                collapseMore: '收起更多格数 ▲',
-                modeClassic: '⚖️ 经典',
-                modeAggressive: '🔥 激烈',
-                calibrateLabel: '实际仓库总价值',
-                calibrateBtn: '校准',
-                calibratePlaceholder: '输入实际揭示值',
-                calibrateSuccess: '分段校准成功',
-                calibrateError: '请输入有效数值',
-                calibrateStatusOn: '已校准',
-                calibrateStatusOff: '未校准'
-            };
-
-            // ---- 核心数据结构 ----
-            var CFG = {
-                maps: {
-                    xunhui: {
-                        name: '巡回',
-                        redByGrid: {
-                            1: { avg: 95746, med: 74970, min: 63950 },
-                            2: { avg: 209475, med: 124100, min: 105000 },
-                            3: { avg: 149100, med: 149100, min: 140700 },
-                            4: { avg: 235450, med: 190500, min: 80250 },
-                            6: { avg: 342343, med: 251900, min: 188000 },
-                            8: { avg: 333400, med: 333400, min: 333400 },
-                            9: { avg: 423625, med: 388300, min: 280600 },
-                            12: { avg: 269650, med: 269650, min: 231800 },
-                            15: { avg: 386400, med: 386400, min: 386400 },
-                            16: { avg: 607300, med: 656700, min: 475600 }
-                        },
-                        colors: {
-                            purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                            orange: { piece: { avg: 37925, med: 32630 }, grid: { avg: 12053.07, med: 10110 } },
-                            green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                            blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                        },
-                        redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
-                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                        redAvgGrid: 4.3
-                    },
-                    yanjing: {
-                        name: '燕京',
-                        redByGrid: {
-                            1: { avg: 95746, med: 74970, min: 63950 },
-                            2: { avg: 209475, med: 124100, min: 105000 },
-                            3: { avg: 149100, med: 149100, min: 140700 },
-                            4: { avg: 229352, med: 188650, min: 80250 },
-                            6: { avg: 324638, med: 247500, min: 188000 },
-                            8: { avg: 324400, med: 324400, min: 315400 },
-                            9: { avg: 386740, med: 354100, min: 239200 },
-                            12: { avg: 269650, med: 269650, min: 231800 },
-                            15: { avg: 386400, med: 386400, min: 386400 },
-                            16: { avg: 607300, med: 656700, min: 475600 }
-                        },
-                        colors: {
-                            purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                            orange: { piece: { avg: 37159, med: 32130 }, grid: { avg: 11838.7, med: 9890 } },
-                            green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                            blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                        },
-                        redStat: { piece: { avg: 234999, med: 189250 }, grid: { avg: 52824, med: 52700 } },
-                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                        redAvgGrid: 4.4
-                    },
-                    xiangjiang: {
-                        name: '香江',
-                        redByGrid: {
-                            1: { avg: 93964, med: 74605, min: 63660 },
-                            2: { avg: 194621, med: 122150, min: 99990 },
-                            3: { avg: 149100, med: 149100, min: 140700 },
-                            4: { avg: 233781, med: 191200, min: 80250 },
-                            6: { avg: 329750, med: 247500, min: 188000 },
-                            8: { avg: 333400, med: 333400, min: 333400 },
-                            9: { avg: 423625, med: 388300, min: 280600 },
-                            12: { avg: 269650, med: 269650, min: 231800 },
-                            15: { avg: 386400, med: 386400, min: 386400 },
-                            16: { avg: 607300, med: 656700, min: 475600 }
-                        },
-                        colors: {
-                            purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                            orange: { piece: { avg: 36867, med: 31550 }, grid: { avg: 11948.39, med: 9980 } },
-                            green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                            blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                        },
-                        redStat: { piece: { avg: 230370, med: 186800 }, grid: { avg: 54246, med: 53475 } },
-                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                        redAvgGrid: 4.2
-                    },
-                    nicheng: {
-                        name: '霓城',
-                        redByGrid: {
-                            1: { avg: 95746, med: 74970, min: 63950 },
-                            2: { avg: 200897, med: 123500, min: 97960 },
-                            3: { avg: 149100, med: 149100, min: 140700 },
-                            4: { avg: 226960, med: 180200, min: 80250 },
-                            6: { avg: 342343, med: 251900, min: 188000 },
-                            8: { avg: 333400, med: 333400, min: 333400 },
-                            9: { avg: 406580, med: 354100, min: 280600 },
-                            12: { avg: 269650, med: 269650, min: 231800 },
-                            15: { avg: 386400, med: 386400, min: 386400 },
-                            16: { avg: 559650, med: 566150, min: 416700 }
-                        },
-                        colors: {
-                            purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                            orange: { piece: { avg: 36490, med: 31840 }, grid: { avg: 11998.41, med: 10408 } },
-                            green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                            blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                        },
-                        redStat: { piece: { avg: 235455, med: 180200 }, grid: { avg: 52323, med: 52500 } },
-                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                        redAvgGrid: 4.5
-                    },
-                    dicheng: {
-                        name: '迪城',
-                        redByGrid: {
-                            1: { avg: 95746, med: 74970, min: 63950 },
-                            2: { avg: 209475, med: 124100, min: 105000 },
-                            3: { avg: 149100, med: 149100, min: 140700 },
-                            4: { avg: 235450, med: 190500, min: 80250 },
-                            6: { avg: 342343, med: 251900, min: 188000 },
-                            8: { avg: 333400, med: 333400, min: 333400 },
-                            9: { avg: 423625, med: 388300, min: 280600 },
-                            12: { avg: 269650, med: 269650, min: 231800 },
-                            15: { avg: 386400, med: 386400, min: 386400 },
-                            16: { avg: 607300, med: 656700, min: 475600 }
-                        },
-                        colors: {
-                            purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                            orange: { piece: { avg: 37925, med: 32630 }, grid: { avg: 12053.07, med: 10110 } },
-                            green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                            blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                        },
-                        redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
-                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                        redAvgGrid: 4.3
-                    }
-                },
-                recDiscount: 0.85,
-                gaoCollapseThreshold: 6
-            };
-
-            // ---- 核心函数（保持原样，但通过 _fmt 等混淆） ----
-            function weightedPrice(stat) {
-                if (!stat) return 0;
-                var avg = stat.avg || 0;
-                var med = stat.med || 0;
-                var min = stat.min !== undefined ? stat.min : (stat.med || 0) * 0.7;
-                if (stat.min === undefined) return avg * 0.6 + med * 0.4;
-                var spread = (avg - min) / (avg + 0.01);
-                var medWeight = 0.35 + Math.min(0.15, spread * 0.3);
-                var minWeight = 0.25 - Math.min(0.15, spread * 0.3);
-                var avgWeight = 1 - medWeight - minWeight;
-                avgWeight = Math.max(0.3, Math.min(0.6, avgWeight));
-                medWeight = Math.max(0.25, Math.min(0.5, medWeight));
-                minWeight = Math.max(0.05, Math.min(0.3, minWeight));
-                var totalW = avgWeight + medWeight + minWeight;
-                avgWeight /= totalW;
-                medWeight /= totalW;
-                minWeight /= totalW;
-                return avg * avgWeight + med * medWeight + min * minWeight;
+                anAvgLabel: '📐 均格',
+                anCountLabel: '📦 件数',
+                anUnitGrid: '格',
+                anUnitCount: '件'
             }
+        };
 
-            function dynamicRecDiscount(total) {
-                if (total < 500000) return 0.85;
-                if (total < 2000000) return 0.82;
-                if (total < 5000000) return 0.78;
-                return 0.74;
+        // ============================================================
+        // ★ 核心算法模块
+        // ============================================================
+        function fmt(n) {
+            if (n === undefined || n === null || isNaN(n)) return '0';
+            return Math.round(n).toLocaleString();
+        }
+
+        function clamp(v, mn, mx) { return Math.min(Math.max(v, mn), mx); }
+
+        function getSegKey(val) {
+            var segs = APP_DATA.segments;
+            for (var i = 0; i < segs.length; i++) {
+                if (val >= segs[i].min && val < segs[i].max) return segs[i].key;
             }
+            return 's1';
+        }
 
-            function getRedGridPrice(grid, map) {
-                var entry = map.redByGrid[grid];
-                if (!entry) return 0;
-                return weightedPrice(entry);
-            }
+        var CAL_KEY = 'calibration_factor_seg_v3';
 
-            function getColorGridPrice(colorKey, map) {
-                var colorData = map.colors[colorKey];
-                if (!colorData) return 0;
-                return weightedPrice(colorData.grid);
-            }
-
-            function getColorPiecePrice(colorKey, map) {
-                var colorData = map.colors[colorKey];
-                if (!colorData) return 0;
-                return weightedPrice(colorData.piece);
-            }
-
-            function getRedPiecePrice(map) {
-                return weightedPrice(map.redStat.piece);
-            }
-
-            function getRedGridAvgPrice(map) {
-                return weightedPrice(map.redStat.grid);
-            }
-
-            function getMap() { return CFG.maps[currentMap]; }
-
-            function fmt(n) { return _fmt(n); }
-
-            // ---- 状态 ----
-            var currentMode = 'classic';
-            var currentMap = 'dicheng';
-            var currentTab = 'huo';
-
-            // ---- UI 更新函数 ----
-            function updateQuickActions(rec, total, carPool, high) {
-                document.getElementById('qaRecValue').textContent = fmt(rec);
-                document.getElementById('qaTotalValue').textContent = fmt(total);
-                document.getElementById('qaCarValue').textContent = fmt(carPool);
-                document.getElementById('qaHighValue').textContent = fmt(high);
-            }
-
-            function updateCalibrateStatusDisplay() {
-                var statusEl = document.getElementById('calibrateStatus');
-                if (!statusEl) return;
-                var display = _getCalStatus(currentMap);
-                if (display === '未校准') {
-                    statusEl.textContent = UI_TEXT.calibrateStatusOff;
-                    statusEl.className = 'calibrate-status inactive';
-                } else {
-                    statusEl.textContent = '📊 ' + display;
-                    statusEl.className = 'calibrate-status active';
+        function getCalFactor(mapKey, val) {
+            try {
+                var d = JSON.parse(localStorage.getItem(CAL_KEY) || '{}');
+                var sk = getSegKey(val);
+                if (d[mapKey] && d[mapKey][sk] !== undefined) {
+                    var f = parseFloat(d[mapKey][sk]);
+                    return clamp(f, APP_DATA.algo.calibration.minFactor, APP_DATA.algo.calibration.maxFactor);
                 }
-            }
+                return 1.0;
+            } catch (e) { return 1.0; }
+        }
 
-            // ---- 模式/地图/Tab切换 ----
-            function setMode(mode) {
-                currentMode = mode;
-                document.querySelectorAll('.mode-btn').forEach(function(btn) {
-                    btn.classList.toggle('active', btn.dataset.mode === mode);
-                });
-                var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
-                if (fn[currentTab]) fn[currentTab]();
-            }
+        function setCalFactor(mapKey, val, ratio) {
+            try {
+                var d = JSON.parse(localStorage.getItem(CAL_KEY) || '{}');
+                if (!d[mapKey]) d[mapKey] = {};
+                var sk = getSegKey(val);
+                var old = d[mapKey][sk] || 1.0;
+                var cal = APP_DATA.algo.calibration;
+                var deviation = Math.abs(ratio - 1.0);
+                var w = (deviation > cal.outlierThreshold) ? cal.outlierWeight : cal.smoothWeight;
+                var nf = old * (1 - w) + ratio * w;
+                nf = clamp(nf, cal.minFactor, cal.maxFactor);
+                nf = Math.round(nf * 1000) / 1000;
+                d[mapKey][sk] = nf;
+                localStorage.setItem(CAL_KEY, JSON.stringify(d));
+                return nf;
+            } catch (e) { return ratio; }
+        }
 
+        function getCalStatus(mapKey) {
+            try {
+                var d = JSON.parse(localStorage.getItem(CAL_KEY) || '{}');
+                if (!d[mapKey]) return '未校准';
+                var parts = [];
+                var hasAny = false;
+                var segs = APP_DATA.segments;
+                for (var i = 0; i < segs.length; i++) {
+                    var v = d[mapKey][segs[i].key];
+                    if (v !== undefined && Math.abs(v - 1.0) > 0.01) {
+                        hasAny = true;
+                        parts.push(segs[i].label + ':' + v.toFixed(2));
+                    }
+                }
+                return hasAny ? parts.join(' | ') : '未校准';
+            } catch (e) { return '未校准'; }
+        }
+
+        function weightedPrice(stat) {
+            if (!stat) return 0;
+            var avg = stat.avg || 0;
+            var med = stat.med || 0;
+            var min = stat.min !== undefined ? stat.min : (stat.med || 0) * 0.7;
+            if (stat.min === undefined) return avg * 0.6 + med * 0.4;
+            var spread = (avg - min) / (avg + 0.01);
+            var spreadFactor = clamp(spread, 0, 1);
+            var pw = APP_DATA.algo.priceWeight;
+            var medWeight = 0.35 + spreadFactor * 0.20;
+            var minWeight = 0.15 + spreadFactor * 0.15;
+            var avgWeight = 1 - medWeight - minWeight;
+            avgWeight = clamp(avgWeight, pw.avgMin, pw.avgMax);
+            medWeight = clamp(medWeight, pw.medMin, pw.medMax);
+            minWeight = clamp(minWeight, pw.minMin, pw.minMax);
+            var totalW = avgWeight + medWeight + minWeight;
+            avgWeight /= totalW;
+            medWeight /= totalW;
+            minWeight /= totalW;
+            return avg * avgWeight + med * medWeight + min * minWeight;
+        }
+
+        function dynamicRecDiscount(total) {
+            var disc = APP_DATA.algo.discount;
+            for (var i = disc.length - 1; i >= 0; i--) {
+                if (total >= disc[i].threshold) return disc[i].rate;
+            }
+            return disc[0].rate;
+        }
+
+        function calcConfidence(inputCount, totalValue, gridSpread) {
+            var cfg = APP_DATA.algo.confidence;
+            var base = cfg.base;
+            var countBonus = Math.min(0.15, inputCount * cfg.countBonus);
+            var valueFactor = clamp(Math.log10(totalValue + 1) / 7, 0, cfg.valueFactor);
+            var spreadPenalty = clamp(gridSpread * cfg.spreadPenalty, 0, 0.12);
+            var conf = base + countBonus + valueFactor - spreadPenalty;
+            return clamp(conf, cfg.min, cfg.max);
+        }
+
+        function getMap() { return APP_DATA.maps[currentMap]; }
+
+        function getRedGridPrice(grid, map) {
+            var entry = map.redByGrid[grid];
+            return entry ? weightedPrice(entry) : 0;
+        }
+
+        function getRedGridAvgPrice(map) { return weightedPrice(map.redStat.grid); }
+
+        function getRedPiecePrice(map) { return weightedPrice(map.redStat.piece); }
+
+        function getColorGridPrice(colorKey, map) {
+            var data = map.colors[colorKey];
+            return data ? weightedPrice(data.grid) : 0;
+        }
+
+        function getColorPiecePrice(colorKey, map) {
+            var data = map.colors[colorKey];
+            return data ? weightedPrice(data.piece) : 0;
+        }
+
+        // ============================================================
+        // ★ 状态
+        // ============================================================
+        var currentMode = 'classic';
+        var currentMap = 'dicheng';
+        var currentTab = 'huo';
+
+        function updateQuickActions(rec, total, carPool, high) {
+            document.getElementById('qaRecValue').textContent = fmt(rec);
+            document.getElementById('qaTotalValue').textContent = fmt(total);
+            document.getElementById('qaCarValue').textContent = fmt(carPool || 0);
+            document.getElementById('qaHighValue').textContent = fmt(high || 0);
+        }
+
+        function updateCalibrateStatusDisplay() {
+            var statusEl = document.getElementById('calibrateStatus');
+            if (!statusEl) return;
+            var display = getCalStatus(currentMap);
+            if (display === '未校准') {
+                statusEl.textContent = '未校准';
+                statusEl.className = 'calibrate-status inactive';
+            } else {
+                statusEl.textContent = '📊 ' + display;
+                statusEl.className = 'calibrate-status active';
+            }
+        }
+
+        function setMode(mode) {
+            currentMode = mode;
             document.querySelectorAll('.mode-btn').forEach(function(btn) {
-                btn.onclick = function() { setMode(this.dataset.mode); };
+                btn.classList.toggle('active', btn.dataset.mode === mode);
             });
+            var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
+            if (fn[currentTab]) fn[currentTab]();
+        }
 
-            function switchTab(tab) {
-                currentTab = tab;
-                document.querySelectorAll('[data-tab]').forEach(function(btn) {
-                    btn.classList.toggle('active', btn.dataset.tab === tab);
-                });
-                document.querySelectorAll('.page').forEach(function(page) {
-                    page.classList.toggle('active', page.id === 'page-' + tab);
-                });
-                var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
-                if (fn[tab]) fn[tab]();
-            }
+        document.querySelectorAll('.mode-btn').forEach(function(btn) {
+            btn.onclick = function() { setMode(this.dataset.mode); };
+        });
 
+        function switchTab(tab) {
+            currentTab = tab;
             document.querySelectorAll('[data-tab]').forEach(function(btn) {
-                btn.onclick = function() { switchTab(this.dataset.tab); };
+                btn.classList.toggle('active', btn.dataset.tab === tab);
             });
+            document.querySelectorAll('.page').forEach(function(page) {
+                page.classList.toggle('active', page.id === 'page-' + tab);
+            });
+            var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
+            if (fn[tab]) fn[tab]();
+        }
 
-            function setMap(mapKey) {
-                currentMap = mapKey;
-                document.querySelectorAll('.map-switch button').forEach(function(btn) {
-                    btn.classList.toggle('on', btn.dataset.map === mapKey);
-                });
-                updateCalibrateStatusDisplay();
-                var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
-                if (fn[currentTab]) fn[currentTab]();
-            }
+        document.querySelectorAll('[data-tab]').forEach(function(btn) {
+            btn.onclick = function() { switchTab(this.dataset.tab); };
+        });
 
+        function setMap(mapKey) {
+            currentMap = mapKey;
             document.querySelectorAll('.map-switch button').forEach(function(btn) {
-                btn.onclick = function() { setMap(this.dataset.map); };
+                btn.classList.toggle('on', btn.dataset.map === mapKey);
+            });
+            updateCalibrateStatusDisplay();
+            var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
+            if (fn[currentTab]) fn[currentTab]();
+        }
+
+        document.querySelectorAll('.map-switch button').forEach(function(btn) {
+            btn.onclick = function() { setMap(this.dataset.map); };
+        });
+
+        // ============================================================
+        // ★ 霍姑姑
+        // ============================================================
+        function renderHuo() {
+            var el = document.getElementById('page-huo');
+            var map = getMap();
+            var colors = [
+                { key: 'green', label: APP_DATA.text.colorGreen, dot: 'green' },
+                { key: 'blue', label: APP_DATA.text.colorBlue, dot: 'blue' },
+                { key: 'purple', label: APP_DATA.text.colorPurple, dot: 'purple' },
+                { key: 'orange', label: APP_DATA.text.colorOrange, dot: 'orange' },
+                { key: 'red', label: APP_DATA.text.colorRed, dot: 'red' }
+            ];
+
+            var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4a9ae8,#2a6ab0);">霍</div><div><div class="name">霍姑姑 · 颜色格数估值</div><div class="role">推荐道具：红格怀表，巨物价值，四件放大镜，奢品扫描仪，古董扫描仪，全藏放大镜<span class="tip2">💡 建议使用奢品扫描仪和古董扫描仪。红格数过多建议用奢品扫描仪确认车身，有则用车池出价；古董价值可用古董扫描仪确认。</span></div></div></div></div><div class="sec-body">';
+
+            colors.forEach(function(col) {
+                var price = (col.key === 'red') ? getRedGridAvgPrice(map) : getColorGridPrice(col.key, map);
+                html += '<div class="row">' +
+                    '<span class="lbl"><span class="dot ' + col.dot + '"></span>' + col.label + '（格数）</span>' +
+                    '<div class="qty"><input type="number" id="huo_' + col.key + '" min="0" step="1" value="" data-price="' +
+                    price + '"></div>' +
+                    '<span class="btn-group">' +
+                    '<button class="qbtn neg big" data-target="huo_' + col.key + '" data-delta="-10">-10</button>' +
+                    '<button class="qbtn neg" data-target="huo_' + col.key + '" data-delta="-5">-5</button>' +
+                    '<button class="qbtn neg" data-target="huo_' + col.key + '" data-delta="-1">-1</button>' +
+                    '<button class="qbtn pos" data-target="huo_' + col.key + '" data-delta="1">+1</button>' +
+                    '<button class="qbtn pos" data-target="huo_' + col.key + '" data-delta="5">+5</button>' +
+                    '<button class="qbtn pos big" data-target="huo_' + col.key + '" data-delta="10">+10</button>' +
+                    '</span>' +
+                    '<span class="sub" id="huo_' + col.key + '_sub">0</span>' +
+                    '</div>';
             });
 
-            // ============================================================
-            // ★ 四个角色的渲染函数（与之前相同，仅使用 fmt 混淆）
-            // ============================================================
-            function renderHuo() {
-                var el = document.getElementById('page-huo');
-                var map = getMap();
-                var colors = [
-                    { key: 'green', label: UI_TEXT.colorGreen, dot: 'green', priceFn: function() { return getColorGridPrice(
-                            'green', map); } },
-                    { key: 'blue', label: UI_TEXT.colorBlue, dot: 'blue', priceFn: function() { return getColorGridPrice(
-                            'blue', map); } },
-                    { key: 'purple', label: UI_TEXT.colorPurple, dot: 'purple', priceFn: function() { return getColorGridPrice(
-                            'purple', map); } },
-                    { key: 'orange', label: UI_TEXT.colorOrange, dot: 'orange', priceFn: function() { return getColorGridPrice(
-                            'orange', map); } },
-                    { key: 'red', label: UI_TEXT.colorRed, dot: 'red', priceFn: function() { return getRedGridAvgPrice(
-                            map); } }
-                ];
+            html += '<div class="special-row"><span class="lbl">' + APP_DATA.text.carLabel + '</span>' +
+                '<div class="qty"><input type="number" id="huoCarPool" min="0" step="1000" value=""></div>' +
+                '<span class="btn-group">' +
+                '<button class="qbtn pos" id="carPlus1">' + APP_DATA.text.carBtn1 + '</button>' +
+                '<button class="qbtn pos" id="carPlus2">' + APP_DATA.text.carBtn2 + '</button>' +
+                '<button class="qbtn pos" id="carPlus3">' + APP_DATA.text.carBtn3 + '</button>' +
+                '</span></div>';
 
-                var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4a9ae8,#2a6ab0);">霍</div><div><div class="name">' +
-                    UI_TEXT.huoTitle + '</div><div class="role">' + UI_TEXT.huoRole +
-                    '<span class="tip2">' + UI_TEXT.huoTip + '</span></div></div></div></div><div class="sec-body">';
+            html += '<div class="special-row"><span class="lbl">' + APP_DATA.text.antiqueLabel + '</span>' +
+                '<div class="qty"><input type="number" id="huoAntique" min="0" step="1000" value=""></div>' +
+                '<span class="btn-group">' +
+                '<button class="qbtn pos" id="antiquePlus1">' + APP_DATA.text.antiqueBtn1 + '</button>' +
+                '<button class="qbtn pos" id="antiquePlus2">' + APP_DATA.text.antiqueBtn2 + '</button>' +
+                '<button class="qbtn pos" id="antiquePlus3">' + APP_DATA.text.antiqueBtn3 + '</button>' +
+                '</span></div>';
 
-                colors.forEach(function(col) {
-                    var price = col.priceFn();
-                    html += '<div class="row">' +
-                        '<span class="lbl"><span class="dot ' + col.dot + '"></span>' + col.label + '（格数）</span>' +
-                        '<div class="qty"><input type="number" id="huo_' + col.key + '" min="0" step="1" value="" data-price="' +
-                        price + '"></div>' +
-                        '<span class="btn-group">' +
-                        '<button class="qbtn neg big" data-target="huo_' + col.key + '" data-delta="-10">-10</button>' +
-                        '<button class="qbtn neg" data-target="huo_' + col.key + '" data-delta="-5">-5</button>' +
-                        '<button class="qbtn neg" data-target="huo_' + col.key + '" data-delta="-1">-1</button>' +
-                        '<button class="qbtn pos" data-target="huo_' + col.key + '" data-delta="1">+1</button>' +
-                        '<button class="qbtn pos" data-target="huo_' + col.key + '" data-delta="5">+5</button>' +
-                        '<button class="qbtn pos big" data-target="huo_' + col.key + '" data-delta="10">+10</button>' +
-                        '</span>' +
-                        '<span class="sub" id="huo_' + col.key + '_sub">0</span>' +
-                        '</div>';
-                });
+            html += '<div class="special-row" style="border-top:1px solid rgba(232,196,104,0.15);">' +
+                '<span class="lbl">📊 实际仓库总价值</span>' +
+                '<div class="qty" style="flex:1; min-width:80px;"><input type="number" id="huoActualTotal" min="0" step="1000" value="" placeholder="输入实际揭示值" style="width:100%;"></div>' +
+                '<button class="qbtn pos" id="huoCalibrateBtn" style="min-width:50px;">校准</button>' +
+                '</div>';
 
-                html += '<div class="special-row"><span class="lbl">' + UI_TEXT.carLabel + '</span>' +
-                    '<div class="qty"><input type="number" id="huoCarPool" min="0" step="1000" value=""></div>' +
-                    '<span class="btn-group">' +
-                    '<button class="qbtn pos" id="carPlus1">' + UI_TEXT.carBtn1 + '</button>' +
-                    '<button class="qbtn pos" id="carPlus2">' + UI_TEXT.carBtn2 + '</button>' +
-                    '<button class="qbtn pos" id="carPlus3">' + UI_TEXT.carBtn3 + '</button>' +
-                    '</span></div>';
+            html += '<div style="font-size:10px;color:var(--text-secondary);padding:2px 0 4px;">' + APP_DATA.text
+                .infoDefault + '</div>';
 
-                html += '<div class="special-row"><span class="lbl">' + UI_TEXT.antiqueLabel + '</span>' +
-                    '<div class="qty"><input type="number" id="huoAntique" min="0" step="1000" value=""></div>' +
-                    '<span class="btn-group">' +
-                    '<button class="qbtn pos" id="antiquePlus1">' + UI_TEXT.antiqueBtn1 + '</button>' +
-                    '<button class="qbtn pos" id="antiquePlus2">' + UI_TEXT.antiqueBtn2 + '</button>' +
-                    '<button class="qbtn pos" id="antiquePlus3">' + UI_TEXT.antiqueBtn3 + '</button>' +
-                    '</span></div>';
+            html += '<div class="total-bar">' +
+                '<div class="t-item"><span class="label">' + APP_DATA.text.recLabel +
+                '</span><span class="value rec" id="huoRec">0</span></div>' +
+                '<div class="t-item"><span class="label">' + APP_DATA.text.totalLabel +
+                '</span><span class="value" id="huoTotal">0</span></div>' +
+                '</div>';
+            html +=
+                '<div class="confidence-bar"><span>' + APP_DATA.text.confidenceLabel +
+                '</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:85%"></div></div><span class="label" id="huoConfidenceLabel">85%</span></div>';
+            html +=
+            '<div class="reset-row"><button class="btn-reset" id="huoReset">' + APP_DATA.text.resetLabel + '</button></div>';
+            html += '</div></div>';
+            el.innerHTML = html;
 
-                html += '<div class="special-row" style="border-top:1px solid rgba(232,196,104,0.15);">' +
-                    '<span class="lbl">' + UI_TEXT.calibrateLabel + '</span>' +
-                    '<div class="qty" style="flex:1; min-width:80px;"><input type="number" id="huoActualTotal" min="0" step="1000" value="" placeholder="' +
-                    UI_TEXT.calibratePlaceholder + '" style="width:100%;"></div>' +
-                    '<button class="qbtn pos" id="huoCalibrateBtn" style="min-width:50px;">' + UI_TEXT.calibrateBtn +
-                    '</button>' +
-                    '</div>';
+            var currentRawTotal = 0;
 
-                html += '<div style="font-size:10px;color:var(--text-secondary);padding:2px 0 4px;">' + UI_TEXT
-                    .infoDefault + '</div>';
-
-                html += '<div class="total-bar">' +
-                    '<div class="t-item"><span class="label">' + UI_TEXT.recLabel +
-                    '</span><span class="value rec" id="huoRec">0</span></div>' +
-                    '<div class="t-item"><span class="label">' + UI_TEXT.totalLabel +
-                    '</span><span class="value" id="huoTotal">0</span></div>' +
-                    '</div>';
-                html +=
-                    '<div class="confidence-bar"><span>' + UI_TEXT.confidenceLabel +
-                    '</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:85%"></div></div><span class="label" id="huoConfidenceLabel">85%</span></div>';
-                html +=
-                '<div class="reset-row"><button class="btn-reset" id="huoReset">' + UI_TEXT.resetLabel + '</button></div>';
-                html += '</div></div>';
-                el.innerHTML = html;
-
-                var currentRawTotal = 0;
-
-                function calcHuo() {
-                    var total = 0;
-                    var stats = [];
-                    colors.forEach(function(col) {
-                        var inp = document.getElementById('huo_' + col.key);
-                        if (!inp) return;
-                        var val = parseFloat(inp.value) || 0;
-                        var price = parseFloat(inp.dataset.price) || 0;
-                        var sub = val * price;
-                        var subEl = document.getElementById('huo_' + col.key + '_sub');
-                        if (subEl) subEl.textContent = fmt(sub);
-                        total += sub;
-                        if (val > 0) stats.push({ val: val });
-                    });
-
-                    var carPool = parseFloat(document.getElementById('huoCarPool').value) || 0;
-                    var antique = parseFloat(document.getElementById('huoAntique').value) || 0;
-                    var rawTotal = Math.max(0, total - carPool - antique);
-                    currentRawTotal = rawTotal;
-
-                    var factor = _getCalFactor(currentMap, rawTotal);
-                    var finalTotal = rawTotal * factor;
-
-                    document.getElementById('huoTotal').textContent = fmt(finalTotal);
-                    var disc = dynamicRecDiscount(finalTotal);
-                    var rec = finalTotal * disc;
-                    if (currentMode === 'aggressive') { rec = finalTotal * 0.95; }
-                    document.getElementById('huoRec').textContent = fmt(rec);
-
-                    var conf = 0.85;
-                    if (stats.length > 0) {
-                        var vals = stats.map(function(s) { return s.val; });
-                        var maxV = Math.max.apply(null, vals);
-                        var minV = Math.min.apply(null, vals);
-                        var spread = (maxV - minV) / (maxV + 0.01);
-                        conf = 0.90 - spread * 0.35;
-                        conf = Math.max(0.60, Math.min(0.96, conf));
-                    }
-                    var fill = document.getElementById('huoConfidenceFill');
-                    var label = document.getElementById('huoConfidenceLabel');
-                    if (fill) {
-                        fill.style.width = (conf * 100) + '%';
-                        fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
-                            'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
-                    }
-                    if (label) label.textContent = Math.round(conf * 100) + '%';
-                    var high = finalTotal * 1.2;
-                    updateQuickActions(rec, finalTotal, carPool, high);
-                    updateCalibrateStatusDisplay();
-                }
-
-                document.getElementById('huoCalibrateBtn').onclick = function() {
-                    var actual = parseFloat(document.getElementById('huoActualTotal').value);
-                    if (!actual || actual <= 0) { alert(UI_TEXT.calibrateError); return; }
-                    if (currentRawTotal <= 0) { alert('请先输入格数计算估值'); return; }
-                    var ratio = actual / currentRawTotal;
-                    var newFactor = _setCalFactor(currentMap, currentRawTotal, ratio);
-                    document.getElementById('huoActualTotal').value = '';
-                    alert(UI_TEXT.calibrateSuccess + ' (分段: ' + _getSegKey(currentRawTotal) + ' 系数: ' + newFactor
-                        .toFixed(2) + ')');
-                    updateCalibrateStatusDisplay();
-                    calcHuo();
-                };
-
-                el.querySelectorAll('.qbtn[data-target]').forEach(function(btn) {
-                    btn.onclick = function() {
-                        var targetId = this.dataset.target;
-                        var delta = parseInt(this.dataset.delta) || 0;
-                        var inp = document.getElementById(targetId);
-                        if (!inp) return;
-                        var cur = parseFloat(inp.value) || 0;
-                        var newVal = Math.max(0, cur + delta);
-                        inp.value = newVal;
-                        calcHuo();
-                    };
-                });
-
-                document.getElementById('carPlus1').onclick = function() { document.getElementById('huoCarPool').value =
-                        90000;
-                    calcHuo(); };
-                document.getElementById('carPlus2').onclick = function() { document.getElementById('huoCarPool').value =
-                        180000;
-                    calcHuo(); };
-                document.getElementById('carPlus3').onclick = function() { document.getElementById('huoCarPool').value =
-                        300000;
-                    calcHuo(); };
-                document.getElementById('antiquePlus1').onclick = function() { document.getElementById('huoAntique')
-                        .value = 90000;
-                    calcHuo(); };
-                document.getElementById('antiquePlus2').onclick = function() { document.getElementById('huoAntique')
-                        .value = 180000;
-                    calcHuo(); };
-                document.getElementById('antiquePlus3').onclick = function() { document.getElementById('huoAntique')
-                        .value = 300000;
-                    calcHuo(); };
-
+            function calcHuo() {
+                var total = 0;
+                var vals = [];
                 colors.forEach(function(col) {
                     var inp = document.getElementById('huo_' + col.key);
-                    if (inp) inp.addEventListener('input', calcHuo);
+                    if (!inp) return;
+                    var val = parseFloat(inp.value) || 0;
+                    var price = parseFloat(inp.dataset.price) || 0;
+                    var sub = val * price;
+                    var subEl = document.getElementById('huo_' + col.key + '_sub');
+                    if (subEl) subEl.textContent = fmt(sub);
+                    total += sub;
+                    if (val > 0) vals.push(val);
                 });
-                document.getElementById('huoCarPool').addEventListener('input', calcHuo);
-                document.getElementById('huoAntique').addEventListener('input', calcHuo);
 
-                document.getElementById('huoReset').onclick = function() {
-                    colors.forEach(function(col) { var inp = document.getElementById('huo_' + col.key); if (inp) inp
-                            .value = ''; });
-                    document.getElementById('huoCarPool').value = '';
-                    document.getElementById('huoAntique').value = '';
-                    document.getElementById('huoActualTotal').value = '';
-                    currentRawTotal = 0;
-                    calcHuo();
-                };
-                calcHuo();
+                var carPool = parseFloat(document.getElementById('huoCarPool').value) || 0;
+                var antique = parseFloat(document.getElementById('huoAntique').value) || 0;
+                var rawTotal = Math.max(0, total - carPool - antique);
+                currentRawTotal = rawTotal;
+
+                var factor = getCalFactor(currentMap, rawTotal);
+                var finalTotal = rawTotal * factor;
+
+                document.getElementById('huoTotal').textContent = fmt(finalTotal);
+                var disc = dynamicRecDiscount(finalTotal);
+                var rec = finalTotal * disc;
+                if (currentMode === 'aggressive') rec = finalTotal * APP_DATA.algo.aggressiveDiscount;
+                document.getElementById('huoRec').textContent = fmt(rec);
+
+                var gridSpread = 0;
+                if (vals.length > 1) {
+                    var maxV = Math.max.apply(null, vals);
+                    var minV = Math.min.apply(null, vals);
+                    gridSpread = (maxV - minV) / (maxV + 0.01);
+                }
+                var conf = calcConfidence(vals.length, finalTotal, gridSpread);
+                var fill = document.getElementById('huoConfidenceFill');
+                var label = document.getElementById('huoConfidenceLabel');
+                if (fill) {
+                    fill.style.width = (conf * 100) + '%';
+                    fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
+                        'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
+                }
+                if (label) label.textContent = Math.round(conf * 100) + '%';
+
+                var high = finalTotal * 1.2;
+                updateQuickActions(rec, finalTotal, carPool, high);
+                updateCalibrateStatusDisplay();
             }
 
-            // ---- renderGao, renderSu, renderAn 与之前相同（略，保持功能完整） ----
-            // 为了简洁，此处省略重复代码，实际使用时需保留完整实现
-            function renderGao() {
-                var el = document.getElementById('page-gao');
-                var map = getMap();
-                var gridOptions = map.gridOptions || [];
-                var threshold = 6;
-                el.innerHTML =
-                    '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e05555,#b03030);">晋</div><div><div class="name">' +
-                    UI_TEXT.gaoTitle + '</div><div class="role">' + UI_TEXT.gaoRole +
-                    '<span class="tip2">' + UI_TEXT.gaoTip + '</span></div></div></div></div><div class="sec-body" id="gaoBody"></div></div>';
-                var body = document.getElementById('gaoBody');
-                var html = '';
-                var visibleGrids = gridOptions.filter(function(g) { return g <= threshold; });
-                var hiddenGrids = gridOptions.filter(function(g) { return g > threshold; });
+            document.getElementById('huoCalibrateBtn').onclick = function() {
+                var actual = parseFloat(document.getElementById('huoActualTotal').value);
+                if (!actual || actual <= 0) { alert('请输入有效数值'); return; }
+                if (currentRawTotal <= 0) { alert('请先输入格数计算估值'); return; }
+                var ratio = actual / currentRawTotal;
+                var newFactor = setCalFactor(currentMap, currentRawTotal, ratio);
+                document.getElementById('huoActualTotal').value = '';
+                alert('✅ 分段校准成功 (分段: ' + getSegKey(currentRawTotal) + ' 系数: ' + newFactor.toFixed(2) + ')');
+                updateCalibrateStatusDisplay();
+                calcHuo();
+            };
 
-                visibleGrids.forEach(function(g) {
-                    var price = getRedGridPrice(g, map);
-                    html += '<div class="row">' +
-                        '<span class="lbl">' + g + UI_TEXT.gridLabel + '</span>' +
-                        '<div class="qty"><input type="number" id="gao_grid_' + g + '" min="0" step="1" value="" data-price="' +
-                        price + '"></div>' +
-                        '<span class="simple-btn-group">' +
-                        '<button class="sbtn neg" data-target="gao_grid_' + g + '" data-delta="-1">-1</button>' +
-                        '<button class="sbtn pos" data-target="gao_grid_' + g + '" data-delta="1">+1</button>' +
-                        '</span>' +
-                        '<span class="sub" id="gao_grid_' + g + '_sub">0</span>' +
-                        '</div>';
-                });
+            el.querySelectorAll('.qbtn[data-target]').forEach(function(btn) {
+                btn.onclick = function() {
+                    var targetId = this.dataset.target;
+                    var delta = parseInt(this.dataset.delta) || 0;
+                    var inp = document.getElementById(targetId);
+                    if (!inp) return;
+                    var cur = parseFloat(inp.value) || 0;
+                    var newVal = Math.max(0, cur + delta);
+                    inp.value = newVal;
+                    calcHuo();
+                };
+            });
 
-                html += '<div class="collapsed-rows" id="gaoCollapsedRows">';
-                hiddenGrids.forEach(function(g) {
-                    var price = getRedGridPrice(g, map);
-                    html += '<div class="row">' +
-                        '<span class="lbl">' + g + UI_TEXT.gridLabel + '</span>' +
-                        '<div class="qty"><input type="number" id="gao_grid_' + g + '" min="0" step="1" value="" data-price="' +
-                        price + '"></div>' +
-                        '<span class="simple-btn-group">' +
-                        '<button class="sbtn neg" data-target="gao_grid_' + g + '" data-delta="-1">-1</button>' +
-                        '<button class="sbtn pos" data-target="gao_grid_' + g + '" data-delta="1">+1</button>' +
-                        '</span>' +
-                        '<span class="sub" id="gao_grid_' + g + '_sub">0</span>' +
-                        '</div>';
-                });
-                html += '</div>';
+            document.getElementById('carPlus1').onclick = function() { document.getElementById('huoCarPool').value =
+                90000;
+                calcHuo(); };
+            document.getElementById('carPlus2').onclick = function() { document.getElementById('huoCarPool').value =
+                180000;
+                calcHuo(); };
+            document.getElementById('carPlus3').onclick = function() { document.getElementById('huoCarPool').value =
+                300000;
+                calcHuo(); };
+            document.getElementById('antiquePlus1').onclick = function() { document.getElementById('huoAntique')
+                    .value = 90000;
+                calcHuo(); };
+            document.getElementById('antiquePlus2').onclick = function() { document.getElementById('huoAntique')
+                    .value = 180000;
+                calcHuo(); };
+            document.getElementById('antiquePlus3').onclick = function() { document.getElementById('huoAntique')
+                    .value = 300000;
+                calcHuo(); };
 
-                if (hiddenGrids.length > 0) {
-                    html += '<div class="collapse-toggle" id="gaoCollapseToggle">' + UI_TEXT.expandMore + '</div>';
-                }
+            colors.forEach(function(col) {
+                var inp = document.getElementById('huo_' + col.key);
+                if (inp) inp.addEventListener('input', calcHuo);
+            });
+            document.getElementById('huoCarPool').addEventListener('input', calcHuo);
+            document.getElementById('huoAntique').addEventListener('input', calcHuo);
 
-                html +=
-                    '<div class="row"><span class="lbl">' + UI_TEXT.purpleLabel +
-                    '</span><div class="qty"><input type="number" id="gao_purple" min="0" step="100" value=""></div><span class="sub" id="gao_purple_sub">0</span></div>';
-                html +=
-                    '<div class="row"><span class="lbl">' + UI_TEXT.orangeLabel +
-                    '</span><div class="qty"><input type="number" id="gao_orange" min="0" step="100" value=""></div><span class="sub" id="gao_orange_sub">0</span></div>';
+            document.getElementById('huoReset').onclick = function() {
+                colors.forEach(function(col) { var inp = document.getElementById('huo_' + col.key); if (inp) inp
+                        .value = ''; });
+                document.getElementById('huoCarPool').value = '';
+                document.getElementById('huoAntique').value = '';
+                document.getElementById('huoActualTotal').value = '';
+                currentRawTotal = 0;
+                calcHuo();
+            };
+            calcHuo();
+        }
 
-                var redPiecePrice = getRedPiecePrice(map);
+        // ============================================================
+        // ★ 高晋
+        // ============================================================
+        function renderGao() {
+            var el = document.getElementById('page-gao');
+            var map = getMap();
+            var gridOptions = map.gridOptions || [];
+            var threshold = 6;
+
+            el.innerHTML =
+                '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e05555,#b03030);">晋</div><div><div class="name">高晋 · 红品件数估值</div><div class="role">推荐道具：全域扫描枪，橙估价平板，紫估价平板，巨物价值，全藏放大镜。<span class="tip2">💡 推荐使用紫色和橙色估价平板，最后一轮使用全域扫描枪</span></div></div></div></div><div class="sec-body" id="gaoBody"></div></div>';
+
+            var body = document.getElementById('gaoBody');
+            var html = '';
+            var visibleGrids = gridOptions.filter(function(g) { return g <= threshold; });
+            var hiddenGrids = gridOptions.filter(function(g) { return g > threshold; });
+
+            visibleGrids.forEach(function(g) {
+                var price = getRedGridPrice(g, map);
                 html += '<div class="row">' +
-                    '<span class="lbl">' + UI_TEXT.redPieceLabel + '</span>' +
-                    '<div class="qty"><input type="number" id="gao_red_piece_cnt" min="0" step="1" value="" data-price="' +
-                    redPiecePrice + '"></div>' +
+                    '<span class="lbl">' + g + APP_DATA.text.gridLabel + '</span>' +
+                    '<div class="qty"><input type="number" id="gao_grid_' + g + '" min="0" step="1" value="" data-price="' +
+                    price + '"></div>' +
                     '<span class="simple-btn-group">' +
-                    '<button class="sbtn neg" data-target="gao_red_piece_cnt" data-delta="-1">-1</button>' +
-                    '<button class="sbtn pos" data-target="gao_red_piece_cnt" data-delta="1">+1</button>' +
+                    '<button class="sbtn neg" data-target="gao_grid_' + g + '" data-delta="-1">-1</button>' +
+                    '<button class="sbtn pos" data-target="gao_grid_' + g + '" data-delta="1">+1</button>' +
                     '</span>' +
-                    '<span class="sub" id="gao_red_piece_sub">0</span>' +
+                    '<span class="sub" id="gao_grid_' + g + '_sub">0</span>' +
                     '</div>';
+            });
 
-                var redGridPrice = getRedGridAvgPrice(map);
+            html += '<div class="collapsed-rows" id="gaoCollapsedRows" style="display:none;">';
+            hiddenGrids.forEach(function(g) {
+                var price = getRedGridPrice(g, map);
                 html += '<div class="row">' +
-                    '<span class="lbl">' + UI_TEXT.redGridLabel + '</span>' +
-                    '<div class="rg-fields" style="display:flex;gap:3px;flex:1;">' +
-                    '<input type="number" id="gao_red_grid_avg" min="0" step="0.1" placeholder="均格" value="" style="width:50px;">' +
-                    '<input type="number" id="gao_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:50px;">' +
-                    '</div>' +
+                    '<span class="lbl">' + g + APP_DATA.text.gridLabel + '</span>' +
+                    '<div class="qty"><input type="number" id="gao_grid_' + g + '" min="0" step="1" value="" data-price="' +
+                    price + '"></div>' +
                     '<span class="simple-btn-group">' +
-                    '<button class="sbtn neg" data-target="gao_red_grid_cnt" data-delta="-1">-1</button>' +
-                    '<button class="sbtn pos" data-target="gao_red_grid_cnt" data-delta="1">+1</button>' +
+                    '<button class="sbtn neg" data-target="gao_grid_' + g + '" data-delta="-1">-1</button>' +
+                    '<button class="sbtn pos" data-target="gao_grid_' + g + '" data-delta="1">+1</button>' +
                     '</span>' +
-                    '<span class="sub" id="gao_red_grid_sub">0</span>' +
+                    '<span class="sub" id="gao_grid_' + g + '_sub">0</span>' +
                     '</div>';
+            });
+            html += '</div>';
 
-                html += '<div class="total-bar">' +
-                    '<div class="t-item"><span class="label">' + UI_TEXT.recLabel +
-                    '</span><span class="value rec" id="gaoRec">0</span></div>' +
-                    '<div class="t-item"><span class="label">' + UI_TEXT.totalLabel +
-                    '</span><span class="value" id="gaoTotal">0</span></div>' +
-                    '</div>';
-                html +=
-                    '<div class="confidence-bar"><span>' + UI_TEXT.confidenceLabel +
-                    '</span><div class="bar-track"><div class="bar-fill" id="gaoConfidenceFill" style="width:85%"></div></div><span class="label" id="gaoConfidenceLabel">85%</span></div>';
-                html +=
-                '<div class="reset-row"><button class="btn-reset" id="gaoReset">' + UI_TEXT.resetLabel + '</button></div>';
-                body.innerHTML = html;
+            if (hiddenGrids.length > 0) {
+                html += '<div class="collapse-toggle" id="gaoCollapseToggle" style="font-size:10px;color:var(--accent2);cursor:pointer;padding:3px 0;text-align:center;border-top:1px solid rgba(42,58,90,0.05);">' +
+                    APP_DATA.text.expandMore + '</div>';
+            }
 
-                var toggle = document.getElementById('gaoCollapseToggle');
-                var collapsedRows = document.getElementById('gaoCollapsedRows');
-                if (toggle) {
-                    toggle.onclick = function() {
-                        var isOpen = collapsedRows.classList.toggle('open');
-                        toggle.textContent = isOpen ? UI_TEXT.collapseMore : UI_TEXT.expandMore;
-                    };
-                }
+            html +=
+                '<div class="row"><span class="lbl">' + APP_DATA.text.purpleLabel +
+                '</span><div class="qty"><input type="number" id="gao_purple" min="0" step="100" value=""></div><span class="sub" id="gao_purple_sub">0</span></div>';
+            html +=
+                '<div class="row"><span class="lbl">' + APP_DATA.text.orangeLabel +
+                '</span><div class="qty"><input type="number" id="gao_orange" min="0" step="100" value=""></div><span class="sub" id="gao_orange_sub">0</span></div>';
 
-                body.querySelectorAll('.sbtn[data-target]').forEach(function(btn) {
-                    btn.onclick = function() {
-                        var targetId = this.dataset.target;
-                        var delta = parseInt(this.dataset.delta) || 0;
-                        var inp = document.getElementById(targetId);
-                        if (!inp) return;
-                        var cur = parseFloat(inp.value) || 0;
-                        var newVal = Math.max(0, cur + delta);
-                        inp.value = newVal;
-                        calcGao();
-                    };
-                });
+            var redPiecePrice = getRedPiecePrice(map);
+            html += '<div class="row">' +
+                '<span class="lbl">' + APP_DATA.text.redPieceLabel + '</span>' +
+                '<div class="qty"><input type="number" id="gao_red_piece_cnt" min="0" step="1" value="" data-price="' +
+                redPiecePrice + '"></div>' +
+                '<span class="simple-btn-group">' +
+                '<button class="sbtn neg" data-target="gao_red_piece_cnt" data-delta="-1">-1</button>' +
+                '<button class="sbtn pos" data-target="gao_red_piece_cnt" data-delta="1">+1</button>' +
+                '</span>' +
+                '<span class="sub" id="gao_red_piece_sub">0</span>' +
+                '</div>';
 
-                var gaoRawTotal = 0;
+            var redGridPrice = getRedGridAvgPrice(map);
+            html += '<div class="row">' +
+                '<span class="lbl">' + APP_DATA.text.redGridLabel + '</span>' +
+                '<div class="rg-fields" style="display:flex;gap:3px;flex:1;">' +
+                '<input type="number" id="gao_red_grid_avg" min="0" step="0.1" placeholder="均格" value="" style="width:50px;">' +
+                '<input type="number" id="gao_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:50px;">' +
+                '</div>' +
+                '<span class="simple-btn-group">' +
+                '<button class="sbtn neg" data-target="gao_red_grid_cnt" data-delta="-1">-1</button>' +
+                '<button class="sbtn pos" data-target="gao_red_grid_cnt" data-delta="1">+1</button>' +
+                '</span>' +
+                '<span class="sub" id="gao_red_grid_sub">0</span>' +
+                '</div>';
 
-                function calcGao() {
-                    var total = 0;
-                    var inputCount = 0;
-                    gridOptions.forEach(function(g) {
-                        var inp = document.getElementById('gao_grid_' + g);
-                        if (inp) {
-                            var val = parseFloat(inp.value) || 0;
-                            var price = parseFloat(inp.dataset.price) || 0;
-                            var sub = val * price;
-                            var subEl = document.getElementById('gao_grid_' + g + '_sub');
-                            if (subEl) subEl.textContent = fmt(sub);
-                            total += sub;
-                            if (val > 0) inputCount++;
-                        }
-                    });
-                    var purple = parseFloat(document.getElementById('gao_purple').value) || 0;
-                    document.getElementById('gao_purple_sub').textContent = fmt(purple);
-                    total += purple;
-                    var orange = parseFloat(document.getElementById('gao_orange').value) || 0;
-                    document.getElementById('gao_orange_sub').textContent = fmt(orange);
-                    total += orange;
-                    var redPieceCnt = parseFloat(document.getElementById('gao_red_piece_cnt').value) || 0;
-                    var redPiecePrice2 = parseFloat(document.getElementById('gao_red_piece_cnt').dataset.price) ||
-                        getRedPiecePrice(map);
-                    var redPieceSub = redPieceCnt * redPiecePrice2;
-                    document.getElementById('gao_red_piece_sub').textContent = fmt(redPieceSub);
-                    total += redPieceSub;
-                    var avgGrid = parseFloat(document.getElementById('gao_red_grid_avg').value) || 0;
-                    var cntGrid = parseFloat(document.getElementById('gao_red_grid_cnt').value) || 0;
-                    var gridTotal = avgGrid * cntGrid;
-                    var redGridPrice2 = getRedGridAvgPrice(map);
-                    var redGridSub = gridTotal * redGridPrice2;
-                    document.getElementById('gao_red_grid_sub').textContent = fmt(redGridSub);
-                    total += redGridSub;
+            html += '<div class="total-bar">' +
+                '<div class="t-item"><span class="label">' + APP_DATA.text.recLabel +
+                '</span><span class="value rec" id="gaoRec">0</span></div>' +
+                '<div class="t-item"><span class="label">' + APP_DATA.text.totalLabel +
+                '</span><span class="value" id="gaoTotal">0</span></div>' +
+                '</div>';
+            html +=
+                '<div class="confidence-bar"><span>' + APP_DATA.text.confidenceLabel +
+                '</span><div class="bar-track"><div class="bar-fill" id="gaoConfidenceFill" style="width:85%"></div></div><span class="label" id="gaoConfidenceLabel">85%</span></div>';
+            html +=
+            '<div class="reset-row"><button class="btn-reset" id="gaoReset">' + APP_DATA.text.resetLabel + '</button></div>';
+            body.innerHTML = html;
 
-                    gaoRawTotal = total;
-                    var factor = _getCalFactor(currentMap, total);
-                    var finalTotal = total * factor;
+            var toggle = document.getElementById('gaoCollapseToggle');
+            var collapsedRows = document.getElementById('gaoCollapsedRows');
+            if (toggle) {
+                toggle.onclick = function() {
+                    var isOpen = collapsedRows.style.display !== 'none';
+                    collapsedRows.style.display = isOpen ? 'none' : 'block';
+                    toggle.textContent = isOpen ? APP_DATA.text.expandMore : APP_DATA.text.collapseMore;
+                };
+            }
 
-                    document.getElementById('gaoTotal').textContent = fmt(finalTotal);
-                    var disc = dynamicRecDiscount(finalTotal);
-                    var rec = finalTotal * disc;
-                    if (currentMode === 'aggressive') rec = finalTotal * 0.95;
-                    document.getElementById('gaoRec').textContent = fmt(rec);
+            body.querySelectorAll('.sbtn[data-target]').forEach(function(btn) {
+                btn.onclick = function() {
+                    var targetId = this.dataset.target;
+                    var delta = parseInt(this.dataset.delta) || 0;
+                    var inp = document.getElementById(targetId);
+                    if (!inp) return;
+                    var cur = parseFloat(inp.value) || 0;
+                    var newVal = Math.max(0, cur + delta);
+                    inp.value = newVal;
+                    calcGao();
+                };
+            });
 
-                    var conf = 0.82 + Math.min(0.12, inputCount * 0.02);
-                    conf = Math.max(0.65, Math.min(0.95, conf));
-                    var fill = document.getElementById('gaoConfidenceFill');
-                    var label = document.getElementById('gaoConfidenceLabel');
-                    if (fill) {
-                        fill.style.width = (conf * 100) + '%';
-                        fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
-                            'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
-                    }
-                    if (label) label.textContent = Math.round(conf * 100) + '%';
-                    var high = finalTotal * 1.2;
-                    updateQuickActions(rec, finalTotal, 0, high);
-                    updateCalibrateStatusDisplay();
-                }
+            function calcGao() {
+                var total = 0;
+                var inputCount = 0;
+                var vals = [];
 
                 gridOptions.forEach(function(g) {
                     var inp = document.getElementById('gao_grid_' + g);
-                    if (inp) inp.addEventListener('input', calcGao);
-                });
-                document.getElementById('gao_purple').addEventListener('input', calcGao);
-                document.getElementById('gao_orange').addEventListener('input', calcGao);
-                document.getElementById('gao_red_piece_cnt').addEventListener('input', calcGao);
-                document.getElementById('gao_red_grid_avg').addEventListener('input', calcGao);
-                document.getElementById('gao_red_grid_cnt').addEventListener('input', calcGao);
-                document.getElementById('gaoReset').onclick = function() {
-                    gridOptions.forEach(function(g) {
-                        var inp = document.getElementById('gao_grid_' + g);
-                        if (inp) inp.value = '';
-                    });
-                    document.getElementById('gao_purple').value = '';
-                    document.getElementById('gao_orange').value = '';
-                    document.getElementById('gao_red_piece_cnt').value = '';
-                    document.getElementById('gao_red_grid_avg').value = '';
-                    document.getElementById('gao_red_grid_cnt').value = '';
-                    gaoRawTotal = 0;
-                    calcGao();
-                };
-                calcGao();
-            }
-
-            function renderSu() {
-                var el = document.getElementById('page-su');
-                var map = getMap();
-                var colorKeys = ['green', 'blue', 'purple', 'orange', 'red'];
-                var colorLabels = [UI_TEXT.colorGreen, UI_TEXT.colorBlue, UI_TEXT.colorPurple, UI_TEXT.colorOrange,
-                    UI_TEXT.colorRed
-                ];
-                var colorDots = ['green', 'blue', 'purple', 'orange', 'red'];
-                el.innerHTML =
-                    '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#a66be0,#7a3fbf);">苏</div><div><div class="name">' +
-                    UI_TEXT.suTitle + '</div><div class="role">' + UI_TEXT.suRole +
-                    '<span class="tip2">' + UI_TEXT.suTip + '</span></div></div></div></div><div class="sec-body" id="suBody"></div></div>';
-                var body = document.getElementById('suBody');
-                var html = '';
-                colorKeys.forEach(function(key, idx) {
-                    var price = (key === 'red') ? getRedPiecePrice(map) : getColorPiecePrice(key, map);
-                    html += '<div class="row">' +
-                        '<span class="lbl"><span class="dot ' + colorDots[idx] + '"></span>' +
-                        colorLabels[idx] + '（件数）</span>' +
-                        '<div class="qty"><input type="number" id="su_' + key + '" min="0" step="1" value="" data-price="' +
-                        price + '"></div>' +
-                        '<span class="simple-btn-group">' +
-                        '<button class="sbtn neg" data-target="su_' + key + '" data-delta="-1">-1</button>' +
-                        '<button class="sbtn pos" data-target="su_' + key + '" data-delta="1">+1</button>' +
-                        '</span>' +
-                        '<span class="sub" id="su_' + key + '_sub">0</span>' +
-                        '</div>';
-                });
-
-                html += '<div class="row">' +
-                    '<span class="lbl"><span class="dot red"></span>' + UI_TEXT.colorRed + '（格数）</span>' +
-                    '<div class="rg-fields" style="display:flex;gap:3px;flex:1;">' +
-                    '<input type="number" id="su_red_grid_avg" min="0" step="0.1" placeholder="均格" value="" style="width:50px;">' +
-                    '<input type="number" id="su_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:50px;">' +
-                    '</div>' +
-                    '<span class="simple-btn-group">' +
-                    '<button class="sbtn neg" data-target="su_red_grid_cnt" data-delta="-1">-1</button>' +
-                    '<button class="sbtn pos" data-target="su_red_grid_cnt" data-delta="1">+1</button>' +
-                    '</span>' +
-                    '<span class="sub" id="su_red_grid_sub">0</span>' +
-                    '</div>';
-
-                html += '<div class="total-bar">' +
-                    '<div class="t-item"><span class="label">' + UI_TEXT.recLabel +
-                    '</span><span class="value rec" id="suRec">0</span></div>' +
-                    '<div class="t-item"><span class="label">' + UI_TEXT.totalLabel +
-                    '</span><span class="value" id="suTotal">0</span></div>' +
-                    '</div>';
-                html +=
-                    '<div class="confidence-bar"><span>' + UI_TEXT.confidenceLabel +
-                    '</span><div class="bar-track"><div class="bar-fill" id="suConfidenceFill" style="width:85%"></div></div><span class="label" id="suConfidenceLabel">85%</span></div>';
-                html +=
-                '<div class="reset-row"><button class="btn-reset" id="suReset">' + UI_TEXT.resetLabel + '</button></div>';
-                body.innerHTML = html;
-
-                body.querySelectorAll('.sbtn[data-target]').forEach(function(btn) {
-                    btn.onclick = function() {
-                        var targetId = this.dataset.target;
-                        var delta = parseInt(this.dataset.delta) || 0;
-                        var inp = document.getElementById(targetId);
-                        if (!inp) return;
-                        var cur = parseFloat(inp.value) || 0;
-                        var newVal = Math.max(0, cur + delta);
-                        inp.value = newVal;
-                        calcSu();
-                    };
-                });
-
-                var suRawTotal = 0;
-
-                function calcSu() {
-                    var total = 0;
-                    var inputCount = 0;
-                    colorKeys.forEach(function(key) {
-                        var inp = document.getElementById('su_' + key);
+                    if (inp) {
                         var val = parseFloat(inp.value) || 0;
                         var price = parseFloat(inp.dataset.price) || 0;
                         var sub = val * price;
-                        document.getElementById('su_' + key + '_sub').textContent = fmt(sub);
+                        var subEl = document.getElementById('gao_grid_' + g + '_sub');
+                        if (subEl) subEl.textContent = fmt(sub);
                         total += sub;
-                        if (val > 0) inputCount++;
-                    });
-                    var avgGrid = parseFloat(document.getElementById('su_red_grid_avg').value) || 0;
-                    var cntGrid = parseFloat(document.getElementById('su_red_grid_cnt').value) || 0;
-                    var gridTotal = avgGrid * cntGrid;
-                    var redGridPrice = getRedGridAvgPrice(map);
-                    var redGridSub = gridTotal * redGridPrice;
-                    document.getElementById('su_red_grid_sub').textContent = fmt(redGridSub);
-                    total += redGridSub;
-
-                    suRawTotal = total;
-                    var factor = _getCalFactor(currentMap, total);
-                    var finalTotal = total * factor;
-
-                    document.getElementById('suTotal').textContent = fmt(finalTotal);
-                    var disc = dynamicRecDiscount(finalTotal);
-                    var rec = finalTotal * disc;
-                    if (currentMode === 'aggressive') rec = finalTotal * 0.95;
-                    document.getElementById('suRec').textContent = fmt(rec);
-                    var conf = 0.80 + Math.min(0.15, inputCount * 0.025);
-                    conf = Math.max(0.60, Math.min(0.95, conf));
-                    var fill = document.getElementById('suConfidenceFill');
-                    var label = document.getElementById('suConfidenceLabel');
-                    if (fill) {
-                        fill.style.width = (conf * 100) + '%';
-                        fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
-                            'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
+                        if (val > 0) { inputCount++;
+                            vals.push(val); }
                     }
-                    if (label) label.textContent = Math.round(conf * 100) + '%';
-                    var high = finalTotal * 1.2;
-                    updateQuickActions(rec, finalTotal, 0, high);
-                    updateCalibrateStatusDisplay();
-                }
-
-                colorKeys.forEach(function(key) {
-                    document.getElementById('su_' + key).addEventListener('input', calcSu);
                 });
-                document.getElementById('su_red_grid_avg').addEventListener('input', calcSu);
-                document.getElementById('su_red_grid_cnt').addEventListener('input', calcSu);
-                document.getElementById('suReset').onclick = function() {
-                    colorKeys.forEach(function(key) { document.getElementById('su_' + key).value = ''; });
-                    document.getElementById('su_red_grid_avg').value = '';
-                    document.getElementById('su_red_grid_cnt').value = '';
-                    suRawTotal = 0;
-                    calcSu();
-                };
-                calcSu();
+
+                var purple = parseFloat(document.getElementById('gao_purple').value) || 0;
+                document.getElementById('gao_purple_sub').textContent = fmt(purple);
+                total += purple;
+                if (purple > 0) inputCount++;
+
+                var orange = parseFloat(document.getElementById('gao_orange').value) || 0;
+                document.getElementById('gao_orange_sub').textContent = fmt(orange);
+                total += orange;
+                if (orange > 0) inputCount++;
+
+                var redPieceCnt = parseFloat(document.getElementById('gao_red_piece_cnt').value) || 0;
+                var redPiecePrice2 = parseFloat(document.getElementById('gao_red_piece_cnt').dataset.price) ||
+                    getRedPiecePrice(map);
+                var redPieceSub = redPieceCnt * redPiecePrice2;
+                document.getElementById('gao_red_piece_sub').textContent = fmt(redPieceSub);
+                total += redPieceSub;
+                if (redPieceCnt > 0) inputCount++;
+
+                var avgGrid = parseFloat(document.getElementById('gao_red_grid_avg').value) || 0;
+                var cntGrid = parseFloat(document.getElementById('gao_red_grid_cnt').value) || 0;
+                var gridTotal = avgGrid * cntGrid;
+                var redGridPrice2 = getRedGridAvgPrice(map);
+                var redGridSub = gridTotal * redGridPrice2;
+                document.getElementById('gao_red_grid_sub').textContent = fmt(redGridSub);
+                total += redGridSub;
+                if (avgGrid > 0 && cntGrid > 0) inputCount++;
+
+                var factor = getCalFactor(currentMap, total);
+                var finalTotal = total * factor;
+
+                document.getElementById('gaoTotal').textContent = fmt(finalTotal);
+                var disc = dynamicRecDiscount(finalTotal);
+                var rec = finalTotal * disc;
+                if (currentMode === 'aggressive') rec = finalTotal * APP_DATA.algo.aggressiveDiscount;
+                document.getElementById('gaoRec').textContent = fmt(rec);
+
+                var gridSpread = 0;
+                if (vals.length > 1) {
+                    var maxV = Math.max.apply(null, vals);
+                    var minV = Math.min.apply(null, vals);
+                    gridSpread = (maxV - minV) / (maxV + 0.01);
+                }
+                var conf = calcConfidence(inputCount, finalTotal, gridSpread);
+                var fill = document.getElementById('gaoConfidenceFill');
+                var label = document.getElementById('gaoConfidenceLabel');
+                if (fill) {
+                    fill.style.width = (conf * 100) + '%';
+                    fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
+                        'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
+                }
+                if (label) label.textContent = Math.round(conf * 100) + '%';
+
+                var high = finalTotal * 1.2;
+                updateQuickActions(rec, finalTotal, 0, high);
+                updateCalibrateStatusDisplay();
             }
 
-            function renderAn() {
-                var el = document.getElementById('page-an');
-                var map = getMap();
-                var grids = map.gridOptions || [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
+            gridOptions.forEach(function(g) {
+                var inp = document.getElementById('gao_grid_' + g);
+                if (inp) inp.addEventListener('input', calcGao);
+            });
+            document.getElementById('gao_purple').addEventListener('input', calcGao);
+            document.getElementById('gao_orange').addEventListener('input', calcGao);
+            document.getElementById('gao_red_piece_cnt').addEventListener('input', calcGao);
+            document.getElementById('gao_red_grid_avg').addEventListener('input', calcGao);
+            document.getElementById('gao_red_grid_cnt').addEventListener('input', calcGao);
 
-                el.innerHTML =
-                    '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4ec97a,#2a9a5a);">安</div><div><div class="name">' +
-                    UI_TEXT.anTitle + '</div><div class="role">' + UI_TEXT.anRole +
-                    '</div></div></div></div><div class="sec-body" id="anBody"></div></div>';
+            document.getElementById('gaoReset').onclick = function() {
+                gridOptions.forEach(function(g) {
+                    var inp = document.getElementById('gao_grid_' + g);
+                    if (inp) inp.value = '';
+                });
+                document.getElementById('gao_purple').value = '';
+                document.getElementById('gao_orange').value = '';
+                document.getElementById('gao_red_piece_cnt').value = '';
+                document.getElementById('gao_red_grid_avg').value = '';
+                document.getElementById('gao_red_grid_cnt').value = '';
+                calcGao();
+            };
+            calcGao();
+        }
 
-                var body = document.getElementById('anBody');
+        // ============================================================
+        // ★ 苏琦
+        // ============================================================
+        function renderSu() {
+            var el = document.getElementById('page-su');
+            var map = getMap();
+            var colorKeys = ['green', 'blue', 'purple', 'orange', 'red'];
+            var colorLabels = [APP_DATA.text.colorGreen, APP_DATA.text.colorBlue, APP_DATA.text.colorPurple,
+                APP_DATA.text.colorOrange, APP_DATA.text.colorRed
+            ];
+            var colorDots = ['green', 'blue', 'purple', 'orange', 'red'];
 
-                var html = '<div class="row">' +
-                    '<span class="lbl">红均格</span>' +
-                    '<div class="qty"><input type="number" id="anAvg" step="0.1" min="0.5" max="16" value="" style="width:100%;"></div>' +
-                    '<span class="btn-group">' +
-                    '<button class="qbtn neg" id="anStepMinus1" data-delta="-1">-1</button>' +
-                    '<button class="qbtn neg" id="anStepMinus01" data-delta="-0.1">-0.1</button>' +
-                    '<button class="qbtn pos" id="anStepPlus01" data-delta="0.1">+0.1</button>' +
-                    '<button class="qbtn pos" id="anStepPlus1" data-delta="1">+1</button>' +
+            el.innerHTML =
+                '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#a66be0,#7a3fbf);">苏</div><div><div class="name">苏琦 · 颜色件数估值</div><div class="role">推荐道具：紫件数观光棒，橙件数观光棒，红格怀表，四件放大镜，全藏放大镜<span class="tip2">💡 用红品件数估算误差较大，建议使用红格道具，用格数算。</span></div></div></div></div><div class="sec-body" id="suBody"></div></div>';
+
+            var body = document.getElementById('suBody');
+            var html = '';
+
+            colorKeys.forEach(function(key, idx) {
+                var price = (key === 'red') ? getRedPiecePrice(map) : getColorPiecePrice(key, map);
+                html += '<div class="row">' +
+                    '<span class="lbl"><span class="dot ' + colorDots[idx] + '"></span>' +
+                    colorLabels[idx] + '（件数）</span>' +
+                    '<div class="qty"><input type="number" id="su_' + key + '" min="0" step="1" value="" data-price="' +
+                    price + '"></div>' +
+                    '<span class="simple-btn-group">' +
+                    '<button class="sbtn neg" data-target="su_' + key + '" data-delta="-1">-1</button>' +
+                    '<button class="sbtn pos" data-target="su_' + key + '" data-delta="1">+1</button>' +
                     '</span>' +
+                    '<span class="sub" id="su_' + key + '_sub">0</span>' +
                     '</div>';
+            });
 
-                html += '<div id="anResultSummary" class="an-result-summary" style="display:none;">' +
-                    '<span class="item"><span class="label">推荐出价：</span><span class="value rec" id="anRec">0</span></span>' +
-                    '<span class="item"><span class="label">仓库预估：</span><span class="value" id="anTotal">0</span></span>' +
-                    '<span class="item"><span class="label">组合数：</span><span class="value" id="anComboCount">0</span></span>' +
-                    '</div>';
+            html += '<div class="row">' +
+                '<span class="lbl"><span class="dot red"></span>' + APP_DATA.text.colorRed + '（格数）</span>' +
+                '<div class="rg-fields" style="display:flex;gap:3px;flex:1;">' +
+                '<input type="number" id="su_red_grid_avg" min="0" step="0.1" placeholder="均格" value="" style="width:50px;">' +
+                '<input type="number" id="su_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:50px;">' +
+                '</div>' +
+                '<span class="simple-btn-group">' +
+                '<button class="sbtn neg" data-target="su_red_grid_cnt" data-delta="-1">-1</button>' +
+                '<button class="sbtn pos" data-target="su_red_grid_cnt" data-delta="1">+1</button>' +
+                '</span>' +
+                '<span class="sub" id="su_red_grid_sub">0</span>' +
+                '</div>';
 
-                html += '<div id="anComboList"></div>';
+            html += '<div class="total-bar">' +
+                '<div class="t-item"><span class="label">' + APP_DATA.text.recLabel +
+                '</span><span class="value rec" id="suRec">0</span></div>' +
+                '<div class="t-item"><span class="label">' + APP_DATA.text.totalLabel +
+                '</span><span class="value" id="suTotal">0</span></div>' +
+                '</div>';
+            html +=
+                '<div class="confidence-bar"><span>' + APP_DATA.text.confidenceLabel +
+                '</span><div class="bar-track"><div class="bar-fill" id="suConfidenceFill" style="width:85%"></div></div><span class="label" id="suConfidenceLabel">85%</span></div>';
+            html +=
+            '<div class="reset-row"><button class="btn-reset" id="suReset">' + APP_DATA.text.resetLabel + '</button></div>';
+            body.innerHTML = html;
 
-                html += '<div class="reset-row"><button class="btn-reset" id="anReset">' + UI_TEXT.resetLabel +
-                    '</button></div>';
-
-                body.innerHTML = html;
-
-                document.getElementById('anStepMinus1').onclick = function() { adjustAvg(-1); };
-                document.getElementById('anStepMinus01').onclick = function() { adjustAvg(-0.1); };
-                document.getElementById('anStepPlus01').onclick = function() { adjustAvg(0.1); };
-                document.getElementById('anStepPlus1').onclick = function() { adjustAvg(1); };
-
-                function adjustAvg(delta) {
-                    var inp = document.getElementById('anAvg');
+            body.querySelectorAll('.sbtn[data-target]').forEach(function(btn) {
+                btn.onclick = function() {
+                    var targetId = this.dataset.target;
+                    var delta = parseInt(this.dataset.delta) || 0;
+                    var inp = document.getElementById(targetId);
+                    if (!inp) return;
                     var cur = parseFloat(inp.value) || 0;
-                    var newVal = Math.max(0.1, Math.round((cur + delta) * 10) / 10);
+                    var newVal = Math.max(0, cur + delta);
                     inp.value = newVal;
-                    calcAn();
+                    calcSu();
+                };
+            });
+
+            function calcSu() {
+                var total = 0;
+                var inputCount = 0;
+                var vals = [];
+
+                colorKeys.forEach(function(key) {
+                    var inp = document.getElementById('su_' + key);
+                    var val = parseFloat(inp.value) || 0;
+                    var price = parseFloat(inp.dataset.price) || 0;
+                    var sub = val * price;
+                    document.getElementById('su_' + key + '_sub').textContent = fmt(sub);
+                    total += sub;
+                    if (val > 0) { inputCount++;
+                        vals.push(val); }
+                });
+
+                var avgGrid = parseFloat(document.getElementById('su_red_grid_avg').value) || 0;
+                var cntGrid = parseFloat(document.getElementById('su_red_grid_cnt').value) || 0;
+                var gridTotal = avgGrid * cntGrid;
+                var redGridPrice = getRedGridAvgPrice(map);
+                var redGridSub = gridTotal * redGridPrice;
+                document.getElementById('su_red_grid_sub').textContent = fmt(redGridSub);
+                total += redGridSub;
+                if (avgGrid > 0 && cntGrid > 0) inputCount++;
+
+                var factor = getCalFactor(currentMap, total);
+                var finalTotal = total * factor;
+
+                document.getElementById('suTotal').textContent = fmt(finalTotal);
+                var disc = dynamicRecDiscount(finalTotal);
+                var rec = finalTotal * disc;
+                if (currentMode === 'aggressive') rec = finalTotal * APP_DATA.algo.aggressiveDiscount;
+                document.getElementById('suRec').textContent = fmt(rec);
+
+                var gridSpread = 0;
+                if (vals.length > 1) {
+                    var maxV = Math.max.apply(null, vals);
+                    var minV = Math.min.apply(null, vals);
+                    gridSpread = (maxV - minV) / (maxV + 0.01);
+                }
+                var conf = calcConfidence(inputCount, finalTotal, gridSpread);
+                var fill = document.getElementById('suConfidenceFill');
+                var label = document.getElementById('suConfidenceLabel');
+                if (fill) {
+                    fill.style.width = (conf * 100) + '%';
+                    fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
+                        'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
+                }
+                if (label) label.textContent = Math.round(conf * 100) + '%';
+
+                var high = finalTotal * 1.2;
+                updateQuickActions(rec, finalTotal, 0, high);
+                updateCalibrateStatusDisplay();
+            }
+
+            colorKeys.forEach(function(key) {
+                document.getElementById('su_' + key).addEventListener('input', calcSu);
+            });
+            document.getElementById('su_red_grid_avg').addEventListener('input', calcSu);
+            document.getElementById('su_red_grid_cnt').addEventListener('input', calcSu);
+
+            document.getElementById('suReset').onclick = function() {
+                colorKeys.forEach(function(key) { document.getElementById('su_' + key).value = ''; });
+                document.getElementById('su_red_grid_avg').value = '';
+                document.getElementById('su_red_grid_cnt').value = '';
+                calcSu();
+            };
+            calcSu();
+        }
+
+        // ============================================================
+        // ★ 安可（双模：均格 + 件数）
+        // ============================================================
+        function renderAn() {
+            var el = document.getElementById('page-an');
+            var map = getMap();
+            var grids = map.gridOptions || [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
+
+            el.innerHTML =
+                '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4ec97a,#2a9a5a);">安</div><div><div class="name">安可 · 红品均格/件数反查</div><div class="role">输入平均格数或件数，自动推算所有可能的红品组合及估值</div></div></div></div><div class="sec-body" id="anBody"></div></div>';
+
+            var body = document.getElementById('anBody');
+
+            var html = '<div class="an-input-row">' +
+                '<div class="input-group" id="anAvgGroup">' +
+                '<span class="label">📐 ' + APP_DATA.text.anAvgLabel + '</span>' +
+                '<input type="number" id="anAvg" step="0.1" min="0.1" max="16" value="">' +
+                '<span class="unit">' + APP_DATA.text.anUnitGrid + '</span>' +
+                '<span class="clear-btn" data-target="anAvg">✕</span>' +
+                '</div>' +
+                '<div class="input-group" id="anCountGroup">' +
+                '<span class="label">📦 ' + APP_DATA.text.anCountLabel + '</span>' +
+                '<input type="number" id="anCount" step="1" min="1" max="50" value="">' +
+                '<span class="unit">' + APP_DATA.text.anUnitCount + '</span>' +
+                '<span class="clear-btn" data-target="anCount">✕</span>' +
+                '</div>' +
+                '</div>';
+
+            html += '<div style="font-size:10px;color:var(--text-secondary);padding:2px 4px 6px;opacity:0.5;">💡 输入均格或件数，两者互相关联自动推算</div>';
+
+            html += '<div id="anResultSummary" class="an-result-summary" style="display:none;">' +
+                '<span class="item"><span class="label">💰 推荐出价：</span><span class="value rec" id="anRec">0</span></span>' +
+                '<span class="item"><span class="label">📦 仓库预估：</span><span class="value" id="anTotal">0</span></span>' +
+                '<span class="item"><span class="label">🔢 组合数：</span><span class="value" id="anComboCount">0</span></span>' +
+                '</div>';
+
+            html += '<div id="anComboList"></div>';
+            html += '<div class="reset-row"><button class="btn-reset" id="anReset">' + APP_DATA.text.resetLabel +
+            '</button></div>';
+
+            body.innerHTML = html;
+
+            var anAvg = document.getElementById('anAvg');
+            var anCount = document.getElementById('anCount');
+
+            body.querySelectorAll('.clear-btn').forEach(function(btn) {
+                btn.onclick = function() {
+                    var target = document.getElementById(this.dataset.target);
+                    if (target) { target.value = '';
+                        calcAn(); }
+                };
+            });
+
+            function calcAn() {
+                var avgInput = parseFloat(anAvg.value);
+                var countInput = parseInt(anCount.value) || 0;
+                var resultSummary = document.getElementById('anResultSummary');
+                var comboList = document.getElementById('anComboList');
+
+                var useAvg = !isNaN(avgInput) && avgInput > 0;
+                var useCount = countInput > 0;
+
+                if (!useAvg && !useCount) {
+                    resultSummary.style.display = 'none';
+                    comboList.innerHTML = '<div class="an-empty">请输入平均格数或件数开始推算</div>';
+                    updateQuickActions(0, 0, 0, 0);
+                    return;
                 }
 
-                function calcAn() {
-                    var avgInput = parseFloat(document.getElementById('anAvg').value);
-                    var resultSummary = document.getElementById('anResultSummary');
-                    var comboList = document.getElementById('anComboList');
+                // 只输入件数 → 推算均格
+                if (useCount && !useAvg) {
+                    var bestAvg = map.redAvgGrid || 4.3;
+                    var countFactor = Math.min(1, countInput / 10);
+                    bestAvg = map.redAvgGrid * (0.7 + 0.3 * (1 - countFactor));
+                    bestAvg = Math.round(bestAvg * 10) / 10;
+                    anAvg.value = bestAvg;
+                    avgInput = bestAvg;
+                    useAvg = true;
+                }
 
-                    if (isNaN(avgInput) || avgInput < 0.1) {
-                        resultSummary.style.display = 'none';
-                        comboList.innerHTML = '<div class="an-empty">请输入有效的平均格数（≥0.1）</div>';
-                        return;
-                    }
-
-                    var allCombos = [];
-                    var maxItems = 20;
-
-                    for (var n = 1; n <= maxItems; n++) {
-                        var totalGrids = Math.round(avgInput * n);
-                        if (totalGrids < 1) continue;
-                        var combosForN = [];
-
-                        function findCombos(remaining, maxIdx, path) {
-                            if (remaining === 0 && path.length === n) {
-                                combosForN.push(path.slice());
-                                return;
-                            }
-                            if (path.length >= n) return;
-                            for (var i = maxIdx; i < grids.length; i++) {
-                                var g = grids[i];
-                                if (g <= remaining) {
-                                    path.push(g);
-                                    findCombos(remaining - g, i, path);
-                                    path.pop();
-                                }
+                // 只输入均格 → 推算件数
+                if (useAvg && !useCount) {
+                    var gridKeys = Object.keys(map.redByGrid).map(Number).sort(function(a, b) { return a - b; });
+                    var countEstimate = 0;
+                    for (var n = 1; n <= 30; n++) {
+                        var total = Math.round(avgInput * n);
+                        var match = false;
+                        for (var gi = 0; gi < gridKeys.length; gi++) {
+                            if (total % gridKeys[gi] === 0 && total / gridKeys[gi] <= n) {
+                                match = true;
+                                break;
                             }
                         }
+                        if (match) { countEstimate = n; break; }
+                    }
+                    if (countEstimate > 0) {
+                        anCount.value = countEstimate;
+                        countInput = countEstimate;
+                        useCount = true;
+                    } else {
+                        var approxCount = Math.round(30 / avgInput);
+                        if (approxCount > 0) {
+                            anCount.value = approxCount;
+                            countInput = approxCount;
+                            useCount = true;
+                        }
+                    }
+                }
 
-                        if (n <= 8) {
-                            findCombos(totalGrids, 0, []);
-                            if (combosForN.length > 0) {
-                                allCombos.push({ n: n, total: totalGrids, combos: combosForN, approx: false });
-                            }
-                        } else {
-                            var tempRemain = totalGrids;
-                            for (var gi = grids.length - 1; gi >= 0; gi--) {
-                                if (tempRemain >= grids[gi]) {
-                                    tempRemain -= grids[gi];
-                                }
-                            }
-                            if (tempRemain === 0 || (tempRemain > 0 && tempRemain % grids[0] === 0)) {
-                                allCombos.push({ n: n, total: totalGrids, combos: null, approx: true });
+                avgInput = parseFloat(anAvg.value) || 0;
+                countInput = parseInt(anCount.value) || 0;
+
+                if (avgInput < 0.1 || countInput < 1) {
+                    resultSummary.style.display = 'none';
+                    comboList.innerHTML = '<div class="an-empty">请输入有效的平均格数（≥0.1）或件数（≥1）</div>';
+                    updateQuickActions(0, 0, 0, 0);
+                    return;
+                }
+
+                var allCombos = [];
+                var maxItems = Math.min(countInput + 5, 30);
+                var redAvgPrice = getRedPiecePrice(map);
+                var startN = Math.max(1, countInput - 3);
+                var endN = Math.min(maxItems, countInput + 5);
+
+                for (var n2 = startN; n2 <= endN; n2++) {
+                    var totalGrids = Math.round(avgInput * n2);
+                    if (totalGrids < 1) continue;
+                    var combosForN = [];
+
+                    function findCombos(remaining, maxIdx, path) {
+                        if (remaining === 0 && path.length === n2) {
+                            combosForN.push(path.slice());
+                            return;
+                        }
+                        if (path.length >= n2) return;
+                        for (var i = maxIdx; i < grids.length; i++) {
+                            var g = grids[i];
+                            if (g <= remaining) {
+                                path.push(g);
+                                findCombos(remaining - g, i, path);
+                                path.pop();
                             }
                         }
                     }
 
-                    if (allCombos.length === 0) {
-                        resultSummary.style.display = 'none';
-                        comboList.innerHTML = '<div class="an-empty">未找到匹配的组合，请调整平均格数</div>';
-                        return;
+                    if (n2 <= 10) {
+                        findCombos(totalGrids, 0, []);
+                        if (combosForN.length > 0) {
+                            allCombos.push({ n: n2, total: totalGrids, combos: combosForN, approx: false });
+                        }
+                    } else {
+                        var tempRemain = totalGrids;
+                        for (var gi2 = grids.length - 1; gi2 >= 0; gi2--) {
+                            if (tempRemain >= grids[gi2]) tempRemain -= grids[gi2];
+                        }
+                        if (tempRemain === 0 || (tempRemain > 0 && tempRemain % grids[0] === 0)) {
+                            allCombos.push({ n: n2, total: totalGrids, combos: null, approx: true });
+                        }
                     }
+                }
 
-                    var redAvgPrice = getRedPiecePrice(map);
-                    var totalEstimateSum = 0;
-                    var totalComboCount = 0;
+                if (allCombos.length === 0) {
+                    for (var n3 = 1; n3 <= 25; n3++) {
+                        var totalGrids2 = Math.round(avgInput * n3);
+                        if (totalGrids2 < 1) continue;
+                        var possible = false;
+                        for (var gi3 = 0; gi3 < grids.length; gi3++) {
+                            if (totalGrids2 % grids[gi3] === 0) { possible = true; break; }
+                        }
+                        if (possible) {
+                            allCombos.push({ n: n3, total: totalGrids2, combos: null, approx: true });
+                        }
+                    }
+                }
 
+                if (allCombos.length === 0) {
+                    resultSummary.style.display = 'none';
+                    comboList.innerHTML = '<div class="an-empty">未找到匹配的组合，请调整均格或件数</div>';
+                    updateQuickActions(0, 0, 0, 0);
+                    return;
+                }
+
+                var totalEstimateSum = 0;
+                var totalComboCount = 0;
+
+                allCombos.forEach(function(group) {
+                    if (group.approx) return;
+                    group.combos.forEach(function(combo) {
+                        var sum = 0;
+                        combo.forEach(function(g) {
+                            var entry = map.redByGrid[g];
+                            if (entry && entry.avg) sum += entry.avg;
+                            else sum += redAvgPrice * g;
+                        });
+                        totalEstimateSum += sum;
+                        totalComboCount++;
+                    });
+                });
+
+                if (totalComboCount === 0) {
                     allCombos.forEach(function(group) {
-                        if (group.approx) return;
-                        group.combos.forEach(function(combo) {
+                        if (group.approx) {
+                            var est = group.total * redAvgPrice;
+                            totalEstimateSum += est;
+                            totalComboCount++;
+                        }
+                    });
+                }
+
+                var avgEstimate = totalComboCount > 0 ? totalEstimateSum / totalComboCount : 0;
+                var factor = getCalFactor(currentMap, avgEstimate);
+                var finalEstimate = avgEstimate * factor;
+                var disc = dynamicRecDiscount(finalEstimate);
+                var rec = finalEstimate * disc;
+                if (currentMode === 'aggressive') rec = finalEstimate * APP_DATA.algo.aggressiveDiscount;
+
+                resultSummary.style.display = 'flex';
+                document.getElementById('anRec').textContent = fmt(rec);
+                document.getElementById('anTotal').textContent = fmt(finalEstimate);
+                document.getElementById('anComboCount').textContent = totalComboCount;
+
+                var listHtml = '';
+                var maxShow = 12;
+
+                allCombos.forEach(function(group, idx) {
+                    var isOpen = idx === 0;
+                    var comboLabel = group.approx ? '（近似）' : '';
+                    var countLabel = group.approx ? '多种' : group.combos.length;
+
+                    listHtml += '<div class="an-combo-group' + (isOpen ? ' open' : '') + '">' +
+                        '<div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')">' +
+                        '<span class="g-title">' + group.n + ' 件藏品 ' + comboLabel + '</span>' +
+                        '<span class="g-meta">总格数 ' + group.total + ' | 共 ' + countLabel +
+                        ' 种组合 <span class="arrow">▶</span></span>' +
+                        '</div>' +
+                        '<div class="g-body">';
+
+                    if (group.approx || !group.combos || group.combos.length === 0) {
+                        var estVal = group.total * redAvgPrice * factor;
+                        listHtml += '<span class="an-combo-item"><span class="grids">约 ' + group.total +
+                            ' 格</span> <span class="val">≈' + fmt(estVal) + '</span></span>';
+                    } else {
+                        var showCombos = group.combos.slice(0, maxShow);
+                        showCombos.forEach(function(combo) {
                             var sum = 0;
                             combo.forEach(function(g) {
                                 var entry = map.redByGrid[g];
                                 if (entry && entry.avg) sum += entry.avg;
                                 else sum += redAvgPrice * g;
                             });
-                            totalEstimateSum += sum;
-                            totalComboCount++;
+                            sum *= factor;
+                            listHtml += '<span class="an-combo-item"><span class="grids">' + combo.join(
+                                '+') +
+                                '</span> <span class="val">' + fmt(sum) + '</span></span>';
                         });
-                    });
-
-                    if (totalComboCount === 0) {
-                        allCombos.forEach(function(group) {
-                            if (group.approx) {
-                                var est = group.total * redAvgPrice;
-                                totalEstimateSum += est;
-                                totalComboCount++;
-                            }
-                        });
+                        if (group.combos.length > maxShow) {
+                            listHtml += '<span class="more-tag" style="font-size:10px;color:var(--text-secondary);">…共 ' +
+                                group.combos.length + ' 种</span>';
+                        }
                     }
 
-                    var avgEstimate = totalComboCount > 0 ? totalEstimateSum / totalComboCount : 0;
-                    var factor = _getCalFactor(currentMap, avgEstimate);
-                    var finalEstimate = avgEstimate * factor;
-                    var disc = dynamicRecDiscount(finalEstimate);
-                    var rec = finalEstimate * disc;
-                    if (currentMode === 'aggressive') rec = finalEstimate * 0.95;
+                    listHtml += '</div></div>';
+                });
 
-                    resultSummary.style.display = 'flex';
-                    document.getElementById('anRec').textContent = fmt(rec);
-                    document.getElementById('anTotal').textContent = fmt(finalEstimate);
-                    document.getElementById('anComboCount').textContent = totalComboCount;
-
-                    var listHtml = '';
-                    var maxShow = 12;
-
-                    allCombos.forEach(function(group, idx) {
-                        var isOpen = idx === 0;
-                        var comboLabel = group.approx ? '（近似）' : '';
-                        var countLabel = group.approx ? '多种' : group.combos.length;
-
-                        listHtml += '<div class="an-combo-group' + (isOpen ? ' open' : '') + '">' +
-                            '<div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')">' +
-                            '<span class="g-title">' + group.n + ' 件藏品 ' + comboLabel + '</span>' +
-                            '<span class="g-meta">总格数 ' + group.total + ' | 共 ' + countLabel +
-                            ' 种组合 <span class="arrow">▶</span></span>' +
-                            '</div>' +
-                            '<div class="g-body">';
-
-                        if (group.approx || !group.combos || group.combos.length === 0) {
-                            var estVal = group.total * redAvgPrice * factor;
-                            listHtml += '<span class="an-combo-item"><span class="grids">约 ' + group.total +
-                                ' 格</span> <span class="val">≈' + fmt(estVal) + '</span></span>';
-                        } else {
-                            var showCombos = group.combos.slice(0, maxShow);
-                            showCombos.forEach(function(combo) {
-                                var sum = 0;
-                                combo.forEach(function(g) {
-                                    var entry = map.redByGrid[g];
-                                    if (entry && entry.avg) sum += entry.avg;
-                                    else sum += redAvgPrice * g;
-                                });
-                                sum *= factor;
-                                listHtml += '<span class="an-combo-item"><span class="grids">' + combo.join(
-                                    '+') +
-                                    '</span> <span class="val">' + fmt(sum) + '</span></span>';
-                            });
-                            if (group.combos.length > maxShow) {
-                                listHtml += '<span class="more-tag">…共 ' + group.combos.length + ' 种</span>';
-                            }
-                        }
-
-                        listHtml += '</div></div>';
-                    });
-
-                    comboList.innerHTML = listHtml;
-                    updateQuickActions(rec, finalEstimate, 0, finalEstimate * 1.2);
-                    updateCalibrateStatusDisplay();
-                }
-
-                document.getElementById('anAvg').addEventListener('input', calcAn);
-                document.getElementById('anAvg').addEventListener('change', calcAn);
-
-                document.getElementById('anReset').onclick = function() {
-                    document.getElementById('anAvg').value = '';
-                    document.getElementById('anResultSummary').style.display = 'none';
-                    document.getElementById('anComboList').innerHTML = '<div class="an-empty">请输入平均格数开始推算</div>';
-                    updateQuickActions(0, 0, 0, 0);
-                };
-
-                document.getElementById('anComboList').innerHTML = '<div class="an-empty">请输入平均格数开始推算</div>';
-            }
-
-            // ---- 认证UI ----
-            var appWrap = document.getElementById('appWrap');
-            var authOverlay = document.getElementById('authOverlay');
-            var cardInput = document.getElementById('cardInput');
-            var verifyBtn = document.getElementById('verifyBtn');
-            var authError = document.getElementById('authError');
-            var headerRemain = document.getElementById('headerRemain');
-
-            function showApp(data) {
-                authOverlay.classList.add('hidden');
-                appWrap.classList.add('show');
-                if (data) updateRemainDisplay(data);
+                comboList.innerHTML = listHtml;
+                updateQuickActions(rec, finalEstimate, 0, finalEstimate * 1.2);
                 updateCalibrateStatusDisplay();
             }
 
-            function showAuth() {
-                authOverlay.classList.remove('hidden');
-                appWrap.classList.remove('show');
-            }
-
-            function setAuthError(msg) { authError.textContent = msg; }
-
-            function updateRemainDisplay(data) {
-                if (!data) return;
-                var now = Date.now();
-                var elapsed = (now - data.verifyTime) / 1000;
-                var remainMin = Math.max(0, data.minutes - elapsed / 60);
-                if (data.cardType === '永久卡') {
-                    headerRemain.textContent = UI_TEXT.remainPermanent;
-                    headerRemain.className = 'remain-time permanent';
-                    return;
-                }
-                var days = Math.floor(remainMin / 1440);
-                var hours = Math.floor((remainMin % 1440) / 60);
-                var mins = Math.floor(remainMin % 60);
-                var parts = [];
-                if (days > 0) parts.push(days + '天');
-                if (hours > 0) parts.push(hours + '时');
-                if (mins > 0) parts.push(mins + '分');
-                if (parts.length === 0) parts.push('0分');
-                var text = UI_TEXT.remainFormat.replace('{time}', parts.join('')).replace('{type}', data.cardType);
-                headerRemain.textContent = text;
-                var type = 'active';
-                if (days < 1 && hours < 6) type = 'warning';
-                if (days < 1 && hours < 1) type = 'danger';
-                headerRemain.className = 'remain-time ' + type;
-            }
-
-            var remainTimer = null;
-
-            function startRemainTimer(data) {
-                if (remainTimer) clearInterval(remainTimer);
-                updateRemainDisplay(data);
-                remainTimer = setInterval(function() {
-                    var cached = _getSecure();
-                    if (cached) {
-                        var now = Date.now();
-                        var elapsed = (now - cached._t) / 1000;
-                        var remainMin = Math.max(0, cached._d._m - elapsed / 60);
-                        if (remainMin <= 0) {
-                            clearInterval(remainTimer);
-                            remainTimer = null;
-                            _clearSecure();
-                            showAuth();
-                            setAuthError('卡密已过期');
-                            return;
-                        }
-                        updateRemainDisplay({ cardType: cached._d._ct, minutes: cached._d._m, verifyTime: cached
-                                ._t });
-                    } else {
-                        clearInterval(remainTimer);
-                        remainTimer = null;
-                    }
-                }, 10000);
-            }
-
-            document.getElementById('unbindBtn').addEventListener('click', function() {
-                if (confirm(UI_TEXT.unbindConfirm)) {
-                    _clearSecure();
-                    if (remainTimer) clearInterval(remainTimer);
-                    showAuth();
-                    cardInput.value = '';
-                    setAuthError('');
-                    headerRemain.textContent = '⏱ 已解绑';
-                    location.reload();
-                }
+            anAvg.addEventListener('input', function() {
+                var val = parseFloat(this.value);
+                if (!isNaN(val) && val > 0) { anCount.value = ''; }
+                calcAn();
             });
 
-            function initAuthUI() {
+            anCount.addEventListener('input', function() {
+                var val = parseInt(this.value);
+                if (!isNaN(val) && val > 0) { anAvg.value = ''; }
+                calcAn();
+            });
+
+            document.getElementById('anReset').onclick = function() {
+                anAvg.value = '';
+                anCount.value = '';
+                document.getElementById('anResultSummary').style.display = 'none';
+                document.getElementById('anComboList').innerHTML = '<div class="an-empty">请输入均格或件数开始推算</div>';
+                updateQuickActions(0, 0, 0, 0);
+            };
+
+            document.getElementById('anComboList').innerHTML = '<div class="an-empty">请输入均格或件数开始推算</div>';
+        }
+
+        // ============================================================
+        // ★ 认证与启动
+        // ============================================================
+        var appWrap = document.getElementById('appWrap');
+        var authOverlay = document.getElementById('authOverlay');
+        var cardInput = document.getElementById('cardInput');
+        var verifyBtn = document.getElementById('verifyBtn');
+        var authError = document.getElementById('authError');
+        var headerRemain = document.getElementById('headerRemain');
+
+        function showApp(data) {
+            authOverlay.classList.add('hidden');
+            appWrap.classList.add('show');
+            if (data) updateRemainDisplay(data);
+            updateCalibrateStatusDisplay();
+        }
+
+        function showAuth() {
+            authOverlay.classList.remove('hidden');
+            appWrap.classList.remove('show');
+        }
+
+        function setAuthError(msg) { authError.textContent = msg; }
+
+        function updateRemainDisplay(data) {
+            if (!data) return;
+            var now = Date.now();
+            var elapsed = (now - data.verifyTime) / 1000;
+            var remainMin = Math.max(0, data.minutes - elapsed / 60);
+            if (data.cardType === '永久卡') {
+                headerRemain.textContent = '♾️ 永久有效';
+                headerRemain.className = 'remain-time permanent';
+                return;
+            }
+            var days = Math.floor(remainMin / 1440);
+            var hours = Math.floor((remainMin % 1440) / 60);
+            var mins = Math.floor(remainMin % 60);
+            var parts = [];
+            if (days > 0) parts.push(days + '天');
+            if (hours > 0) parts.push(hours + '时');
+            if (mins > 0) parts.push(mins + '分');
+            if (parts.length === 0) parts.push('0分');
+            var text = '⏱ 剩余 ' + parts.join('') + ' · ' + data.cardType;
+            headerRemain.textContent = text;
+            var type = 'active';
+            if (days < 1 && hours < 6) type = 'warning';
+            if (days < 1 && hours < 1) type = 'danger';
+            headerRemain.className = 'remain-time ' + type;
+        }
+
+        var remainTimer = null;
+
+        function startRemainTimer(data) {
+            if (remainTimer) clearInterval(remainTimer);
+            updateRemainDisplay(data);
+            remainTimer = setInterval(function() {
                 var cached = _getSecure();
                 if (cached) {
-                    var elapsed = (Date.now() - cached._t) / 1000;
+                    var now = Date.now();
+                    var elapsed = (now - cached._t) / 1000;
                     var remainMin = Math.max(0, cached._d._m - elapsed / 60);
-                    if (remainMin > 0) {
-                        showApp({ cardType: cached._d._ct, minutes: cached._d._m, verifyTime: cached._t });
-                        startRemainTimer({ cardType: cached._d._ct, minutes: cached._d._m, verifyTime: cached
-                                ._t });
-                        setTimeout(function() { if (typeof renderMainApp === 'function') renderMainApp(); },
-                        100);
-                        return;
-                    } else {
+                    if (remainMin <= 0) {
+                        clearInterval(remainTimer);
+                        remainTimer = null;
                         _clearSecure();
+                        showAuth();
+                        setAuthError('卡密已过期');
+                        return;
                     }
+                    updateRemainDisplay({ cardType: cached._d._ct, minutes: cached._d._m, verifyTime: cached
+                            ._t });
+                } else {
+                    clearInterval(remainTimer);
+                    remainTimer = null;
                 }
+            }, 10000);
+        }
 
-                verifyBtn.onclick = function() {
-                    var card = cardInput.value.trim();
-                    if (!card) { setAuthError(UI_TEXT.errorEmpty); return; }
-                    setAuthError('');
-                    verifyBtn.disabled = true;
-                    verifyBtn.textContent = '⏳ 验证中...';
-                    _verifyWithKeyt(card, function(success, days, minutes, cardType, error) {
-                        verifyBtn.disabled = false;
-                        verifyBtn.textContent = UI_TEXT.verifyBtn;
-                        if (success) {
-                            var data = { _c: card, _ct: cardType, _m: minutes, _d: days, _t: Date.now() };
-                            _saveSecure(card, { cardType: cardType, minutes: minutes, days: days });
-                            showApp({ cardType: cardType, minutes: minutes, verifyTime: Date.now() });
-                            startRemainTimer({ cardType: cardType, minutes: minutes, verifyTime: Date
-                                    .now() });
-                            if (typeof renderMainApp === 'function') renderMainApp();
-                        } else {
-                            if (error === 'timeout' || error === 'network') setAuthError(UI_TEXT
-                                .errorNetwork);
-                            else setAuthError(UI_TEXT.errorInvalid);
-                        }
-                    });
-                };
-                cardInput.onkeydown = function(e) { if (e.key === 'Enter') verifyBtn.click(); };
+        document.getElementById('unbindBtn').addEventListener('click', function() {
+            if (confirm('确定要解绑此设备吗？\n解绑后需要重新激活。')) {
+                _clearSecure();
+                if (remainTimer) clearInterval(remainTimer);
                 showAuth();
+                cardInput.value = '';
+                setAuthError('');
+                headerRemain.textContent = '⏱ 已解绑';
+                location.reload();
+            }
+        });
+
+        function initAuthUI() {
+            var cached = _getSecure();
+            if (cached) {
+                var elapsed = (Date.now() - cached._t) / 1000;
+                var remainMin = Math.max(0, cached._d._m - elapsed / 60);
+                if (remainMin > 0) {
+                    showApp({ cardType: cached._d._ct, minutes: cached._d._m, verifyTime: cached._t });
+                    startRemainTimer({ cardType: cached._d._ct, minutes: cached._d._m, verifyTime: cached
+                            ._t });
+                    setTimeout(function() { renderMainApp(); }, 100);
+                    return;
+                } else {
+                    _clearSecure();
+                }
             }
 
-            function renderMainApp() {
-                document.querySelectorAll('.mode-btn').forEach(function(btn) {
-                    btn.classList.toggle('active', btn.dataset.mode === currentMode);
+            verifyBtn.onclick = function() {
+                var card = cardInput.value.trim();
+                if (!card) { setAuthError('请输入卡密'); return; }
+                setAuthError('');
+                verifyBtn.disabled = true;
+                verifyBtn.textContent = '⏳ 验证中...';
+                _verifyWithKeyt(card, function(success, days, minutes, cardType, error) {
+                    verifyBtn.disabled = false;
+                    verifyBtn.textContent = '✅ 激活';
+                    if (success) {
+                        _saveSecure(card, { cardType: cardType, minutes: minutes, days: days });
+                        showApp({ cardType: cardType, minutes: minutes, verifyTime: Date.now() });
+                        startRemainTimer({ cardType: cardType, minutes: minutes, verifyTime: Date
+                                .now() });
+                        renderMainApp();
+                    } else {
+                        if (error === 'timeout' || error === 'network') setAuthError('⚠️ 网络异常，请检查后重试');
+                        else setAuthError('❌ 卡密无效或已过期');
+                    }
                 });
-                document.querySelectorAll('.map-switch button').forEach(function(btn) {
-                    btn.classList.toggle('on', btn.dataset.map === currentMap);
-                });
-                updateCalibrateStatusDisplay();
-                var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
-                if (fn[currentTab]) fn[currentTab]();
-            }
+            };
+            cardInput.onkeydown = function(e) { if (e.key === 'Enter') verifyBtn.click(); };
+            showAuth();
+        }
 
-            // ---- 启动 ----
-            initAuthUI();
-            setTimeout(renderMainApp, 300);
+        function renderMainApp() {
+            document.querySelectorAll('.mode-btn').forEach(function(btn) {
+                btn.classList.toggle('active', btn.dataset.mode === currentMode);
+            });
+            document.querySelectorAll('.map-switch button').forEach(function(btn) {
+                btn.classList.toggle('on', btn.dataset.map === currentMap);
+            });
+            updateCalibrateStatusDisplay();
+            var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
+            if (fn[currentTab]) fn[currentTab]();
+        }
 
-            console.log('✅ 虚拟控制流混淆已启用 — 分段校准系统');
-            console.log('📊 分段：0-50万 | 50-100万 | 100-200万 | 200万以上，各段独立校准');
-        })();
+        initAuthUI();
+        setTimeout(renderMainApp, 300);
+
+        console.log('✅ 超级AI v3.1 已启动 — 虚拟控制流混淆已启用');
+        console.log('📊 数据配置层已分离，可独立修改 APP_DATA');
+        console.log('🔧 安可模块支持均格/件数双模式输入，计算模型一致');
+        console.log('🔐 反调试保护已启用');
     </script>
 </body>
 </html>
