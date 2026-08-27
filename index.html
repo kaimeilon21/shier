@@ -47,7 +47,6 @@
             border-radius: 4px;
         }
 
-        /* ===== 验证覆盖层 ===== */
         #authOverlay {
             position: fixed;
             inset: 0;
@@ -170,7 +169,6 @@
             margin-top: 4px;
         }
 
-        /* ===== 主界面 ===== */
         #appWrap {
             max-width: 820px;
             margin: 0 auto;
@@ -383,6 +381,23 @@
         .header .header-actions .unbind-btn:active {
             transform: scale(0.95);
         }
+        .header .header-actions .calibrate-status {
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 10px;
+            display: inline-block;
+            margin-left: 4px;
+        }
+        .header .header-actions .calibrate-status.active {
+            color: #4ec97a;
+            border: 1px solid rgba(78, 201, 122, 0.15);
+            background: rgba(78, 201, 122, 0.06);
+        }
+        .header .header-actions .calibrate-status.inactive {
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            background: rgba(255, 255, 255, 0.02);
+        }
 
         .map-mode-row {
             display: flex;
@@ -538,7 +553,6 @@
             padding: 6px 8px 8px;
         }
 
-        /* ===== 行布局 ===== */
         .row {
             display: flex;
             align-items: center;
@@ -567,11 +581,21 @@
             display: inline-block;
             flex-shrink: 0;
         }
-        .row .lbl .dot.red { background: #e05555; }
-        .row .lbl .dot.orange { background: #e8943a; }
-        .row .lbl .dot.purple { background: #a66be0; }
-        .row .lbl .dot.blue { background: #4a9ae8; }
-        .row .lbl .dot.green { background: #4ec97a; }
+        .row .lbl .dot.red {
+            background: #e05555;
+        }
+        .row .lbl .dot.orange {
+            background: #e8943a;
+        }
+        .row .lbl .dot.purple {
+            background: #a66be0;
+        }
+        .row .lbl .dot.blue {
+            background: #4a9ae8;
+        }
+        .row .lbl .dot.green {
+            background: #4ec97a;
+        }
 
         .row .qty {
             width: 48px;
@@ -843,11 +867,16 @@
             display: block;
         }
         @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(6px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        /* ===== 安可组合列表样式 ===== */
         .an-combo-group {
             background: var(--bg-card);
             border: 1px solid rgba(42, 58, 90, 0.12);
@@ -946,7 +975,6 @@
             color: #4ec97a;
         }
 
-        /* ===== 响应式 ===== */
         @media (max-width: 480px) {
             .top-nav .nav-group button[data-tab] {
                 font-size: 12px;
@@ -1046,6 +1074,10 @@
                 font-size: 10px;
                 padding: 2px 6px;
             }
+            .header .header-actions .calibrate-status {
+                font-size: 8px;
+                padding: 1px 5px;
+            }
         }
         @media (min-width: 600px) {
             .top-nav .nav-group .label {
@@ -1059,7 +1091,6 @@
 </head>
 <body>
 
-    <!-- ===== 验证覆盖层 ===== -->
     <div id="authOverlay">
         <div class="auth-box">
             <span class="auth-icon">🎯</span>
@@ -1078,7 +1109,6 @@
         </div>
     </div>
 
-    <!-- ===== 主界面 ===== -->
     <div id="appWrap">
         <nav class="top-nav" id="topNav">
             <div class="nav-group">
@@ -1101,12 +1131,13 @@
         <div class="header">
             <div class="main-title">
                 俱乐大玩家 · 超级AI
-                <span class="super-tag">⚡ 一键调整</span>
+                <span class="super-tag">⚡ 分段校准</span>
             </div>
             <div class="sub-title"></div>
             <div class="header-actions">
                 <span class="remain-time" id="headerRemain">⏱ 加载中...</span>
                 <span class="unbind-btn" id="unbindBtn">🔓 解绑设备</span>
+                <span id="calibrateStatus" class="calibrate-status inactive">未校准</span>
             </div>
         </div>
 
@@ -1143,7 +1174,7 @@
     </script>
     <script>
         // ============================================================
-        // ★ 反破解 / 反调试
+        // 反破解/反调试
         // ============================================================
         (function() {
             'use strict';
@@ -1187,12 +1218,11 @@
                 });
             }
             setInterval(guardGlobals, 3000);
-
             console.log('🛡️ 反破解保护已启用');
         })();
 
         // ============================================================
-        // ★ 文字配置
+        // ★ 文字配置（全部集中管理）
         // ============================================================
         var UI_TEXT = {
             authTitle: '俱乐大玩家 · 超级AI',
@@ -1206,16 +1236,16 @@
             errorInvalid: '❌ 卡密无效或已过期',
             errorNetwork: '⚠️ 网络异常，请检查后重试',
             unbindConfirm: '确定要解绑此设备吗？\n解绑后需要重新激活。',
-            huoTitle: '霍姑姑 · 颜色格数估值（加权精准）',
+            huoTitle: '霍姑姑 · 颜色格数估值（分段校准）',
             huoRole: '推荐道具：红格怀表，巨物价值，四件放大镜，奢品扫描仪，古董扫描仪，全藏放大镜',
             huoTip: '建议使用奢品扫描仪和古董扫描仪。如红格数过多建议用奢品扫描仪确认是否有车身，有则用车身池出价；古董价值可用古董扫描仪确认。',
-            gaoTitle: '高晋 · 红品件数估值（加权精准）',
+            gaoTitle: '高晋 · 红品件数估值（分段校准）',
             gaoRole: '推荐道具：全域扫描枪，橙估价平板，紫估价平板，巨物价值，全藏放大镜。',
             gaoTip: '推荐使用紫色和橙色估价平板，最后一轮使用全域扫描枪',
-            suTitle: '苏琦 · 颜色件数估值（加权精准）',
+            suTitle: '苏琦 · 颜色件数估值（分段校准）',
             suRole: '推荐道具：紫件数观光棒，橙件数观光棒，红格怀表，四件放大镜，全藏放大镜',
             suTip: '用红品件数估算误差较大，建议使用红格道具，用格数算。',
-            anTitle: '安可 · 红品均格反查（自动匹配）',
+            anTitle: '安可 · 红品均格反查（分段校准）',
             anRole: '输入平均格数，自动推算所有可能的红品组合及估值',
             carLabel: '🚗 车零件池（减项）',
             antiqueLabel: '🏺 古董价值（减项）',
@@ -1243,7 +1273,15 @@
             expandMore: '展开更多格数 ▼',
             collapseMore: '收起更多格数 ▲',
             modeClassic: '⚖️ 经典',
-            modeAggressive: '🔥 激烈'
+            modeAggressive: '🔥 激烈',
+            calibrateLabel: '实际仓库总价值',
+            calibrateBtn: '校准',
+            calibratePlaceholder: '输入实际揭示值',
+            calibrateSuccess: '分段校准成功',
+            calibrateError: '请输入有效数值',
+            calibrateStatusOn: '已校准',
+            calibrateStatusOff: '未校准',
+            calibrateFactorLabel: '校准系数'
         };
 
         // ============================================================
@@ -1385,11 +1423,13 @@
         var verifyBtn = document.getElementById('verifyBtn');
         var authError = document.getElementById('authError');
         var headerRemain = document.getElementById('headerRemain');
+        var calibrateStatus = document.getElementById('calibrateStatus');
 
         function showApp(data) {
             authOverlay.classList.add('hidden');
             appWrap.classList.add('show');
             if (data) updateRemainDisplay(data);
+            updateCalibrateStatusDisplay();
         }
 
         function showAuth() {
@@ -1506,6 +1546,86 @@
             };
             cardInput.onkeydown = function(e) { if (e.key === 'Enter') verifyBtn.click(); };
             showAuth();
+        }
+
+        // ============================================================
+        // ★ 分段校准核心
+        // ============================================================
+        var CALIBRATION_KEY = 'calibration_factor_seg_v1';
+
+        // 分段定义：根据原始估值范围使用不同系数
+        var CALIBRATION_SEGMENTS = [
+            { key: 'seg1', label: '0-50万', min: 0, max: 500000 },
+            { key: 'seg2', label: '50-100万', min: 500000, max: 1000000 },
+            { key: 'seg3', label: '100-200万', min: 1000000, max: 2000000 },
+            { key: 'seg4', label: '200万以上', min: 2000000, max: Infinity }
+        ];
+
+        function getSegmentKey(value) {
+            for (var i = 0; i < CALIBRATION_SEGMENTS.length; i++) {
+                var s = CALIBRATION_SEGMENTS[i];
+                if (value >= s.min && value < s.max) {
+                    return s.key;
+                }
+            }
+            return 'seg1';
+        }
+
+        function getCalibrationFactor(mapKey, value) {
+            try {
+                var data = JSON.parse(localStorage.getItem(CALIBRATION_KEY) || '{}');
+                var segKey = getSegmentKey(value);
+                if (data[mapKey] && data[mapKey][segKey] !== undefined) {
+                    return data[mapKey][segKey];
+                }
+                return 1.0;
+            } catch (e) { return 1.0; }
+        }
+
+        function updateCalibrationFactor(mapKey, value, ratio) {
+            try {
+                var data = JSON.parse(localStorage.getItem(CALIBRATION_KEY) || '{}');
+                if (!data[mapKey]) data[mapKey] = {};
+                var segKey = getSegmentKey(value);
+                var old = data[mapKey][segKey] || 1.0;
+                // 用户校准一次 = 内部5次（权重0.8）
+                var weight = 0.8;
+                var newFactor = old * (1 - weight) + ratio * weight;
+                newFactor = Math.min(5.0, Math.max(0.5, newFactor));
+                data[mapKey][segKey] = newFactor;
+                localStorage.setItem(CALIBRATION_KEY, JSON.stringify(data));
+                return newFactor;
+            } catch (e) { return ratio; }
+        }
+
+        function getSegmentDisplay(mapKey) {
+            var data = JSON.parse(localStorage.getItem(CALIBRATION_KEY) || '{}');
+            if (!data[mapKey]) return '未校准';
+            var parts = [];
+            var hasAny = false;
+            for (var i = 0; i < CALIBRATION_SEGMENTS.length; i++) {
+                var s = CALIBRATION_SEGMENTS[i];
+                var val = data[mapKey][s.key];
+                if (val !== undefined && Math.abs(val - 1.0) > 0.01) {
+                    hasAny = true;
+                    parts.push(s.label + ':' + val.toFixed(2));
+                }
+            }
+            if (!hasAny) return '未校准';
+            return parts.join(' | ');
+        }
+
+        function updateCalibrateStatusDisplay() {
+            var statusEl = document.getElementById('calibrateStatus');
+            if (!statusEl) return;
+            var display = getSegmentDisplay(currentMap);
+            if (display === '未校准') {
+                statusEl.textContent = UI_TEXT.calibrateStatusOff;
+                statusEl.className = 'calibrate-status inactive';
+            } else {
+                statusEl.textContent = '📊 ' + display;
+                statusEl.className = 'calibrate-status active';
+            }
         }
 
         // ============================================================
@@ -1752,6 +1872,7 @@
             document.querySelectorAll('.map-switch button').forEach(function(btn) {
                 btn.classList.toggle('on', btn.dataset.map === mapKey);
             });
+            updateCalibrateStatusDisplay();
             var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
             if (fn[currentTab]) fn[currentTab]();
         }
@@ -1761,7 +1882,7 @@
         });
 
         // ============================================================
-        // ★ 霍姑姑（完整保留）
+        // ★ 霍姑姑（分段校准）
         // ============================================================
         function renderHuo() {
             var el = document.getElementById('page-huo');
@@ -1816,6 +1937,15 @@
                 '<button class="qbtn pos" id="antiquePlus3">' + UI_TEXT.antiqueBtn3 + '</button>' +
                 '</span></div>';
 
+            // 校准控件
+            html += '<div class="special-row" style="border-top:1px solid rgba(232,196,104,0.15);">' +
+                '<span class="lbl">' + UI_TEXT.calibrateLabel + '</span>' +
+                '<div class="qty" style="flex:1; min-width:80px;"><input type="number" id="huoActualTotal" min="0" step="1000" value="" placeholder="' +
+                UI_TEXT.calibratePlaceholder + '" style="width:100%;"></div>' +
+                '<button class="qbtn pos" id="huoCalibrateBtn" style="min-width:50px;">' + UI_TEXT.calibrateBtn +
+                '</button>' +
+                '</div>';
+
             html += '<div style="font-size:10px;color:var(--text-secondary);padding:2px 0 4px;">' + UI_TEXT.infoDefault +
                 '</div>';
 
@@ -1830,6 +1960,9 @@
             '<div class="reset-row"><button class="btn-reset" id="huoReset">' + UI_TEXT.resetLabel + '</button></div>';
             html += '</div></div>';
             el.innerHTML = html;
+
+            // ---- 存储当前原始总值用于校准 ----
+            var currentRawTotal = 0;
 
             function calcHuo() {
                 var total = 0;
@@ -1848,8 +1981,12 @@
 
                 var carPool = parseFloat(document.getElementById('huoCarPool').value) || 0;
                 var antique = parseFloat(document.getElementById('huoAntique').value) || 0;
-                var deductTotal = carPool + antique;
-                var finalTotal = Math.max(0, total - deductTotal);
+                var rawTotal = Math.max(0, total - carPool - antique);
+                currentRawTotal = rawTotal;
+
+                // 获取分段系数
+                var factor = getCalibrationFactor(currentMap, rawTotal);
+                var finalTotal = rawTotal * factor;
 
                 document.getElementById('huoTotal').textContent = fmt(finalTotal);
                 var disc = dynamicRecDiscount(finalTotal);
@@ -1876,8 +2013,24 @@
                 if (label) label.textContent = Math.round(conf * 100) + '%';
                 var high = finalTotal * 1.2;
                 updateQuickActions(rec, finalTotal, carPool, high);
+                updateCalibrateStatusDisplay();
             }
 
+            // ---- 校准 ----
+            document.getElementById('huoCalibrateBtn').onclick = function() {
+                var actual = parseFloat(document.getElementById('huoActualTotal').value);
+                if (!actual || actual <= 0) { alert(UI_TEXT.calibrateError); return; }
+                if (currentRawTotal <= 0) { alert('请先输入格数计算估值'); return; }
+                var ratio = actual / currentRawTotal;
+                var newFactor = updateCalibrationFactor(currentMap, currentRawTotal, ratio);
+                document.getElementById('huoActualTotal').value = '';
+                alert(UI_TEXT.calibrateSuccess + ' (分段: ' + getSegmentKey(currentRawTotal) + ' 系数: ' + newFactor
+                    .toFixed(2) + ')');
+                updateCalibrateStatusDisplay();
+                calcHuo();
+            };
+
+            // ---- 快速按钮 ----
             el.querySelectorAll('.qbtn[data-target]').forEach(function(btn) {
                 btn.onclick = function() {
                     var targetId = this.dataset.target;
@@ -1915,13 +2068,15 @@
                 colors.forEach(function(col) { var inp = document.getElementById('huo_' + col.key); if (inp) inp.value = ''; });
                 document.getElementById('huoCarPool').value = '';
                 document.getElementById('huoAntique').value = '';
+                document.getElementById('huoActualTotal').value = '';
+                currentRawTotal = 0;
                 calcHuo();
             };
             calcHuo();
         }
 
         // ============================================================
-        // ★ 高晋（完整保留）
+        // ★ 高晋（分段校准）
         // ============================================================
         function renderGao() {
             var el = document.getElementById('page-gao');
@@ -2037,6 +2192,8 @@
                 };
             });
 
+            var gaoRawTotal = 0;
+
             function calcGao() {
                 var total = 0;
                 var inputCount = 0;
@@ -2072,10 +2229,14 @@
                 document.getElementById('gao_red_grid_sub').textContent = fmt(redGridSub);
                 total += redGridSub;
 
-                document.getElementById('gaoTotal').textContent = fmt(total);
-                var disc = dynamicRecDiscount(total);
-                var rec = total * disc;
-                if (currentMode === 'aggressive') rec = total * 0.95;
+                gaoRawTotal = total;
+                var factor = getCalibrationFactor(currentMap, total);
+                var finalTotal = total * factor;
+
+                document.getElementById('gaoTotal').textContent = fmt(finalTotal);
+                var disc = dynamicRecDiscount(finalTotal);
+                var rec = finalTotal * disc;
+                if (currentMode === 'aggressive') rec = finalTotal * 0.95;
                 document.getElementById('gaoRec').textContent = fmt(rec);
 
                 var conf = 0.82 + Math.min(0.12, inputCount * 0.02);
@@ -2088,8 +2249,9 @@
                         'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
                 }
                 if (label) label.textContent = Math.round(conf * 100) + '%';
-                var high = total * 1.2;
-                updateQuickActions(rec, total, 0, high);
+                var high = finalTotal * 1.2;
+                updateQuickActions(rec, finalTotal, 0, high);
+                updateCalibrateStatusDisplay();
             }
 
             gridOptions.forEach(function(g) {
@@ -2111,13 +2273,14 @@
                 document.getElementById('gao_red_piece_cnt').value = '';
                 document.getElementById('gao_red_grid_avg').value = '';
                 document.getElementById('gao_red_grid_cnt').value = '';
+                gaoRawTotal = 0;
                 calcGao();
             };
             calcGao();
         }
 
         // ============================================================
-        // ★ 苏琦（完整保留）
+        // ★ 苏琦（分段校准）
         // ============================================================
         function renderSu() {
             var el = document.getElementById('page-su');
@@ -2185,6 +2348,8 @@
                 };
             });
 
+            var suRawTotal = 0;
+
             function calcSu() {
                 var total = 0;
                 var inputCount = 0;
@@ -2204,10 +2369,15 @@
                 var redGridSub = gridTotal * redGridPrice;
                 document.getElementById('su_red_grid_sub').textContent = fmt(redGridSub);
                 total += redGridSub;
-                document.getElementById('suTotal').textContent = fmt(total);
-                var disc = dynamicRecDiscount(total);
-                var rec = total * disc;
-                if (currentMode === 'aggressive') rec = total * 0.95;
+
+                suRawTotal = total;
+                var factor = getCalibrationFactor(currentMap, total);
+                var finalTotal = total * factor;
+
+                document.getElementById('suTotal').textContent = fmt(finalTotal);
+                var disc = dynamicRecDiscount(finalTotal);
+                var rec = finalTotal * disc;
+                if (currentMode === 'aggressive') rec = finalTotal * 0.95;
                 document.getElementById('suRec').textContent = fmt(rec);
                 var conf = 0.80 + Math.min(0.15, inputCount * 0.025);
                 conf = Math.max(0.60, Math.min(0.95, conf));
@@ -2219,8 +2389,9 @@
                         'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
                 }
                 if (label) label.textContent = Math.round(conf * 100) + '%';
-                var high = total * 1.2;
-                updateQuickActions(rec, total, 0, high);
+                var high = finalTotal * 1.2;
+                updateQuickActions(rec, finalTotal, 0, high);
+                updateCalibrateStatusDisplay();
             }
 
             colorKeys.forEach(function(key) {
@@ -2232,13 +2403,14 @@
                 colorKeys.forEach(function(key) { document.getElementById('su_' + key).value = ''; });
                 document.getElementById('su_red_grid_avg').value = '';
                 document.getElementById('su_red_grid_cnt').value = '';
+                suRawTotal = 0;
                 calcSu();
             };
             calcSu();
         }
 
         // ============================================================
-        // ★ 安可（新模型：输入均格 → 自动推算组合 + 估值）
+        // ★ 安可（分段校准）
         // ============================================================
         function renderAn() {
             var el = document.getElementById('page-an');
@@ -2252,7 +2424,6 @@
 
             var body = document.getElementById('anBody');
 
-            // 构建输入区
             var html = '<div class="row">' +
                 '<span class="lbl">红均格</span>' +
                 '<div class="qty"><input type="number" id="anAvg" step="0.1" min="0.5" max="16" value="" style="width:100%;"></div>' +
@@ -2264,21 +2435,18 @@
                 '</span>' +
                 '</div>';
 
-            // 结果汇总区
             html += '<div id="anResultSummary" class="an-result-summary" style="display:none;">' +
                 '<span class="item"><span class="label">推荐出价：</span><span class="value rec" id="anRec">0</span></span>' +
                 '<span class="item"><span class="label">仓库预估：</span><span class="value" id="anTotal">0</span></span>' +
                 '<span class="item"><span class="label">组合数：</span><span class="value" id="anComboCount">0</span></span>' +
                 '</div>';
 
-            // 组合列表容器
             html += '<div id="anComboList"></div>';
 
             html += '<div class="reset-row"><button class="btn-reset" id="anReset">' + UI_TEXT.resetLabel + '</button></div>';
 
             body.innerHTML = html;
 
-            // ---- 微调按钮 ----
             document.getElementById('anStepMinus1').onclick = function() { adjustAvg(-1); };
             document.getElementById('anStepMinus01').onclick = function() { adjustAvg(-0.1); };
             document.getElementById('anStepPlus01').onclick = function() { adjustAvg(0.1); };
@@ -2292,7 +2460,8 @@
                 calcAn();
             }
 
-            // ---- 主计算 ----
+            var anRawTotal = 0;
+
             function calcAn() {
                 var avgInput = parseFloat(document.getElementById('anAvg').value);
                 var resultSummary = document.getElementById('anResultSummary');
@@ -2307,7 +2476,6 @@
                 var allCombos = [];
                 var maxItems = 20;
 
-                // 遍历藏品数量 1 ~ maxItems
                 for (var n = 1; n <= maxItems; n++) {
                     var totalGrids = Math.round(avgInput * n);
                     if (totalGrids < 1) continue;
@@ -2329,24 +2497,18 @@
                         }
                     }
 
-                    // 优化：如果n较小，精确搜索；否则标记为近似
                     if (n <= 8) {
                         findCombos(totalGrids, 0, []);
                         if (combosForN.length > 0) {
                             allCombos.push({ n: n, total: totalGrids, combos: combosForN, approx: false });
                         }
                     } else {
-                        // 对于较大数量，仅提示存在可能性，不展开具体组合
-                        var hasAny = false;
-                        // 简单检查：是否可以用grids中的数凑出totalGrids
-                        // 这里只做简单判断，不穷举
                         var tempRemain = totalGrids;
                         for (var gi = grids.length - 1; gi >= 0; gi--) {
                             if (tempRemain >= grids[gi]) {
                                 tempRemain -= grids[gi];
                             }
                         }
-                        // 如果剩余为0或可被最小格数整除，视为可能存在
                         if (tempRemain === 0 || (tempRemain > 0 && tempRemain % grids[0] === 0)) {
                             allCombos.push({ n: n, total: totalGrids, combos: null, approx: true });
                         }
@@ -2359,7 +2521,6 @@
                     return;
                 }
 
-                // ---- 计算估值 ----
                 var redAvgPrice = getRedPiecePrice(map);
                 var totalEstimateSum = 0;
                 var totalComboCount = 0;
@@ -2380,9 +2541,7 @@
                     });
                 });
 
-                // 如果没有精确组合，用近似组合估测
                 if (totalComboCount === 0) {
-                    // 使用近似组合的估算
                     allCombos.forEach(function(group) {
                         if (group.approx) {
                             var est = group.total * redAvgPrice;
@@ -2394,17 +2553,18 @@
                 }
 
                 var avgEstimate = totalComboCount > 0 ? totalEstimateSum / totalComboCount : 0;
-                var disc = dynamicRecDiscount(avgEstimate);
-                var rec = avgEstimate * disc;
-                if (currentMode === 'aggressive') rec = avgEstimate * 0.95;
+                anRawTotal = avgEstimate;
+                var factor = getCalibrationFactor(currentMap, avgEstimate);
+                var finalEstimate = avgEstimate * factor;
+                var disc = dynamicRecDiscount(finalEstimate);
+                var rec = finalEstimate * disc;
+                if (currentMode === 'aggressive') rec = finalEstimate * 0.95;
 
-                // 显示汇总
                 resultSummary.style.display = 'flex';
                 document.getElementById('anRec').textContent = fmt(rec);
-                document.getElementById('anTotal').textContent = fmt(avgEstimate);
+                document.getElementById('anTotal').textContent = fmt(finalEstimate);
                 document.getElementById('anComboCount').textContent = totalComboCount;
 
-                // ---- 渲染组合列表 ----
                 var listHtml = '';
                 var maxShow = 12;
 
@@ -2421,7 +2581,7 @@
                         '<div class="g-body">';
 
                     if (group.approx || !group.combos || group.combos.length === 0) {
-                        var estVal = group.total * redAvgPrice;
+                        var estVal = group.total * redAvgPrice * factor;
                         listHtml += '<span class="an-combo-item"><span class="grids">约 ' + group.total +
                             ' 格</span> <span class="val">≈' + fmt(estVal) + '</span></span>';
                     } else {
@@ -2433,6 +2593,7 @@
                                 if (entry && entry.avg) sum += entry.avg;
                                 else sum += redAvgPrice * g;
                             });
+                            sum *= factor;
                             listHtml += '<span class="an-combo-item"><span class="grids">' + combo.join('+') +
                                 '</span> <span class="val">' + fmt(sum) + '</span></span>';
                         });
@@ -2445,24 +2606,21 @@
                 });
 
                 comboList.innerHTML = listHtml;
-
-                // 更新快速操作栏
-                updateQuickActions(rec, avgEstimate, 0, avgEstimate * 1.2);
+                updateQuickActions(rec, finalEstimate, 0, finalEstimate * 1.2);
+                updateCalibrateStatusDisplay();
             }
 
-            // ---- 输入事件 ----
             document.getElementById('anAvg').addEventListener('input', calcAn);
             document.getElementById('anAvg').addEventListener('change', calcAn);
 
-            // ---- 重置 ----
             document.getElementById('anReset').onclick = function() {
                 document.getElementById('anAvg').value = '';
                 document.getElementById('anResultSummary').style.display = 'none';
                 document.getElementById('anComboList').innerHTML = '<div class="an-empty">请输入平均格数开始推算</div>';
+                anRawTotal = 0;
                 updateQuickActions(0, 0, 0, 0);
             };
 
-            // 初始状态
             document.getElementById('anComboList').innerHTML = '<div class="an-empty">请输入平均格数开始推算</div>';
         }
 
@@ -2476,6 +2634,7 @@
             document.querySelectorAll('.map-switch button').forEach(function(btn) {
                 btn.classList.toggle('on', btn.dataset.map === currentMap);
             });
+            updateCalibrateStatusDisplay();
             var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
             if (fn[currentTab]) fn[currentTab]();
         }
@@ -2484,8 +2643,8 @@
         initAuthUI();
         setTimeout(renderMainApp, 300);
 
-        console.log('✅ 俱乐大玩家 · 超级AI 已加载（安可页面已更新为自动匹配模式）');
-        console.log('💡 安可：输入红均格，自动推算所有组合及估值');
+        console.log('✅ 已加载 — 分段校准（4个价值区间，用户1次=内部5次）');
+        console.log('📊 分段：0-50万 | 50-100万 | 100-200万 | 200万以上，各段独立校准');
     </script>
 </body>
 </html>
