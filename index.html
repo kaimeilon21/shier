@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>俱乐大玩家 · 迪城修正版</title>
+    <title>俱乐大玩家 · 迪城修正版（带自动学习校准 + 车电池/古董）</title>
     <style>
+        /* 样式与之前完全相同，此处省略以节省篇幅，但保留全部样式 */
+        /* 实际使用时请复制完整样式（与之前版本一致） */
         * {
             margin: 0;
             padding: 0;
@@ -338,6 +340,27 @@
         }
         .collapse-toggle:hover { color: var(--accent2); }
 
+        /* 新增快捷按钮样式 */
+        .quick-btn {
+            padding: 2px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--bg-input);
+            color: var(--accent2);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+            white-space: nowrap;
+        }
+        .quick-btn:hover {
+            background: rgba(232,196,104,0.10);
+            border-color: var(--accent);
+        }
+        .quick-btn:active { transform: scale(0.95); }
+        .inline-group { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+
         @media (max-width: 480px) {
             .top-nav .nav-group button[data-tab] { font-size: 13px; padding: 4px 10px; min-height: 30px; }
             .top-nav .nav-group button.mode-btn { font-size: 11px; padding: 3px 8px; min-height: 26px; }
@@ -354,6 +377,7 @@
             .map-mode-row { flex-direction: column; }
             .map-mode-row .map-switch, .map-mode-row .mode-switch { flex: 1; }
             .map-mode-row .map-switch button, .map-mode-row .mode-switch button { font-size: 10px; padding: 4px 2px; min-width: 30px; }
+            .quick-btn { font-size: 10px; padding: 1px 6px; }
         }
         @media (min-width: 600px) {
             .top-nav .nav-group .label { display: inline-block; }
@@ -401,7 +425,7 @@
         <div class="header">
             <div class="main-title">
                 俱乐大玩家 · 迪城修正版
-                <span class="super-tag">📊 真实数据校准</span>
+                <span class="super-tag">📊 真实数据校准 + 自动学习</span>
             </div>
             <div class="sub-title"></div>
             <div class="header-actions">
@@ -444,368 +468,165 @@
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js">
     </script>
     <script>
-        var AUTH_TEXT = {
-            authIcon: '🔐',
-            authTitle: '俱乐大玩家 · 迪城修正版',
-            authBadge: '🌟 超级AI定制版',
-            authSub: '请输入卡密激活',
-            inputPlaceholder: '请输入卡密',
-            verifyBtnText: '✅ 激活',
-            verifyBtnLoading: '⏳ 验证中...',
-            errorEmpty: '请输入卡密',
-            errorInvalid: '❌ 卡密无效或已过期',
-            errorNetwork: '⚠️ 网络异常，请检查后重试',
-            remainPermanent: '♾️ 永久有效',
-            remainFormat: '⏱ 剩余 {time} · {type}',
-            unbindConfirm: '确定要解绑此设备吗？\n解绑后需要重新激活。',
-            unbindSuccess: '已解绑，页面将刷新'
+        // ============================================================
+        // ★ 反破解 / 反调试 / 反篡改 模块
+        // ============================================================
+        (function() {
+            'use strict';
+            function detectDebugger() {
+                var threshold = 160;
+                var start = performance.now();
+                (function(){}).constructor('debugger')();
+                var end = performance.now();
+                if (end - start > threshold) {
+                    document.body.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0a0e1a;color:#f87171;font-size:20px;font-family:sans-serif;flex-direction:column;"><h1>⚠️ 检测到非法调试</h1><p>页面已锁定，请关闭开发者工具后刷新。</p></div>';
+                    throw new Error('Debugger detected');
+                }
+            }
+            setInterval(detectDebugger, 2000);
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'F12') { e.preventDefault(); return false; }
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'I' || e.key === 'i')) { e.preventDefault(); return false; }
+                if ((e.ctrlKey || e.metaKey) && (e.key === 'U' || e.key === 'u')) { e.preventDefault(); return false; }
+                if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === 'J' || e.key === 'j')) { e.preventDefault(); return false; }
+            });
+            document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
+            function guardGlobals() {
+                var protectedKeys = ['localStorage', 'sessionStorage', 'CryptoJS', 'document'];
+                protectedKeys.forEach(function(key) {
+                    if (window[key] && typeof window[key] === 'object') {
+                        try {
+                            if (key === 'localStorage') {
+                                var test = window.localStorage.getItem('__guard_test');
+                                window.localStorage.setItem('__guard_test', 'ok');
+                                window.localStorage.removeItem('__guard_test');
+                            }
+                        } catch(e) {
+                            location.reload();
+                        }
+                    }
+                });
+            }
+            setInterval(guardGlobals, 3000);
+            console.log('🛡️ 反破解保护已启用');
+        })();
+
+        // ============================================================
+        // ★ 安全验证系统 - 强制Keyt验证 + 数据加密 + 防破解
+        // ============================================================
+
+        var _0x = {
+            encode: function(s) {
+                try { return CryptoJS.AES.encrypt(s, 'd7k9x2m4n8p6w3q1').toString(); } catch (e) { return btoa(encodeURIComponent(s)); }
+            },
+            decode: function(s) {
+                try { var dec = CryptoJS.AES.decrypt(s, 'd7k9x2m4n8p6w3q1'); return dec.toString(CryptoJS.enc.Utf8); } catch (e) {
+                    try { return decodeURIComponent(atob(s)); } catch (e2) { return null; }
+                }
+            },
+            hash: function(s) { return CryptoJS.SHA256(s + 's3cure_k3y_2026').toString().substring(0, 16); }
         };
+        var APP_SECRET = 'd7k9x2m4n8p6w3q1';
+
+        function encryptData(raw) { return CryptoJS.AES.encrypt(JSON.stringify(raw), APP_SECRET).toString(); }
+        function decryptData(encrypted) {
+            try { var dec = CryptoJS.AES.decrypt(encrypted, APP_SECRET); return JSON.parse(dec.toString(CryptoJS.enc.Utf8)); } catch (e) { return null; }
+        }
+
+        function saveSecureVerify(card, data) {
+            var payload = { card: card, data: data, timestamp: Date.now(), checksum: _0x.hash(card + data.cardType + data.minutes) };
+            var encrypted = encryptData(payload);
+            try { localStorage.setItem('secure_verify', encrypted); localStorage.setItem('card', card); } catch (e) {}
+        }
+        function getSecureVerify() {
+            try {
+                var raw = localStorage.getItem('secure_verify');
+                if (!raw) return null;
+                var dec = decryptData(raw);
+                if (!dec || !dec.card || !dec.data) return null;
+                if (_0x.hash(dec.card + dec.data.cardType + dec.data.minutes) !== dec.checksum) return null;
+                if (Date.now() - dec.timestamp > 7 * 24 * 60 * 60 * 1000) return null;
+                return dec;
+            } catch (e) { return null; }
+        }
+        function clearSecureVerify() { try { localStorage.removeItem('secure_verify'); localStorage.removeItem('card'); } catch (e) {} }
 
         var CONFIG = {
             API_URL: 'https://www.keyt.cn/kami/qq204443214/check.php',
             APP_NAME: 'a',
-            REQUEST_TIMEOUT: 8000,
-            RETRY_DELAY: 1000,
-            MAX_RETRIES: 1
+            REQUEST_TIMEOUT: 8000
         };
-        var VERIFY_CACHE_MS = 7 * 24 * 60 * 60 * 1000;
 
-        function getDeviceId() {
-            var saved = localStorage.getItem('device_id');
+        function getDeviceFingerprint() {
+            var saved = localStorage.getItem('device_fp');
             if (saved) return saved;
             var parts = [];
             try {
                 var canvas = document.createElement('canvas');
-                var gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+                canvas.width = 512; canvas.height = 128;
+                var ctx = canvas.getContext('2d');
+                ctx.fillStyle = '#f60'; ctx.fillRect(100,1,80,30);
+                ctx.fillStyle = '#069'; ctx.font = '18px Arial'; ctx.fillText('KeytSecure',2,25);
+                ctx.fillStyle = 'rgba(100,200,50,0.6)'; ctx.beginPath(); ctx.arc(80,40,20,0,Math.PI*2); ctx.fill();
+                parts.push('canvas:' + CryptoJS.MD5(canvas.toDataURL()).toString().substring(0,16));
+            } catch(e) {}
+            parts.push('screen:' + (screen.width||0) + 'x' + (screen.height||0));
+            parts.push('color:' + (screen.colorDepth||24));
+            parts.push('agent:' + CryptoJS.MD5(navigator.userAgent||'').toString().substring(0,12));
+            try {
+                var gl = document.createElement('canvas').getContext('webgl');
                 if (gl) {
                     var info = gl.getExtension('WEBGL_debug_renderer_info');
-                    if (info) {
-                        var gpu = gl.getParameter(info.UNMASKED_RENDERER_WEBGL) || '';
-                        if (gpu) parts.push('gpu:' + gpu);
-                    }
+                    if (info) { var gpu = gl.getParameter(info.UNMASKED_RENDERER_WEBGL) || ''; if(gpu) parts.push('gpu:' + CryptoJS.MD5(gpu).toString().substring(0,12)); }
                 }
-            } catch (e) {}
-            if (parts.length === 0) {
-                try {
-                    var c = document.createElement('canvas');
-                    c.width = 256;
-                    c.height = 64;
-                    var ctx = c.getContext('2d');
-                    if (ctx) {
-                        ctx.fillStyle = '#f60';
-                        ctx.fillRect(100, 1, 62, 20);
-                        ctx.fillStyle = '#069';
-                        ctx.font = '14px Arial';
-                        ctx.fillText('Keyt.cn', 2, 15);
-                        ctx.fillStyle = 'rgba(100,200,50,0.5)';
-                        ctx.beginPath();
-                        ctx.arc(50, 30, 15, 0, Math.PI * 2);
-                        ctx.fill();
-                        parts.push('canvas:' + CryptoJS.MD5(c.toDataURL()).toString());
-                    }
-                } catch (e) {}
-            }
-            if (parts.length === 0) {
-                parts.push('screen:' + (screen.width||0) + 'x' + (screen.height||0) + 'x' + (screen.colorDepth||24));
-                var os = navigator.platform || '';
-                if (os.indexOf('Win')!==-1) os = 'Windows';
-                else if (os.indexOf('Mac')!==-1) os = 'Mac';
-                else if (os.indexOf('Linux')!==-1) os = 'Linux';
-                else if (os.indexOf('iPhone')!==-1 || os.indexOf('iPad')!==-1) os = 'iOS';
-                else if (os.indexOf('Android')!==-1) os = 'Android';
-                else os = 'Other';
-                parts.push('os:' + os);
-                parts.push('lang:' + (navigator.language || navigator.userLanguage || 'zh-CN'));
-            }
-            var id = 'web_' + CryptoJS.MD5(parts.join('|')).toString();
-            localStorage.setItem('device_id', id);
-            return id;
+            } catch(e) {}
+            var fp = CryptoJS.MD5(parts.join('|') + 'fp_salt_2026').toString().substring(0,32);
+            localStorage.setItem('device_fp', fp);
+            return fp;
         }
 
-        function saveVerifyStatus(card, days, minutes, cardType, verifyTime) {
-            var now = Date.now();
-            var data = {
-                card: card,
-                days: days,
-                minutes: minutes,
-                cardType: cardType || '天卡',
-                verified: true,
-                verifyTime: verifyTime || now,
-                expireAt: now + VERIFY_CACHE_MS
-            };
-            try { localStorage.setItem('keyt_verify_status', JSON.stringify(data)); } catch (e) {}
-            try { localStorage.setItem('card', card); } catch (e) {}
-            return data;
-        }
-
-        function checkLocalVerify() {
-            try {
-                var raw = localStorage.getItem('keyt_verify_status');
-                if (!raw) return null;
-                var data = JSON.parse(raw);
-                if (!data.verified) return null;
-                if (Date.now() > data.expireAt) return null;
-                if (!data.card) return null;
-                return data;
-            } catch (e) { return null; }
-        }
-
-        function clearVerifyStatus() {
-            try { localStorage.removeItem('keyt_verify_status');
-                localStorage.removeItem('card'); } catch (e) {}
-        }
-
-        function requestWithTimeout(url, timeout, callback) {
+        function verifyWithKeyt(card, callback) {
+            var fp = getDeviceFingerprint();
+            var url = CONFIG.API_URL + '?card=' + encodeURIComponent(card) + '&mac=' + encodeURIComponent(fp) + '&app=' + CONFIG.APP_NAME;
             var xhr = new XMLHttpRequest();
-            var timer = setTimeout(function() { xhr.abort();
-                callback('error|timeout'); }, timeout);
+            var timer = setTimeout(function(){ xhr.abort(); callback(false,null,null,null,'timeout'); }, CONFIG.REQUEST_TIMEOUT);
             xhr.open('GET', url, true);
             xhr.onreadystatechange = function() {
                 if (xhr.readyState === 4) {
                     clearTimeout(timer);
-                    if (xhr.status === 200) callback(xhr.responseText);
-                    else callback('error|network_error');
+                    if (xhr.status === 200) {
+                        var response = xhr.responseText;
+                        var pos = response.indexOf('|sign='); if (pos!==-1) response = response.substring(0,pos);
+                        var parts = response.split('|');
+                        if (parts[0] === 'ok') {
+                            var days = parts[2] || '未知';
+                            var minutes = parseInt(parts[3]) || 0;
+                            var cardType = '天卡';
+                            if (minutes >= 999999) cardType = '永久卡';
+                            else if (minutes >= 43200) cardType = '月卡';
+                            else if (minutes >= 10080) cardType = '周卡';
+                            else if (minutes >= 1440) cardType = '天卡';
+                            else cardType = '小时卡';
+                            callback(true, days, minutes, cardType, null);
+                            return;
+                        }
+                        callback(false, null, null, null, 'invalid');
+                    } else {
+                        callback(false, null, null, null, 'network');
+                    }
                 }
             };
             xhr.send();
         }
 
-        function verifyWithServer(card, callback, attempt) {
-            attempt = attempt || 0;
-            var deviceId = getDeviceId();
-            var url = CONFIG.API_URL + '?card=' + encodeURIComponent(card) + '&mac=' + encodeURIComponent(deviceId) +
-                '&app=' + CONFIG.APP_NAME;
-            requestWithTimeout(url, CONFIG.REQUEST_TIMEOUT, function(response) {
-                var pos = response.indexOf('|sign=');
-                if (pos !== -1) response = response.substring(0, pos);
-                var parts = response.split('|');
-                if (parts[0] === 'ok') {
-                    var days = parts[2] || '未知';
-                    var minutes = parseInt(parts[3]) || 0;
-                    var cardType = '天卡';
-                    if (minutes >= 999999) cardType = '永久卡';
-                    else if (minutes >= 43200) cardType = '月卡';
-                    else if (minutes >= 10080) cardType = '周卡';
-                    else if (minutes >= 1440) cardType = '天卡';
-                    else cardType = '小时卡';
-                    callback(true, days, minutes, cardType);
-                } else {
-                    if (attempt < CONFIG.MAX_RETRIES) {
-                        setTimeout(function() { verifyWithServer(card, callback, attempt + 1); }, CONFIG.RETRY_DELAY);
-                    } else {
-                        callback(false, null, null, null);
-                    }
-                }
-            });
-        }
-
-        var MAP_DATA = {
-            xunhui: {
-                label: '巡回',
-                redAvgGrid: 4.3,
-                redByGrid: {
-                    1: { avg: 95746, med: 74970, min: 63950 },
-                    2: { avg: 209475, med: 124100, min: 105000 },
-                    3: { avg: 149100, med: 149100, min: 140700 },
-                    4: { avg: 235450, med: 190500, min: 80250 },
-                    6: { avg: 342343, med: 251900, min: 188000 },
-                    8: { avg: 333400, med: 333400, min: 333400 },
-                    9: { avg: 423625, med: 388300, min: 280600 },
-                    12: { avg: 269650, med: 269650, min: 231800 },
-                    15: { avg: 386400, med: 386400, min: 386400 },
-                    16: { avg: 607300, med: 656700, min: 475600 }
-                },
-                colors: {
-                    purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                    orange: { piece: { avg: 37925, med: 32630 }, grid: { avg: 12053.07, med: 10110 } },
-                    green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                    blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                },
-                redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
-                gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16]
-            },
-            yanjing: {
-                label: '燕京',
-                redAvgGrid: 4.4,
-                redByGrid: {
-                    1: { avg: 95746, med: 74970, min: 63950 },
-                    2: { avg: 209475, med: 124100, min: 105000 },
-                    3: { avg: 149100, med: 149100, min: 140700 },
-                    4: { avg: 229352, med: 188650, min: 80250 },
-                    6: { avg: 324638, med: 247500, min: 188000 },
-                    8: { avg: 324400, med: 324400, min: 315400 },
-                    9: { avg: 386740, med: 354100, min: 239200 },
-                    12: { avg: 269650, med: 269650, min: 231800 },
-                    15: { avg: 386400, med: 386400, min: 386400 },
-                    16: { avg: 607300, med: 656700, min: 475600 }
-                },
-                colors: {
-                    purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                    orange: { piece: { avg: 37159, med: 32130 }, grid: { avg: 11838.70, med: 9890 } },
-                    green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                    blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                },
-                redStat: { piece: { avg: 234999, med: 189250 }, grid: { avg: 52824, med: 52700 } },
-                gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16]
-            },
-            xiangjiang: {
-                label: '香江',
-                redAvgGrid: 4.2,
-                redByGrid: {
-                    1: { avg: 93964, med: 74605, min: 63660 },
-                    2: { avg: 194621, med: 122150, min: 99990 },
-                    3: { avg: 149100, med: 149100, min: 140700 },
-                    4: { avg: 233781, med: 191200, min: 80250 },
-                    6: { avg: 329750, med: 247500, min: 188000 },
-                    8: { avg: 333400, med: 333400, min: 333400 },
-                    9: { avg: 423625, med: 388300, min: 280600 },
-                    12: { avg: 269650, med: 269650, min: 231800 },
-                    15: { avg: 386400, med: 386400, min: 386400 },
-                    16: { avg: 607300, med: 656700, min: 475600 }
-                },
-                colors: {
-                    purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                    orange: { piece: { avg: 36867, med: 31550 }, grid: { avg: 11948.39, med: 9980 } },
-                    green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                    blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                },
-                redStat: { piece: { avg: 230370, med: 186800 }, grid: { avg: 54246, med: 53475 } },
-                gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16]
-            },
-            nicheng: {
-                label: '霓城',
-                redAvgGrid: 4.5,
-                redByGrid: {
-                    1: { avg: 95746, med: 74970, min: 63950 },
-                    2: { avg: 200897, med: 123500, min: 97960 },
-                    3: { avg: 149100, med: 149100, min: 140700 },
-                    4: { avg: 226960, med: 180200, min: 80250 },
-                    6: { avg: 342343, med: 251900, min: 188000 },
-                    8: { avg: 333400, med: 333400, min: 333400 },
-                    9: { avg: 406580, med: 354100, min: 280600 },
-                    12: { avg: 269650, med: 269650, min: 231800 },
-                    15: { avg: 386400, med: 386400, min: 386400 },
-                    16: { avg: 559650, med: 566150, min: 416700 }
-                },
-                colors: {
-                    purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                    orange: { piece: { avg: 36490, med: 31840 }, grid: { avg: 11998.41, med: 10408 } },
-                    green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                    blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                },
-                redStat: { piece: { avg: 235455, med: 180200 }, grid: { avg: 52323, med: 52500 } },
-                gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16]
-            },
-            dicheng: {
-                label: '迪城 ⭐',
-                redAvgGrid: 4.5,
-                redByGrid: {
-                    1: { avg: 54774, med: 54774, min: 54774 },
-                    2: { avg: 54774, med: 54774, min: 54774 },
-                    3: { avg: 54774, med: 54774, min: 54774 },
-                    4: { avg: 54774, med: 54774, min: 54774 },
-                    6: { avg: 54774, med: 54774, min: 54774 },
-                    8: { avg: 54774, med: 54774, min: 54774 },
-                    9: { avg: 54774, med: 54774, min: 54774 },
-                    12: { avg: 54774, med: 54774, min: 54774 },
-                    15: { avg: 54774, med: 54774, min: 54774 },
-                    16: { avg: 54774, med: 54774, min: 54774 }
-                },
-                colors: {
-                    purple: { piece: { avg: 513, med: 513 }, grid: { avg: 513, med: 513 } },
-                    orange: { piece: { avg: 23876, med: 23876 }, grid: { avg: 23876, med: 23876 } },
-                    green: { piece: { avg: 44, med: 44 }, grid: { avg: 44, med: 44 } },
-                    blue: { piece: { avg: 125, med: 125 }, grid: { avg: 125, med: 125 } }
-                },
-                redStat: { piece: { avg: 54774, med: 54774 }, grid: { avg: 54774, med: 54774 } },
-                gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16]
-            }
+        var AUTH_TEXT = {
+            remainPermanent: '♾️ 永久有效',
+            remainFormat: '⏱ 剩余 {time} · {type}',
+            errorEmpty: '请输入卡密',
+            errorInvalid: '❌ 卡密无效或已过期',
+            errorNetwork: '⚠️ 网络异常，请检查后重试',
+            unbindConfirm: '确定要解绑此设备吗？\n解绑后需要重新激活。'
         };
-
-        function weightedPrice(stat, adjustWeight) {
-            if (!stat) return 0;
-            var avg = stat.avg || 0;
-            var med = stat.med || 0;
-            var min = stat.min !== undefined ? stat.min : (stat.med || 0) * 0.7;
-            if (stat.min === undefined) {
-                return avg * 0.6 + med * 0.4;
-            }
-            var spread = (avg - min) / (avg + 0.01);
-            var medWeight = 0.35 + Math.min(0.15, spread * 0.3);
-            var minWeight = 0.25 - Math.min(0.15, spread * 0.3);
-            var avgWeight = 1 - medWeight - minWeight;
-            avgWeight = Math.max(0.3, Math.min(0.6, avgWeight));
-            medWeight = Math.max(0.25, Math.min(0.5, medWeight));
-            minWeight = Math.max(0.05, Math.min(0.3, minWeight));
-            var totalW = avgWeight + medWeight + minWeight;
-            avgWeight /= totalW;
-            medWeight /= totalW;
-            minWeight /= totalW;
-            var price = avg * avgWeight + med * medWeight + min * minWeight;
-            if (adjustWeight && typeof adjustWeight === 'number') {
-                price = price * (1 + (adjustWeight - 1) * 0.3);
-            }
-            return price;
-        }
-
-        function getRedGridPrice(grid, map) { var e = map.redByGrid[grid]; return e ? weightedPrice(e) : 0; }
-        function getColorGridPrice(key, map) { var d = map.colors[key]; return d ? weightedPrice(d.grid) : 0; }
-        function getColorPiecePrice(key, map) { var d = map.colors[key]; return d ? weightedPrice(d.piece) : 0; }
-        function getRedPiecePrice(map) { return weightedPrice(map.redStat.piece); }
-        function getRedGridAvgPrice(map) { return weightedPrice(map.redStat.grid); }
-        function getMapData(key) { return MAP_DATA[key] || MAP_DATA.xunhui; }
-        function fmt(n) { return (n === undefined || n === null || isNaN(n)) ? '0' : Math.round(n).toLocaleString(); }
-
-        var MODE_CONFIG = {
-            conservative: { recDiscount: 0.82, tagClass: 'conservative', tagText: '保守模式 · 稳扎稳打' },
-            balanced: { recDiscount: 0.87, tagClass: 'balanced', tagText: '均衡模式 · 中位加权' },
-            aggressive: { recDiscount: 0.92, tagClass: 'aggressive', tagText: '赌大红 · 激进博弈' }
-        };
-        var MAP_BOOST = { xunhui: 1.0, yanjing: 1.0, xiangjiang: 1.0, nicheng: 1.0, dicheng: 1.0 };
-        var CAR_POOL_LEVELS = [
-            { label: '无', value: 0 },
-            { label: '+1', value: 90000, desc: '9万' },
-            { label: '+2', value: 150000, desc: '15万' },
-            { label: '+3', value: 300000, desc: '30万' }
-        ];
-
-        function getModeConfig(key) { return MODE_CONFIG[key] || MODE_CONFIG.balanced; }
-
-        function calcAll(baseTotal, redSubtotal, carLevel, modeKey, mapKey, redCount) {
-            var mode = getModeConfig(modeKey);
-            var boost = MAP_BOOST[mapKey] || 1.0;
-            var redRatio = baseTotal > 0 ? Math.min(1, redSubtotal / baseTotal) : 0;
-
-            if (mapKey === 'dicheng') {
-                var baseDisc = (modeKey === 'aggressive') ? 0.92 : 0.90;
-                var redBonus = Math.min(0.06, (redCount || 0) * 0.002);
-                var finalDisc = Math.min(0.96, baseDisc + redBonus);
-                var warehouse = Math.round(baseTotal);
-                var bid = Math.round(warehouse * finalDisc);
-                var high = Math.round(warehouse * 1.15);
-                return { warehousePrice: warehouse, bidPrice: bid, highPrice: high, finalDisc: finalDisc, redRatio: redRatio };
-            }
-
-            var warehouse = Math.round(baseTotal * boost);
-            var baseDisc = mode.recDiscount || 0.87;
-            var redBonus = redRatio * 0.12;
-            var carBonus = (carLevel || 0) * 0.025;
-            var finalDisc = Math.min(0.96, baseDisc + redBonus + carBonus);
-            var bid = Math.round(warehouse * finalDisc);
-            var high = Math.round(warehouse * 1.15);
-            return { warehousePrice: warehouse, bidPrice: bid, highPrice: high, finalDisc: finalDisc, redRatio: redRatio };
-        }
-
-        function calcConfidence(cnt, redRatio, carLevel, modeKey, mapKey) {
-            var conf = 0.88 + Math.min(0.10, cnt * 0.01);
-            if (redRatio > 0.3) conf += 0.02;
-            if (redRatio > 0.6) conf += 0.02;
-            if (carLevel > 0) conf += 0.02;
-            if (modeKey === 'aggressive') conf -= 0.05;
-            if (mapKey === 'dicheng') conf = Math.min(conf, 0.92);
-            return Math.min(0.96, Math.max(0.55, conf));
-        }
-
         var appWrap = document.getElementById('appWrap');
         var authOverlay = document.getElementById('authOverlay');
         var cardInput = document.getElementById('cardInput');
@@ -813,19 +634,9 @@
         var authError = document.getElementById('authError');
         var headerRemain = document.getElementById('headerRemain');
 
-        function showApp(data) {
-            authOverlay.classList.add('hidden');
-            appWrap.classList.add('show');
-            if (data) updateRemainDisplay(data);
-        }
-        function showAuth() {
-            authOverlay.classList.remove('hidden');
-            appWrap.classList.remove('show');
-        }
+        function showApp(data) { authOverlay.classList.add('hidden'); appWrap.classList.add('show'); if (data) updateRemainDisplay(data); }
+        function showAuth() { authOverlay.classList.remove('hidden'); appWrap.classList.remove('show'); }
         function setAuthError(msg) { authError.textContent = msg; }
-        function setVerifyBtnText(text) { verifyBtn.textContent = text; }
-        function setVerifyBtnDisabled(disabled) { verifyBtn.disabled = disabled; }
-
         function updateRemainDisplay(data) {
             if (!data) return;
             var now = Date.now();
@@ -851,28 +662,32 @@
             if (days < 1 && hours < 1) type = 'danger';
             headerRemain.className = 'remain-time ' + type;
         }
-
         var remainTimer = null;
-
         function startRemainTimer(data) {
             if (remainTimer) clearInterval(remainTimer);
             updateRemainDisplay(data);
             remainTimer = setInterval(function() {
-                var cached = checkLocalVerify();
-                if (cached) updateRemainDisplay(cached);
-                else { clearInterval(remainTimer);
-                    remainTimer = null; }
+                var cached = getSecureVerify();
+                if (cached) {
+                    var now = Date.now();
+                    var elapsed = (now - cached.timestamp) / 1000;
+                    var remainMin = Math.max(0, cached.data.minutes - elapsed / 60);
+                    if (remainMin <= 0) {
+                        clearInterval(remainTimer); remainTimer = null;
+                        clearSecureVerify(); showAuth(); setAuthError('卡密已过期');
+                        return;
+                    }
+                    updateRemainDisplay({ cardType: cached.data.cardType, minutes: cached.data.minutes, verifyTime: cached.timestamp });
+                } else {
+                    clearInterval(remainTimer); remainTimer = null;
+                }
             }, 10000);
         }
-
         document.getElementById('unbindBtn').addEventListener('click', function() {
             if (confirm(AUTH_TEXT.unbindConfirm)) {
-                clearVerifyStatus();
+                clearSecureVerify();
                 if (remainTimer) clearInterval(remainTimer);
-                showAuth();
-                cardInput.value = '';
-                setAuthError('');
-                headerRemain.textContent = '⏱ 已解绑';
+                showAuth(); cardInput.value = ''; setAuthError(''); headerRemain.textContent = '⏱ 已解绑';
                 location.reload();
             }
         });
@@ -882,572 +697,711 @@
                 var card = cardInput.value.trim();
                 if (!card) { setAuthError(AUTH_TEXT.errorEmpty); return; }
                 setAuthError('');
-                setVerifyBtnDisabled(true);
-                setVerifyBtnText(AUTH_TEXT.verifyBtnLoading);
-                verifyWithServer(card, function(success, days, minutes, cardType) {
-                    setVerifyBtnDisabled(false);
-                    setVerifyBtnText(AUTH_TEXT.verifyBtnText);
+                verifyBtn.disabled = true; verifyBtn.textContent = '⏳ 验证中...';
+                verifyWithKeyt(card, function(success, days, minutes, cardType, error) {
+                    verifyBtn.disabled = false; verifyBtn.textContent = '✅ 激活';
                     if (success) {
-                        var data = saveVerifyStatus(card, days, minutes, cardType, Date.now());
+                        var data = { card: card, cardType: cardType, minutes: minutes, days: days, verifyTime: Date.now() };
+                        saveSecureVerify(card, data);
                         showApp(data);
                         startRemainTimer(data);
                         if (typeof renderMainApp === 'function') renderMainApp();
                     } else {
-                        setAuthError(AUTH_TEXT.errorInvalid);
+                        if (error === 'timeout' || error === 'network') setAuthError(AUTH_TEXT.errorNetwork);
+                        else setAuthError(AUTH_TEXT.errorInvalid);
                     }
                 });
             };
             cardInput.onkeydown = function(e) { if (e.key === 'Enter') verifyBtn.click(); };
         }
 
-        var currentTab = 'huo';
-        var currentMap = 'dicheng';
-        var currentMode = 'balanced';
+        (function() {
+            showAuth();
+            var cached = getSecureVerify();
+            if (cached) {
+                var elapsed = (Date.now() - cached.timestamp) / 1000;
+                var remainMin = Math.max(0, cached.data.minutes - elapsed / 60);
+                if (remainMin > 0) {
+                    showApp({ cardType: cached.data.cardType, minutes: cached.data.minutes, verifyTime: cached.timestamp });
+                    startRemainTimer({ cardType: cached.data.cardType, minutes: cached.data.minutes, verifyTime: cached.timestamp });
+                    setTimeout(function() { if (typeof renderMainApp === 'function') renderMainApp(); }, 100);
+                    return;
+                } else clearSecureVerify();
+            }
+            showAuth();
+            initAuthUI();
+        })();
 
-        function syncModeButtons(mode) {
+        console.log('✅ 迪城修正版已启动 — 带自动学习校准 + 车电池/古董快捷');
+
+        // ============================================================
+        // ★ 核心算法 — 加权均衡算法
+        // ============================================================
+
+        function getCalibrationFactor(mapKey) {
+            try {
+                var data = JSON.parse(localStorage.getItem('calibration_factor') || '{}');
+                return data[mapKey] || 1.0;
+            } catch(e) { return 1.0; }
+        }
+
+        function saveCalibrationFactor(mapKey, factor) {
+            try {
+                var data = JSON.parse(localStorage.getItem('calibration_factor') || '{}');
+                var old = data[mapKey] || 1.0;
+                var newFactor = old * 0.6 + factor * 0.4;
+                newFactor = Math.min(5.0, Math.max(0.5, newFactor));
+                data[mapKey] = newFactor;
+                localStorage.setItem('calibration_factor', JSON.stringify(data));
+                return newFactor;
+            } catch(e) { return factor; }
+        }
+
+        var CFG = {
+            maps: {
+                xunhui: {
+                    name: '巡回',
+                    redByGrid: {
+                        1: { avg: 95746, med: 74970, min: 63950 },
+                        2: { avg: 209475, med: 124100, min: 105000 },
+                        3: { avg: 149100, med: 149100, min: 140700 },
+                        4: { avg: 235450, med: 190500, min: 80250 },
+                        6: { avg: 342343, med: 251900, min: 188000 },
+                        8: { avg: 333400, med: 333400, min: 333400 },
+                        9: { avg: 423625, med: 388300, min: 280600 },
+                        12: { avg: 269650, med: 269650, min: 231800 },
+                        15: { avg: 386400, med: 386400, min: 386400 },
+                        16: { avg: 607300, med: 656700, min: 475600 }
+                    },
+                    colors: {
+                        purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
+                        orange: { piece: { avg: 37925, med: 32630 }, grid: { avg: 12053.07, med: 10110 } },
+                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
+                        blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
+                    },
+                    redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
+                    gridOptions: [1,2,3,4,6,8,9,12,15,16],
+                    redAvgGrid: 4.3
+                },
+                yanjing: {
+                    name: '燕京',
+                    redByGrid: {
+                        1: { avg: 95746, med: 74970, min: 63950 },
+                        2: { avg: 209475, med: 124100, min: 105000 },
+                        3: { avg: 149100, med: 149100, min: 140700 },
+                        4: { avg: 229352, med: 188650, min: 80250 },
+                        6: { avg: 324638, med: 247500, min: 188000 },
+                        8: { avg: 324400, med: 324400, min: 315400 },
+                        9: { avg: 386740, med: 354100, min: 239200 },
+                        12: { avg: 269650, med: 269650, min: 231800 },
+                        15: { avg: 386400, med: 386400, min: 386400 },
+                        16: { avg: 607300, med: 656700, min: 475600 }
+                    },
+                    colors: {
+                        purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
+                        orange: { piece: { avg: 37159, med: 32130 }, grid: { avg: 11838.7, med: 9890 } },
+                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
+                        blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
+                    },
+                    redStat: { piece: { avg: 234999, med: 189250 }, grid: { avg: 52824, med: 52700 } },
+                    gridOptions: [1,2,3,4,6,8,9,12,15,16],
+                    redAvgGrid: 4.4
+                },
+                xiangjiang: {
+                    name: '香江',
+                    redByGrid: {
+                        1: { avg: 93964, med: 74605, min: 63660 },
+                        2: { avg: 194621, med: 122150, min: 99990 },
+                        3: { avg: 149100, med: 149100, min: 140700 },
+                        4: { avg: 233781, med: 191200, min: 80250 },
+                        6: { avg: 329750, med: 247500, min: 188000 },
+                        8: { avg: 333400, med: 333400, min: 333400 },
+                        9: { avg: 423625, med: 388300, min: 280600 },
+                        12: { avg: 269650, med: 269650, min: 231800 },
+                        15: { avg: 386400, med: 386400, min: 386400 },
+                        16: { avg: 607300, med: 656700, min: 475600 }
+                    },
+                    colors: {
+                        purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
+                        orange: { piece: { avg: 36867, med: 31550 }, grid: { avg: 11948.39, med: 9980 } },
+                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
+                        blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
+                    },
+                    redStat: { piece: { avg: 230370, med: 186800 }, grid: { avg: 54246, med: 53475 } },
+                    gridOptions: [1,2,3,4,6,8,9,12,15,16],
+                    redAvgGrid: 4.2
+                },
+                nicheng: {
+                    name: '霓城',
+                    redByGrid: {
+                        1: { avg: 95746, med: 74970, min: 63950 },
+                        2: { avg: 200897, med: 123500, min: 97960 },
+                        3: { avg: 149100, med: 149100, min: 140700 },
+                        4: { avg: 226960, med: 180200, min: 80250 },
+                        6: { avg: 342343, med: 251900, min: 188000 },
+                        8: { avg: 333400, med: 333400, min: 333400 },
+                        9: { avg: 406580, med: 354100, min: 280600 },
+                        12: { avg: 269650, med: 269650, min: 231800 },
+                        15: { avg: 386400, med: 386400, min: 386400 },
+                        16: { avg: 559650, med: 566150, min: 416700 }
+                    },
+                    colors: {
+                        purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
+                        orange: { piece: { avg: 36490, med: 31840 }, grid: { avg: 11998.41, med: 10408 } },
+                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
+                        blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
+                    },
+                    redStat: { piece: { avg: 235455, med: 180200 }, grid: { avg: 52323, med: 52500 } },
+                    gridOptions: [1,2,3,4,6,8,9,12,15,16],
+                    redAvgGrid: 4.5
+                },
+                dicheng: {
+                    name: '迪城',
+                    redByGrid: {
+                        1: { avg: 95746, med: 74970, min: 63950 },
+                        2: { avg: 209475, med: 124100, min: 105000 },
+                        3: { avg: 149100, med: 149100, min: 140700 },
+                        4: { avg: 235450, med: 190500, min: 80250 },
+                        6: { avg: 342343, med: 251900, min: 188000 },
+                        8: { avg: 333400, med: 333400, min: 333400 },
+                        9: { avg: 423625, med: 388300, min: 280600 },
+                        12: { avg: 269650, med: 269650, min: 231800 },
+                        15: { avg: 386400, med: 386400, min: 386400 },
+                        16: { avg: 607300, med: 656700, min: 475600 }
+                    },
+                    colors: {
+                        purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
+                        orange: { piece: { avg: 37925, med: 32630 }, grid: { avg: 12053.07, med: 10110 } },
+                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
+                        blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
+                    },
+                    redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
+                    gridOptions: [1,2,3,4,6,8,9,12,15,16],
+                    redAvgGrid: 4.3
+                }
+            },
+            recDiscount: 0.85,
+            carRedGridPrice: 38000,
+            gaoCollapseThreshold: 6
+        };
+
+        function weightedPrice(stat) {
+            if (!stat) return 0;
+            var avg = stat.avg || 0;
+            var med = stat.med || 0;
+            var min = stat.min !== undefined ? stat.min : (stat.med || 0) * 0.7;
+            if (stat.min === undefined) return avg * 0.6 + med * 0.4;
+            var spread = (avg - min) / (avg + 0.01);
+            var medWeight = 0.35 + Math.min(0.15, spread * 0.3);
+            var minWeight = 0.25 - Math.min(0.15, spread * 0.3);
+            var avgWeight = 1 - medWeight - minWeight;
+            avgWeight = Math.max(0.3, Math.min(0.6, avgWeight));
+            medWeight = Math.max(0.25, Math.min(0.5, medWeight));
+            minWeight = Math.max(0.05, Math.min(0.3, minWeight));
+            var totalW = avgWeight + medWeight + minWeight;
+            avgWeight /= totalW; medWeight /= totalW; minWeight /= totalW;
+            return avg * avgWeight + med * medWeight + min * minWeight;
+        }
+
+        function dynamicRecDiscount(total) {
+            if (total < 500000) return 0.85;
+            if (total < 2000000) return 0.82;
+            if (total < 5000000) return 0.78;
+            return 0.74;
+        }
+
+        function getRedGridPrice(grid, map) {
+            var entry = map.redByGrid[grid];
+            if (!entry) return 0;
+            return weightedPrice(entry);
+        }
+
+        function getColorGridPrice(colorKey, map) {
+            var colorData = map.colors[colorKey];
+            if (!colorData) return 0;
+            return weightedPrice(colorData.grid);
+        }
+
+        function getColorPiecePrice(colorKey, map) {
+            var colorData = map.colors[colorKey];
+            if (!colorData) return 0;
+            return weightedPrice(colorData.piece);
+        }
+
+        function getRedPiecePrice(map) {
+            return weightedPrice(map.redStat.piece);
+        }
+
+        function getRedGridAvgPrice(map) {
+            return weightedPrice(map.redStat.grid);
+        }
+
+        function getMap() { return CFG.maps[currentMap]; }
+        function fmt(n) { if (n === undefined || n === null || isNaN(n)) return '0'; return Math.round(n).toLocaleString(); }
+
+        // ---- 全局状态 ----
+        var currentMode = 'balanced';
+        var currentMap = 'dicheng';
+        var currentTab = 'huo';
+
+        function updateQuickActions(rec, total, carPool, high) {
+            document.getElementById('qaRecValue').textContent = fmt(rec);
+            document.getElementById('qaTotalValue').textContent = fmt(total);
+            document.getElementById('qaCarValue').textContent = fmt(carPool);
+            document.getElementById('qaHighValue').textContent = fmt(high);
+        }
+
+        // ============================================================
+        // ★ 模式同步切换
+        // ============================================================
+        function setMode(mode) {
+            currentMode = mode;
             document.querySelectorAll('.mode-btn').forEach(function(btn) {
                 btn.classList.toggle('active', btn.dataset.mode === mode);
             });
-            currentMode = mode;
+            var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
+            if (fn[currentTab]) fn[currentTab]();
         }
 
-        function updateHighlights() {
-            document.querySelectorAll('[data-tab]').forEach(function(b) {
-                b.classList.toggle('active', b.dataset.tab === currentTab);
+        document.querySelectorAll('.mode-btn').forEach(function(btn) {
+            btn.onclick = function() { setMode(this.dataset.mode); };
+        });
+
+        // ============================================================
+        // ★ 角色切换
+        // ============================================================
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('[data-tab]').forEach(function(btn) {
+                btn.classList.toggle('active', btn.dataset.tab === tab);
             });
-            document.querySelectorAll('.map-switch button').forEach(function(b) {
-                b.classList.toggle('on', b.dataset.map === currentMap);
+            document.querySelectorAll('.page').forEach(function(page) {
+                page.classList.toggle('active', page.id === 'page-' + tab);
             });
+            var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
+            if (fn[tab]) fn[tab]();
         }
 
-        function updateQuickActions(total, rec, high, carValue) {
-            document.getElementById('qaTotalValue').textContent = fmt(total);
-            document.getElementById('qaRecValue').textContent = fmt(rec);
-            document.getElementById('qaHighValue').textContent = fmt(high);
-            document.getElementById('qaCarValue').textContent = fmt(carValue);
+        document.querySelectorAll('[data-tab]').forEach(function(btn) {
+            btn.onclick = function() { switchTab(this.dataset.tab); };
+        });
+
+        // ============================================================
+        // ★ 地图切换
+        // ============================================================
+        function setMap(mapKey) {
+            currentMap = mapKey;
+            document.querySelectorAll('.map-switch button').forEach(function(btn) {
+                btn.classList.toggle('on', btn.dataset.map === mapKey);
+            });
+            var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
+            if (fn[currentTab]) fn[currentTab]();
         }
 
-        function renderPage(tab) {
-            document.querySelectorAll('.page').forEach(function(p) { p.classList.remove('active'); });
-            var target = document.getElementById('page-' + tab);
-            if (target) target.classList.add('active');
+        document.querySelectorAll('.map-switch button').forEach(function(btn) {
+            btn.onclick = function() { setMap(this.dataset.map); };
+        });
 
-            var fns = { huo: renderHuo, gao: renderGao, su: renderSu, an: renderAn };
-            if (fns[tab]) fns[tab]();
-            updateHighlights();
-        }
+        // ============================================================
+        // ★ 渲染各角色页面（霍姑姑新增车电池/古董快捷）
+        // ============================================================
 
+        // --- 霍姑姑 ---
         function renderHuo() {
             var el = document.getElementById('page-huo');
+            var map = getMap();
             var mapKey = currentMap;
-            var modeKey = currentMode;
-            var cfg = getModeConfig(modeKey);
-            var map = getMapData(mapKey);
-            var colorKeys = ['green', 'blue', 'purple', 'orange', 'red'];
-            var colorLabels = ['绿色', '蓝色', '紫色', '橙色', '红色'];
-            var colorDots = ['green', 'blue', 'purple', 'orange', 'red'];
-
-            var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4a9ae8,#2a6ab0);">霍</div><div><div class="name">霍姑姑 · 颜色格数估值 <span style="font-size:10px;color:var(--text-secondary);opacity:0.4;">' +
-                map.label + '</span></div><div class="role">推荐道具：红格怀表，巨物价值，四件放大镜，奢侈扫描仪，全藏放大镜<span class="tip2">如红格数过多建议用奢侈扫描仪确认是否有车身，有则用车身池出价</span></div></div></div></div><div class="sec-body">';
-            html += '<div class="mode-tag ' + cfg.tagClass + '">' + cfg.tagText + '</div>';
-
-            colorKeys.forEach(function(key, idx) {
-                var price = (key === 'red') ? getRedGridAvgPrice(map) : getColorGridPrice(key, map);
-                html += '<div class="row"><span class="lbl"><span class="dot ' + colorDots[idx] + '"></span>' +
-                    colorLabels[idx] + '（格数）</span>' +
-                    '<div class="qty"><input type="number" id="huo_' + key + '" min="0" step="1" value="" data-price="' +
-                    price + '"></div>' +
-                    '<span class="sub" id="huo_' + key + '_sub">0</span></div>';
+            var colors = [
+                { key: 'green', label: '绿色', dot: 'green', priceFn: function(){ return getColorGridPrice('green', map); } },
+                { key: 'blue', label: '蓝色', dot: 'blue', priceFn: function(){ return getColorGridPrice('blue', map); } },
+                { key: 'purple', label: '紫色', dot: 'purple', priceFn: function(){ return getColorGridPrice('purple', map); } },
+                { key: 'orange', label: '橙色', dot: 'orange', priceFn: function(){ return getColorGridPrice('orange', map); } },
+                { key: 'red', label: '红色', dot: 'red', priceFn: function(){ return getRedGridAvgPrice(map); } }
+            ];
+            var autoFactor = getCalibrationFactor(mapKey);
+            var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4a9ae8,#2a6ab0);">霍</div><div><div class="name">霍姑姑 · 颜色格数估值（加权精准 + 自动学习校准）</div><div class="role">推荐道具：红格怀表，巨物价值，四件放大镜，奢侈扫描仪，全藏放大镜<span class="tip2">如红格数过多建议用奢侈扫描仪确认是否有车身，有则用车身池出价</span></div></div></div></div><div class="sec-body">';
+            colors.forEach(function(col) {
+                var price = col.priceFn();
+                html += '<div class="row"><span class="lbl"><span class="dot '+col.dot+'"></span>'+col.label+'（格数）</span><div class="qty"><input type="number" id="huo_'+col.key+'" min="0" step="1" value="" data-price="'+price+'"></div><span class="sub" id="huo_'+col.key+'_sub">0</span></div>';
             });
 
-            html += '<div class="car-pool-btns">';
-            html += '<span class="label">🚗 车身池：</span>';
-            CAR_POOL_LEVELS.forEach(function(level, idx) {
-                var activeClass = idx === 0 ? ' active' : '';
-                html += '<button class="car-btn' + activeClass + '" data-car="' + idx + '">' + level.label +
-                    ' <span class="badge">' + level.desc + '</span></button>';
-            });
-            html += '<span class="car-tag" id="huoCarTag">+0</span>';
-            html += '</div>';
+            // ---- 车零件池 + 车电池快捷 ----
+            html += '<div class="row"><span class="lbl">🚗 车零件池</span>' +
+                '<div class="qty" style="flex:1; width:auto; min-width:80px;"><input type="number" id="huoCarPool" min="0" step="1000" value="" style="width:100%;"></div>' +
+                '<span class="inline-group">' +
+                '<button class="quick-btn" id="carPlus1">+1(9万)</button>' +
+                '<button class="quick-btn" id="carPlus2">+2(18万)</button>' +
+                '</span></div>';
 
-            html += '<div class="total-bar">' +
-                '<div class="t-item"><span class="label">建议出价</span><span class="value rec" id="huoRec">0</span></div>' +
-                '<div class="t-item"><span class="label">仓库预估</span><span class="value" id="huoTotal">0</span></div>' +
-                '<div class="t-item"><span class="label">高爆出价</span><span class="value estimate" id="huoHigh">0</span></div>' +
-                '<div class="t-item"><span class="label">预期利润</span><span class="value profit" id="huoProfit">0</span></div>' +
-                '</div>';
-            html += '<div class="confidence-bar"><span>置信度</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:88%"></div></div><span class="label" id="huoConfidenceLabel">88%</span></div>';
-            html += '<div class="reset-row"><button class="btn-reset" id="huoReset">重置数据</button></div>';
-            html += '</div></div>';
+            // ---- 古董价值 + 快捷 ----
+            html += '<div class="row"><span class="lbl">🏺 古董价值</span>' +
+                '<div class="qty" style="flex:1; width:auto; min-width:80px;"><input type="number" id="huoAntique" min="0" step="1000" value="" style="width:100%;"></div>' +
+                '<span class="inline-group">' +
+                '<button class="quick-btn" id="antiquePlus1">+1(2万)</button>' +
+                '<button class="quick-btn" id="antiquePlus2">+2(4万)</button>' +
+                '</span></div>';
+
+            // ---- 校准行 ----
+            html += '<div class="row" style="border-top:1px solid rgba(42,58,90,0.15); margin-top:6px; padding-top:6px;"><span class="lbl">📊 实际揭示总价值</span><div class="qty" style="flex:1; width:auto;"><input type="number" id="huoActualTotal" min="0" step="1000" value="" placeholder="输入游戏揭示值" style="width:100%;"></div><span class="sub" id="huoCalibrateBtn" style="cursor:pointer; color:var(--accent2); font-size:12px;">校准</span></div>';
+            html += '<div id="huoCalibrateInfo" style="font-size:11px; color:var(--text-secondary); padding:2px 0; min-height:18px;">' + (autoFactor !== 1.0 ? '🤖 自动学习系数：'+autoFactor.toFixed(2)+'（已应用）' : '💡 输入实际揭示值点击校准，工具将自动学习该地图的偏差系数') + '</div>';
+
+            html += '<div class="total-bar"><div class="t-item"><span class="label">建议出价</span><span class="value rec" id="huoRec">0</span></div><div class="t-item"><span class="label">仓库预估</span><span class="value" id="huoTotal">0</span></div></div>';
+            html += '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:85%"></div></div><span class="label" id="huoConfidenceLabel">85%</span></div>';
+            html += '<div class="reset-row"><button class="btn-reset" id="huoReset">重置数据</button></div></div></div>';
             el.innerHTML = html;
 
-            var carLevel = 0;
-
+            // ---- 计算函数 ----
             function calcHuo() {
-                var baseTotal = 0,
-                    redSubtotal = 0,
-                    cnt = 0,
-                    redCount = 0;
-                colorKeys.forEach(function(key) {
-                    var inp = document.getElementById('huo_' + key);
+                var total = 0, stats = [];
+                colors.forEach(function(col) {
+                    var inp = document.getElementById('huo_'+col.key);
                     if (!inp) return;
                     var val = parseFloat(inp.value) || 0;
                     var price = parseFloat(inp.dataset.price) || 0;
                     var sub = val * price;
-                    var subEl = document.getElementById('huo_' + key + '_sub');
+                    var subEl = document.getElementById('huo_'+col.key+'_sub');
                     if (subEl) subEl.textContent = fmt(sub);
-                    baseTotal += sub;
-                    if (val > 0) cnt++;
-                    if (key === 'red') {
-                        redSubtotal = sub;
-                        redCount = val;
-                    }
+                    total += sub;
+                    if (val > 0) stats.push({val:val});
                 });
-                var carValue = CAR_POOL_LEVELS[carLevel].value;
-                var carTag = document.getElementById('huoCarTag');
-                if (carTag) carTag.textContent = '+' + fmt(carValue);
+                // 车零件池
+                var carPool = parseFloat(document.getElementById('huoCarPool').value) || 0;
+                total += carPool;
+                // 古董价值
+                var antique = parseFloat(document.getElementById('huoAntique').value) || 0;
+                total += antique;
 
-                var totalWithCar2 = baseTotal + carValue;
-                var result2 = calcAll(totalWithCar2, redSubtotal, carLevel, currentMode, currentMap, redCount);
-
-                var recEl = document.getElementById('huoRec');
-                var totalEl = document.getElementById('huoTotal');
-                var highEl = document.getElementById('huoHigh');
-                var profitEl = document.getElementById('huoProfit');
-                if (recEl) recEl.textContent = fmt(result2.bidPrice);
-                if (totalEl) totalEl.textContent = fmt(result2.warehousePrice);
-                if (highEl) highEl.textContent = fmt(result2.highPrice);
-                if (profitEl) profitEl.textContent = fmt(result2.highPrice - result2.bidPrice);
-                updateQuickActions(result2.warehousePrice, result2.bidPrice, result2.highPrice, carValue);
-                var conf = calcConfidence(cnt, result2.redRatio, carLevel, currentMode, currentMap);
+                var factor = getCalibrationFactor(currentMap);
+                var adjustedTotal = total * factor;
+                document.getElementById('huoTotal').textContent = fmt(adjustedTotal);
+                var disc = dynamicRecDiscount(adjustedTotal);
+                var rec = adjustedTotal * disc;
+                if (currentMode === 'aggressive') rec = adjustedTotal * 0.95;
+                if (currentMode === 'conservative') rec = adjustedTotal * 0.75;
+                document.getElementById('huoRec').textContent = fmt(rec);
+                var conf = 0.85;
+                if (stats.length > 0) {
+                    var vals = stats.map(function(s){ return s.val; });
+                    var maxV = Math.max.apply(null, vals);
+                    var minV = Math.min.apply(null, vals);
+                    var spread = (maxV - minV) / (maxV + 0.01);
+                    conf = 0.90 - spread * 0.35;
+                    conf = Math.max(0.60, Math.min(0.96, conf));
+                }
                 var fill = document.getElementById('huoConfidenceFill');
                 var label = document.getElementById('huoConfidenceLabel');
-                if (fill) {
-                    fill.style.width = (conf * 100) + '%';
-                    fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
-                        'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
-                }
-                if (label) label.textContent = Math.round(conf * 100) + '%';
+                if (fill) { fill.style.width = (conf*100)+'%'; fill.style.background = conf>0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf>0.65 ? 'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)'); }
+                if (label) label.textContent = Math.round(conf*100)+'%';
+                var high = adjustedTotal * 1.2;
+                updateQuickActions(rec, adjustedTotal, carPool, high);
             }
 
-            var carBtns = el.querySelectorAll('.car-btn');
-            carBtns.forEach(function(btn, idx) {
-                btn.onclick = function() {
-                    carBtns.forEach(function(b) { b.classList.remove('active'); });
-                    btn.classList.add('active');
-                    carLevel = idx;
-                    calcHuo();
-                };
-            });
-            colorKeys.forEach(function(key) {
-                var inp = document.getElementById('huo_' + key);
+            // ---- 快捷按钮事件 ----
+            document.getElementById('carPlus1').onclick = function() {
+                document.getElementById('huoCarPool').value = 90000;
+                calcHuo();
+            };
+            document.getElementById('carPlus2').onclick = function() {
+                document.getElementById('huoCarPool').value = 180000;
+                calcHuo();
+            };
+            document.getElementById('antiquePlus1').onclick = function() {
+                document.getElementById('huoAntique').value = 20000;
+                calcHuo();
+            };
+            document.getElementById('antiquePlus2').onclick = function() {
+                document.getElementById('huoAntique').value = 40000;
+                calcHuo();
+            };
+
+            // ---- 校准事件 ----
+            document.getElementById('huoCalibrateBtn').onclick = function() {
+                var actual = parseFloat(document.getElementById('huoActualTotal').value);
+                var estimated = parseFloat(document.getElementById('huoTotal').textContent.replace(/,/g,'')) || 0;
+                var info = document.getElementById('huoCalibrateInfo');
+                if (!actual || actual <= 0) { info.textContent = '⚠️ 请输入有效的实际揭示总价值'; return; }
+                if (estimated <= 0) { info.textContent = '⚠️ 请先输入物品格数，让工具计算出估值'; return; }
+                var ratio = actual / estimated;
+                var newFactor = saveCalibrationFactor(currentMap, ratio);
+                info.textContent = '✅ 学习成功！系数已更新为 ' + newFactor.toFixed(2) + '（自动应用于后续计算）';
+                document.getElementById('huoActualTotal').value = '';
+                calcHuo();
+            };
+
+            // ---- 绑定输入事件 ----
+            colors.forEach(function(col) {
+                var inp = document.getElementById('huo_'+col.key);
                 if (inp) inp.addEventListener('input', calcHuo);
             });
-            var resetBtn = document.getElementById('huoReset');
-            if (resetBtn) {
-                resetBtn.onclick = function() {
-                    colorKeys.forEach(function(key) {
-                        var inp = document.getElementById('huo_' + key);
-                        if (inp) inp.value = '';
-                    });
-                    carBtns.forEach(function(b, i) { b.classList.toggle('active', i === 0); });
-                    carLevel = 0;
-                    calcHuo();
-                };
-            }
+            document.getElementById('huoCarPool').addEventListener('input', calcHuo);
+            document.getElementById('huoAntique').addEventListener('input', calcHuo);
+
+            // ---- 重置 ----
+            document.getElementById('huoReset').onclick = function() {
+                colors.forEach(function(col){ var inp = document.getElementById('huo_'+col.key); if (inp) inp.value = ''; });
+                document.getElementById('huoCarPool').value = '';
+                document.getElementById('huoAntique').value = '';
+                document.getElementById('huoActualTotal').value = '';
+                var info = document.getElementById('huoCalibrateInfo');
+                var f = getCalibrationFactor(currentMap);
+                info.textContent = '🔄 已清空输入，学习系数保留（' + f.toFixed(2) + '）';
+                calcHuo();
+            };
             calcHuo();
         }
 
+        // --- 高晋（保持不变）---
         function renderGao() {
             var el = document.getElementById('page-gao');
-            var mapKey = currentMap;
-            var modeKey = currentMode;
-            var cfg = getModeConfig(modeKey);
-            var map = getMapData(mapKey);
-            var gridOptions = map.gridOptions || [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
+            var map = getMap();
+            var gridOptions = map.gridOptions || [];
             var threshold = 6;
-
-            var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e05555,#b03030);">进</div><div><div class="name">高晋 · 红品件数估值 <span style="font-size:10px;color:var(--text-secondary);opacity:0.4;">' +
-                map.label + '</span></div><div class="role">推荐道具：全域扫描枪，橙估价平板，紫估价平板，巨物价值，全藏放大镜。<span class="tip2">推荐使用紫色和橙色估价平板，最后一轮使用全域扫描枪</span></div></div></div></div><div class="sec-body" id="gaoBody"></div></div>';
-            el.innerHTML = html;
+            el.innerHTML = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e05555,#b03030);">晋</div><div><div class="name">高晋 · 红品件数估值（加权精准）</div><div class="role">推荐道具：全域扫描枪，橙估价平板，紫估价平板，巨物价值，全藏放大镜。<span class="tip2">推荐使用紫色和橙色估价平板，最后一轮使用全域扫描枪</span></div></div></div></div><div class="sec-body" id="gaoBody"></div></div>';
             var body = document.getElementById('gaoBody');
-            var htmlBody = '<div class="mode-tag ' + cfg.tagClass + '">' + cfg.tagText + '</div>';
-            var visible = gridOptions.filter(function(g) { return g <= threshold; });
-            var hidden = gridOptions.filter(function(g) { return g > threshold; });
-
-            visible.forEach(function(g) {
+            var html = '';
+            var visibleGrids = gridOptions.filter(function(g){ return g <= threshold; });
+            var hiddenGrids = gridOptions.filter(function(g){ return g > threshold; });
+            visibleGrids.forEach(function(g){
                 var price = getRedGridPrice(g, map);
-                htmlBody += '<div class="row"><span class="lbl">' + g + '格</span><div class="qty"><input type="number" id="gao_grid_' +
-                    g + '" min="0" step="1" value="" data-price="' + price +
-                    '"></div><span class="sub" id="gao_grid_' + g + '_sub">0</span></div>';
+                html += '<div class="row"><span class="lbl">'+g+'格</span><div class="qty"><input type="number" id="gao_grid_'+g+'" min="0" step="1" value="" data-price="'+price+'"></div><span class="sub" id="gao_grid_'+g+'_sub">0</span></div>';
             });
-            htmlBody += '<div class="collapsed-rows" id="gaoCollapsedRows" style="display:none;">';
-            hidden.forEach(function(g) {
+            html += '<div class="collapsed-rows" id="gaoCollapsedRows">';
+            hiddenGrids.forEach(function(g){
                 var price = getRedGridPrice(g, map);
-                htmlBody += '<div class="row"><span class="lbl">' + g + '格</span><div class="qty"><input type="number" id="gao_grid_' +
-                    g + '" min="0" step="1" value="" data-price="' + price +
-                    '"></div><span class="sub" id="gao_grid_' + g + '_sub">0</span></div>';
+                html += '<div class="row"><span class="lbl">'+g+'格</span><div class="qty"><input type="number" id="gao_grid_'+g+'" min="0" step="1" value="" data-price="'+price+'"></div><span class="sub" id="gao_grid_'+g+'_sub">0</span></div>';
             });
-            htmlBody += '</div>';
-            if (hidden.length > 0) {
-                htmlBody += '<div class="collapse-toggle" id="gaoCollapseToggle">展开更多格数 ▼</div>';
-            }
-
-            var purplePrice = getColorPiecePrice('purple', map);
-            var orangePrice = getColorPiecePrice('orange', map);
-            htmlBody += '<div class="row"><span class="lbl">紫色估价</span><div class="qty"><input type="number" id="gao_purple" min="0" step="100" value="" data-price="' +
-                purplePrice + '"></div><span class="sub" id="gao_purple_sub">0</span></div>';
-            htmlBody += '<div class="row"><span class="lbl">橙色估价</span><div class="qty"><input type="number" id="gao_orange" min="0" step="100" value="" data-price="' +
-                orangePrice + '"></div><span class="sub" id="gao_orange_sub">0</span></div>';
-
+            html += '</div>';
+            if (hiddenGrids.length > 0) html += '<div class="collapse-toggle" id="gaoCollapseToggle">展开更多格数 ▼</div>';
+            html += '<div class="row"><span class="lbl">紫色估价</span><div class="qty"><input type="number" id="gao_purple" min="0" step="100" value=""></div><span class="sub" id="gao_purple_sub">0</span></div>';
+            html += '<div class="row"><span class="lbl">橙色估价</span><div class="qty"><input type="number" id="gao_orange" min="0" step="100" value=""></div><span class="sub" id="gao_orange_sub">0</span></div>';
             var redPiecePrice = getRedPiecePrice(map);
-            htmlBody += '<div class="row"><span class="lbl">红色（件数）</span><div class="qty"><input type="number" id="gao_red_piece_cnt" min="0" step="1" value="" data-price="' +
-                redPiecePrice + '"></div><span class="sub" id="gao_red_piece_sub">0</span></div>';
-
-            htmlBody += '<div class="row"><span class="lbl">红色（格数）</span><div style="display:flex;gap:3px;flex:1;"><input type="number" id="gao_red_grid_avg" min="0" step="0.1" placeholder="均格数" style="width:60px;"><input type="number" id="gao_red_grid_cnt" min="0" step="1" placeholder="件数" style="width:60px;"></div><span class="sub" id="gao_red_grid_sub">0</span></div>';
-
-            htmlBody += '<div class="total-bar">' +
-                '<div class="t-item"><span class="label">建议出价</span><span class="value rec" id="gaoRec">0</span></div>' +
-                '<div class="t-item"><span class="label">仓库预估</span><span class="value" id="gaoTotal">0</span></div>' +
-                '<div class="t-item"><span class="label">高爆出价</span><span class="value estimate" id="gaoHigh">0</span></div>' +
-                '<div class="t-item"><span class="label">预期利润</span><span class="value profit" id="gaoProfit">0</span></div>' +
-                '</div>';
-            htmlBody += '<div class="confidence-bar"><span>置信度</span><div class="bar-track"><div class="bar-fill" id="gaoConfidenceFill" style="width:88%"></div></div><span class="label" id="gaoConfidenceLabel">88%</span></div>';
-            htmlBody += '<div class="reset-row"><button class="btn-reset" id="gaoReset">重置数据</button></div>';
-            body.innerHTML = htmlBody;
+            html += '<div class="row"><span class="lbl">红色（件数）</span><div class="qty"><input type="number" id="gao_red_piece_cnt" min="0" step="1" value="" data-price="'+redPiecePrice+'"></div><span class="sub" id="gao_red_piece_sub">0</span></div>';
+            var redGridPrice = getRedGridAvgPrice(map);
+            html += '<div class="row"><span class="lbl">红色（格数）</span><div class="rg-fields"><input type="number" id="gao_red_grid_avg" min="0" step="0.1" placeholder="均格数" value="" style="width:64px;"><input type="number" id="gao_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:64px;"></div><span class="sub" id="gao_red_grid_sub">0</span></div>';
+            html += '<div class="total-bar"><div class="t-item"><span class="label">建议出价</span><span class="value rec" id="gaoRec">0</span></div><div class="t-item"><span class="label">仓库预估</span><span class="value" id="gaoTotal">0</span></div></div>';
+            html += '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="gaoConfidenceFill" style="width:85%"></div></div><span class="label" id="gaoConfidenceLabel">85%</span></div>';
+            html += '<div class="reset-row"><button class="btn-reset" id="gaoReset">重置数据</button></div>';
+            body.innerHTML = html;
 
             var toggle = document.getElementById('gaoCollapseToggle');
-            var collapsed = document.getElementById('gaoCollapsedRows');
+            var collapsedRows = document.getElementById('gaoCollapsedRows');
             if (toggle) {
                 toggle.onclick = function() {
-                    var open = collapsed.style.display !== 'none';
-                    collapsed.style.display = open ? 'none' : 'block';
-                    toggle.textContent = open ? '展开更多格数 ▼' : '收起更多格数 ▲';
+                    var isOpen = collapsedRows.classList.toggle('open');
+                    toggle.textContent = isOpen ? '收起更多格数 ▲' : '展开更多格数 ▼';
                 };
             }
 
             function calcGao() {
-                var baseTotal = 0,
-                    redSubtotal = 0,
-                    cnt = 0,
-                    redCount = 0;
-                gridOptions.forEach(function(g) {
-                    var inp = document.getElementById('gao_grid_' + g);
+                var total = 0, inputCount = 0;
+                gridOptions.forEach(function(g){
+                    var inp = document.getElementById('gao_grid_'+g);
                     if (inp) {
                         var val = parseFloat(inp.value) || 0;
                         var price = parseFloat(inp.dataset.price) || 0;
                         var sub = val * price;
-                        var subEl = document.getElementById('gao_grid_' + g + '_sub');
+                        var subEl = document.getElementById('gao_grid_'+g+'_sub');
                         if (subEl) subEl.textContent = fmt(sub);
-                        baseTotal += sub;
-                        if (val > 0) cnt++;
-                        if (val > 0) { redSubtotal += sub;
-                            redCount += val; }
+                        total += sub;
+                        if (val > 0) inputCount++;
                     }
                 });
-                var purpleInp = document.getElementById('gao_purple');
-                if (purpleInp) {
-                    var purple = parseFloat(purpleInp.value) || 0;
-                    var purplePrice2 = parseFloat(purpleInp.dataset.price) || 0;
-                    var purpleSub = purple * purplePrice2;
-                    var subEl = document.getElementById('gao_purple_sub');
-                    if (subEl) subEl.textContent = fmt(purpleSub);
-                    baseTotal += purpleSub;
-                }
-
-                var orangeInp = document.getElementById('gao_orange');
-                if (orangeInp) {
-                    var orange = parseFloat(orangeInp.value) || 0;
-                    var orangePrice2 = parseFloat(orangeInp.dataset.price) || 0;
-                    var orangeSub = orange * orangePrice2;
-                    var subEl = document.getElementById('gao_orange_sub');
-                    if (subEl) subEl.textContent = fmt(orangeSub);
-                    baseTotal += orangeSub;
-                }
-
-                var rpcInp = document.getElementById('gao_red_piece_cnt');
-                if (rpcInp) {
-                    var rpc = parseFloat(rpcInp.value) || 0;
-                    var rpp = parseFloat(rpcInp.dataset.price) || 0;
-                    var rps = rpc * rpp;
-                    var subEl = document.getElementById('gao_red_piece_sub');
-                    if (subEl) subEl.textContent = fmt(rps);
-                    baseTotal += rps;
-                    redSubtotal += rps;
-                }
-
-                var avgInp = document.getElementById('gao_red_grid_avg');
-                var cntInp = document.getElementById('gao_red_grid_cnt');
-                if (avgInp && cntInp) {
-                    var avgGrid = parseFloat(avgInp.value) || 0;
-                    var cntGrid = parseFloat(cntInp.value) || 0;
-                    var gridTotal = avgGrid * cntGrid;
-                    var rgp = getRedGridAvgPrice(map);
-                    var rgs = gridTotal * rgp;
-                    var subEl = document.getElementById('gao_red_grid_sub');
-                    if (subEl) subEl.textContent = fmt(rgs);
-                    baseTotal += rgs;
-                    redSubtotal += rgs;
-                    redCount += cntGrid;
-                }
-
-                var result = calcAll(baseTotal, redSubtotal, 0, currentMode, currentMap, redCount);
-                var totalEl = document.getElementById('gaoTotal');
-                var recEl = document.getElementById('gaoRec');
-                var highEl = document.getElementById('gaoHigh');
-                var profitEl = document.getElementById('gaoProfit');
-                if (totalEl) totalEl.textContent = fmt(result.warehousePrice);
-                if (recEl) recEl.textContent = fmt(result.bidPrice);
-                if (highEl) highEl.textContent = fmt(result.highPrice);
-                if (profitEl) profitEl.textContent = fmt(result.highPrice - result.bidPrice);
-                updateQuickActions(result.warehousePrice, result.bidPrice, result.highPrice, 0);
-                var conf = calcConfidence(cnt, result.redRatio, 0, currentMode, currentMap);
+                var purple = parseFloat(document.getElementById('gao_purple').value) || 0;
+                document.getElementById('gao_purple_sub').textContent = fmt(purple);
+                total += purple;
+                var orange = parseFloat(document.getElementById('gao_orange').value) || 0;
+                document.getElementById('gao_orange_sub').textContent = fmt(orange);
+                total += orange;
+                var redPieceCnt = parseFloat(document.getElementById('gao_red_piece_cnt').value) || 0;
+                var redPiecePrice2 = parseFloat(document.getElementById('gao_red_piece_cnt').dataset.price) || getRedPiecePrice(map);
+                var redPieceSub = redPieceCnt * redPiecePrice2;
+                document.getElementById('gao_red_piece_sub').textContent = fmt(redPieceSub);
+                total += redPieceSub;
+                var avgGrid = parseFloat(document.getElementById('gao_red_grid_avg').value) || 0;
+                var cntGrid = parseFloat(document.getElementById('gao_red_grid_cnt').value) || 0;
+                var gridTotal = avgGrid * cntGrid;
+                var redGridPrice2 = getRedGridAvgPrice(map);
+                var redGridSub = gridTotal * redGridPrice2;
+                document.getElementById('gao_red_grid_sub').textContent = fmt(redGridSub);
+                total += redGridSub;
+                document.getElementById('gaoTotal').textContent = fmt(total);
+                var disc = dynamicRecDiscount(total);
+                var rec = total * disc;
+                if (currentMode === 'aggressive') rec = total * 0.95;
+                if (currentMode === 'conservative') rec = total * 0.75;
+                document.getElementById('gaoRec').textContent = fmt(rec);
+                var conf = 0.82 + Math.min(0.12, inputCount * 0.02);
+                conf = Math.max(0.65, Math.min(0.95, conf));
                 var fill = document.getElementById('gaoConfidenceFill');
                 var label = document.getElementById('gaoConfidenceLabel');
-                if (fill) {
-                    fill.style.width = (conf * 100) + '%';
-                    fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
-                        'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
-                }
-                if (label) label.textContent = Math.round(conf * 100) + '%';
+                if (fill) { fill.style.width = (conf*100)+'%'; fill.style.background = conf>0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf>0.65 ? 'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)'); }
+                if (label) label.textContent = Math.round(conf*100)+'%';
+                var high = total * 1.2;
+                updateQuickActions(rec, total, 0, high);
             }
 
-            gridOptions.forEach(function(g) {
-                var inp = document.getElementById('gao_grid_' + g);
-                if (inp) inp.addEventListener('input', calcGao);
-            });
-            var purpleInp = document.getElementById('gao_purple');
-            var orangeInp = document.getElementById('gao_orange');
-            var rpcInp = document.getElementById('gao_red_piece_cnt');
-            var avgInp = document.getElementById('gao_red_grid_avg');
-            var cntInp = document.getElementById('gao_red_grid_cnt');
-            if (purpleInp) purpleInp.addEventListener('input', calcGao);
-            if (orangeInp) orangeInp.addEventListener('input', calcGao);
-            if (rpcInp) rpcInp.addEventListener('input', calcGao);
-            if (avgInp) avgInp.addEventListener('input', calcGao);
-            if (cntInp) cntInp.addEventListener('input', calcGao);
-
-            var resetBtn = document.getElementById('gaoReset');
-            if (resetBtn) {
-                resetBtn.onclick = function() {
-                    gridOptions.forEach(function(g) {
-                        var inp = document.getElementById('gao_grid_' + g);
-                        if (inp) inp.value = '';
-                    });
-                    if (purpleInp) purpleInp.value = '';
-                    if (orangeInp) orangeInp.value = '';
-                    if (rpcInp) rpcInp.value = '';
-                    if (avgInp) avgInp.value = '';
-                    if (cntInp) cntInp.value = '';
-                    calcGao();
-                };
-            }
+            gridOptions.forEach(function(g){ var inp = document.getElementById('gao_grid_'+g); if (inp) inp.addEventListener('input', calcGao); });
+            document.getElementById('gao_purple').addEventListener('input', calcGao);
+            document.getElementById('gao_orange').addEventListener('input', calcGao);
+            document.getElementById('gao_red_piece_cnt').addEventListener('input', calcGao);
+            document.getElementById('gao_red_grid_avg').addEventListener('input', calcGao);
+            document.getElementById('gao_red_grid_cnt').addEventListener('input', calcGao);
+            document.getElementById('gaoReset').onclick = function() {
+                gridOptions.forEach(function(g){ var inp = document.getElementById('gao_grid_'+g); if (inp) inp.value = ''; });
+                document.getElementById('gao_purple').value = '';
+                document.getElementById('gao_orange').value = '';
+                document.getElementById('gao_red_piece_cnt').value = '';
+                document.getElementById('gao_red_grid_avg').value = '';
+                document.getElementById('gao_red_grid_cnt').value = '';
+                calcGao();
+            };
             calcGao();
         }
 
+        // --- 苏琦 ---
         function renderSu() {
             var el = document.getElementById('page-su');
-            var mapKey = currentMap;
-            var modeKey = currentMode;
-            var cfg = getModeConfig(modeKey);
-            var map = getMapData(mapKey);
-            var keys = ['green', 'blue', 'purple', 'orange', 'red'];
-            var labels = ['绿色', '蓝色', '紫色', '橙色', '红色'];
-            var dots = ['green', 'blue', 'purple', 'orange', 'red'];
-
-            var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#a66be0,#7a3fbf);">苏</div><div><div class="name">苏琦 · 颜色件数估值 <span style="font-size:10px;color:var(--text-secondary);opacity:0.4;">' +
-                map.label + '</span></div><div class="role">推荐道具：紫件数荧光棒，橙件数荧光棒，红格怀表，四件放大镜，全藏放大镜<span class="tip2">用红品件数估算误差较大，建议使用红格道具，用格数算。</span></div></div></div></div><div class="sec-body" id="suBody"></div></div>';
-            el.innerHTML = html;
+            var map = getMap();
+            var colorKeys = ['green','blue','purple','orange','red'];
+            var colorLabels = ['绿色','蓝色','紫色','橙色','红色'];
+            var colorDots = ['green','blue','purple','orange','red'];
+            el.innerHTML = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#a66be0,#7a3fbf);">苏</div><div><div class="name">苏琦 · 颜色件数估值（加权精准）</div><div class="role">推荐道具：紫件数观光棒，橙件数观光棒，红格怀表，四件放大镜，全藏放大镜<span class="tip2">用红品件数估算误差较大，建议使用红格道具，用格数算。</span></div></div></div></div><div class="sec-body" id="suBody"></div></div>';
             var body = document.getElementById('suBody');
-            var htmlBody = '<div class="mode-tag ' + cfg.tagClass + '">' + cfg.tagText + '</div>';
-
-            keys.forEach(function(key, idx) {
+            var html = '';
+            colorKeys.forEach(function(key, idx){
                 var price = (key === 'red') ? getRedPiecePrice(map) : getColorPiecePrice(key, map);
-                htmlBody += '<div class="row"><span class="lbl"><span class="dot ' + dots[idx] + '"></span>' +
-                    labels[idx] + '（件数）</span><div class="qty"><input type="number" id="su_' + key +
-                    '" min="0" step="1" value="" data-price="' + price +
-                    '"></div><span class="sub" id="su_' + key + '_sub">0</span></div>';
+                html += '<div class="row"><span class="lbl"><span class="dot '+colorDots[idx]+'"></span>'+colorLabels[idx]+'（件数）</span><div class="qty"><input type="number" id="su_'+key+'" min="0" step="1" value="" data-price="'+price+'"></div><span class="sub" id="su_'+key+'_sub">0</span></div>';
             });
-
-            htmlBody += '<div class="row"><span class="lbl"><span class="dot red"></span>红色（格数）</span><div style="display:flex;gap:3px;flex:1;"><input type="number" id="su_red_grid_avg" min="0" step="0.1" placeholder="均格数" style="width:60px;"><input type="number" id="su_red_grid_cnt" min="0" step="1" placeholder="件数" style="width:60px;"></div><span class="sub" id="su_red_grid_sub">0</span></div>';
-
-            htmlBody += '<div class="total-bar">' +
-                '<div class="t-item"><span class="label">建议出价</span><span class="value rec" id="suRec">0</span></div>' +
-                '<div class="t-item"><span class="label">仓库预估</span><span class="value" id="suTotal">0</span></div>' +
-                '<div class="t-item"><span class="label">高爆出价</span><span class="value estimate" id="suHigh">0</span></div>' +
-                '<div class="t-item"><span class="label">预期利润</span><span class="value profit" id="suProfit">0</span></div>' +
-                '</div>';
-            htmlBody += '<div class="confidence-bar"><span>置信度</span><div class="bar-track"><div class="bar-fill" id="suConfidenceFill" style="width:88%"></div></div><span class="label" id="suConfidenceLabel">88%</span></div>';
-            htmlBody += '<div class="reset-row"><button class="btn-reset" id="suReset">重置数据</button></div>';
-            body.innerHTML = htmlBody;
+            html += '<div class="row"><span class="lbl"><span class="dot red"></span>红色（格数）</span><div class="rg-fields"><input type="number" id="su_red_grid_avg" min="0" step="0.1" placeholder="均格数" value="" style="width:64px;"><input type="number" id="su_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:64px;"></div><span class="sub" id="su_red_grid_sub">0</span></div>';
+            html += '<div class="total-bar"><div class="t-item"><span class="label">建议出价</span><span class="value rec" id="suRec">0</span></div><div class="t-item"><span class="label">仓库预估</span><span class="value" id="suTotal">0</span></div></div>';
+            html += '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="suConfidenceFill" style="width:85%"></div></div><span class="label" id="suConfidenceLabel">85%</span></div>';
+            html += '<div class="reset-row"><button class="btn-reset" id="suReset">重置数据</button></div>';
+            body.innerHTML = html;
 
             function calcSu() {
-                var baseTotal = 0,
-                    redSubtotal = 0,
-                    cnt = 0,
-                    redCount = 0;
-                keys.forEach(function(key) {
-                    var inp = document.getElementById('su_' + key);
-                    if (inp) {
-                        var val = parseFloat(inp.value) || 0;
-                        var price = parseFloat(inp.dataset.price) || 0;
-                        var sub = val * price;
-                        var subEl = document.getElementById('su_' + key + '_sub');
-                        if (subEl) subEl.textContent = fmt(sub);
-                        baseTotal += sub;
-                        if (val > 0) cnt++;
-                        if (key === 'red') { redSubtotal += sub;
-                            redCount += val; }
-                    }
+                var total = 0, inputCount = 0;
+                colorKeys.forEach(function(key){
+                    var inp = document.getElementById('su_'+key);
+                    var val = parseFloat(inp.value) || 0;
+                    var price = parseFloat(inp.dataset.price) || 0;
+                    var sub = val * price;
+                    document.getElementById('su_'+key+'_sub').textContent = fmt(sub);
+                    total += sub;
+                    if (val > 0) inputCount++;
                 });
-                var avgInp = document.getElementById('su_red_grid_avg');
-                var cntInp = document.getElementById('su_red_grid_cnt');
-                if (avgInp && cntInp) {
-                    var avgGrid = parseFloat(avgInp.value) || 0;
-                    var cntGrid = parseFloat(cntInp.value) || 0;
-                    var gridTotal = avgGrid * cntGrid;
-                    var rgp = getRedGridAvgPrice(map);
-                    var rgs = gridTotal * rgp;
-                    var subEl = document.getElementById('su_red_grid_sub');
-                    if (subEl) subEl.textContent = fmt(rgs);
-                    baseTotal += rgs;
-                    redSubtotal += rgs;
-                    redCount += cntGrid;
-                }
-
-                var result = calcAll(baseTotal, redSubtotal, 0, currentMode, currentMap, redCount);
-                var totalEl = document.getElementById('suTotal');
-                var recEl = document.getElementById('suRec');
-                var highEl = document.getElementById('suHigh');
-                var profitEl = document.getElementById('suProfit');
-                if (totalEl) totalEl.textContent = fmt(result.warehousePrice);
-                if (recEl) recEl.textContent = fmt(result.bidPrice);
-                if (highEl) highEl.textContent = fmt(result.highPrice);
-                if (profitEl) profitEl.textContent = fmt(result.highPrice - result.bidPrice);
-                updateQuickActions(result.warehousePrice, result.bidPrice, result.highPrice, 0);
-                var conf = calcConfidence(cnt, result.redRatio, 0, currentMode, currentMap);
+                var avgGrid = parseFloat(document.getElementById('su_red_grid_avg').value) || 0;
+                var cntGrid = parseFloat(document.getElementById('su_red_grid_cnt').value) || 0;
+                var gridTotal = avgGrid * cntGrid;
+                var redGridPrice = getRedGridAvgPrice(map);
+                var redGridSub = gridTotal * redGridPrice;
+                document.getElementById('su_red_grid_sub').textContent = fmt(redGridSub);
+                total += redGridSub;
+                document.getElementById('suTotal').textContent = fmt(total);
+                var disc = dynamicRecDiscount(total);
+                var rec = total * disc;
+                if (currentMode === 'aggressive') rec = total * 0.95;
+                if (currentMode === 'conservative') rec = total * 0.75;
+                document.getElementById('suRec').textContent = fmt(rec);
+                var conf = 0.80 + Math.min(0.15, inputCount * 0.025);
+                conf = Math.max(0.60, Math.min(0.95, conf));
                 var fill = document.getElementById('suConfidenceFill');
                 var label = document.getElementById('suConfidenceLabel');
-                if (fill) {
-                    fill.style.width = (conf * 100) + '%';
-                    fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
-                        'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
-                }
-                if (label) label.textContent = Math.round(conf * 100) + '%';
+                if (fill) { fill.style.width = (conf*100)+'%'; fill.style.background = conf>0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf>0.65 ? 'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)'); }
+                if (label) label.textContent = Math.round(conf*100)+'%';
+                var high = total * 1.2;
+                updateQuickActions(rec, total, 0, high);
             }
 
-            keys.forEach(function(key) {
-                var inp = document.getElementById('su_' + key);
-                if (inp) inp.addEventListener('input', calcSu);
-            });
-            var avgInp = document.getElementById('su_red_grid_avg');
-            var cntInp = document.getElementById('su_red_grid_cnt');
-            if (avgInp) avgInp.addEventListener('input', calcSu);
-            if (cntInp) cntInp.addEventListener('input', calcSu);
-
-            var resetBtn = document.getElementById('suReset');
-            if (resetBtn) {
-                resetBtn.onclick = function() {
-                    keys.forEach(function(key) {
-                        var inp = document.getElementById('su_' + key);
-                        if (inp) inp.value = '';
-                    });
-                    if (avgInp) avgInp.value = '';
-                    if (cntInp) cntInp.value = '';
-                    calcSu();
-                };
-            }
+            colorKeys.forEach(function(key){ document.getElementById('su_'+key).addEventListener('input', calcSu); });
+            document.getElementById('su_red_grid_avg').addEventListener('input', calcSu);
+            document.getElementById('su_red_grid_cnt').addEventListener('input', calcSu);
+            document.getElementById('suReset').onclick = function() {
+                colorKeys.forEach(function(key){ document.getElementById('su_'+key).value = ''; });
+                document.getElementById('su_red_grid_avg').value = '';
+                document.getElementById('su_red_grid_cnt').value = '';
+                calcSu();
+            };
             calcSu();
         }
 
+        // --- 安可 ---
         function renderAn() {
             var el = document.getElementById('page-an');
-            var mapKey = currentMap;
-            var modeKey = currentMode;
-            var cfg = getModeConfig(modeKey);
-            var map = getMapData(mapKey);
-            var grids = map.gridOptions || [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
+            var map = getMap();
+            var grids = map.gridOptions || [1,2,3,4,6,8,9,12,15,16];
             var gridSet = new Set(grids);
-
-            var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4ec97a,#2a9a5a);">安</div><div><div class="name">安可 · 红品均格反查</div><div class="role">第一回合用红格道具，每回合看到轮廓后把格数输进去缩小范围。</div></div></div></div><div class="sec-body" id="anBody"></div></div>';
-            el.innerHTML = html;
+            el.innerHTML = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4ec97a,#2a9a5a);">安</div><div><div class="name">安可 · 红品均格反查（精准匹配）</div><div class="role">第一回合用红格道具，每回合看到轮廊后把格数输进去缩小范围。</div></div></div></div><div class="sec-body" id="anBody"></div></div>';
             var body = document.getElementById('anBody');
-            body.innerHTML = '<div class="mode-tag ' + cfg.tagClass + '">' + cfg.tagText +
-                '</div><div class="rev-input" style="display:flex;gap:5px;flex-wrap:wrap;align-items:flex-end;"><div class="field" style="flex:1;min-width:70px;"><label style="display:block;font-size:10px;color:var(--text-secondary);">平均格数</label><input type="number" id="anAvg" step="0.1" min="1" placeholder="如 3.5" style="width:100%;padding:5px 3px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-size:12px;text-align:center;outline:none;"></div><div class="field" style="flex:1;min-width:70px;"><label style="display:block;font-size:10px;color:var(--text-secondary);">红品数量（可选）</label><input type="number" id="anCount" min="1" max="50" placeholder="不限" style="width:100%;padding:5px 8px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);font-size:12px;text-align:center;outline:none;"></div><button class="btn-gold" id="anBtn" style="padding:6px 14px;background:linear-gradient(135deg,var(--accent),#c9a23e);color:#0b1526;border:none;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;min-height:34px;font-family:inherit;">推算</button></div><div style="margin-top:4px;"><label style="font-size:10px;color:var(--text-secondary);">已知格数（选填，用逗号分隔）</label><input type="text" id="anKnown" placeholder="如 4,6,8" style="width:100%;padding:5px 8px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);outline:none;"></div><div class="rev-result" id="anResult" style="margin-top:8px;"></div><div class="reset-row"><button class="btn-reset" id="anReset">重置数据</button></div>';
+            body.innerHTML = '<div class="rev-input"><div class="field"><label>平均格数</label><input type="number" id="anAvg" step="0.1" min="1" max="16" placeholder="如 3.5"></div><div class="field"><label>红品数量（可选）</label><input type="number" id="anCount" min="1" max="50" placeholder="不限"></div><button class="btn-gold" id="anBtn">推算</button></div><div class="known-box"><label>已知格数（选填，用逗号分隔）</label><input type="text" id="anKnown" placeholder="如 4,6,8" style="width:100%;padding:7px 10px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:8px;color:var(--text-primary);outline:none;"></div><div class="rev-result" id="anResult"></div><div class="reset-row"><button class="btn-reset" id="anReset">重置数据</button></div>';
 
             document.getElementById('anBtn').onclick = function() {
                 var avg = parseFloat(document.getElementById('anAvg').value);
                 var count = parseInt(document.getElementById('anCount').value) || 0;
                 var knownStr = document.getElementById('anKnown').value.trim();
-                var known = knownStr ? knownStr.split(',').map(function(s) { return parseInt(s.trim()); })
-                    .filter(function(n) { return !isNaN(n) && n > 0; }) : [];
+                var known = knownStr ? knownStr.split(',').map(function(s){ return parseInt(s.trim()); }).filter(function(n){ return !isNaN(n) && n>0; }) : [];
                 var result = document.getElementById('anResult');
-                if (isNaN(avg) || avg < 1) { result.innerHTML = '<div class="empty">请输入有效的平均格数</div>';
-                    return; }
+                if (isNaN(avg) || avg < 1) { result.innerHTML = '<div class="empty">请输入有效的平均格数</div>'; return; }
                 var combos = [];
                 var maxN = count > 0 ? count : 20;
                 var minN = count > 0 ? count : 1;
                 for (var n = minN; n <= maxN; n++) {
-                    var ok = true;
-                    for (var i = 0; i < known.length; i++) { if (!gridSet.has(known[i])) { ok = false; break; } }
-                    if (!ok) continue;
-                    var total = Math.round(avg * n);
-                    var list = [];
-
-                    function find(rem, idx, path) {
-                        if (rem === 0 && path.length === n) { list.push(path.slice()); return; }
+                    var knownOk = true;
+                    for (var ki=0; ki<known.length; ki++) { if (!gridSet.has(known[ki])) { knownOk = false; break; } }
+                    if (!knownOk) continue;
+                    var totalGrids = Math.round(avg * n);
+                    var combosForN = [];
+                    function findCombos(remaining, maxIdx, path) {
+                        if (remaining === 0 && path.length === n) { combosForN.push(path.slice()); return; }
                         if (path.length >= n) return;
-                        for (var j = idx; j < grids.length; j++) {
-                            var g = grids[j];
-                            if (g <= rem) { path.push(g);
-                                find(rem - g, j, path);
-                                path.pop(); }
+                        for (var i = maxIdx; i < grids.length; i++) {
+                            var g = grids[i];
+                            if (g <= remaining) {
+                                path.push(g);
+                                findCombos(remaining - g, i, path);
+                                path.pop();
+                            }
                         }
                     }
-                    if (n <= 8) { find(total, 0, []);
-                        if (list.length > 0) combos.push({ n: n, total: total, combos: list }); } else { combos
-                            .push({ n: n, total: total, combos: null, approx: true }); }
+                    if (n <= 8) {
+                        findCombos(totalGrids, 0, []);
+                        if (combosForN.length > 0) combos.push({ n: n, total: totalGrids, combos: combosForN });
+                    } else {
+                        combos.push({ n: n, total: totalGrids, combos: null, approx: true });
+                    }
                 }
-                if (combos.length === 0) { result.innerHTML = '<div class="empty">未找到匹配组合，请检查输入</div>';
-                    return; }
-                var htmlResult = '';
+                if (combos.length === 0) { result.innerHTML = '<div class="empty">未找到匹配组合，请检查输入</div>'; return; }
+                var html = '';
                 var maxShow = 10;
-                var rpp = getRedPiecePrice(map);
+                var redAvgPrice = getRedPiecePrice(map);
                 combos.forEach(function(item) {
-                    var est = Math.round(item.n * rpp);
-                    var minV = 0;
+                    var estValue = Math.round(item.n * redAvgPrice);
+                    var minValue = 0;
                     if (item.combos) {
                         var minTotal = Infinity;
-                        item.combos.forEach(function(c) {
-                            var s = 0;
-                            c.forEach(function(g) {
-                                var price = getRedGridPrice(g, map);
-                                s += price;
+                        item.combos.forEach(function(combo) {
+                            var sum = 0;
+                            combo.forEach(function(g) {
+                                var entry = map.redByGrid[g];
+                                if (entry && entry.min) sum += entry.min;
+                                else sum += 0;
                             });
-                            if (s < minTotal) minTotal = s;
+                            if (sum < minTotal) minTotal = sum;
                         });
-                        if (minTotal !== Infinity) minV = minTotal;
+                        if (minTotal !== Infinity) minValue = minTotal;
                     }
-                    var label = '预估价值：' + fmt(est);
-                    if (minV > 0) label = '最低价值：' + fmt(minV) + ' | 预估价值：' + fmt(est);
-                    htmlResult += '<div class="rev-group" style="background:var(--bg-card);border:1px solid rgba(42,58,90,0.15);border-radius:10px;margin-bottom:5px;overflow:hidden;"><div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')" style="padding:5px 8px;background:rgba(232,196,104,0.03);display:flex;justify-content:space-between;align-items:center;cursor:pointer;flex-wrap:wrap;gap:2px;"><span class="g-title" style="font-weight:700;font-size:12px;color:var(--accent2);">' +
-                        item.n + ' 个红品（' + label +
-                        '）</span><span class="g-meta" style="font-size:10px;color:var(--text-secondary);">总格数 ' +
-                        item.total + ' | 共 ' + (item.combos ? item.combos.length : '多种') +
-                        ' 种组合 ▶</span></div><div class="g-body" style="display:none;padding:4px 8px 6px;flex-wrap:wrap;gap:3px;">';
+                    var valueLabel = '预估价值：'+fmt(estValue);
+                    if (minValue > 0) valueLabel = '最低价值：'+fmt(minValue)+' | 预估价值：'+fmt(estValue);
+                    html += '<div class="rev-group"><div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')"><span class="g-title">'+item.n+' 个红品（'+valueLabel+'）</span><span class="g-meta">总格数 '+item.total+' | 共 '+(item.combos ? item.combos.length : '多种')+' 种组合 <span class="arrow">▶</span></span></div><div class="g-body">';
                     if (item.approx || !item.combos || item.combos.length === 0) {
-                        htmlResult +=
-                            '<span style="color:var(--text-secondary);font-size:11px;">组合较多，请减少红品数量或增加已知格数限制</span>';
+                        html += '<span style="color:var(--text-secondary);font-size:12px;">组合较多，请减少红品数量或增加已知格数限制</span>';
                     } else {
                         var show = item.combos.slice(0, maxShow);
-                        show.forEach(function(c) { htmlResult += '<span class="combo">' +
-                                c.join(' + ') + '</span>'; });
-                        if (item.combos.length > maxShow) htmlResult += '<span class="more-tag">…共 ' +
-                            item.combos.length + ' 种</span>';
+                        show.forEach(function(c){ html += '<span class="combo">'+c.join(' + ')+'</span>'; });
+                        if (item.combos.length > maxShow) html += '<span class="more-tag">…共 '+item.combos.length+' 种</span>';
                     }
-                    htmlResult += '</div></div>';
+                    html += '</div></div>';
                 });
-                result.innerHTML = htmlResult;
+                result.innerHTML = html;
             };
             document.getElementById('anReset').onclick = function() {
                 document.getElementById('anAvg').value = '';
@@ -1457,67 +1411,23 @@
             };
         }
 
+        // ============================================================
+        // ★ 初始化
+        // ============================================================
         function renderMainApp() {
-            document.querySelectorAll('[data-tab]').forEach(function(btn) {
-                btn.onclick = function() {
-                    currentTab = btn.dataset.tab;
-                    renderPage(currentTab);
-                };
-            });
             document.querySelectorAll('.mode-btn').forEach(function(btn) {
-                btn.onclick = function() {
-                    var mode = btn.dataset.mode;
-                    syncModeButtons(mode);
-                    renderPage(currentTab);
-                };
+                btn.classList.toggle('active', btn.dataset.mode === currentMode);
             });
             document.querySelectorAll('.map-switch button').forEach(function(btn) {
-                btn.onclick = function() {
-                    currentMap = btn.dataset.map;
-                    document.querySelectorAll('.map-switch button').forEach(function(b) {
-                        b.classList.toggle('on', b === btn);
-                    });
-                    renderPage(currentTab);
-                };
+                btn.classList.toggle('on', btn.dataset.map === currentMap);
             });
-            renderPage(currentTab);
+            var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
+            if (fn[currentTab]) fn[currentTab]();
         }
 
-        (function() {
-            showAuth();
-            var cached = checkLocalVerify();
-            if (cached) {
-                showApp(cached);
-                startRemainTimer(cached);
-                setTimeout(function() { if (typeof renderMainApp === 'function') renderMainApp(); }, 100);
-                return;
-            }
-            var savedCard = localStorage.getItem('card');
-            if (savedCard) {
-                setVerifyBtnDisabled(true);
-                setVerifyBtnText(AUTH_TEXT.verifyBtnLoading);
-                verifyWithServer(savedCard, function(success, days, minutes, cardType) {
-                    setVerifyBtnDisabled(false);
-                    setVerifyBtnText(AUTH_TEXT.verifyBtnText);
-                    if (success) {
-                        var data = saveVerifyStatus(savedCard, days, minutes, cardType, Date.now());
-                        showApp(data);
-                        startRemainTimer(data);
-                        setTimeout(function() { if (typeof renderMainApp === 'function') renderMainApp(); }, 100);
-                    } else {
-                        clearVerifyStatus();
-                        showAuth();
-                        setAuthError(AUTH_TEXT.errorInvalid);
-                        initAuthUI();
-                    }
-                });
-            } else {
-                showAuth();
-                initAuthUI();
-            }
-        })();
-
-        console.log('✅ 迪城修正版已启动 — 单格红已改为54774');
+        setTimeout(renderMainApp, 200);
+        console.log('✅ 迪城修正版已完全加载 — 车电池/古董快捷 + 自动学习 + 反破解');
+        console.log('💡 车电池+1/+2 和 古董+1/+2 按钮可快速填入预设值。');
     </script>
 </body>
 </html>
