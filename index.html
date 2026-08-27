@@ -538,7 +538,7 @@
             padding: 6px 8px 8px;
         }
 
-        /* ===== 行布局（按钮已放大） ===== */
+        /* ===== 行布局 ===== */
         .row {
             display: flex;
             align-items: center;
@@ -602,7 +602,6 @@
             margin: 0;
         }
 
-        /* ★ 加大按钮组 ★ */
         .row .btn-group {
             display: flex;
             gap: 4px;
@@ -653,11 +652,6 @@
             border-color: #4ec97a;
             color: #4ec97a;
         }
-        .row .btn-group .qbtn.big {
-            min-width: 26px;
-            font-size: 11px;
-            padding: 0 6px;
-        }
 
         .row .sub {
             flex: 1;
@@ -670,7 +664,6 @@
             margin-left: auto;
         }
 
-        /* 特殊行（车零件、古董）的按钮也加大 */
         .special-row {
             display: flex;
             align-items: center;
@@ -713,7 +706,6 @@
             padding: 0 8px;
         }
 
-        /* 高晋/苏琦 简单按钮组也加大 */
         .simple-btn-group {
             display: flex;
             gap: 4px;
@@ -855,83 +847,106 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .rev-group .g-body {
-            display: none;
-            padding: 4px 8px 6px;
+        /* ===== 安可组合列表样式 ===== */
+        .an-combo-group {
+            background: var(--bg-card);
+            border: 1px solid rgba(42, 58, 90, 0.12);
+            border-radius: 8px;
+            margin-bottom: 4px;
+            overflow: hidden;
+        }
+        .an-combo-group .g-head {
+            padding: 5px 10px;
+            background: rgba(232, 196, 104, 0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
             flex-wrap: wrap;
             gap: 3px;
         }
-        .rev-group.open .g-body {
-            display: flex;
-        }
-        .rev-group .g-head .g-meta {
-            font-size: 10px;
-            color: var(--text-secondary);
-        }
-        .rev-group .g-title {
+        .an-combo-group .g-head .g-title {
             font-weight: 700;
             font-size: 12px;
             color: var(--accent2);
         }
-        .combo {
+        .an-combo-group .g-head .g-meta {
+            font-size: 10px;
+            color: var(--text-secondary);
+        }
+        .an-combo-group .g-head .arrow {
+            display: inline-block;
+            margin-left: 3px;
+            color: var(--accent);
+            transition: transform 0.2s;
+            font-size: 10px;
+        }
+        .an-combo-group.open .g-head .arrow {
+            transform: rotate(90deg);
+        }
+        .an-combo-group .g-body {
+            display: none;
+            padding: 4px 10px 8px;
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+        .an-combo-group.open .g-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+        .an-combo-item {
             display: inline-block;
             background: rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(42, 58, 90, 0.12);
+            border: 1px solid rgba(42, 58, 90, 0.10);
             border-radius: 6px;
-            padding: 2px 6px;
-            margin: 2px 2px 0 0;
-            font-size: 10px;
+            padding: 3px 8px;
+            font-size: 11px;
+            font-variant-numeric: tabular-nums;
             white-space: nowrap;
         }
-        .more-tag {
-            font-size: 10px;
-            color: var(--accent);
-            padding: 4px 3px;
-            display: inline-block;
+        .an-combo-item .val {
+            color: #4ec97a;
+            font-weight: 600;
         }
-        .empty {
+        .an-combo-item .grids {
             color: var(--text-secondary);
-            font-size: 11px;
-            padding: 8px 4px;
         }
-        .btn-gold {
-            padding: 5px 12px;
-            background: linear-gradient(135deg, var(--accent), #c9a23e);
-            color: #0b1526;
-            border: none;
-            border-radius: 8px;
+        .an-empty {
+            text-align: center;
+            padding: 16px 10px;
+            color: var(--text-secondary);
             font-size: 12px;
-            font-weight: 700;
-            cursor: pointer;
-            min-height: 30px;
-            font-family: inherit;
-        }
-        .field label {
-            display: block;
-            font-size: 10px;
-            color: var(--text-secondary);
         }
 
-        .collapse-toggle {
-            padding: 3px 6px;
-            text-align: center;
-            font-size: 10px;
-            color: var(--accent);
-            cursor: pointer;
-            border-top: 1px dashed rgba(42, 58, 90, 0.12);
+        .an-result-summary {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+            padding: 4px 8px;
+            margin-bottom: 6px;
+            background: rgba(232, 196, 104, 0.03);
+            border-radius: 6px;
+            border: 1px solid rgba(232, 196, 104, 0.06);
         }
-        .collapse-toggle:hover {
+        .an-result-summary .item {
+            font-size: 11px;
+        }
+        .an-result-summary .item .label {
+            color: var(--text-secondary);
+        }
+        .an-result-summary .item .value {
+            font-weight: 700;
             color: var(--accent2);
         }
-
-        .inline-group {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            flex-wrap: wrap;
+        .an-result-summary .item .value.rec {
+            color: #4ec97a;
         }
 
-        /* ===== 响应式：移动端按钮稍缩小但依然舒适 ===== */
+        /* ===== 响应式 ===== */
         @media (max-width: 480px) {
             .top-nav .nav-group button[data-tab] {
                 font-size: 12px;
@@ -978,11 +993,6 @@
                 font-size: 10px;
                 padding: 0 4px;
             }
-            .row .btn-group .qbtn.big {
-                min-width: 22px;
-                font-size: 9px;
-                padding: 0 3px;
-            }
             .row .btn-group {
                 gap: 3px;
             }
@@ -1028,6 +1038,13 @@
                 font-size: 9px;
                 padding: 3px 2px;
                 min-width: 26px;
+            }
+            .an-result-summary .item {
+                font-size: 10px;
+            }
+            .an-combo-item {
+                font-size: 10px;
+                padding: 2px 6px;
             }
         }
         @media (min-width: 600px) {
@@ -1198,8 +1215,8 @@
             suTitle: '苏琦 · 颜色件数估值（加权精准）',
             suRole: '推荐道具：紫件数观光棒，橙件数观光棒，红格怀表，四件放大镜，全藏放大镜',
             suTip: '用红品件数估算误差较大，建议使用红格道具，用格数算。',
-            anTitle: '安可 · 红品均格反查（精准匹配）',
-            anRole: '第一回合用红格道具，每回合看到轮廊后把格数输进去缩小范围。',
+            anTitle: '安可 · 红品均格反查（自动匹配）',
+            anRole: '输入平均格数，自动推算所有可能的红品组合及估值',
             carLabel: '🚗 车零件池（减项）',
             antiqueLabel: '🏺 古董价值（减项）',
             recLabel: '建议出价',
@@ -1492,7 +1509,7 @@
         }
 
         // ============================================================
-        // ★ 核心算法（完全套用定制版19.html）
+        // ★ 核心算法
         // ============================================================
 
         var CFG = {
@@ -1593,7 +1610,6 @@
                     gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
                     redAvgGrid: 4.5
                 },
-                // ★ 迪城数据完整保留 ★
                 dicheng: {
                     name: '迪城',
                     redByGrid: {
@@ -1623,6 +1639,7 @@
             gaoCollapseThreshold: 6
         };
 
+        // ---- 加权价格函数 ----
         function weightedPrice(stat) {
             if (!stat) return 0;
             var avg = stat.avg || 0;
@@ -1744,10 +1761,8 @@
         });
 
         // ============================================================
-        // ★ 渲染函数（按钮已放大，紧挨输入框）
+        // ★ 霍姑姑（完整保留）
         // ============================================================
-
-        // --- 霍姑姑 ---
         function renderHuo() {
             var el = document.getElementById('page-huo');
             var map = getMap();
@@ -1785,7 +1800,6 @@
                     '</div>';
             });
 
-            // 车零件池
             html += '<div class="special-row"><span class="lbl">' + UI_TEXT.carLabel + '</span>' +
                 '<div class="qty"><input type="number" id="huoCarPool" min="0" step="1000" value=""></div>' +
                 '<span class="btn-group">' +
@@ -1794,7 +1808,6 @@
                 '<button class="qbtn pos" id="carPlus3">' + UI_TEXT.carBtn3 + '</button>' +
                 '</span></div>';
 
-            // 古董价值
             html += '<div class="special-row"><span class="lbl">' + UI_TEXT.antiqueLabel + '</span>' +
                 '<div class="qty"><input type="number" id="huoAntique" min="0" step="1000" value=""></div>' +
                 '<span class="btn-group">' +
@@ -1818,7 +1831,6 @@
             html += '</div></div>';
             el.innerHTML = html;
 
-            // ---- 计算函数 ----
             function calcHuo() {
                 var total = 0;
                 var stats = [];
@@ -1842,9 +1854,7 @@
                 document.getElementById('huoTotal').textContent = fmt(finalTotal);
                 var disc = dynamicRecDiscount(finalTotal);
                 var rec = finalTotal * disc;
-                if (currentMode === 'aggressive') {
-                    rec = finalTotal * 0.95;
-                }
+                if (currentMode === 'aggressive') { rec = finalTotal * 0.95; }
                 document.getElementById('huoRec').textContent = fmt(rec);
 
                 var conf = 0.85;
@@ -1868,7 +1878,6 @@
                 updateQuickActions(rec, finalTotal, carPool, high);
             }
 
-            // ---- 快速调整按钮 ----
             el.querySelectorAll('.qbtn[data-target]').forEach(function(btn) {
                 btn.onclick = function() {
                     var targetId = this.dataset.target;
@@ -1882,35 +1891,19 @@
                 };
             });
 
-            // ---- 车零件快捷 ----
-            document.getElementById('carPlus1').onclick = function() {
-                document.getElementById('huoCarPool').value = 90000;
-                calcHuo();
-            };
-            document.getElementById('carPlus2').onclick = function() {
-                document.getElementById('huoCarPool').value = 180000;
-                calcHuo();
-            };
-            document.getElementById('carPlus3').onclick = function() {
-                document.getElementById('huoCarPool').value = 300000;
-                calcHuo();
-            };
+            document.getElementById('carPlus1').onclick = function() { document.getElementById('huoCarPool').value = 90000;
+                calcHuo(); };
+            document.getElementById('carPlus2').onclick = function() { document.getElementById('huoCarPool').value = 180000;
+                calcHuo(); };
+            document.getElementById('carPlus3').onclick = function() { document.getElementById('huoCarPool').value = 300000;
+                calcHuo(); };
+            document.getElementById('antiquePlus1').onclick = function() { document.getElementById('huoAntique').value = 90000;
+                calcHuo(); };
+            document.getElementById('antiquePlus2').onclick = function() { document.getElementById('huoAntique').value = 180000;
+                calcHuo(); };
+            document.getElementById('antiquePlus3').onclick = function() { document.getElementById('huoAntique').value = 300000;
+                calcHuo(); };
 
-            // ---- 古董快捷 ----
-            document.getElementById('antiquePlus1').onclick = function() {
-                document.getElementById('huoAntique').value = 90000;
-                calcHuo();
-            };
-            document.getElementById('antiquePlus2').onclick = function() {
-                document.getElementById('huoAntique').value = 180000;
-                calcHuo();
-            };
-            document.getElementById('antiquePlus3').onclick = function() {
-                document.getElementById('huoAntique').value = 300000;
-                calcHuo();
-            };
-
-            // ---- 输入事件 ----
             colors.forEach(function(col) {
                 var inp = document.getElementById('huo_' + col.key);
                 if (inp) inp.addEventListener('input', calcHuo);
@@ -1918,7 +1911,6 @@
             document.getElementById('huoCarPool').addEventListener('input', calcHuo);
             document.getElementById('huoAntique').addEventListener('input', calcHuo);
 
-            // ---- 重置 ----
             document.getElementById('huoReset').onclick = function() {
                 colors.forEach(function(col) { var inp = document.getElementById('huo_' + col.key); if (inp) inp.value = ''; });
                 document.getElementById('huoCarPool').value = '';
@@ -1928,7 +1920,9 @@
             calcHuo();
         }
 
-        // --- 高晋 ---
+        // ============================================================
+        // ★ 高晋（完整保留）
+        // ============================================================
         function renderGao() {
             var el = document.getElementById('page-gao');
             var map = getMap();
@@ -2021,7 +2015,6 @@
             '<div class="reset-row"><button class="btn-reset" id="gaoReset">' + UI_TEXT.resetLabel + '</button></div>';
             body.innerHTML = html;
 
-            // 折叠
             var toggle = document.getElementById('gaoCollapseToggle');
             var collapsedRows = document.getElementById('gaoCollapsedRows');
             if (toggle) {
@@ -2031,7 +2024,6 @@
                 };
             }
 
-            // 简单按钮
             body.querySelectorAll('.sbtn[data-target]').forEach(function(btn) {
                 btn.onclick = function() {
                     var targetId = this.dataset.target;
@@ -2124,7 +2116,9 @@
             calcGao();
         }
 
-        // --- 苏琦 ---
+        // ============================================================
+        // ★ 苏琦（完整保留）
+        // ============================================================
         function renderSu() {
             var el = document.getElementById('page-su');
             var map = getMap();
@@ -2178,7 +2172,6 @@
             '<div class="reset-row"><button class="btn-reset" id="suReset">' + UI_TEXT.resetLabel + '</button></div>';
             body.innerHTML = html;
 
-            // 简单按钮
             body.querySelectorAll('.sbtn[data-target]').forEach(function(btn) {
                 btn.onclick = function() {
                     var targetId = this.dataset.target;
@@ -2244,47 +2237,87 @@
             calcSu();
         }
 
-        // --- 安可 ---
+        // ============================================================
+        // ★ 安可（新模型：输入均格 → 自动推算组合 + 估值）
+        // ============================================================
         function renderAn() {
             var el = document.getElementById('page-an');
             var map = getMap();
             var grids = map.gridOptions || [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
             var gridSet = new Set(grids);
+
             el.innerHTML =
                 '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4ec97a,#2a9a5a);">安</div><div><div class="name">' +
                 UI_TEXT.anTitle + '</div><div class="role">' + UI_TEXT.anRole + '</div></div></div></div><div class="sec-body" id="anBody"></div></div>';
-            var body = document.getElementById('anBody');
-            body.innerHTML =
-                '<div class="rev-input" style="display:flex;gap:6px;flex-wrap:wrap;align-items:flex-end;">' +
-                '<div class="field" style="flex:1;min-width:80px;"><label>平均格数</label><input type="number" id="anAvg" step="0.1" min="1" max="16" placeholder="如 3.5" style="width:100%;padding:5px 8px;"></div>' +
-                '<div class="field" style="flex:1;min-width:80px;"><label>红品数量</label><input type="number" id="anCount" min="1" max="50" placeholder="不限" style="width:100%;padding:5px 8px;"></div>' +
-                '<button class="btn-gold" id="anBtn" style="min-height:30px;padding:5px 16px;">推算</button>' +
-                '</div>' +
-                '<div class="known-box" style="margin-top:6px;"><label>已知格数（选填，逗号分隔）</label><input type="text" id="anKnown" placeholder="如 4,6,8" style="width:100%;padding:5px 8px;background:var(--bg-input);border:1px solid var(--border-color);border-radius:6px;color:var(--text-primary);outline:none;"></div>' +
-                '<div class="rev-result" id="anResult"></div>' +
-                '<div class="reset-row"><button class="btn-reset" id="anReset">重置数据</button></div>';
 
-            document.getElementById('anBtn').onclick = function() {
-                var avg = parseFloat(document.getElementById('anAvg').value);
-                var count = parseInt(document.getElementById('anCount').value) || 0;
-                var knownStr = document.getElementById('anKnown').value.trim();
-                var known = knownStr ? knownStr.split(',').map(function(s) { return parseInt(s.trim()); }).filter(
-                    function(n) { return !isNaN(n) && n > 0; }) : [];
-                var result = document.getElementById('anResult');
-                if (isNaN(avg) || avg < 1) { result.innerHTML = '<div class="empty">请输入有效的平均格数</div>';
-                    return; }
-                var combos = [];
-                var maxN = count > 0 ? count : 20;
-                var minN = count > 0 ? count : 1;
-                for (var n = minN; n <= maxN; n++) {
-                    var knownOk = true;
-                    for (var ki = 0; ki < known.length; ki++) { if (!gridSet.has(known[ki])) { knownOk = false; break; } }
-                    if (!knownOk) continue;
-                    var totalGrids = Math.round(avg * n);
+            var body = document.getElementById('anBody');
+
+            // 构建输入区
+            var html = '<div class="row">' +
+                '<span class="lbl">红均格</span>' +
+                '<div class="qty"><input type="number" id="anAvg" step="0.1" min="0.5" max="16" value="" style="width:100%;"></div>' +
+                '<span class="btn-group">' +
+                '<button class="qbtn neg" id="anStepMinus1" data-delta="-1">-1</button>' +
+                '<button class="qbtn neg" id="anStepMinus01" data-delta="-0.1">-0.1</button>' +
+                '<button class="qbtn pos" id="anStepPlus01" data-delta="0.1">+0.1</button>' +
+                '<button class="qbtn pos" id="anStepPlus1" data-delta="1">+1</button>' +
+                '</span>' +
+                '</div>';
+
+            // 结果汇总区
+            html += '<div id="anResultSummary" class="an-result-summary" style="display:none;">' +
+                '<span class="item"><span class="label">推荐出价：</span><span class="value rec" id="anRec">0</span></span>' +
+                '<span class="item"><span class="label">仓库预估：</span><span class="value" id="anTotal">0</span></span>' +
+                '<span class="item"><span class="label">组合数：</span><span class="value" id="anComboCount">0</span></span>' +
+                '</div>';
+
+            // 组合列表容器
+            html += '<div id="anComboList"></div>';
+
+            html += '<div class="reset-row"><button class="btn-reset" id="anReset">' + UI_TEXT.resetLabel + '</button></div>';
+
+            body.innerHTML = html;
+
+            // ---- 微调按钮 ----
+            document.getElementById('anStepMinus1').onclick = function() { adjustAvg(-1); };
+            document.getElementById('anStepMinus01').onclick = function() { adjustAvg(-0.1); };
+            document.getElementById('anStepPlus01').onclick = function() { adjustAvg(0.1); };
+            document.getElementById('anStepPlus1').onclick = function() { adjustAvg(1); };
+
+            function adjustAvg(delta) {
+                var inp = document.getElementById('anAvg');
+                var cur = parseFloat(inp.value) || 0;
+                var newVal = Math.max(0.1, Math.round((cur + delta) * 10) / 10);
+                inp.value = newVal;
+                calcAn();
+            }
+
+            // ---- 主计算 ----
+            function calcAn() {
+                var avgInput = parseFloat(document.getElementById('anAvg').value);
+                var resultSummary = document.getElementById('anResultSummary');
+                var comboList = document.getElementById('anComboList');
+
+                if (isNaN(avgInput) || avgInput < 0.1) {
+                    resultSummary.style.display = 'none';
+                    comboList.innerHTML = '<div class="an-empty">请输入有效的平均格数（≥0.1）</div>';
+                    return;
+                }
+
+                var allCombos = [];
+                var maxItems = 20;
+
+                // 遍历藏品数量 1 ~ maxItems
+                for (var n = 1; n <= maxItems; n++) {
+                    var totalGrids = Math.round(avgInput * n);
+                    if (totalGrids < 1) continue;
                     var combosForN = [];
 
                     function findCombos(remaining, maxIdx, path) {
-                        if (remaining === 0 && path.length === n) { combosForN.push(path.slice()); return; }
+                        if (remaining === 0 && path.length === n) {
+                            combosForN.push(path.slice());
+                            return;
+                        }
                         if (path.length >= n) return;
                         for (var i = maxIdx; i < grids.length; i++) {
                             var g = grids[i];
@@ -2295,58 +2328,142 @@
                             }
                         }
                     }
+
+                    // 优化：如果n较小，精确搜索；否则标记为近似
                     if (n <= 8) {
                         findCombos(totalGrids, 0, []);
-                        if (combosForN.length > 0) combos.push({ n: n, total: totalGrids, combos: combosForN });
+                        if (combosForN.length > 0) {
+                            allCombos.push({ n: n, total: totalGrids, combos: combosForN, approx: false });
+                        }
                     } else {
-                        combos.push({ n: n, total: totalGrids, combos: null, approx: true });
+                        // 对于较大数量，仅提示存在可能性，不展开具体组合
+                        var hasAny = false;
+                        // 简单检查：是否可以用grids中的数凑出totalGrids
+                        // 这里只做简单判断，不穷举
+                        var tempRemain = totalGrids;
+                        for (var gi = grids.length - 1; gi >= 0; gi--) {
+                            if (tempRemain >= grids[gi]) {
+                                tempRemain -= grids[gi];
+                            }
+                        }
+                        // 如果剩余为0或可被最小格数整除，视为可能存在
+                        if (tempRemain === 0 || (tempRemain > 0 && tempRemain % grids[0] === 0)) {
+                            allCombos.push({ n: n, total: totalGrids, combos: null, approx: true });
+                        }
                     }
                 }
-                if (combos.length === 0) { result.innerHTML = '<div class="empty">未找到匹配组合，请检查输入</div>';
-                    return; }
-                var html = '';
-                var maxShow = 10;
+
+                if (allCombos.length === 0) {
+                    resultSummary.style.display = 'none';
+                    comboList.innerHTML = '<div class="an-empty">未找到匹配的组合，请调整平均格数</div>';
+                    return;
+                }
+
+                // ---- 计算估值 ----
                 var redAvgPrice = getRedPiecePrice(map);
-                combos.forEach(function(item) {
-                    var estValue = Math.round(item.n * redAvgPrice);
-                    var minValue = 0;
-                    if (item.combos) {
-                        var minTotal = Infinity;
-                        item.combos.forEach(function(combo) {
+                var totalEstimateSum = 0;
+                var totalComboCount = 0;
+                var allValues = [];
+
+                allCombos.forEach(function(group) {
+                    if (group.approx) return;
+                    group.combos.forEach(function(combo) {
+                        var sum = 0;
+                        combo.forEach(function(g) {
+                            var entry = map.redByGrid[g];
+                            if (entry && entry.avg) sum += entry.avg;
+                            else sum += redAvgPrice * g;
+                        });
+                        allValues.push(sum);
+                        totalEstimateSum += sum;
+                        totalComboCount++;
+                    });
+                });
+
+                // 如果没有精确组合，用近似组合估测
+                if (totalComboCount === 0) {
+                    // 使用近似组合的估算
+                    allCombos.forEach(function(group) {
+                        if (group.approx) {
+                            var est = group.total * redAvgPrice;
+                            allValues.push(est);
+                            totalEstimateSum += est;
+                            totalComboCount++;
+                        }
+                    });
+                }
+
+                var avgEstimate = totalComboCount > 0 ? totalEstimateSum / totalComboCount : 0;
+                var disc = dynamicRecDiscount(avgEstimate);
+                var rec = avgEstimate * disc;
+                if (currentMode === 'aggressive') rec = avgEstimate * 0.95;
+
+                // 显示汇总
+                resultSummary.style.display = 'flex';
+                document.getElementById('anRec').textContent = fmt(rec);
+                document.getElementById('anTotal').textContent = fmt(avgEstimate);
+                document.getElementById('anComboCount').textContent = totalComboCount;
+
+                // ---- 渲染组合列表 ----
+                var listHtml = '';
+                var maxShow = 12;
+
+                allCombos.forEach(function(group, idx) {
+                    var isOpen = idx === 0;
+                    var comboLabel = group.approx ? '（近似）' : '';
+                    var countLabel = group.approx ? '多种' : group.combos.length;
+
+                    listHtml += '<div class="an-combo-group' + (isOpen ? ' open' : '') + '">' +
+                        '<div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')">' +
+                        '<span class="g-title">' + group.n + ' 件藏品 ' + comboLabel + '</span>' +
+                        '<span class="g-meta">总格数 ' + group.total + ' | 共 ' + countLabel + ' 种组合 <span class="arrow">▶</span></span>' +
+                        '</div>' +
+                        '<div class="g-body">';
+
+                    if (group.approx || !group.combos || group.combos.length === 0) {
+                        var estVal = group.total * redAvgPrice;
+                        listHtml += '<span class="an-combo-item"><span class="grids">约 ' + group.total +
+                            ' 格</span> <span class="val">≈' + fmt(estVal) + '</span></span>';
+                    } else {
+                        var showCombos = group.combos.slice(0, maxShow);
+                        showCombos.forEach(function(combo) {
                             var sum = 0;
                             combo.forEach(function(g) {
                                 var entry = map.redByGrid[g];
-                                if (entry && entry.min) sum += entry.min;
-                                else sum += 0;
+                                if (entry && entry.avg) sum += entry.avg;
+                                else sum += redAvgPrice * g;
                             });
-                            if (sum < minTotal) minTotal = sum;
+                            listHtml += '<span class="an-combo-item"><span class="grids">' + combo.join('+') +
+                                '</span> <span class="val">' + fmt(sum) + '</span></span>';
                         });
-                        if (minTotal !== Infinity) minValue = minTotal;
+                        if (group.combos.length > maxShow) {
+                            listHtml += '<span class="more-tag">…共 ' + group.combos.length + ' 种</span>';
+                        }
                     }
-                    var valueLabel = '预估价值：' + fmt(estValue);
-                    if (minValue > 0) valueLabel = '最低价值：' + fmt(minValue) + ' | 预估价值：' + fmt(estValue);
-                    html += '<div class="rev-group"><div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')"><span class="g-title">' +
-                        item.n + ' 个红品（' + valueLabel + '）</span><span class="g-meta">总格数 ' + item.total + ' | 共 ' + (item
-                        .combos ? item.combos.length : '多种') + ' 种组合 <span class="arrow">▶</span></span></div><div class="g-body">';
-                    if (item.approx || !item.combos || item.combos.length === 0) {
-                        html +=
-                            '<span style="color:var(--text-secondary);font-size:11px;">组合较多，请减少红品数量或增加已知格数限制</span>';
-                    } else {
-                        var show = item.combos.slice(0, maxShow);
-                        show.forEach(function(c) { html += '<span class="combo">' + c.join(' + ') + '</span>'; });
-                        if (item.combos.length > maxShow) html += '<span class="more-tag">…共 ' + item.combos.length +
-                            ' 种</span>';
-                    }
-                    html += '</div></div>';
+
+                    listHtml += '</div></div>';
                 });
-                result.innerHTML = html;
-            };
+
+                comboList.innerHTML = listHtml;
+
+                // 更新快速操作栏
+                updateQuickActions(rec, avgEstimate, 0, avgEstimate * 1.2);
+            }
+
+            // ---- 输入事件 ----
+            document.getElementById('anAvg').addEventListener('input', calcAn);
+            document.getElementById('anAvg').addEventListener('change', calcAn);
+
+            // ---- 重置 ----
             document.getElementById('anReset').onclick = function() {
                 document.getElementById('anAvg').value = '';
-                document.getElementById('anCount').value = '';
-                document.getElementById('anKnown').value = '';
-                document.getElementById('anResult').innerHTML = '';
+                document.getElementById('anResultSummary').style.display = 'none';
+                document.getElementById('anComboList').innerHTML = '<div class="an-empty">请输入平均格数开始推算</div>';
+                updateQuickActions(0, 0, 0, 0);
             };
+
+            // 初始状态
+            document.getElementById('anComboList').innerHTML = '<div class="an-empty">请输入平均格数开始推算</div>';
         }
 
         // ============================================================
@@ -2367,8 +2484,8 @@
         initAuthUI();
         setTimeout(renderMainApp, 300);
 
-        console.log('✅ 俱乐大玩家 · 超级AI 已加载（按钮已放大，不再拥挤）');
-        console.log('💡 霍姑姑支持 -10/-5/-1/+1/+5/+10 快速调整，按钮在输入框右侧');
+        console.log('✅ 俱乐大玩家 · 超级AI 已加载（安可页面已更新为自动匹配模式）');
+        console.log('💡 安可：输入红均格，自动推算所有组合及估值');
     </script>
 </body>
 </html>
