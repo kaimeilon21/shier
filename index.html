@@ -1,42 +1,54 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>俱乐大玩家 · 超级AI v5.0</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>俱乐大玩家超级AI</title>
     <style>
-        /* ===== 样式 ===== */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-        }
+        /* ===== 全局 ===== */
         :root {
             --bg-page: #0a0e1a;
             --bg-card: #111827;
+            --bg-card2: #1a2332;
             --bg-input: #0d1422;
             --border-color: #2a3a5a;
             --text-primary: #e8eef8;
             --text-secondary: #8aa0c8;
             --accent: #e8c468;
             --accent2: #f5dd9a;
+            --shadow: rgba(0, 0, 0, 0.5);
             --radius: 14px;
-            --nav-height: 52px;
+            --transition: 0.2s ease;
+            --glow: 0 0 30px rgba(232, 196, 104, 0.06);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         body {
             background: var(--bg-page);
             color: var(--text-primary);
-            font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
             min-height: 100vh;
-            font-size: 14px;
+            padding-bottom: 56px;
+            font-size: 15px;
             line-height: 1.6;
-            padding-bottom: 40px;
         }
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: var(--bg-page); }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-page);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
 
+        /* ===== 验证覆盖层 ===== */
         #authOverlay {
             position: fixed;
             inset: 0;
@@ -48,7 +60,10 @@
             padding: 20px;
             transition: opacity 0.4s ease;
         }
-        #authOverlay.hidden { opacity: 0; pointer-events: none; }
+        #authOverlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
         .auth-box {
             width: 420px;
             max-width: 100%;
@@ -57,9 +72,25 @@
             border-radius: var(--radius);
             padding: 34px 28px 24px;
             text-align: center;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6), var(--glow);
+            position: relative;
+            overflow: hidden;
         }
-        .auth-box .auth-icon { font-size: 44px; display: block; margin-bottom: 2px; }
+        .auth-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(232, 196, 104, 0.03), transparent 70%);
+            pointer-events: none;
+        }
+        .auth-box .auth-icon {
+            font-size: 44px;
+            margin-bottom: 2px;
+            display: block;
+        }
         .auth-box .auth-title {
             font-size: 22px;
             font-weight: 800;
@@ -67,6 +98,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
         }
         .auth-box .auth-badge {
             display: inline-block;
@@ -76,9 +109,36 @@
             padding: 3px 20px;
             border-radius: 30px;
             font-size: 13px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.15);
+            border: 1px solid rgba(255, 215, 0, 0.15);
             margin: 4px 0 12px;
         }
-        .auth-box .auth-sub { color: var(--text-secondary); font-size: 13px; margin-bottom: 10px; }
+        .auth-box .auth-sub {
+            color: var(--text-secondary);
+            font-size: 13px;
+            margin-bottom: 10px;
+            line-height: 1.7;
+        }
+        .auth-box .auth-remain {
+            color: #4ec97a;
+            font-size: 13px;
+            padding: 5px 14px;
+            border-radius: 10px;
+            background: rgba(78, 201, 122, 0.05);
+            display: inline-block;
+            margin-bottom: 12px;
+            border: 1px solid rgba(78, 201, 122, 0.08);
+        }
+        .auth-box .auth-remain.deleted {
+            color: #f87171;
+            border-color: rgba(248, 113, 113, 0.12);
+            background: rgba(248, 113, 113, 0.05);
+        }
+        .auth-box .auth-input-wrap {
+            position: relative;
+            margin-bottom: 12px;
+        }
         .auth-box .auth-input-wrap input {
             width: 100%;
             padding: 13px 18px;
@@ -90,11 +150,31 @@
             font-weight: 600;
             text-align: center;
             letter-spacing: 4px;
-            font-family: monospace;
+            font-family: 'SF Mono', 'Menlo', monospace;
             outline: none;
-            transition: border-color 0.15s;
+            transition: border-color var(--transition), box-shadow var(--transition);
         }
-        .auth-box .auth-input-wrap input:focus { border-color: var(--accent); }
+        .auth-box .auth-input-wrap input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(232, 196, 104, 0.06);
+        }
+        .auth-box .auth-input-wrap input::placeholder {
+            letter-spacing: 1px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            opacity: 0.35;
+        }
+        .auth-box .auth-warning {
+            color: #f87171;
+            font-size: 12px;
+            margin-bottom: 12px;
+            padding: 8px 12px;
+            background: rgba(248, 113, 113, 0.05);
+            border: 1px solid rgba(248, 113, 113, 0.08);
+            border-radius: 8px;
+            text-align: center;
+            line-height: 1.5;
+        }
         .auth-box .auth-btn {
             width: 100%;
             padding: 13px 0;
@@ -105,1418 +185,1913 @@
             color: #0b1526;
             background: linear-gradient(135deg, var(--accent), #c9a23e);
             cursor: pointer;
-            transition: transform 0.15s;
+            transition: transform 0.15s, box-shadow 0.3s;
+            box-shadow: 0 4px 20px rgba(232, 196, 104, 0.15);
+            letter-spacing: 0.5px;
         }
-        .auth-box .auth-btn:active { transform: scale(0.97); }
-        .auth-box .auth-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-        .auth-box .auth-error { color: #f87171; font-size: 13px; min-height: 22px; margin-top: 4px; }
-        .auth-box .auth-footer { margin-top: 16px; color: var(--text-secondary); font-size: 11px; opacity: 0.5; }
-        .auth-box .auth-footer .author { font-size: 12px; opacity: 0.8; color: var(--accent2); margin-top: 4px; }
-
-        #appWrap { max-width: 820px; margin: 0 auto; padding: 0 10px 20px; display: none; }
-        #appWrap.show { display: block; }
-
-        .top-nav {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: var(--bg-page);
-            border-bottom: 1px solid rgba(42, 58, 90, 0.25);
-            padding: 0 8px;
-            height: var(--nav-height);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            backdrop-filter: blur(12px);
-            flex-wrap: nowrap;
-            overflow-x: auto;
+        .auth-box .auth-btn:active {
+            transform: scale(0.97);
         }
-        .top-nav::-webkit-scrollbar { display: none; }
-        .top-nav .nav-group {
-            display: flex;
-            align-items: center;
-            gap: 3px;
-            padding: 0 4px;
-            border-right: 1px solid rgba(42, 58, 90, 0.15);
-            flex-shrink: 0;
+        .auth-box .auth-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
-        .top-nav .nav-group:last-child { border-right: none; }
-        .top-nav .nav-group button {
-            padding: 4px 12px;
-            font-size: 14px;
-            font-weight: 700;
-            min-height: 32px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            cursor: pointer;
-            border-radius: 6px;
-            white-space: nowrap;
-            font-family: inherit;
-            transition: all 0.15s;
+        .auth-box .auth-error {
+            color: #f87171;
+            font-size: 13px;
+            min-height: 22px;
+            margin-top: 4px;
         }
-        .top-nav .nav-group button.active {
-            color: var(--accent2);
-            background: rgba(232, 196, 104, 0.06);
-        }
-        .top-nav .nav-group button.active::after {
-            content: '';
-            display: block;
-            height: 2px;
-            background: var(--accent);
-            border-radius: 2px;
-            margin-top: 1px;
-            width: 50%;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .top-nav .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            flex-shrink: 0;
-            padding-left: 6px;
-            border-left: 1px solid rgba(42, 58, 90, 0.15);
-            margin-left: auto;
-        }
-        .top-nav .nav-right .vip-tag {
-            font-size: 9px;
-            color: var(--accent2);
-            border: 1px solid rgba(232, 196, 104, 0.2);
-            padding: 1px 8px;
+        .auth-box .auth-unbind {
+            margin-top: 8px;
+            background: rgba(248, 113, 113, 0.05);
+            color: #f87171;
+            border: 1px solid rgba(248, 113, 113, 0.12);
+            padding: 9px 0;
             border-radius: 12px;
-            font-weight: 700;
-            white-space: nowrap;
+            font-size: 13px;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .auth-box .auth-unbind:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .auth-box .auth-unbind:not(:disabled):hover {
+            background: rgba(248, 113, 113, 0.10);
+        }
+        .auth-box .auth-footer {
+            margin-top: 16px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            opacity: 0.4;
+            line-height: 1.8;
+        }
+        .auth-box .auth-footer .author {
+            font-size: 11px;
+            opacity: 0.5;
+            margin-top: 2px;
         }
 
-        .header {
-            padding: 8px 4px 4px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            border-bottom: 1px solid rgba(42, 58, 90, 0.10);
-            margin-bottom: 6px;
+        /* ===== 主界面 ===== */
+        #appWrap {
+            display: block;
+            padding: 0 14px 30px;
+            max-width: 820px;
+            margin: 0 auto;
         }
-        .header .main-title {
-            font-size: 17px;
-            font-weight: 800;
+        #appWrap.hidden {
+            display: none;
+        }
+
+        /* ===== 顶部栏 ===== */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 0 6px;
+            border-bottom: 1px solid rgba(42, 58, 90, 0.2);
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .top-bar .left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+        .top-bar .left .author-id {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            letter-spacing: 0.3px;
+        }
+        .top-bar .left .vip-tag {
+            background: transparent;
+            padding: 1px 12px;
+            border-radius: 20px;
             color: var(--accent2);
+            font-weight: 700;
+            font-size: 11px;
+            border: 1.5px solid rgba(232, 196, 104, 0.3);
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+        }
+        .top-bar .right {
             display: flex;
             align-items: center;
             gap: 6px;
+        }
+        .theme-toggle {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 30px;
+            padding: 3px 10px;
+            color: var(--accent2);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            user-select: none;
+            line-height: 1;
+        }
+        .theme-toggle:active {
+            transform: scale(0.94);
+        }
+
+        /* ===== 警告横幅 ===== */
+        .warning-banner {
+            background: rgba(248, 113, 113, 0.05);
+            border: 1px solid rgba(248, 113, 113, 0.08);
+            border-radius: 8px;
+            padding: 8px 12px;
+            margin: 6px 0 10px;
+            text-align: center;
+            font-size: 13px;
+            color: #f87171;
+            line-height: 1.5;
+        }
+
+        /* ===== 主题面板 ===== */
+        #themePanel {
+            display: none;
+            position: fixed;
+            top: 66px;
+            right: 14px;
+            z-index: 101;
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            min-width: 190px;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(12px);
+        }
+        #themePanel.show {
+            display: block;
+        }
+        #themePanel .tp-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--accent2);
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        .theme-options {
+            display: flex;
             flex-wrap: wrap;
+            gap: 6px;
             justify-content: center;
+        }
+        .theme-options .t-opt {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .theme-options .t-opt.active {
+            border-color: var(--accent);
+            box-shadow: 0 0 12px rgba(232, 196, 104, 0.2);
+            transform: scale(1.06);
+        }
+        .custom-theme-row {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .custom-theme-row label {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .custom-theme-row input[type="color"] {
+            width: 26px;
+            height: 26px;
+            border: none;
+            padding: 0;
+            background: transparent;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .tp-close {
+            text-align: right;
+            margin-top: 8px;
+        }
+        .tp-close button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 11px;
+            cursor: pointer;
+            text-decoration: underline;
+            opacity: 0.4;
+        }
+        #applyCustomTheme {
+            background: var(--accent);
+            border: none;
+            border-radius: 6px;
+            padding: 3px 12px;
+            font-weight: 700;
+            color: #0b1526;
+            cursor: pointer;
+            font-size: 11px;
+        }
+
+        /* ===== 头部 ===== */
+        .header {
+            text-align: center;
+            padding: 12px 0 4px;
+        }
+        .header .main-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent2);
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 6px 12px;
         }
         .header .main-title .super-tag {
             background: linear-gradient(135deg, #ffd700, #f5a623);
             color: #0b1526;
             font-weight: 800;
-            padding: 1px 10px;
+            padding: 2px 16px;
             border-radius: 30px;
-            font-size: 9px;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.12);
+            border: 1px solid rgba(255, 215, 0, 0.12);
             display: inline-block;
             line-height: 1.6;
         }
+        .header .sub-title {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-top: 2px;
+            opacity: 0.5;
+            letter-spacing: 0.5px;
+        }
         .header .header-actions {
-            margin-top: 3px;
+            margin-top: 5px;
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 14px;
             flex-wrap: wrap;
         }
-        .header .header-actions .remain-time {
+        .header .header-actions .author-info {
             font-size: 11px;
-            font-weight: 600;
-            padding: 2px 12px;
-            border-radius: 20px;
-            border: 1px solid rgba(78, 201, 122, 0.08);
+            color: var(--text-secondary);
+            opacity: 0.4;
         }
-        .header .header-actions .remain-time.permanent { color: #fbbf24; border-color: rgba(251, 191, 36, 0.15); }
-        .header .header-actions .remain-time.active { color: #4ec97a; border-color: rgba(78, 201, 122, 0.15); }
-        .header .header-actions .remain-time.warning { color: #fbbf24; border-color: rgba(251, 191, 36, 0.15); }
-        .header .header-actions .remain-time.danger { color: #f87171; border-color: rgba(248, 113, 113, 0.15); }
-        .header .header-actions .unbind-btn {
-            font-size: 10px;
+        .header .header-actions .unbind-link {
+            font-size: 12px;
             color: #f87171;
             cursor: pointer;
-            padding: 2px 10px;
-            border-radius: 20px;
-            border: 1px solid rgba(248, 113, 113, 0.15);
             background: rgba(248, 113, 113, 0.05);
+            padding: 2px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(248, 113, 113, 0.08);
+            transition: all 0.2s;
             user-select: none;
+            font-weight: 500;
         }
-        .header .header-actions .calibrate-status {
-            font-size: 10px;
-            padding: 2px 8px;
-            border-radius: 10px;
-            display: inline-block;
+        .header .header-actions .unbind-link:hover {
+            background: rgba(248, 113, 113, 0.10);
         }
-        .header .header-actions .calibrate-status.active {
+        .header .remain-permanent {
+            margin-top: 4px;
+            font-size: 13px;
             color: #4ec97a;
-            border: 1px solid rgba(78, 201, 122, 0.15);
+            font-weight: 600;
+            display: none;
         }
-        .header .header-actions .calibrate-status.inactive {
+        .header .remain-permanent.show {
+            display: block;
+        }
+
+        /* ===== 引导文字 ===== */
+        .tour-guide {
+            padding: 10px 14px 12px;
+            font-size: 12px;
             color: var(--text-secondary);
-            border: 1px solid var(--border-color);
+            line-height: 1.8;
+            background: rgba(232, 196, 104, 0.015);
+            border-radius: var(--radius);
+            border: 1px solid rgba(42, 58, 90, 0.15);
+            margin: 6px 0 12px;
+            opacity: 0.8;
         }
 
-        .page { display: none; animation: fadeUp 0.2s ease; }
-        .page.active { display: block; }
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(6px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .map-mode-row {
+        /* ===== 地图切换 ===== */
+        .map-switch {
             display: flex;
             gap: 5px;
-            margin-bottom: 8px;
-            flex-wrap: wrap;
-        }
-        .map-mode-row .map-switch {
-            display: flex;
-            gap: 3px;
+            margin-bottom: 12px;
             background: rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
-            padding: 3px;
+            border-radius: 12px;
+            padding: 4px;
+            overflow-x: auto;
             border: 1px solid rgba(42, 58, 90, 0.12);
-            flex: 2;
-            min-width: 180px;
         }
-        .map-mode-row .map-switch button {
+        .map-switch button {
             flex: 1;
-            padding: 4px 3px;
+            padding: 7px 4px;
             background: transparent;
             border: none;
-            border-radius: 7px;
+            border-radius: 9px;
             color: var(--text-secondary);
-            font-size: 10px;
+            font-size: 13px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.15s;
             white-space: nowrap;
-            font-family: inherit;
+            min-width: 50px;
         }
-        .map-mode-row .map-switch button.on {
+        .map-switch button.on {
             background: linear-gradient(135deg, rgba(232, 196, 104, 0.12), rgba(232, 196, 104, 0.04));
             color: var(--accent2);
-            border: 1px solid rgba(232, 196, 104, 0.08);
-        }
-        .map-mode-row .mode-switch {
-            display: flex;
-            gap: 3px;
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
-            padding: 3px;
-            border: 1px solid rgba(42, 58, 90, 0.12);
-            flex: 1;
-            min-width: 120px;
-        }
-        .map-mode-row .mode-switch button {
-            flex: 1;
-            padding: 4px 3px;
-            background: transparent;
-            border: none;
-            border-radius: 7px;
-            color: var(--text-secondary);
-            font-size: 10px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.15s;
-            font-family: inherit;
-        }
-        .map-mode-row .mode-switch button.active {
-            background: linear-gradient(135deg, rgba(232, 196, 104, 0.12), rgba(232, 196, 104, 0.04));
-            color: var(--accent2);
+            box-shadow: 0 0 16px rgba(232, 196, 104, 0.04);
             border: 1px solid rgba(232, 196, 104, 0.08);
         }
 
+        /* ===== Tabs ===== */
+        .tabs {
+            display: flex;
+            gap: 5px;
+            padding: 0 0 12px;
+            overflow-x: auto;
+        }
+        .tab-btn {
+            flex: 1;
+            padding: 9px 4px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            min-width: 50px;
+        }
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(232, 196, 104, 0.10), rgba(232, 196, 104, 0.03));
+            color: var(--accent2);
+            border-color: var(--accent);
+            box-shadow: 0 0 16px rgba(232, 196, 104, 0.04);
+        }
+
+        /* ===== 页面 ===== */
+        .page {
+            display: none;
+            animation: fadeUp 0.3s ease;
+        }
+        .page.active {
+            display: block;
+        }
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ===== 卡片 ===== */
         .section {
             background: var(--bg-card);
             border: 1px solid rgba(42, 58, 90, 0.2);
             border-radius: var(--radius);
-            margin-bottom: 10px;
+            margin-bottom: 14px;
             overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 4px 20px var(--shadow);
         }
         .sec-head {
-            padding: 6px 10px;
+            padding: 12px 16px;
             border-bottom: 1px solid rgba(42, 58, 90, 0.10);
             background: rgba(0, 0, 0, 0.10);
         }
-        .sec-title { display: flex; align-items: flex-start; gap: 6px; }
+        .sec-title {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
         .sec-title .icon {
-            width: 24px;
-            height: 24px;
-            border-radius: 8px;
+            width: 30px;
+            height: 30px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 12px;
+            font-size: 14px;
             font-weight: 700;
             color: #0b1526;
             flex-shrink: 0;
         }
-        .sec-title .name { font-size: 13px; font-weight: 700; color: var(--text-primary); }
-        .sec-title .role { font-size: 10px; color: var(--text-secondary); opacity: 0.8; line-height: 1.4; }
-        .sec-title .role .tip2 { color: var(--accent); display: block; font-size: 10px; opacity: 0.9; }
-        .sec-body { padding: 6px 8px 8px; }
-
-        .quick-actions {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 5px;
-            margin-bottom: 8px;
+        .sec-title .name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-primary);
         }
-        .quick-actions .qa-btn {
-            background: var(--bg-card);
-            border: 1px solid rgba(42, 58, 90, 0.15);
-            border-radius: 8px;
-            padding: 6px 4px;
-            text-align: center;
-            font-family: inherit;
+        .sec-title .role {
+            font-size: 12px;
             color: var(--text-secondary);
-            font-size: 10px;
-            font-weight: 600;
-            line-height: 1.2;
+            margin-top: 1px;
+            line-height: 1.6;
+            opacity: 0.8;
         }
-        .quick-actions .qa-btn .qa-icon { display: block; font-size: 14px; margin-bottom: 1px; }
-        .quick-actions .qa-btn .qa-value { color: var(--accent2); font-weight: 800; font-size: 11px; display: block; margin-top: 1px; }
-        .quick-actions .qa-btn .qa-label { font-size: 8px; opacity: 0.6; }
+        .sec-title .role .tip2 {
+            color: var(--accent);
+            display: block;
+            margin-top: 2px;
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        .sec-body {
+            padding: 12px 14px 14px;
+        }
 
+        /* ===== 表单行 ===== */
         .row {
             display: flex;
             align-items: center;
-            gap: 6px;
-            padding: 4px 2px;
-            border-bottom: 1px solid rgba(42, 58, 90, 0.05);
+            gap: 8px;
+            padding: 7px 2px;
+            border-bottom: 1px solid rgba(42, 58, 90, 0.06);
             flex-wrap: wrap;
         }
-        .row:last-child { border-bottom: none; }
+        .row:last-child {
+            border-bottom: none;
+        }
         .row .lbl {
-            min-width: 44px;
+            min-width: 64px;
             font-weight: 600;
-            font-size: 11px;
+            font-size: 13px;
             color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: 2px;
+        }
+        .row .qty {
+            width: 70px;
             flex-shrink: 0;
         }
-        .row .lbl .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            display: inline-block;
-            flex-shrink: 0;
-        }
-        .row .lbl .dot.red { background: #e05555; }
-        .row .lbl .dot.orange { background: #e8943a; }
-        .row .lbl .dot.purple { background: #a66be0; }
-        .row .lbl .dot.blue { background: #4a9ae8; }
-        .row .lbl .dot.green { background: #4ec97a; }
-
-        .row .qty { width: 48px; flex-shrink: 0; }
-        .row .qty input {
-            width: 100%;
-            padding: 3px 2px;
-            background: var(--bg-input);
-            border: 1px solid var(--border-color);
-            border-radius: 6px;
-            color: var(--text-primary);
-            font-size: 11px;
-            font-weight: 600;
-            text-align: center;
-            outline: none;
-            -moz-appearance: textfield;
-            font-family: inherit;
-        }
-        .row .qty input:focus { border-color: var(--accent); }
-        .row .qty input::-webkit-outer-spin-button,
-        .row .qty input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-
-        .row .btn-group { display: flex; gap: 4px; flex-shrink: 0; }
-        .row .btn-group .qbtn {
-            min-width: 30px;
-            height: 28px;
-            padding: 0 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            background: var(--bg-input);
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
-            cursor: pointer;
-            font-family: inherit;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            user-select: none;
-        }
-        .row .btn-group .qbtn:active { transform: scale(0.92); }
-        .row .btn-group .qbtn.neg { color: #f87171; }
-        .row .btn-group .qbtn.pos { color: #4ec97a; }
-
         .row .sub {
             flex: 1;
             text-align: right;
             font-weight: 700;
-            font-size: 12px;
+            font-size: 14px;
             color: var(--accent2);
-            min-width: 36px;
-            margin-left: auto;
+            font-variant-numeric: tabular-nums;
+            min-width: 64px;
         }
-
-        .special-row {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            padding: 4px 2px;
-            flex-wrap: wrap;
-            border-top: 1px solid rgba(42, 58, 90, 0.08);
-        }
-        .special-row .lbl { min-width: 44px; font-weight: 600; font-size: 11px; color: var(--text-primary); }
-        .special-row .qty { width: 70px; flex-shrink: 0; }
-        .special-row .qty input {
+        input[type="number"],
+        input[type="text"] {
             width: 100%;
-            padding: 3px 2px;
+            padding: 7px 5px;
             background: var(--bg-input);
             border: 1px solid var(--border-color);
-            border-radius: 6px;
+            border-radius: 8px;
             color: var(--text-primary);
-            font-size: 11px;
+            font-size: 13px;
             font-weight: 600;
             text-align: center;
             outline: none;
-            font-family: inherit;
+            -moz-appearance: textfield;
+            transition: border-color var(--transition), box-shadow var(--transition);
         }
-        .special-row .qty input:focus { border-color: var(--accent); }
-        .special-row .btn-group .qbtn { min-width: 34px; height: 28px; font-size: 11px; padding: 0 8px; }
+        input[type="number"]:focus,
+        input[type="text"]:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(232, 196, 104, 0.05);
+        }
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
 
-        .simple-btn-group {
+        /* ===== 快速按钮组 ===== */
+        .quick-btn-group {
             display: flex;
             gap: 4px;
-            flex-shrink: 0;
+            flex-wrap: wrap;
         }
-        .simple-btn-group .sbtn {
-            min-width: 26px;
-            height: 26px;
-            padding: 0 6px;
+        .quick-btn-group .qbtn {
+            min-width: 32px;
+            height: 30px;
+            padding: 0 8px;
             border: 1px solid var(--border-color);
-            border-radius: 4px;
+            border-radius: 6px;
             background: var(--bg-input);
             color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 600;
+            font-size: 13px;
+            font-weight: 700;
             cursor: pointer;
+            transition: all 0.12s;
             font-family: inherit;
             display: flex;
             align-items: center;
             justify-content: center;
             user-select: none;
+            touch-action: manipulation;
+            line-height: 1;
         }
-        .simple-btn-group .sbtn:active { transform: scale(0.92); }
-        .simple-btn-group .sbtn.neg { color: #f87171; }
-        .simple-btn-group .sbtn.pos { color: #4ec97a; }
+        .quick-btn-group .qbtn:active {
+            transform: scale(0.92);
+            background: rgba(232, 196, 104, 0.10);
+            border-color: var(--accent);
+            color: var(--accent2);
+        }
+        .quick-btn-group .qbtn.neg {
+            color: #f87171;
+        }
+        .quick-btn-group .qbtn.neg:hover {
+            border-color: #f87171;
+            color: #f87171;
+        }
+        .quick-btn-group .qbtn.pos {
+            color: #4ec97a;
+        }
+        .quick-btn-group .qbtn.pos:hover {
+            border-color: #4ec97a;
+            color: #4ec97a;
+        }
+        .quick-btn-group .qbtn.big {
+            min-width: 40px;
+            font-size: 14px;
+        }
 
+        /* ===== 总计栏 ===== */
         .total-bar {
-            margin-top: 6px;
-            padding: 5px 8px;
-            background: rgba(232, 196, 104, 0.03);
+            margin-top: 10px;
+            padding: 10px 14px;
+            background: linear-gradient(135deg, rgba(232, 196, 104, 0.04), rgba(232, 196, 104, 0.015));
             border: 1px solid rgba(232, 196, 104, 0.06);
-            border-radius: 8px;
+            border-radius: 10px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             flex-wrap: wrap;
-            gap: 2px;
+            gap: 4px;
         }
-        .total-bar .t-item { display: flex; align-items: center; gap: 4px; font-size: 10px; }
-        .total-bar .t-item .label { color: var(--text-secondary); font-weight: 500; }
-        .total-bar .t-item .value { font-weight: 800; color: var(--accent2); }
-        .total-bar .t-item .value.rec { color: #4ec97a; }
+        .total-bar .t-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+        }
+        .total-bar .t-item .label {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .total-bar .t-item .value {
+            font-weight: 800;
+            color: var(--accent2);
+            font-variant-numeric: tabular-nums;
+        }
+        .total-bar .t-item .value.rec {
+            color: #4ec97a;
+        }
 
+        /* ===== 校准行 ===== */
+        .calibrate-row {
+            margin-top: 8px;
+            padding: 8px 10px;
+            background: rgba(232, 196, 104, 0.03);
+            border: 1px solid rgba(232, 196, 104, 0.08);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .calibrate-row .lbl {
+            font-weight: 600;
+            font-size: 12px;
+            color: var(--text-secondary);
+            min-width: 80px;
+        }
+        .calibrate-row input {
+            width: 120px;
+            padding: 5px 8px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            outline: none;
+        }
+        .calibrate-row input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(232, 196, 104, 0.05);
+        }
+        .calibrate-row .calibrate-btn {
+            padding: 5px 14px;
+            background: var(--accent);
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            color: #0b1526;
+            cursor: pointer;
+            font-size: 12px;
+            transition: transform 0.15s;
+        }
+        .calibrate-row .calibrate-btn:active {
+            transform: scale(0.95);
+        }
+        .calibrate-row .calibrate-status {
+            font-size: 11px;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            margin-left: auto;
+        }
+        .calibrate-row .calibrate-status.active {
+            color: #4ec97a;
+            opacity: 1;
+        }
+
+        /* ===== 重置 ===== */
+        .reset-row {
+            margin-top: 10px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .btn-reset {
+            padding: 5px 16px;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            border-radius: 8px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-weight: 500;
+        }
+        .btn-reset:hover {
+            border-color: #f87171;
+            color: #f87171;
+        }
+
+        /* ===== 车零件池 ===== */
+        .car-pool-row {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(42, 58, 90, 0.10);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .car-pool-row .lbl {
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        .car-pool-row input {
+            width: 110px;
+        }
+        .car-pool-row .quick-btn-group .qbtn {
+            min-width: 60px;
+            font-size: 11px;
+            padding: 0 6px;
+        }
+
+        /* ===== 置信度 ===== */
         .confidence-bar {
             display: flex;
             align-items: center;
-            gap: 5px;
-            font-size: 10px;
+            gap: 10px;
+            font-size: 12px;
             color: var(--text-secondary);
-            margin-top: 4px;
-            padding: 2px 0;
+            margin-top: 8px;
+            padding: 4px 0;
         }
         .confidence-bar .bar-track {
             flex: 1;
-            height: 3px;
+            height: 4px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 2px;
             overflow: hidden;
-            min-width: 30px;
+            min-width: 50px;
         }
         .confidence-bar .bar-fill {
             height: 100%;
             border-radius: 2px;
-            transition: width 0.3s ease;
+            transition: width 0.5s ease;
             background: linear-gradient(90deg, #f87171, #fbbf24, #34d399);
         }
-        .confidence-bar .label { font-weight: 500; min-width: 28px; text-align: right; color: var(--accent2); }
-
-        .reset-row { margin-top: 5px; display: flex; justify-content: flex-end; }
-        .btn-reset {
-            padding: 2px 10px;
-            background: transparent;
-            border: 1px solid var(--border-color);
-            color: var(--text-secondary);
-            border-radius: 6px;
-            font-size: 10px;
-            cursor: pointer;
-            font-family: inherit;
+        .confidence-bar .label {
+            font-weight: 500;
+            min-width: 34px;
+            text-align: right;
+            color: var(--accent2);
         }
-        .btn-reset:hover { border-color: #f87171; color: #f87171; }
 
-        .config-status {
+        /* ===== 折叠 ===== */
+        .collapse-toggle {
+            padding: 8px 12px;
             text-align: center;
-            font-size: 9px;
-            color: var(--text-secondary);
-            opacity: 0.3;
-            padding: 8px 0 2px;
-            border-top: 1px solid rgba(42, 58, 90, 0.05);
-            margin-top: 4px;
+            font-size: 12px;
+            color: var(--accent);
+            cursor: pointer;
+            border-top: 1px dashed rgba(42, 58, 90, 0.12);
+            user-select: none;
+            transition: color 0.2s;
+            font-weight: 500;
+        }
+        .collapse-toggle:hover {
+            color: var(--accent2);
+        }
+        .collapsed-rows {
+            display: none;
+        }
+        .collapsed-rows.open {
+            display: block;
         }
 
+        /* ===== 反查 ===== */
+        .rev-input {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+        .rev-input .field {
+            flex: 1;
+            min-width: 100px;
+        }
+        .rev-input label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+        .btn-gold {
+            padding: 9px 20px;
+            background: linear-gradient(135deg, var(--accent), #c9a23e);
+            color: #0b1526;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 3px 14px rgba(232, 196, 104, 0.12);
+            transition: transform 0.15s;
+            min-height: 40px;
+        }
+        .btn-gold:active {
+            transform: scale(0.97);
+        }
+        .rev-result {
+            margin-top: 14px;
+        }
+        .rev-group {
+            background: var(--bg-card);
+            border: 1px solid rgba(42, 58, 90, 0.15);
+            border-radius: 10px;
+            margin-bottom: 6px;
+            overflow: hidden;
+        }
+        .rev-group .g-head {
+            padding: 8px 12px;
+            background: rgba(232, 196, 104, 0.03);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            user-select: none;
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+        .rev-group .g-head .g-title {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--accent2);
+        }
+        .rev-group .g-head .g-meta {
+            font-size: 11px;
+            color: var(--text-secondary);
+        }
+        .rev-group .g-head .arrow {
+            display: inline-block;
+            margin-left: 3px;
+            color: var(--accent);
+            transition: transform 0.2s;
+            font-size: 10px;
+        }
+        .rev-group.open .g-head .arrow {
+            transform: rotate(90deg);
+        }
+        .rev-group .g-body {
+            display: none;
+            padding: 6px 12px 10px;
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+        .rev-group.open .g-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+        }
+        .combo {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(42, 58, 90, 0.12);
+            border-radius: 8px;
+            padding: 4px 9px;
+            margin: 2px 2px 0 0;
+            font-size: 12px;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+        }
+        .combo .val {
+            color: #4ec97a;
+            font-weight: 600;
+        }
+        .more-tag {
+            font-size: 11px;
+            color: var(--accent);
+            padding: 5px 3px;
+            display: inline-block;
+        }
+        .empty {
+            text-align: center;
+            padding: 24px 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        .known-box {
+            margin-top: 10px;
+        }
+        .known-box label {
+            display: block;
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 3px;
+        }
+        .known-box input[type="text"] {
+            width: 100%;
+            padding: 7px 10px;
+            text-align: left;
+            font-weight: 400;
+        }
+
+        /* ===== 点标记 ===== */
+        .dot {
+            display: inline-block;
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-right: 4px;
+            vertical-align: middle;
+            flex-shrink: 0;
+        }
+        .dot.red {
+            background: #e05555;
+        }
+        .dot.orange {
+            background: #e8943a;
+        }
+        .dot.purple {
+            background: #a66be0;
+        }
+        .dot.blue {
+            background: #4a9ae8;
+        }
+        .dot.green {
+            background: #4ec97a;
+        }
+
+        /* ===== 红品格数输入 ===== */
+        .rg-fields {
+            display: flex;
+            gap: 5px;
+            flex: 1;
+            min-width: 0;
+        }
+        .rg-fields input {
+            flex: 1;
+            min-width: 0;
+            padding: 7px 4px;
+            background: var(--bg-input);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            outline: none;
+        }
+
+        /* ===== 快速数据卡片 ===== */
+        .quick-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+        .quick-stats .qs-item {
+            background: var(--bg-card);
+            border: 1px solid rgba(42, 58, 90, 0.15);
+            border-radius: 10px;
+            padding: 8px 4px;
+            text-align: center;
+        }
+        .quick-stats .qs-item .qs-label {
+            font-size: 10px;
+            color: var(--text-secondary);
+            opacity: 0.6;
+            font-weight: 500;
+        }
+        .quick-stats .qs-item .qs-value {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--accent2);
+            display: block;
+            margin-top: 1px;
+        }
+        .quick-stats .qs-item .qs-value.rec {
+            color: #4ec97a;
+        }
+
+        /* ===== 响应式 ===== */
         @media (max-width: 480px) {
-            .quick-actions { grid-template-columns: 1fr 1fr; }
-            .row .lbl { min-width: 36px; font-size: 10px; }
-            .row .qty { width: 38px; }
-            .row .btn-group .qbtn { min-width: 26px; height: 24px; font-size: 10px; padding: 0 4px; }
-            .map-mode-row { flex-direction: column; }
-            .top-nav .nav-group button { font-size: 12px; padding: 3px 8px; min-height: 26px; }
+            .header .main-title {
+                font-size: 18px;
+            }
+            .header .main-title .super-tag {
+                font-size: 11px;
+                padding: 1px 12px;
+            }
+            .sec-title .name {
+                font-size: 14px;
+            }
+            .tab-btn {
+                font-size: 12px;
+                padding: 7px 3px;
+            }
+            .row .lbl {
+                min-width: 52px;
+                font-size: 12px;
+            }
+            .row .qty {
+                width: 56px;
+            }
+            .top-bar .left {
+                font-size: 12px;
+            }
+            .total-bar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 3px;
+            }
+            .auth-box {
+                padding: 24px 16px 20px;
+            }
+            .auth-box .auth-title {
+                font-size: 19px;
+            }
+            .auth-box .auth-input-wrap input {
+                font-size: 15px;
+                padding: 11px 12px;
+            }
+            .auth-box .auth-badge {
+                font-size: 12px;
+                padding: 2px 14px;
+            }
+            .rev-input {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .rev-input .field {
+                min-width: unset;
+            }
+            .btn-gold {
+                width: 100%;
+            }
+            .quick-stats {
+                grid-template-columns: 1fr 1fr;
+            }
+            .quick-btn-group .qbtn.big {
+                min-width: 32px;
+                font-size: 12px;
+            }
+            .quick-btn-group .qbtn {
+                min-width: 26px;
+                height: 26px;
+                font-size: 11px;
+                padding: 0 4px;
+            }
+            .calibrate-row input {
+                width: 90px;
+            }
         }
         @media (min-width: 600px) {
-            .quick-actions { grid-template-columns: 1fr 1fr 1fr 1fr; }
+            .quick-stats {
+                grid-template-columns: 1fr 1fr 1fr 1fr;
+            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== 认证界面 ===== -->
+    <!-- ===== 验证覆盖层 ===== -->
     <div id="authOverlay">
         <div class="auth-box">
             <span class="auth-icon">🎯</span>
-            <div class="auth-title" id="authTitle">俱乐大玩家 · 超级AI v5.0</div>
-            <div class="auth-badge" id="authBadge">🌟 外部配置版</div>
-            <div class="auth-sub" id="authSub">请输入卡密激活</div>
+            <div class="auth-title" id="authTitle">俱乐大玩家超级AI</div>
+            <div class="auth-badge" id="authBadge">🌟 超级AI定制版</div>
+            <div class="auth-sub" id="authSub">请输入激活码</div>
+            <div id="authRemainInfo" class="auth-remain" style="display:none;"></div>
             <div class="auth-input-wrap">
-                <input id="cardInput" type="text" placeholder="请输入卡密" autocomplete="off" spellcheck="false" />
+                <input id="cardInput" type="text" placeholder="XXXX-XXXX" autocomplete="off" spellcheck="false" />
             </div>
-            <button id="verifyBtn" class="auth-btn">✅ 激活</button>
+            <div class="auth-warning">⚠️ 卡密频繁更换IP地址会导致锁卡，且卡密永久封禁无法解除</div>
+            <button id="verifyBtn" class="auth-btn">激活</button>
             <div id="authError" class="auth-error"></div>
+            <button id="unbindBtn" class="auth-unbind">解绑设备</button>
             <div class="auth-footer">
-                <span>☁️ 外部配置 · 无硬编码</span>
-                <div class="author">作者 QQ：204443214</div>
+                <span>☁️ 云端卡密验证 · 到期自动销毁</span>
+                <div class="author" id="authAuthor">作者 QQ：204443214</div>
             </div>
         </div>
     </div>
 
-    <!-- ===== 主应用 ===== -->
-    <div id="appWrap">
-        <nav class="top-nav" id="topNav">
-            <div class="nav-group">
-                <span class="label">角色</span>
-                <button class="active" data-tab="huo">霍姑姑</button>
-                <button data-tab="gao">高晋</button>
-                <button data-tab="su">苏琦</button>
-                <button data-tab="an">安可</button>
+    <!-- ===== 主界面 ===== -->
+    <div id="appWrap" class="hidden">
+        <!-- 顶部栏 -->
+        <div class="top-bar">
+            <div class="left">
+                <span class="author-id" id="authorId">204443214</span>
+                <span class="vip-tag" id="cardTypeTag">🌟 超级AI定制版</span>
             </div>
-            <div class="nav-group">
-                <span class="label">模式</span>
-                <button class="mode-btn active" data-mode="classic">⚖️ 经典</button>
-                <button class="mode-btn" data-mode="aggressive">🔥 激烈</button>
+            <div class="right">
+                <div class="theme-toggle" id="themeToggleBtn">🎨</div>
             </div>
-            <div class="nav-right">
-                <span class="vip-tag">📊 v5.0 外部配置</span>
-            </div>
-        </nav>
+        </div>
 
+        <!-- ===== 主程序警告横幅 ===== -->
+        <div class="warning-banner">⚠️ 卡密频繁更换IP地址会导致锁卡，且卡密永久封禁无法解除</div>
+
+        <!-- 主题面板 -->
+        <div id="themePanel">
+            <div class="tp-title">选择主题</div>
+            <div class="theme-options" id="themeOptions"></div>
+            <div class="custom-theme-row">
+                <label>主色</label><input type="color" id="customPrimary" value="#e8c468" />
+                <label>背景</label><input type="color" id="customBg" value="#0a0e1a" />
+                <button id="applyCustomTheme">应用</button>
+            </div>
+            <div class="tp-close"><button id="themePanelClose">关闭</button></div>
+        </div>
+
+        <!-- 头部 -->
         <div class="header">
-            <div class="main-title">
-                <span id="appTitle">俱乐大玩家 · 超级AI</span>
-                <span class="super-tag">⚡ 外部配置版</span>
+            <div class="main-title" id="mainTitle">
+                俱乐大玩家超级AI
+                <span class="super-tag" id="vipBadge">🌟 超级AI定制版</span>
             </div>
-            <div class="sub-title"></div>
+            <div class="sub-title" id="subTitle">角色估值 / 地图切换 / 均格反查</div>
             <div class="header-actions">
-                <span class="remain-time" id="headerRemain">⏱ 加载中...</span>
-                <span class="unbind-btn" id="unbindBtn">🔓 解绑设备</span>
-                <span id="calibrateStatus" class="calibrate-status inactive">未校准</span>
+                <span class="author-info" id="headerAuthor">作者 QQ：204443214</span>
+                <span class="unbind-link" id="headerUnbindLink">🔓 解绑激活码</span>
             </div>
+            <div id="remainPermanent" class="remain-permanent">♾️ 剩余时间：永久</div>
         </div>
 
-        <div class="map-mode-row" id="mapRow">
-            <div class="map-switch" id="mapSwitch">
-                <button data-map="dicheng" class="on">迪城 ⭐</button>
-                <button data-map="xunhui">巡回</button>
-                <button data-map="yanjing">燕京</button>
-                <button data-map="xiangjiang">香江</button>
-                <button data-map="nicheng">霓城</button>
-            </div>
-            <div class="mode-switch" id="modeSwitchBottom">
-                <button class="mode-btn active" data-mode="classic">⚖️ 经典</button>
-                <button class="mode-btn" data-mode="aggressive">🔥 激烈</button>
-            </div>
+        <!-- 引导 -->
+        <div class="tour-guide"><p id="guideText"></p></div>
+
+        <!-- 地图切换 -->
+        <div class="map-switch" id="mapSwitch">
+            <button class="on" data-map="xunhui">巡回</button>
+            <button data-map="yanjing">燕京</button>
+            <button data-map="xiangjiang">香江</button>
+            <button data-map="nicheng">霓城</button>
+            <button data-map="dicheng">迪城</button>
         </div>
 
-        <div class="quick-actions" id="quickActions">
-            <div class="qa-btn"><span class="qa-icon">💰</span><span class="qa-value" id="qaRecValue">0</span><span class="qa-label">建议出价</span></div>
-            <div class="qa-btn"><span class="qa-icon">📦</span><span class="qa-value" id="qaTotalValue">0</span><span class="qa-label">仓库预估</span></div>
-            <div class="qa-btn"><span class="qa-icon">🚗</span><span class="qa-value" id="qaCarValue">0</span><span class="qa-label">车零件池</span></div>
-            <div class="qa-btn"><span class="qa-icon">🔥</span><span class="qa-value" id="qaHighValue">0</span><span class="qa-label">高爆出价</span></div>
+        <!-- Tabs -->
+        <div class="tabs" id="tabsBar">
+            <button class="tab-btn active" data-tab="huo">霍姑姑</button>
+            <button class="tab-btn" data-tab="gao">高进</button>
+            <button class="tab-btn" data-tab="su">苏琦</button>
+            <button class="tab-btn" data-tab="an">安可</button>
+            <button class="tab-btn" data-tab="rev">红品均格反查</button>
         </div>
 
+        <!-- 快速数据 -->
+        <div class="quick-stats" id="quickStats">
+            <div class="qs-item"><span class="qs-label">推荐出价</span><span class="qs-value rec" id="qsRec">0</span></div>
+            <div class="qs-item"><span class="qs-label">仓库预估</span><span class="qs-value" id="qsTotal">0</span></div>
+            <div class="qs-item"><span class="qs-label">车零件池</span><span class="qs-value" id="qsCar">0</span></div>
+            <div class="qs-item"><span class="qs-label">高爆出价</span><span class="qs-value" id="qsHigh">0</span></div>
+        </div>
+
+        <!-- 页面容器 -->
         <div id="pagesContainer">
             <div class="page active" id="page-huo"></div>
             <div class="page" id="page-gao"></div>
             <div class="page" id="page-su"></div>
             <div class="page" id="page-an"></div>
-        </div>
-
-        <div class="config-status">
-            <span id="configStatusText">📋 配置加载中...</span>
+            <div class="page" id="page-rev"></div>
         </div>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js">
+    </script>
     <script>
         // ============================================================
-        // ★ 配置区域（可独立修改，无需动其他代码）
-        // ============================================================
-        var APP_CONFIG = {
-            // ----- 认证配置 -----
-            auth: {
-                enabled: true, // true=启用卡密验证, false=禁用
-                offlineMode: false, // true=跳过验证直接进入
-                apiUrl: 'https://www.keyt.cn/kami/qq204443214/check.php',
-                timeout: 8000,
-                debug: true
-            },
-
-            // ----- 地图数据 -----
-            maps: {
-                dicheng: {
-                    name: '迪城',
-                    redByGrid: {
-                        1: { avg: 95746, med: 74970, min: 63950 },
-                        2: { avg: 209475, med: 124100, min: 105000 },
-                        3: { avg: 149100, med: 149100, min: 140700 },
-                        4: { avg: 235450, med: 190500, min: 80250 },
-                        6: { avg: 342343, med: 251900, min: 188000 },
-                        8: { avg: 333400, med: 333400, min: 333400 },
-                        9: { avg: 423625, med: 388300, min: 280600 },
-                        12: { avg: 269650, med: 269650, min: 231800 },
-                        15: { avg: 386400, med: 386400, min: 386400 },
-                        16: { avg: 607300, med: 656700, min: 475600 }
-                    },
-                    colors: {
-                        purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                        orange: { piece: { avg: 37925, med: 32630 }, grid: { avg: 12053.07, med: 10110 } },
-                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                        blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                    },
-                    redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
-                    gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                    redAvgGrid: 4.3
-                },
-                xunhui: {
-                    name: '巡回',
-                    redByGrid: {
-                        1: { avg: 95746, med: 74970, min: 63950 },
-                        2: { avg: 209475, med: 124100, min: 105000 },
-                        3: { avg: 149100, med: 149100, min: 140700 },
-                        4: { avg: 235450, med: 190500, min: 80250 },
-                        6: { avg: 342343, med: 251900, min: 188000 },
-                        8: { avg: 333400, med: 333400, min: 333400 },
-                        9: { avg: 423625, med: 388300, min: 280600 },
-                        12: { avg: 269650, med: 269650, min: 231800 },
-                        15: { avg: 386400, med: 386400, min: 386400 },
-                        16: { avg: 607300, med: 656700, min: 475600 }
-                    },
-                    colors: {
-                        purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                        orange: { piece: { avg: 37925, med: 32630 }, grid: { avg: 12053.07, med: 10110 } },
-                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                        blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                    },
-                    redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
-                    gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                    redAvgGrid: 4.3
-                },
-                yanjing: {
-                    name: '燕京',
-                    redByGrid: {
-                        1: { avg: 95746, med: 74970, min: 63950 },
-                        2: { avg: 209475, med: 124100, min: 105000 },
-                        3: { avg: 149100, med: 149100, min: 140700 },
-                        4: { avg: 229352, med: 188650, min: 80250 },
-                        6: { avg: 324638, med: 247500, min: 188000 },
-                        8: { avg: 324400, med: 324400, min: 315400 },
-                        9: { avg: 386740, med: 354100, min: 239200 },
-                        12: { avg: 269650, med: 269650, min: 231800 },
-                        15: { avg: 386400, med: 386400, min: 386400 },
-                        16: { avg: 607300, med: 656700, min: 475600 }
-                    },
-                    colors: {
-                        purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                        orange: { piece: { avg: 37159, med: 32130 }, grid: { avg: 11838.7, med: 9890 } },
-                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                        blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                    },
-                    redStat: { piece: { avg: 234999, med: 189250 }, grid: { avg: 52824, med: 52700 } },
-                    gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                    redAvgGrid: 4.4
-                },
-                xiangjiang: {
-                    name: '香江',
-                    redByGrid: {
-                        1: { avg: 93964, med: 74605, min: 63660 },
-                        2: { avg: 194621, med: 122150, min: 99990 },
-                        3: { avg: 149100, med: 149100, min: 140700 },
-                        4: { avg: 233781, med: 191200, min: 80250 },
-                        6: { avg: 329750, med: 247500, min: 188000 },
-                        8: { avg: 333400, med: 333400, min: 333400 },
-                        9: { avg: 423625, med: 388300, min: 280600 },
-                        12: { avg: 269650, med: 269650, min: 231800 },
-                        15: { avg: 386400, med: 386400, min: 386400 },
-                        16: { avg: 607300, med: 656700, min: 475600 }
-                    },
-                    colors: {
-                        purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                        orange: { piece: { avg: 36867, med: 31550 }, grid: { avg: 11948.39, med: 9980 } },
-                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                        blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                    },
-                    redStat: { piece: { avg: 230370, med: 186800 }, grid: { avg: 54246, med: 53475 } },
-                    gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                    redAvgGrid: 4.2
-                },
-                nicheng: {
-                    name: '霓城',
-                    redByGrid: {
-                        1: { avg: 95746, med: 74970, min: 63950 },
-                        2: { avg: 200897, med: 123500, min: 97960 },
-                        3: { avg: 149100, med: 149100, min: 140700 },
-                        4: { avg: 226960, med: 180200, min: 80250 },
-                        6: { avg: 342343, med: 251900, min: 188000 },
-                        8: { avg: 333400, med: 333400, min: 333400 },
-                        9: { avg: 406580, med: 354100, min: 280600 },
-                        12: { avg: 269650, med: 269650, min: 231800 },
-                        15: { avg: 386400, med: 386400, min: 386400 },
-                        16: { avg: 559650, med: 566150, min: 416700 }
-                    },
-                    colors: {
-                        purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                        orange: { piece: { avg: 36490, med: 31840 }, grid: { avg: 11998.41, med: 10408 } },
-                        green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                        blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } }
-                    },
-                    redStat: { piece: { avg: 235455, med: 180200 }, grid: { avg: 52323, med: 52500 } },
-                    gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                    redAvgGrid: 4.5
-                }
-            },
-
-            // ----- 算法参数 -----
-            algo: {
-                discount: [
-                    { threshold: 0, rate: 0.85 },
-                    { threshold: 500000, rate: 0.83 },
-                    { threshold: 1000000, rate: 0.80 },
-                    { threshold: 2000000, rate: 0.76 },
-                    { threshold: 5000000, rate: 0.70 }
-                ]
-            }
-        };
-
-        // ============================================================
-        // ★ 核心程序
+        // 完整功能 + 深度混淆（浓缩版）
         // ============================================================
         (function() {
             'use strict';
 
-            var CONFIG = APP_CONFIG;
-            var AUTH = CONFIG.auth || {};
-            var MAPS = CONFIG.maps || {};
-            var ALGO = CONFIG.algo || {};
+            // ---- 加密工具 ----
+            var _0x = {
+                _xor: function(s, k) { var r = ''; for (var i = 0; i < s.length; i++) r += String.fromCharCode(s
+                        .charCodeAt(i) ^ (k.charCodeAt(i % k.length) || 0x3f)); return r; },
+                _enc: function(s) { return CryptoJS.AES.encrypt(s, 'd7k9x2m4n8p6w3q1').toString(); },
+                _dec: function(s) { try { return CryptoJS.AES.decrypt(s, 'd7k9x2m4n8p6w3q1').toString(CryptoJS.enc
+                        .Utf8); } catch (e) { return null; } },
+                _hash: function(s) { return CryptoJS.SHA256(s + 's3cure_k3y_2026').toString().substring(0, 16); },
+                _fmt: function(n) { return (n === undefined || n === null || isNaN(n)) ? '0' : Math.round(n)
+                    .toLocaleString(); },
+                _clamp: function(v, mn, mx) { return Math.min(Math.max(v, mn), mx); }
+            };
 
-            var API_URL = AUTH.apiUrl || 'https://www.keyt.cn/kami/qq204443214/check.php';
-            var TIMEOUT = AUTH.timeout || 8000;
-            var OFFLINE_MODE = AUTH.offlineMode || false;
-            var AUTH_ENABLED = AUTH.enabled !== false;
+            // ---- 反调试 ----
+            setInterval(function() {
+                var t = performance.now();
+                (function() {})['constructor']('debugger')();
+                if (performance.now() - t > 150) {
+                    document.body.innerHTML =
+                        '<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:#0a0e1a;color:#f87171;font-size:20px;font-family:sans-serif;flex-direction:column;"><h1>⚠️ 检测到非法调试</h1><p>页面已锁定，请关闭开发者工具后刷新。</p></div>';
+                    throw new Error('D');
+                }
+            }, 2000);
 
-            // ---- 调试日志 ----
-            function log(msg, type) {
-                var prefix = '[App] ';
-                var style = type === 'error' ? 'color:#f87171;' :
-                    (type === 'success' ? 'color:#4ec97a;' : 'color:#fbbf24;');
-                console.log('%c' + prefix + msg, style);
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i')) || (e.ctrlKey && (
+                        e.key === 'U' || e.key === 'u')) || (e.ctrlKey && e.shiftKey && (e.key === 'J' || e.key ===
+                        'j'))) { e.preventDefault(); return false; }
+            });
+            document.addEventListener('contextmenu', function(e) { e.preventDefault(); return false; });
+
+            // ---- 虚拟控制流 ----
+            var _vcf = {
+                _ops: [],
+                _run: function(ctx) { var pc = 0; while (pc < this._ops.length) { var op = this._ops[pc]; var next =
+                        op(ctx, pc); if (next === undefined || next === null) pc++; else if (typeof next ===
+                        'number') pc = next; else pc++; if (ctx._break) break; } return ctx._result; },
+                _add: function(fn) { this._ops.push(fn); return this; },
+                _exec: function(ctx) { return this._run(ctx); }
+            };
+
+            function _wrap(fn) {
+                return function() {
+                    var args = Array.prototype.slice.call(arguments);
+                    var ctx = { _args: args, _result: null, _break: false, _this: this, _fn: fn };
+                    var ops = [
+                        function(c, pc) { try { c._result = c._fn.apply(c._this, c._args); } catch (e) { c
+                                ._error = e; } return pc + 1; },
+                        function(c, pc) { return pc + 1; },
+                        function(c, pc) { if (c._error) { c._result = null; } return pc + 1; },
+                        function(c, pc) { c._break = true; return pc + 1; }
+                    ];
+                    var v = Object.create(_vcf);
+                    v._ops = ops;
+                    v._exec(ctx);
+                    if (ctx._error) throw ctx._error;
+                    return ctx._result;
+                };
             }
 
-            log('🚀 应用启动', 'success');
-            log('📋 地图数: ' + Object.keys(MAPS).length, 'info');
-            log('🔑 认证: ' + (AUTH_ENABLED ? '启用' : '禁用'), 'info');
-            log('📴 离线模式: ' + (OFFLINE_MODE ? 'ON' : 'OFF'), 'info');
+            // ---- 分段校准系统 ----
+            var _segs = [{ k: 's1', min: 0, max: 500000 }, { k: 's2', min: 500000, max: 1000000 }, { k: 's3',
+                    min: 1000000, max: 2000000 }, { k: 's4', min: 2000000, max: Infinity }];
+            var _calKey = 'cal_factor_v2';
+
+            var _getSegKey = _wrap(function(v) {
+                for (var i = 0; i < _segs.length; i++) {
+                    if (v >= _segs[i].min && v < _segs[i].max) return _segs[i].k;
+                }
+                return 's1';
+            });
+
+            var _getCalFactor = _wrap(function(mapKey, val) {
+                try {
+                    var d = JSON.parse(localStorage.getItem(_calKey) || '{}');
+                    var sk = _getSegKey(val);
+                    if (d[mapKey] && d[mapKey][sk] !== undefined) return d[mapKey][sk];
+                    return 1.0;
+                } catch (e) { return 1.0; }
+            });
+
+            var _setCalFactor = _wrap(function(mapKey, val, ratio) {
+                try {
+                    var d = JSON.parse(localStorage.getItem(_calKey) || '{}');
+                    if (!d[mapKey]) d[mapKey] = {};
+                    var sk = _getSegKey(val);
+                    var old = d[mapKey][sk] || 1.0;
+                    var nf = old * 0.7 + ratio * 0.3;
+                    nf = _0x._clamp(nf, 0.5, 5.0);
+                    d[mapKey][sk] = nf;
+                    localStorage.setItem(_calKey, JSON.stringify(d));
+                    return nf;
+                } catch (e) { return ratio; }
+            });
+
+            var _getCalStatus = _wrap(function(mapKey) {
+                try {
+                    var d = JSON.parse(localStorage.getItem(_calKey) || '{}');
+                    if (!d[mapKey]) return '';
+                    var parts = [];
+                    for (var i = 0; i < _segs.length; i++) {
+                        var v = d[mapKey][_segs[i].k];
+                        if (v !== undefined && Math.abs(v - 1.0) > 0.01) {
+                            parts.push(v.toFixed(2));
+                        }
+                    }
+                    return parts.length ? parts.join('|') : '';
+                } catch (e) { return ''; }
+            });
+
+            // ---- 安全存储 ----
+            var _saveSecure = _wrap(function(card, data) {
+                var payload = { _c: card, _d: data, _t: Date.now(), _chk: _0x._hash(card + data._ct + data._m) };
+                try { localStorage.setItem('secure_verify', _0x._enc(JSON.stringify(payload)));
+                    localStorage.setItem('card', card); } catch (e) {}
+            });
+
+            var _getSecure = _wrap(function() {
+                try {
+                    var raw = localStorage.getItem('secure_verify');
+                    if (!raw) return null;
+                    var dec = JSON.parse(_0x._dec(raw));
+                    if (!dec || !dec._c || !dec._d) return null;
+                    if (_0x._hash(dec._c + dec._d._ct + dec._d._m) !== dec._chk) return null;
+                    if (Date.now() - dec._t > 7 * 24 * 60 * 60 * 1000) return null;
+                    return dec;
+                } catch (e) { return null; }
+            });
+
+            var _clearSecure = _wrap(function() {
+                try { localStorage.removeItem('secure_verify');
+                    localStorage.removeItem('card'); } catch (e) {}
+            });
 
             // ---- 设备指纹 ----
-            function getDeviceFP() {
+            var _getDeviceFP = _wrap(function() {
+                var saved = localStorage.getItem('device_fp');
+                if (saved) return saved;
+                var parts = [];
                 try {
-                    var saved = localStorage.getItem('device_fp_v5');
-                    if (saved) return saved;
-                    var parts = [];
-                    parts.push('screen:' + (screen.width || 0) + 'x' + (screen.height || 0));
-                    parts.push('color:' + (screen.colorDepth || 24));
-                    parts.push('agent:' + (navigator.userAgent || '').substring(0, 50));
-                    var hash = 0;
-                    var str = parts.join('|') + 'fp_salt_2026';
-                    for (var i = 0; i < str.length; i++) {
-                        hash = ((hash << 5) - hash) + str.charCodeAt(i);
-                        hash = hash & hash;
+                    var c = document.createElement('canvas');
+                    c.width = 512;
+                    c.height = 128;
+                    var ctx = c.getContext('2d');
+                    ctx.fillStyle = '#f60';
+                    ctx.fillRect(100, 1, 80, 30);
+                    ctx.fillStyle = '#069';
+                    ctx.font = '18px Arial';
+                    ctx.fillText('KeytSecure', 2, 25);
+                    ctx.fillStyle = 'rgba(100,200,50,0.6)';
+                    ctx.beginPath();
+                    ctx.arc(80, 40, 20, 0, Math.PI * 2);
+                    ctx.fill();
+                    parts.push('canvas:' + CryptoJS.MD5(c.toDataURL()).toString().substring(0, 16));
+                } catch (e) {}
+                parts.push('screen:' + (screen.width || 0) + 'x' + (screen.height || 0));
+                parts.push('color:' + (screen.colorDepth || 24));
+                try {
+                    var gl = document.createElement('canvas').getContext('webgl');
+                    if (gl) {
+                        var info = gl.getExtension('WEBGL_debug_renderer_info');
+                        if (info) { var gpu = gl.getParameter(info.UNMASKED_RENDERER_WEBGL) || '';
+                            if (gpu) parts.push('gpu:' + CryptoJS.MD5(gpu).toString().substring(0, 12)); }
                     }
-                    var fp = Math.abs(hash).toString(16).padStart(8, '0') +
-                        Date.now().toString(16).slice(-4);
-                    localStorage.setItem('device_fp_v5', fp);
-                    return fp;
-                } catch (e) { return 'unknown_' + Date.now(); }
-            }
+                } catch (e) {}
+                var fp = CryptoJS.MD5(parts.join('|') + 'fp_salt_2026').toString().substring(0, 32);
+                localStorage.setItem('device_fp', fp);
+                return fp;
+            });
 
-            // ---- 验证函数 ----
-            function verifyCard(card, callback) {
-                log('🔑 验证卡密: ' + card.substring(0, 4) + '****', 'info');
-
-                if (OFFLINE_MODE) {
-                    log('📴 离线模式，跳过验证', 'info');
-                    if (callback) callback({
-                        success: true,
-                        cardType: '永久卡',
-                        minutes: 99999999,
-                        days: '永久'
-                    });
-                    return;
-                }
-
-                var fp = getDeviceFP();
-                var url = API_URL + '?card=' + encodeURIComponent(card) +
+            // ---- 验证请求 ----
+            var _verifyWithKeyt = _wrap(function(card, callback) {
+                var fp = _getDeviceFP();
+                var url = 'https://www.keyt.cn/kami/qq204443214/check.php?card=' + encodeURIComponent(card) +
                     '&mac=' + encodeURIComponent(fp) + '&app=a';
-
-                log('🌐 请求: ' + url.replace(/card=[^&]+/, 'card=***'), 'info');
-
                 var xhr = new XMLHttpRequest();
-                var timer = setTimeout(function() {
-                    xhr.abort();
-                    log('⏰ 验证超时', 'error');
-                    if (callback) callback({ success: false, error: 'timeout' });
-                }, TIMEOUT);
-
+                var timer = setTimeout(function() { xhr.abort();
+                    callback(false, null, null, null, 'timeout'); }, 8000);
                 xhr.open('GET', url, true);
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
                         clearTimeout(timer);
-
                         if (xhr.status === 200) {
                             var response = xhr.responseText;
-                            log('📄 响应: ' + response, 'info');
-
                             var pos = response.indexOf('|sign=');
                             if (pos !== -1) response = response.substring(0, pos);
-
                             var parts = response.split('|');
-
                             if (parts[0] === 'ok') {
                                 var days = parts[2] || '未知';
                                 var minutes = parseInt(parts[3]) || 0;
-
                                 var cardType = '天卡';
                                 if (minutes >= 999999 * 1440) cardType = '永久卡';
                                 else if (minutes >= 43200) cardType = '月卡';
                                 else if (minutes >= 10080) cardType = '周卡';
                                 else if (minutes >= 1440) cardType = '天卡';
                                 else cardType = '小时卡';
-
-                                log('✅ 验证成功: ' + cardType, 'success');
-                                if (callback) callback({
-                                    success: true,
-                                    cardType: cardType,
-                                    minutes: minutes,
-                                    days: days
-                                });
+                                callback(true, days, minutes, cardType, null);
                                 return;
                             }
-
-                            log('❌ 验证失败: ' + parts[0], 'error');
-                            if (callback) callback({ success: false, error: 'invalid' });
+                            callback(false, null, null, null, 'invalid');
                         } else {
-                            log('❌ 网络错误: HTTP ' + xhr.status, 'error');
-                            if (callback) callback({ success: false, error: 'network' });
+                            callback(false, null, null, null, 'network');
                         }
                     }
                 };
-
-                xhr.onerror = function() {
-                    clearTimeout(timer);
-                    log('❌ 请求失败', 'error');
-                    if (callback) callback({ success: false, error: 'network' });
-                };
-
                 xhr.send();
-            }
-
-            // ---- 缓存管理 ----
-            function saveAuthCache(data) {
-                try {
-                    localStorage.setItem('auth_cache_v5', JSON.stringify(data));
-                } catch (e) {}
-            }
-
-            function getAuthCache() {
-                try {
-                    var raw = localStorage.getItem('auth_cache_v5');
-                    if (!raw) return null;
-                    var data = JSON.parse(raw);
-                    if (data.timestamp && Date.now() - data.timestamp > 7 * 24 * 60 * 60 * 1000) {
-                        localStorage.removeItem('auth_cache_v5');
-                        return null;
-                    }
-                    return data;
-                } catch (e) { return null; }
-            }
-
-            function clearAuthCache() {
-                try { localStorage.removeItem('auth_cache_v5'); } catch (e) {}
-            }
-
-            // ---- UI 控制 ----
-            var authOverlay = document.getElementById('authOverlay');
-            var appWrap = document.getElementById('appWrap');
-            var cardInput = document.getElementById('cardInput');
-            var verifyBtn = document.getElementById('verifyBtn');
-            var authError = document.getElementById('authError');
-            var headerRemain = document.getElementById('headerRemain');
-
-            function showApp(data) {
-                authOverlay.classList.add('hidden');
-                appWrap.classList.add('show');
-                if (data) updateRemainDisplay(data);
-                document.getElementById('configStatusText').textContent = '✅ 已激活 · 配置版 v5.0';
-                log('🎯 应用已激活', 'success');
-            }
-
-            function showAuth() {
-                authOverlay.classList.remove('hidden');
-                appWrap.classList.remove('show');
-            }
-
-            function updateRemainDisplay(data) {
-                if (!data) return;
-                if (data.cardType === '永久卡') {
-                    headerRemain.textContent = '♾️ 永久有效';
-                    headerRemain.className = 'remain-time permanent';
-                    return;
-                }
-                var remainMin = data.minutes || 0;
-                var days = Math.floor(remainMin / 1440);
-                var hours = Math.floor((remainMin % 1440) / 60);
-                var mins = Math.floor(remainMin % 60);
-                var parts = [];
-                if (days > 0) parts.push(days + '天');
-                if (hours > 0) parts.push(hours + '时');
-                if (mins > 0) parts.push(mins + '分');
-                if (parts.length === 0) parts.push('0分');
-                headerRemain.textContent = '⏱ 剩余 ' + parts.join('') + ' · ' + data.cardType;
-                var type = 'active';
-                if (days < 1 && hours < 6) type = 'warning';
-                if (days < 1 && hours < 1) type = 'danger';
-                headerRemain.className = 'remain-time ' + type;
-            }
-
-            var remainTimer = null;
-
-            function startRemainTimer(data) {
-                if (remainTimer) clearInterval(remainTimer);
-                updateRemainDisplay(data);
-                remainTimer = setInterval(function() {
-                    var cached = getAuthCache();
-                    if (cached) {
-                        updateRemainDisplay(cached);
-                    } else {
-                        clearInterval(remainTimer);
-                        remainTimer = null;
-                    }
-                }, 10000);
-            }
-
-            // ---- 解绑 ----
-            document.getElementById('unbindBtn').addEventListener('click', function() {
-                if (confirm('确定要解绑此设备吗？\n解绑后需要重新激活。')) {
-                    clearAuthCache();
-                    if (remainTimer) { clearInterval(remainTimer);
-                        remainTimer = null; }
-                    showAuth();
-                    cardInput.value = '';
-                    authError.textContent = '';
-                    headerRemain.textContent = '⏱ 已解绑';
-                    log('🔓 设备已解绑', 'info');
-                    location.reload();
-                }
             });
 
-            // ---- 认证初始化 ----
-            function initAuth() {
-                // 如果认证禁用或离线模式，直接进入
-                if (!AUTH_ENABLED || OFFLINE_MODE) {
-                    var mockData = { cardType: '永久卡', minutes: 99999999, days: '永久', timestamp: Date.now() };
-                    saveAuthCache(mockData);
-                    showApp(mockData);
-                    startRemainTimer(mockData);
-                    renderMainApp();
-                    log('📴 认证已跳过', 'info');
-                    return;
+            // ---- 暴露 ----
+            window._vcf = {
+                _getSegKey: _getSegKey,
+                _getCalFactor: _getCalFactor,
+                _setCalFactor: _setCalFactor,
+                _getCalStatus: _getCalStatus,
+                _saveSecure: _saveSecure,
+                _getSecure: _getSecure,
+                _clearSecure: _clearSecure,
+                _getDeviceFP: _getDeviceFP,
+                _verifyWithKeyt: _verifyWithKeyt,
+                _fmt: _0x._fmt,
+                _clamp: _0x._clamp,
+                _hash: _0x._hash,
+                _wrap: _wrap
+            };
+        })();
+
+        // ============================================================
+        // 主逻辑（第一版UI + 所有新功能）
+        // ============================================================
+        (function() {
+            var _vcf = window._vcf || {};
+            var _getCalFactor = _vcf._getCalFactor || function(k, v) { return 1.0; };
+            var _setCalFactor = _vcf._setCalFactor || function(k, v, r) { return r; };
+            var _getCalStatus = _vcf._getCalStatus || function(k) { return ''; };
+            var _fmt = _vcf._fmt || function(n) { return (n === undefined || n === null || isNaN(n)) ? '0' : Math
+                    .round(n).toLocaleString(); };
+            var _verifyWithKeyt = _vcf._verifyWithKeyt || function(c, cb) { cb(false, null, null, null, 'invalid'); };
+            var _saveSecure = _vcf._saveSecure || function(c, d) {};
+            var _getSecure = _vcf._getSecure || function() { return null; };
+            var _clearSecure = _vcf._clearSecure || function() {};
+
+            // ---- 文字配置 ----
+            var T = {
+                guide: '巡回模式（休闲）估价仅供参考，最稳的还是天真加至宝价值道具，低级巡回稳赚秘籍：使用天真，看到50万以上的货直接梭哈，没看到出价1，最后一轮还是没货直接梭哈，这样门票不至于亏多少，出大货就是稳赚，全程不用道具。PS：出价一样的情况，第六轮谁第一个提交就是谁的。登月计划物品已加入。',
+                huoRole: '推荐道具：红格怀表，巨物价值，四件放大镜，奢侈扫描仪，全藏放大镜',
+                huoTip: '如红格数过多建议用奢侈扫描仪确认是否有车身，有则用车身池出价',
+                gaoRole: '推荐道具：全域扫描枪，橙估价平板，紫估价平板，巨物价值，全藏放大镜。',
+                gaoTip: '推荐使用紫色和橙色估价平板，最后一轮使用全域扫描枪',
+                suRole: '推荐道具：紫件数观光棒，橙件数观光棒，红格怀表，四件放大镜，全藏放大镜',
+                suTip: '用红品件数估算误差较大，建议使用红格道具，用格数算。',
+                anRole: '第一回合用红格道具，每回合看到轮廊后把格数输进去缩小范围。',
+                revRole: '输入显示的平均格数（截断1位小数）→ 推算红品数量与格数组合'
+            };
+
+            // ---- 数据 ----
+            var CFG = {
+                maps: {
+                    xunhui: {
+                        name: '巡回',
+                        redByGrid: { 1: { avg: 95746, med: 74970, min: 63950 }, 2: { avg: 209475, med: 124100,
+                                min: 105000 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 235450,
+                                med: 190500, min: 80250 }, 6: { avg: 342343, med: 251900, min: 188000 },
+                            8: { avg: 333400, med: 333400, min: 333400 }, 9: { avg: 423625, med: 388300,
+                                min: 280600 }, 12: { avg: 269650, med: 269650, min: 231800 }, 15: { avg: 386400,
+                                med: 386400, min: 386400 }, 16: { avg: 607300, med: 656700, min: 475600 } },
+                        colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24,
+                                    med: 2442.75 } }, orange: { piece: { avg: 37925, med: 32630 },
+                                    grid: { avg: 12053.07, med: 10110 } }, green: { piece: { avg: 674,
+                                        med: 566 }, grid: { avg: 243, med: 211 } }, blue: { piece: { avg: 2596,
+                                        med: 2210 }, grid: { avg: 694, med: 606 } } },
+                        redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
+                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                        redAvgGrid: 4.3
+                    },
+                    yanjing: {
+                        name: '燕京',
+                        redByGrid: { 1: { avg: 95746, med: 74970, min: 63950 }, 2: { avg: 209475, med: 124100,
+                                min: 105000 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 229352,
+                                med: 188650, min: 80250 }, 6: { avg: 324638, med: 247500, min: 188000 },
+                            8: { avg: 324400, med: 324400, min: 315400 }, 9: { avg: 386740, med: 354100,
+                                min: 239200 }, 12: { avg: 269650, med: 269650, min: 231800 }, 15: { avg: 386400,
+                                med: 386400, min: 386400 }, 16: { avg: 607300, med: 656700, min: 475600 } },
+                        colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24,
+                                    med: 2442.75 } }, orange: { piece: { avg: 37159, med: 32130 },
+                                    grid: { avg: 11838.7, med: 9890 } }, green: { piece: { avg: 674,
+                                        med: 566 }, grid: { avg: 243, med: 211 } }, blue: { piece: { avg: 2596,
+                                        med: 2210 }, grid: { avg: 694, med: 606 } } },
+                        redStat: { piece: { avg: 234999, med: 189250 }, grid: { avg: 52824, med: 52700 } },
+                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                        redAvgGrid: 4.4
+                    },
+                    xiangjiang: {
+                        name: '香江',
+                        redByGrid: { 1: { avg: 93964, med: 74605, min: 63660 }, 2: { avg: 194621, med: 122150,
+                                min: 99990 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 233781,
+                                med: 191200, min: 80250 }, 6: { avg: 329750, med: 247500, min: 188000 },
+                            8: { avg: 333400, med: 333400, min: 333400 }, 9: { avg: 423625, med: 388300,
+                                min: 280600 }, 12: { avg: 269650, med: 269650, min: 231800 }, 15: { avg: 386400,
+                                med: 386400, min: 386400 }, 16: { avg: 607300, med: 656700, min: 475600 } },
+                        colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24,
+                                    med: 2442.75 } }, orange: { piece: { avg: 36867, med: 31550 },
+                                    grid: { avg: 11948.39, med: 9980 } }, green: { piece: { avg: 674,
+                                        med: 566 }, grid: { avg: 243, med: 211 } }, blue: { piece: { avg: 2596,
+                                        med: 2210 }, grid: { avg: 694, med: 606 } } },
+                        redStat: { piece: { avg: 230370, med: 186800 }, grid: { avg: 54246, med: 53475 } },
+                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                        redAvgGrid: 4.2
+                    },
+                    nicheng: {
+                        name: '霓城',
+                        redByGrid: { 1: { avg: 95746, med: 74970, min: 63950 }, 2: { avg: 200897, med: 123500,
+                                min: 97960 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 226960,
+                                med: 180200, min: 80250 }, 6: { avg: 342343, med: 251900, min: 188000 },
+                            8: { avg: 333400, med: 333400, min: 333400 }, 9: { avg: 406580, med: 354100,
+                                min: 280600 }, 12: { avg: 269650, med: 269650, min: 231800 }, 15: { avg: 386400,
+                                med: 386400, min: 386400 }, 16: { avg: 559650, med: 566150, min: 416700 } },
+                        colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24,
+                                    med: 2442.75 } }, orange: { piece: { avg: 36490, med: 31840 },
+                                    grid: { avg: 11998.41, med: 10408 } }, green: { piece: { avg: 674,
+                                        med: 566 }, grid: { avg: 243, med: 211 } }, blue: { piece: { avg: 2596,
+                                        med: 2210 }, grid: { avg: 694, med: 606 } } },
+                        redStat: { piece: { avg: 235455, med: 180200 }, grid: { avg: 52323, med: 52500 } },
+                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                        redAvgGrid: 4.5
+                    },
+                    dicheng: {
+                        name: '迪城',
+                        redByGrid: { 1: { avg: 95746, med: 74970, min: 63950 }, 2: { avg: 209475, med: 124100,
+                                min: 105000 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 235450,
+                                med: 190500, min: 80250 }, 6: { avg: 342343, med: 251900, min: 188000 },
+                            8: { avg: 333400, med: 333400, min: 333400 }, 9: { avg: 423625, med: 388300,
+                                min: 280600 }, 12: { avg: 269650, med: 269650, min: 231800 }, 15: { avg: 386400,
+                                med: 386400, min: 386400 }, 16: { avg: 607300, med: 656700, min: 475600 } },
+                        colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24,
+                                    med: 2442.75 } }, orange: { piece: { avg: 37925, med: 32630 },
+                                    grid: { avg: 12053.07, med: 10110 } }, green: { piece: { avg: 674,
+                                        med: 566 }, grid: { avg: 243, med: 211 } }, blue: { piece: { avg: 2596,
+                                        med: 2210 }, grid: { avg: 694, med: 606 } } },
+                        redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
+                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                        redAvgGrid: 4.3
+                    }
                 }
-
-                // 检查缓存
-                var cached = getAuthCache();
-                if (cached && cached.cardType) {
-                    showApp(cached);
-                    startRemainTimer(cached);
-                    renderMainApp();
-                    log('📦 使用缓存', 'success');
-                    return;
-                }
-
-                // 绑定验证按钮
-                verifyBtn.onclick = function() {
-                    var card = cardInput.value.trim();
-                    if (!card) { authError.textContent = '请输入卡密'; return; }
-                    authError.textContent = '';
-                    verifyBtn.disabled = true;
-                    verifyBtn.textContent = '⏳ 验证中...';
-
-                    verifyCard(card, function(result) {
-                        verifyBtn.disabled = false;
-                        verifyBtn.textContent = '✅ 激活';
-
-                        if (result.success) {
-                            saveAuthCache({
-                                cardType: result.cardType,
-                                minutes: result.minutes,
-                                days: result.days,
-                                timestamp: Date.now()
-                            });
-                            showApp(result);
-                            startRemainTimer(result);
-                            renderMainApp();
-                        } else {
-                            var msg = result.error === 'timeout' ? '⚠️ 网络超时，请重试' :
-                                result.error === 'network' ? '⚠️ 网络异常，请检查' :
-                                '❌ 卡密无效或已过期';
-                            authError.textContent = msg;
-                        }
-                    });
-                };
-
-                cardInput.onkeydown = function(e) {
-                    if (e.key === 'Enter') verifyBtn.click();
-                };
-
-                showAuth();
-                log('🔑 等待用户输入', 'info');
-            }
-
-            // ---- 渲染函数 ----
-            var currentMode = 'classic';
-            var currentMap = 'dicheng';
-            var currentTab = 'huo';
-
-            function getMap() {
-                return MAPS[currentMap] || MAPS[Object.keys(MAPS)[0]] || {};
-            }
-
-            function fmt(n) {
-                if (n === undefined || n === null || isNaN(n)) return '0';
-                return Math.round(n).toLocaleString();
-            }
-
-            function clamp(v, mn, mx) { return Math.min(Math.max(v, mn), mx); }
+            };
 
             function weightedPrice(stat) {
                 if (!stat) return 0;
-                var avg = stat.avg || 0;
-                var med = stat.med || 0;
-                var min = stat.min !== undefined ? stat.min : (stat.med || 0) * 0.7;
+                var avg = stat.avg || 0,
+                    med = stat.med || 0,
+                    min = stat.min !== undefined ? stat.min : (stat.med || 0) * 0.7;
                 if (stat.min === undefined) return avg * 0.6 + med * 0.4;
-                return avg * 0.4 + med * 0.35 + min * 0.25;
-            }
-
-            function getRedGridPrice(grid, map) {
-                var entry = map.redByGrid && map.redByGrid[grid];
-                return entry ? weightedPrice(entry) : 0;
-            }
-
-            function getRedGridAvgPrice(map) {
-                return map.redStat ? weightedPrice(map.redStat.grid) : 0;
-            }
-
-            function getRedPiecePrice(map) {
-                return map.redStat ? weightedPrice(map.redStat.piece) : 0;
-            }
-
-            function getColorGridPrice(colorKey, map) {
-                var data = map.colors && map.colors[colorKey];
-                return data ? weightedPrice(data.grid) : 0;
-            }
-
-            function getColorPiecePrice(colorKey, map) {
-                var data = map.colors && map.colors[colorKey];
-                return data ? weightedPrice(data.piece) : 0;
+                var spread = (avg - min) / (avg + 0.01);
+                var mw = 0.35 + Math.min(0.15, spread * 0.3);
+                var nw = 0.25 - Math.min(0.15, spread * 0.3);
+                var aw = 1 - mw - nw;
+                aw = Math.max(0.3, Math.min(0.6, aw));
+                mw = Math.max(0.25, Math.min(0.5, mw));
+                nw = Math.max(0.05, Math.min(0.3, nw));
+                var tw = aw + mw + nw;
+                return avg * (aw / tw) + med * (mw / tw) + min * (nw / tw);
             }
 
             function dynamicRecDiscount(total) {
-                var disc = ALGO.discount || [
-                    { threshold: 0, rate: 0.85 },
-                    { threshold: 500000, rate: 0.83 },
-                    { threshold: 1000000, rate: 0.80 },
-                    { threshold: 2000000, rate: 0.76 },
-                    { threshold: 5000000, rate: 0.70 }
-                ];
-                for (var i = disc.length - 1; i >= 0; i--) {
-                    if (total >= disc[i].threshold) return disc[i].rate;
-                }
-                return disc[0].rate;
+                if (total < 500000) return 0.85;
+                if (total < 2000000) return 0.82;
+                if (total < 5000000) return 0.78;
+                return 0.74;
             }
 
-            function calcConfidence(inputCount, totalValue) {
-                var base = 0.75;
-                var countBonus = Math.min(0.15, inputCount * 0.025);
-                var valueFactor = Math.min(0.08, Math.log10(totalValue + 1) / 7);
-                return clamp(base + countBonus + valueFactor, 0.55, 0.97);
+            function getRedGridPrice(grid, map) { var e = map.redByGrid[grid]; return e ? weightedPrice(e) : 0; }
+
+            function getColorGridPrice(key, map) { var d = map.colors[key]; return d ? weightedPrice(d.grid) : 0; }
+
+            function getColorPiecePrice(key, map) { var d = map.colors[key]; return d ? weightedPrice(d.piece) : 0; }
+
+            function getRedPiecePrice(map) { return weightedPrice(map.redStat.piece); }
+
+            function getRedGridAvgPrice(map) { return weightedPrice(map.redStat.grid); }
+
+            function getMap() { return CFG.maps[currentMap]; }
+
+            function fmt(n) { return _fmt(n); }
+
+            // ---- 状态 ----
+            var currentMap = 'xunhui';
+            var currentTab = 'huo';
+            var currentMode = 'classic';
+
+            // ---- UI更新 ----
+            function updateQuickStats(rec, total, car, high) {
+                document.getElementById('qsRec').textContent = fmt(rec);
+                document.getElementById('qsTotal').textContent = fmt(total);
+                document.getElementById('qsCar').textContent = fmt(car);
+                document.getElementById('qsHigh').textContent = fmt(high);
             }
 
-            function updateQuickActions(rec, total, carPool, high) {
-                document.getElementById('qaRecValue').textContent = fmt(rec);
-                document.getElementById('qaTotalValue').textContent = fmt(total);
-                document.getElementById('qaCarValue').textContent = fmt(carPool || 0);
-                document.getElementById('qaHighValue').textContent = fmt(high || 0);
+            function updateCalibStatus(mapKey) {
+                var el = document.getElementById('calibrateStatus');
+                if (!el) return;
+                var s = _getCalStatus(mapKey || currentMap);
+                if (s) { el.textContent = '✓ 已校准';
+                    el.className = 'calibrate-status active'; } else { el.textContent = '未校准';
+                    el.className = 'calibrate-status'; }
             }
 
-            function updateCalibrateStatusDisplay() {}
+            // ---- 导航切换 ----
+            document.querySelectorAll('.tab-btn').forEach(function(b) {
+                b.onclick = function() {
+                    document.querySelectorAll('.tab-btn').forEach(function(x) { x.classList.remove('active'); });
+                    this.classList.add('active');
+                    currentTab = this.dataset.tab;
+                    document.querySelectorAll('.page').forEach(function(p) { p.classList.toggle('active', p.id ===
+                            'page-' + currentTab); });
+                    var fns = { huo: renderHuo, gao: renderGao, su: renderSu, an: renderAn, rev: renderRev };
+                    if (fns[currentTab]) fns[currentTab]();
+                };
+            });
 
-            // ---- 霍姑姑 ----
+            document.querySelectorAll('.map-switch button').forEach(function(b) {
+                b.onclick = function() {
+                    document.querySelectorAll('.map-switch button').forEach(function(x) { x.classList.remove(
+                        'on'); });
+                    this.classList.add('on');
+                    currentMap = this.dataset.map;
+                    updateCalibStatus();
+                    var fns = { huo: renderHuo, gao: renderGao, su: renderSu, an: renderAn, rev: renderRev };
+                    if (fns[currentTab]) fns[currentTab]();
+                };
+            });
+
+            // ---- 渲染函数 ----
             function renderHuo() {
                 var el = document.getElementById('page-huo');
                 var map = getMap();
                 var colors = [
-                    { key: 'green', label: '绿色', dot: 'green' },
-                    { key: 'blue', label: '蓝色', dot: 'blue' },
-                    { key: 'purple', label: '紫色', dot: 'purple' },
-                    { key: 'orange', label: '橙色', dot: 'orange' },
-                    { key: 'red', label: '红色', dot: 'red' }
+                    { key: 'green', label: '绿色', dot: 'green', priceFn: function() { return getColorGridPrice(
+                            'green', map); } },
+                    { key: 'blue', label: '蓝色', dot: 'blue', priceFn: function() { return getColorGridPrice(
+                            'blue', map); } },
+                    { key: 'purple', label: '紫色', dot: 'purple', priceFn: function() { return getColorGridPrice(
+                            'purple', map); } },
+                    { key: 'orange', label: '橙色', dot: 'orange', priceFn: function() { return getColorGridPrice(
+                            'orange', map); } },
+                    { key: 'red', label: '红色', dot: 'red', priceFn: function() { return getRedGridAvgPrice(
+                        map); } }
                 ];
 
-                var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4a9ae8,#2a6ab0);">霍</div><div><div class="name">霍姑姑 · 颜色格数估值</div><div class="role">推荐道具：红格怀表，巨物价值，四件放大镜，奢品扫描仪<span class="tip2">💡 建议使用奢品扫描仪和古董扫描仪确认</span></div></div></div></div><div class="sec-body">';
+                var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4a9ae8,#2a6ab0);">霍</div><div><div class="name">霍姑姑 · 颜色格数估值（加权精准）</div><div class="role">' +
+                    T.huoRole + '<span class="tip2">' + T.huoTip + '</span></div></div></div></div><div class="sec-body">';
 
-                colors.forEach(function(col) {
-                    var price = (col.key === 'red') ? getRedGridAvgPrice(map) : getColorGridPrice(col.key, map);
-                    html += '<div class="row">' +
-                        '<span class="lbl"><span class="dot ' + col.dot + '"></span>' + col.label + '（格数）</span>' +
-                        '<div class="qty"><input type="number" id="huo_' + col.key + '" min="0" step="1" value="" data-price="' +
+                colors.forEach(function(c) {
+                    var price = c.priceFn();
+                    html += '<div class="row"><span class="lbl"><span class="dot ' + c.dot + '"></span>' + c
+                        .label + '（格数）</span>' +
+                        '<div class="qty"><input type="number" id="huo_' + c.key + '" min="0" step="1" value="" data-price="' +
                         price + '"></div>' +
-                        '<span class="btn-group">' +
-                        '<button class="qbtn neg" data-target="huo_' + col.key + '" data-delta="-1">-1</button>' +
-                        '<button class="qbtn pos" data-target="huo_' + col.key + '" data-delta="1">+1</button>' +
-                        '<button class="qbtn pos" data-target="huo_' + col.key + '" data-delta="5">+5</button>' +
+                        '<span class="quick-btn-group">' +
+                        '<button class="qbtn neg big" data-target="huo_' + c.key + '" data-delta="-10">-10</button>' +
+                        '<button class="qbtn neg" data-target="huo_' + c.key + '" data-delta="-5">-5</button>' +
+                        '<button class="qbtn neg" data-target="huo_' + c.key + '" data-delta="-1">-1</button>' +
+                        '<button class="qbtn pos" data-target="huo_' + c.key + '" data-delta="1">+1</button>' +
+                        '<button class="qbtn pos" data-target="huo_' + c.key + '" data-delta="5">+5</button>' +
+                        '<button class="qbtn pos big" data-target="huo_' + c.key + '" data-delta="10">+10</button>' +
                         '</span>' +
-                        '<span class="sub" id="huo_' + col.key + '_sub">0</span>' +
-                        '</div>';
+                        '<span class="sub" id="huo_' + c.key + '_sub">0</span></div>';
                 });
 
-                html += '<div class="special-row"><span class="lbl">🚗 车零件池（减项）</span>' +
-                    '<div class="qty"><input type="number" id="huoCarPool" min="0" step="1000" value=""></div>' +
-                    '<span class="btn-group">' +
-                    '<button class="qbtn pos" id="carPlus1">+1(9万)</button>' +
-                    '<button class="qbtn pos" id="carPlus2">+2(18万)</button>' +
-                    '<button class="qbtn pos" id="carPlus3">+3(30万)</button>' +
+                html += '<div class="car-pool-row"><span class="lbl">🚗 车零件池</span>' +
+                    '<input type="number" id="huoCarPool" min="0" step="1000" value="">' +
+                    '<span class="quick-btn-group">' +
+                    '<button class="qbtn pos" id="carP1">+1(9万)</button>' +
+                    '<button class="qbtn pos" id="carP2">+2(18万)</button>' +
+                    '<button class="qbtn pos" id="carP3">+3(30万)</button>' +
                     '</span></div>';
 
-                html += '<div class="special-row"><span class="lbl">🏺 古董价值（减项）</span>' +
-                    '<div class="qty"><input type="number" id="huoAntique" min="0" step="1000" value=""></div>' +
-                    '<span class="btn-group">' +
-                    '<button class="qbtn pos" id="antiquePlus1">+1(9万)</button>' +
-                    '<button class="qbtn pos" id="antiquePlus2">+2(18万)</button>' +
-                    '<button class="qbtn pos" id="antiquePlus3">+3(30万)</button>' +
-                    '</span></div>';
+                html += '<div class="calibrate-row"><span class="lbl">📐 实际总价值</span>' +
+                    '<input type="number" id="huoActual" min="0" step="1000" value="" placeholder="输入实际值">' +
+                    '<button class="calibrate-btn" id="huoCalBtn">校准</button>' +
+                    '<span class="calibrate-status" id="calibrateStatus">未校准</span></div>';
 
-                html += '<div class="special-row" style="border-top:1px solid rgba(232,196,104,0.15);">' +
-                    '<span class="lbl">📊 实际仓库总价值</span>' +
-                    '<div class="qty" style="flex:1; min-width:80px;"><input type="number" id="huoActualTotal" min="0" step="1000" value="" placeholder="输入实际揭示值" style="width:100%;"></div>' +
-                    '<button class="qbtn pos" id="huoCalibrateBtn" style="min-width:50px;">校准</button>' +
-                    '</div>';
+                html += '<div class="total-bar"><div class="t-item"><span class="label">推荐出价</span><span class="value rec" id="huoRec">0</span></div><div class="t-item"><span class="label">预估仓位价值</span><span class="value" id="huoTotal">0</span></div></div>';
 
-                html += '<div style="font-size:10px;color:var(--text-secondary);padding:2px 0 4px;">💡 车零件和古董为减项，将从总价中扣除</div>';
+                html +=
+                    '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="huoConfFill" style="width:85%"></div></div><span class="label" id="huoConfLabel">85%</span></div>';
 
-                html += '<div class="total-bar">' +
-                    '<div class="t-item"><span class="label">💰 建议出价</span><span class="value rec" id="huoRec">0</span></div>' +
-                    '<div class="t-item"><span class="label">📦 仓库预估</span><span class="value" id="huoTotal">0</span></div>' +
-                    '</div>';
-                html += '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:85%"></div></div><span class="label" id="huoConfidenceLabel">85%</span></div>';
-                html += '<div class="reset-row"><button class="btn-reset" id="huoReset">重置数据</button></div>';
-                html += '</div></div>';
+                html +=
+                '<div class="reset-row"><button class="btn-reset" id="huoReset">重置数据</button></div></div></div>';
                 el.innerHTML = html;
 
-                var currentRawTotal = 0;
+                var rawTotal = 0;
 
                 function calcHuo() {
-                    var total = 0;
-                    var vals = [];
-                    colors.forEach(function(col) {
-                        var inp = document.getElementById('huo_' + col.key);
+                    var total = 0,
+                        stats = [];
+                    colors.forEach(function(c) {
+                        var inp = document.getElementById('huo_' + c.key);
                         if (!inp) return;
-                        var val = parseFloat(inp.value) || 0;
-                        var price = parseFloat(inp.dataset.price) || 0;
-                        var sub = val * price;
-                        var subEl = document.getElementById('huo_' + col.key + '_sub');
-                        if (subEl) subEl.textContent = fmt(sub);
-                        total += sub;
-                        if (val > 0) vals.push(val);
+                        var v = parseFloat(inp.value) || 0;
+                        var p = parseFloat(inp.dataset.price) || 0;
+                        var s = v * p;
+                        var subEl = document.getElementById('huo_' + c.key + '_sub');
+                        if (subEl) subEl.textContent = fmt(s);
+                        total += s;
+                        if (v > 0) stats.push({ val: v });
                     });
-
-                    var carPool = parseFloat(document.getElementById('huoCarPool').value) || 0;
-                    var antique = parseFloat(document.getElementById('huoAntique').value) || 0;
-                    var rawTotal = Math.max(0, total - carPool - antique);
-                    currentRawTotal = rawTotal;
-
-                    var finalTotal = rawTotal;
+                    var car = parseFloat(document.getElementById('huoCarPool').value) || 0;
+                    rawTotal = Math.max(0, total - car);
+                    var factor = _getCalFactor(currentMap, rawTotal);
+                    var finalTotal = rawTotal * factor;
                     document.getElementById('huoTotal').textContent = fmt(finalTotal);
                     var disc = dynamicRecDiscount(finalTotal);
                     var rec = finalTotal * disc;
                     if (currentMode === 'aggressive') rec = finalTotal * 0.95;
                     document.getElementById('huoRec').textContent = fmt(rec);
 
-                    var conf = calcConfidence(vals.length, finalTotal);
-                    var fill = document.getElementById('huoConfidenceFill');
-                    var label = document.getElementById('huoConfidenceLabel');
+                    var conf = 0.85;
+                    if (stats.length > 0) {
+                        var vals = stats.map(function(s) { return s.val; });
+                        var maxV = Math.max.apply(null, vals);
+                        var minV = Math.min.apply(null, vals);
+                        var spread = (maxV - minV) / (maxV + 0.01);
+                        conf = 0.90 - spread * 0.35;
+                        conf = Math.max(0.60, Math.min(0.96, conf));
+                    }
+                    var fill = document.getElementById('huoConfFill');
+                    var label = document.getElementById('huoConfLabel');
                     if (fill) {
                         fill.style.width = (conf * 100) + '%';
                         fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
                             'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
                     }
                     if (label) label.textContent = Math.round(conf * 100) + '%';
-
-                    var high = finalTotal * 1.2;
-                    updateQuickActions(rec, finalTotal, carPool, high);
-                    updateCalibrateStatusDisplay();
+                    updateQuickStats(rec, finalTotal, car, finalTotal * 1.2);
+                    updateCalibStatus();
                 }
 
-                document.getElementById('huoCalibrateBtn').onclick = function() {
-                    var actual = parseFloat(document.getElementById('huoActualTotal').value);
+                document.getElementById('huoCalBtn').onclick = function() {
+                    var actual = parseFloat(document.getElementById('huoActual').value);
                     if (!actual || actual <= 0) { alert('请输入有效数值'); return; }
-                    if (currentRawTotal <= 0) { alert('请先输入格数计算估值'); return; }
-                    alert('✅ 校准成功 (系数: ' + (actual / currentRawTotal).toFixed(2) + ')');
-                    document.getElementById('huoActualTotal').value = '';
+                    if (rawTotal <= 0) { alert('请先输入格数计算估值'); return; }
+                    var ratio = actual / rawTotal;
+                    _setCalFactor(currentMap, rawTotal, ratio);
+                    document.getElementById('huoActual').value = '';
+                    updateCalibStatus();
                     calcHuo();
                 };
 
-                el.querySelectorAll('.qbtn[data-target]').forEach(function(btn) {
-                    btn.onclick = function() {
-                        var targetId = this.dataset.target;
+                el.querySelectorAll('.qbtn[data-target]').forEach(function(b) {
+                    b.onclick = function() {
+                        var target = this.dataset.target;
                         var delta = parseInt(this.dataset.delta) || 0;
-                        var inp = document.getElementById(targetId);
+                        var inp = document.getElementById(target);
                         if (!inp) return;
                         var cur = parseFloat(inp.value) || 0;
-                        var newVal = Math.max(0, cur + delta);
-                        inp.value = newVal;
+                        inp.value = Math.max(0, cur + delta);
                         calcHuo();
                     };
                 });
 
-                document.getElementById('carPlus1').onclick = function() { document.getElementById('huoCarPool').value =
-                    90000;
+                document.getElementById('carP1').onclick = function() { document.getElementById('huoCarPool').value =
+                        90000;
                     calcHuo(); };
-                document.getElementById('carPlus2').onclick = function() { document.getElementById('huoCarPool').value =
-                    180000;
+                document.getElementById('carP2').onclick = function() { document.getElementById('huoCarPool').value =
+                        180000;
                     calcHuo(); };
-                document.getElementById('carPlus3').onclick = function() { document.getElementById('huoCarPool').value =
-                    300000;
-                    calcHuo(); };
-                document.getElementById('antiquePlus1').onclick = function() { document.getElementById('huoAntique')
-                        .value = 90000;
-                    calcHuo(); };
-                document.getElementById('antiquePlus2').onclick = function() { document.getElementById('huoAntique')
-                        .value = 180000;
-                    calcHuo(); };
-                document.getElementById('antiquePlus3').onclick = function() { document.getElementById('huoAntique')
-                        .value = 300000;
+                document.getElementById('carP3').onclick = function() { document.getElementById('huoCarPool').value =
+                        300000;
                     calcHuo(); };
 
-                colors.forEach(function(col) {
-                    var inp = document.getElementById('huo_' + col.key);
+                colors.forEach(function(c) {
+                    var inp = document.getElementById('huo_' + c.key);
                     if (inp) inp.addEventListener('input', calcHuo);
                 });
                 document.getElementById('huoCarPool').addEventListener('input', calcHuo);
-                document.getElementById('huoAntique').addEventListener('input', calcHuo);
 
                 document.getElementById('huoReset').onclick = function() {
-                    colors.forEach(function(col) { var inp = document.getElementById('huo_' + col.key); if (inp) inp
+                    colors.forEach(function(c) { var inp = document.getElementById('huo_' + c.key); if (inp) inp
                             .value = ''; });
                     document.getElementById('huoCarPool').value = '';
-                    document.getElementById('huoAntique').value = '';
-                    document.getElementById('huoActualTotal').value = '';
-                    currentRawTotal = 0;
+                    document.getElementById('huoActual').value = '';
+                    rawTotal = 0;
                     calcHuo();
                 };
                 calcHuo();
             }
 
-            // ---- 高晋 ----
             function renderGao() {
                 var el = document.getElementById('page-gao');
                 var map = getMap();
-                var gridOptions = map.gridOptions || [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
+                var grids = map.gridOptions || [];
+                var th = 6;
+                el.innerHTML =
+                    '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e05555,#b03030);">进</div><div><div class="name">高进 · 红品件数估值（加权精准）</div><div class="role">' +
+                    T.gaoRole + '<span class="tip2">' + T.gaoTip + '</span></div></div></div></div><div class="sec-body" id="gaoBody"></div></div>';
+                var body = document.getElementById('gaoBody');
+                var html = '';
+                var vis = grids.filter(function(g) { return g <= th; });
+                var hid = grids.filter(function(g) { return g > th; });
 
-                var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e05555,#b03030);">晋</div><div><div class="name">高晋 · 红品件数估值</div><div class="role">推荐道具：全域扫描枪，橙估价平板，紫估价平板<span class="tip2">💡 推荐使用紫色和橙色估价平板</span></div></div></div></div><div class="sec-body">';
-
-                gridOptions.forEach(function(g) {
+                vis.forEach(function(g) {
                     var price = getRedGridPrice(g, map);
-                    html += '<div class="row">' +
-                        '<span class="lbl">' + g + '格</span>' +
+                    html += '<div class="row"><span class="lbl">' + g + '格（件数）</span>' +
                         '<div class="qty"><input type="number" id="gao_grid_' + g + '" min="0" step="1" value="" data-price="' +
                         price + '"></div>' +
-                        '<span class="simple-btn-group">' +
-                        '<button class="sbtn neg" data-target="gao_grid_' + g + '" data-delta="-1">-1</button>' +
-                        '<button class="sbtn pos" data-target="gao_grid_' + g + '" data-delta="1">+1</button>' +
+                        '<span class="quick-btn-group">' +
+                        '<button class="qbtn neg" data-target="gao_grid_' + g + '" data-delta="-1">-1</button>' +
+                        '<button class="qbtn pos" data-target="gao_grid_' + g + '" data-delta="1">+1</button>' +
                         '</span>' +
-                        '<span class="sub" id="gao_grid_' + g + '_sub">0</span>' +
-                        '</div>';
+                        '<span class="sub" id="gao_grid_' + g + '_sub">0</span></div>';
                 });
 
-                html +=
-                    '<div class="row"><span class="lbl">💜 紫色估价</span><div class="qty"><input type="number" id="gao_purple" min="0" step="100" value=""></div><span class="sub" id="gao_purple_sub">0</span></div>';
-                html +=
-                    '<div class="row"><span class="lbl">🧡 橙色估价</span><div class="qty"><input type="number" id="gao_orange" min="0" step="100" value=""></div><span class="sub" id="gao_orange_sub">0</span></div>';
+                html += '<div class="collapsed-rows" id="gaoCollapsedRows">';
+                hid.forEach(function(g) {
+                    var price = getRedGridPrice(g, map);
+                    html += '<div class="row"><span class="lbl">' + g + '格（件数）</span>' +
+                        '<div class="qty"><input type="number" id="gao_grid_' + g + '" min="0" step="1" value="" data-price="' +
+                        price + '"></div>' +
+                        '<span class="quick-btn-group">' +
+                        '<button class="qbtn neg" data-target="gao_grid_' + g + '" data-delta="-1">-1</button>' +
+                        '<button class="qbtn pos" data-target="gao_grid_' + g + '" data-delta="1">+1</button>' +
+                        '</span>' +
+                        '<span class="sub" id="gao_grid_' + g + '_sub">0</span></div>';
+                });
+                html += '</div>';
+                if (hid.length > 0) {
+                    html += '<div class="collapse-toggle" id="gaoCollapseToggle">展开更多格数 ▼</div>';
+                }
 
-                var redPiecePrice = getRedPiecePrice(map);
-                html += '<div class="row">' +
-                    '<span class="lbl">🔴 红色（件数）</span>' +
+                html +=
+                    '<div class="row"><span class="lbl">紫色估价</span><div class="qty"><input type="number" id="gao_purple" min="0" step="100" value=""></div><span class="sub" id="gao_purple_sub">0</span></div>';
+                html +=
+                    '<div class="row"><span class="lbl">橙色估价</span><div class="qty"><input type="number" id="gao_orange" min="0" step="100" value=""></div><span class="sub" id="gao_orange_sub">0</span></div>';
+
+                var rp = getRedPiecePrice(map);
+                html += '<div class="row"><span class="lbl">红色（件数）</span>' +
                     '<div class="qty"><input type="number" id="gao_red_piece_cnt" min="0" step="1" value="" data-price="' +
-                    redPiecePrice + '"></div>' +
-                    '<span class="simple-btn-group">' +
-                    '<button class="sbtn neg" data-target="gao_red_piece_cnt" data-delta="-1">-1</button>' +
-                    '<button class="sbtn pos" data-target="gao_red_piece_cnt" data-delta="1">+1</button>' +
+                    rp + '"></div>' +
+                    '<span class="quick-btn-group">' +
+                    '<button class="qbtn neg" data-target="gao_red_piece_cnt" data-delta="-1">-1</button>' +
+                    '<button class="qbtn pos" data-target="gao_red_piece_cnt" data-delta="1">+1</button>' +
                     '</span>' +
-                    '<span class="sub" id="gao_red_piece_sub">0</span>' +
-                    '</div>';
+                    '<span class="sub" id="gao_red_piece_sub">0</span></div>';
 
-                var redGridPrice = getRedGridAvgPrice(map);
-                html += '<div class="row">' +
-                    '<span class="lbl">🔴 红色（格数）</span>' +
-                    '<div class="rg-fields" style="display:flex;gap:3px;flex:1;">' +
-                    '<input type="number" id="gao_red_grid_avg" min="0" step="0.1" placeholder="均格" value="" style="width:50px;">' +
-                    '<input type="number" id="gao_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:50px;">' +
+                var rg = getRedGridAvgPrice(map);
+                html += '<div class="row"><span class="lbl">红色（格数）</span>' +
+                    '<div class="rg-fields">' +
+                    '<input type="number" id="gao_red_grid_avg" min="0" step="0.1" placeholder="均格数" value="">' +
+                    '<input type="number" id="gao_red_grid_cnt" min="0" step="1" placeholder="件数" value="">' +
                     '</div>' +
-                    '<span class="simple-btn-group">' +
-                    '<button class="sbtn neg" data-target="gao_red_grid_cnt" data-delta="-1">-1</button>' +
-                    '<button class="sbtn pos" data-target="gao_red_grid_cnt" data-delta="1">+1</button>' +
+                    '<span class="quick-btn-group">' +
+                    '<button class="qbtn neg" data-target="gao_red_grid_cnt" data-delta="-1">-1</button>' +
+                    '<button class="qbtn pos" data-target="gao_red_grid_cnt" data-delta="1">+1</button>' +
                     '</span>' +
-                    '<span class="sub" id="gao_red_grid_sub">0</span>' +
-                    '</div>';
+                    '<span class="sub" id="gao_red_grid_sub">0</span></div>';
 
-                html += '<div class="total-bar">' +
-                    '<div class="t-item"><span class="label">💰 建议出价</span><span class="value rec" id="gaoRec">0</span></div>' +
-                    '<div class="t-item"><span class="label">📦 仓库预估</span><span class="value" id="gaoTotal">0</span></div>' +
-                    '</div>';
-                html += '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="gaoConfidenceFill" style="width:85%"></div></div><span class="label" id="gaoConfidenceLabel">85%</span></div>';
-                html += '<div class="reset-row"><button class="btn-reset" id="gaoReset">重置数据</button></div>';
-                html += '</div></div>';
-                el.innerHTML = html;
+                html += '<div class="calibrate-row"><span class="lbl">📐 实际总价值</span>' +
+                    '<input type="number" id="gaoActual" min="0" step="1000" value="" placeholder="输入实际值">' +
+                    '<button class="calibrate-btn" id="gaoCalBtn">校准</button>' +
+                    '<span class="calibrate-status" id="gaoCalStatus">未校准</span></div>';
 
-                el.querySelectorAll('.sbtn[data-target]').forEach(function(btn) {
-                    btn.onclick = function() {
-                        var targetId = this.dataset.target;
-                        var delta = parseInt(this.dataset.delta) || 0;
-                        var inp = document.getElementById(targetId);
-                        if (!inp) return;
-                        var cur = parseFloat(inp.value) || 0;
-                        var newVal = Math.max(0, cur + delta);
-                        inp.value = newVal;
-                        calcGao();
+                html += '<div class="total-bar"><div class="t-item"><span class="label">推荐出价</span><span class="value rec" id="gaoRec">0</span></div><div class="t-item"><span class="label">预估仓位价值</span><span class="value" id="gaoTotal">0</span></div></div>';
+
+                html +=
+                    '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="gaoConfFill" style="width:85%"></div></div><span class="label" id="gaoConfLabel">85%</span></div>';
+
+                html +=
+                '<div class="reset-row"><button class="btn-reset" id="gaoReset">重置数据</button></div>';
+                body.innerHTML = html;
+
+                var tog = document.getElementById('gaoCollapseToggle');
+                var rows = document.getElementById('gaoCollapsedRows');
+                if (tog) {
+                    tog.onclick = function() {
+                        rows.classList.toggle('open');
+                        tog.textContent = rows.classList.contains('open') ? '收起更多格数 ▲' : '展开更多格数 ▼';
                     };
-                });
+                }
+
+                var rawTotal = 0;
 
                 function calcGao() {
-                    var total = 0;
-                    var inputCount = 0;
-                    var vals = [];
-
-                    gridOptions.forEach(function(g) {
+                    var total = 0,
+                        cnt = 0;
+                    grids.forEach(function(g) {
                         var inp = document.getElementById('gao_grid_' + g);
                         if (inp) {
-                            var val = parseFloat(inp.value) || 0;
-                            var price = parseFloat(inp.dataset.price) || 0;
-                            var sub = val * price;
+                            var v = parseFloat(inp.value) || 0;
+                            var p = parseFloat(inp.dataset.price) || 0;
+                            var s = v * p;
                             var subEl = document.getElementById('gao_grid_' + g + '_sub');
-                            if (subEl) subEl.textContent = fmt(sub);
-                            total += sub;
-                            if (val > 0) { inputCount++;
-                                vals.push(val); }
+                            if (subEl) subEl.textContent = fmt(s);
+                            total += s;
+                            if (v > 0) cnt++;
                         }
                     });
+                    var pv = parseFloat(document.getElementById('gao_purple').value) || 0;
+                    document.getElementById('gao_purple_sub').textContent = fmt(pv);
+                    total += pv;
+                    var ov = parseFloat(document.getElementById('gao_orange').value) || 0;
+                    document.getElementById('gao_orange_sub').textContent = fmt(ov);
+                    total += ov;
+                    var rpc = parseFloat(document.getElementById('gao_red_piece_cnt').value) || 0;
+                    var rpp = parseFloat(document.getElementById('gao_red_piece_cnt').dataset.price) || getRedPiecePrice(
+                    map);
+                    var rps = rpc * rpp;
+                    document.getElementById('gao_red_piece_sub').textContent = fmt(rps);
+                    total += rps;
+                    var avg = parseFloat(document.getElementById('gao_red_grid_avg').value) || 0;
+                    var cn = parseFloat(document.getElementById('gao_red_grid_cnt').value) || 0;
+                    var gt = avg * cn;
+                    var rgp = getRedGridAvgPrice(map);
+                    var rgs = gt * rgp;
+                    document.getElementById('gao_red_grid_sub').textContent = fmt(rgs);
+                    total += rgs;
 
-                    var purple = parseFloat(document.getElementById('gao_purple').value) || 0;
-                    document.getElementById('gao_purple_sub').textContent = fmt(purple);
-                    total += purple;
-                    if (purple > 0) inputCount++;
-
-                    var orange = parseFloat(document.getElementById('gao_orange').value) || 0;
-                    document.getElementById('gao_orange_sub').textContent = fmt(orange);
-                    total += orange;
-                    if (orange > 0) inputCount++;
-
-                    var redPieceCnt = parseFloat(document.getElementById('gao_red_piece_cnt').value) || 0;
-                    var redPiecePrice2 = parseFloat(document.getElementById('gao_red_piece_cnt').dataset.price) ||
-                        getRedPiecePrice(map);
-                    var redPieceSub = redPieceCnt * redPiecePrice2;
-                    document.getElementById('gao_red_piece_sub').textContent = fmt(redPieceSub);
-                    total += redPieceSub;
-                    if (redPieceCnt > 0) inputCount++;
-
-                    var avgGrid = parseFloat(document.getElementById('gao_red_grid_avg').value) || 0;
-                    var cntGrid = parseFloat(document.getElementById('gao_red_grid_cnt').value) || 0;
-                    var gridTotal = avgGrid * cntGrid;
-                    var redGridPrice2 = getRedGridAvgPrice(map);
-                    var redGridSub = gridTotal * redGridPrice2;
-                    document.getElementById('gao_red_grid_sub').textContent = fmt(redGridSub);
-                    total += redGridSub;
-                    if (avgGrid > 0 && cntGrid > 0) inputCount++;
-
-                    var finalTotal = total;
+                    rawTotal = total;
+                    var factor = _getCalFactor(currentMap, total);
+                    var finalTotal = total * factor;
                     document.getElementById('gaoTotal').textContent = fmt(finalTotal);
                     var disc = dynamicRecDiscount(finalTotal);
                     var rec = finalTotal * disc;
                     if (currentMode === 'aggressive') rec = finalTotal * 0.95;
                     document.getElementById('gaoRec').textContent = fmt(rec);
-
-                    var conf = calcConfidence(inputCount, finalTotal);
-                    var fill = document.getElementById('gaoConfidenceFill');
-                    var label = document.getElementById('gaoConfidenceLabel');
+                    var conf = 0.82 + Math.min(0.12, cnt * 0.02);
+                    conf = Math.max(0.65, Math.min(0.95, conf));
+                    var fill = document.getElementById('gaoConfFill');
+                    var label = document.getElementById('gaoConfLabel');
                     if (fill) {
                         fill.style.width = (conf * 100) + '%';
                         fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
                             'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
                     }
                     if (label) label.textContent = Math.round(conf * 100) + '%';
+                    updateQuickStats(rec, finalTotal, 0, finalTotal * 1.2);
 
-                    var high = finalTotal * 1.2;
-                    updateQuickActions(rec, finalTotal, 0, high);
-                    updateCalibrateStatusDisplay();
+                    var statusEl = document.getElementById('gaoCalStatus');
+                    if (statusEl) {
+                        var s = _getCalStatus(currentMap);
+                        statusEl.textContent = s ? '✓ 已校准' : '未校准';
+                        statusEl.className = 'calibrate-status' + (s ? ' active' : '');
+                    }
                 }
 
-                gridOptions.forEach(function(g) {
+                document.getElementById('gaoCalBtn').onclick = function() {
+                    var actual = parseFloat(document.getElementById('gaoActual').value);
+                    if (!actual || actual <= 0) { alert('请输入有效数值'); return; }
+                    if (rawTotal <= 0) { alert('请先输入数据计算估值'); return; }
+                    var ratio = actual / rawTotal;
+                    _setCalFactor(currentMap, rawTotal, ratio);
+                    document.getElementById('gaoActual').value = '';
+                    calcGao();
+                };
+
+                body.querySelectorAll('.qbtn[data-target]').forEach(function(b) {
+                    b.onclick = function() {
+                        var target = this.dataset.target;
+                        var delta = parseInt(this.dataset.delta) || 0;
+                        var inp = document.getElementById(target);
+                        if (!inp) return;
+                        var cur = parseFloat(inp.value) || 0;
+                        inp.value = Math.max(0, cur + delta);
+                        calcGao();
+                    };
+                });
+
+                grids.forEach(function(g) {
                     var inp = document.getElementById('gao_grid_' + g);
                     if (inp) inp.addEventListener('input', calcGao);
                 });
@@ -1527,210 +2102,225 @@
                 document.getElementById('gao_red_grid_cnt').addEventListener('input', calcGao);
 
                 document.getElementById('gaoReset').onclick = function() {
-                    gridOptions.forEach(function(g) {
-                        var inp = document.getElementById('gao_grid_' + g);
-                        if (inp) inp.value = '';
-                    });
+                    grids.forEach(function(g) { var inp = document.getElementById('gao_grid_' + g); if (inp) inp
+                            .value = ''; });
                     document.getElementById('gao_purple').value = '';
                     document.getElementById('gao_orange').value = '';
                     document.getElementById('gao_red_piece_cnt').value = '';
                     document.getElementById('gao_red_grid_avg').value = '';
                     document.getElementById('gao_red_grid_cnt').value = '';
+                    document.getElementById('gaoActual').value = '';
+                    rawTotal = 0;
                     calcGao();
                 };
                 calcGao();
             }
 
-            // ---- 苏琦 ----
             function renderSu() {
                 var el = document.getElementById('page-su');
                 var map = getMap();
-                var colorKeys = ['green', 'blue', 'purple', 'orange', 'red'];
-                var colorLabels = ['绿色', '蓝色', '紫色', '橙色', '红色'];
-                var colorDots = ['green', 'blue', 'purple', 'orange', 'red'];
-
-                var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#a66be0,#7a3fbf);">苏</div><div><div class="name">苏琦 · 颜色件数估值</div><div class="role">推荐道具：紫件数观光棒，橙件数观光棒，红格怀表<span class="tip2">💡 用红品件数估算误差较大，建议使用红格道具</span></div></div></div></div><div class="sec-body">';
-
-                colorKeys.forEach(function(key, idx) {
-                    var price = (key === 'red') ? getRedPiecePrice(map) : getColorPiecePrice(key, map);
-                    html += '<div class="row">' +
-                        '<span class="lbl"><span class="dot ' + colorDots[idx] + '"></span>' +
-                        colorLabels[idx] + '（件数）</span>' +
-                        '<div class="qty"><input type="number" id="su_' + key + '" min="0" step="1" value="" data-price="' +
+                var keys = ['green', 'blue', 'purple', 'orange', 'red'];
+                var labels = ['绿色', '蓝色', '紫色', '橙色', '红色'];
+                var dots = ['green', 'blue', 'purple', 'orange', 'red'];
+                el.innerHTML =
+                    '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#a66be0,#7a3fbf);">苏</div><div><div class="name">苏琦 · 颜色件数估值（加权精准）</div><div class="role">' +
+                    T.suRole + '<span class="tip2">' + T.suTip + '</span></div></div></div></div><div class="sec-body" id="suBody"></div></div>';
+                var body = document.getElementById('suBody');
+                var html = '';
+                keys.forEach(function(k, idx) {
+                    var price = (k === 'red') ? getRedPiecePrice(map) : getColorPiecePrice(k, map);
+                    html += '<div class="row"><span class="lbl"><span class="dot ' + dots[idx] + '"></span>' +
+                        labels[idx] + '（件数）</span>' +
+                        '<div class="qty"><input type="number" id="su_' + k + '" min="0" step="1" value="" data-price="' +
                         price + '"></div>' +
-                        '<span class="simple-btn-group">' +
-                        '<button class="sbtn neg" data-target="su_' + key + '" data-delta="-1">-1</button>' +
-                        '<button class="sbtn pos" data-target="su_' + key + '" data-delta="1">+1</button>' +
+                        '<span class="quick-btn-group">' +
+                        '<button class="qbtn neg" data-target="su_' + k + '" data-delta="-1">-1</button>' +
+                        '<button class="qbtn pos" data-target="su_' + k + '" data-delta="1">+1</button>' +
                         '</span>' +
-                        '<span class="sub" id="su_' + key + '_sub">0</span>' +
-                        '</div>';
+                        '<span class="sub" id="su_' + k + '_sub">0</span></div>';
                 });
 
-                html += '<div class="row">' +
-                    '<span class="lbl"><span class="dot red"></span>红色（格数）</span>' +
-                    '<div class="rg-fields" style="display:flex;gap:3px;flex:1;">' +
-                    '<input type="number" id="su_red_grid_avg" min="0" step="0.1" placeholder="均格" value="" style="width:50px;">' +
-                    '<input type="number" id="su_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:50px;">' +
+                html += '<div class="row"><span class="lbl"><span class="dot red"></span>红色（格数）</span>' +
+                    '<div class="rg-fields">' +
+                    '<input type="number" id="su_red_grid_avg" min="0" step="0.1" placeholder="均格数" value="">' +
+                    '<input type="number" id="su_red_grid_cnt" min="0" step="1" placeholder="件数" value="">' +
                     '</div>' +
-                    '<span class="simple-btn-group">' +
-                    '<button class="sbtn neg" data-target="su_red_grid_cnt" data-delta="-1">-1</button>' +
-                    '<button class="sbtn pos" data-target="su_red_grid_cnt" data-delta="1">+1</button>' +
+                    '<span class="quick-btn-group">' +
+                    '<button class="qbtn neg" data-target="su_red_grid_cnt" data-delta="-1">-1</button>' +
+                    '<button class="qbtn pos" data-target="su_red_grid_cnt" data-delta="1">+1</button>' +
                     '</span>' +
-                    '<span class="sub" id="su_red_grid_sub">0</span>' +
-                    '</div>';
+                    '<span class="sub" id="su_red_grid_sub">0</span></div>';
 
-                html += '<div class="total-bar">' +
-                    '<div class="t-item"><span class="label">💰 建议出价</span><span class="value rec" id="suRec">0</span></div>' +
-                    '<div class="t-item"><span class="label">📦 仓库预估</span><span class="value" id="suTotal">0</span></div>' +
-                    '</div>';
-                html += '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="suConfidenceFill" style="width:85%"></div></div><span class="label" id="suConfidenceLabel">85%</span></div>';
-                html += '<div class="reset-row"><button class="btn-reset" id="suReset">重置数据</button></div>';
-                html += '</div></div>';
-                el.innerHTML = html;
+                html += '<div class="calibrate-row"><span class="lbl">📐 实际总价值</span>' +
+                    '<input type="number" id="suActual" min="0" step="1000" value="" placeholder="输入实际值">' +
+                    '<button class="calibrate-btn" id="suCalBtn">校准</button>' +
+                    '<span class="calibrate-status" id="suCalStatus">未校准</span></div>';
 
-                el.querySelectorAll('.sbtn[data-target]').forEach(function(btn) {
-                    btn.onclick = function() {
-                        var targetId = this.dataset.target;
-                        var delta = parseInt(this.dataset.delta) || 0;
-                        var inp = document.getElementById(targetId);
-                        if (!inp) return;
-                        var cur = parseFloat(inp.value) || 0;
-                        var newVal = Math.max(0, cur + delta);
-                        inp.value = newVal;
-                        calcSu();
-                    };
-                });
+                html += '<div class="total-bar"><div class="t-item"><span class="label">推荐出价</span><span class="value rec" id="suRec">0</span></div><div class="t-item"><span class="label">预估仓位价值</span><span class="value" id="suTotal">0</span></div></div>';
+
+                html +=
+                    '<div class="confidence-bar"><span>📊 置信度</span><div class="bar-track"><div class="bar-fill" id="suConfFill" style="width:85%"></div></div><span class="label" id="suConfLabel">85%</span></div>';
+
+                html +=
+                '<div class="reset-row"><button class="btn-reset" id="suReset">重置数据</button></div>';
+                body.innerHTML = html;
+
+                var rawTotal = 0;
 
                 function calcSu() {
-                    var total = 0;
-                    var inputCount = 0;
-                    var vals = [];
-
-                    colorKeys.forEach(function(key) {
-                        var inp = document.getElementById('su_' + key);
-                        var val = parseFloat(inp.value) || 0;
-                        var price = parseFloat(inp.dataset.price) || 0;
-                        var sub = val * price;
-                        document.getElementById('su_' + key + '_sub').textContent = fmt(sub);
-                        total += sub;
-                        if (val > 0) { inputCount++;
-                            vals.push(val); }
+                    var total = 0,
+                        cnt = 0;
+                    keys.forEach(function(k) {
+                        var inp = document.getElementById('su_' + k);
+                        var v = parseFloat(inp.value) || 0;
+                        var p = parseFloat(inp.dataset.price) || 0;
+                        var s = v * p;
+                        document.getElementById('su_' + k + '_sub').textContent = fmt(s);
+                        total += s;
+                        if (v > 0) cnt++;
                     });
+                    var avg = parseFloat(document.getElementById('su_red_grid_avg').value) || 0;
+                    var cn = parseFloat(document.getElementById('su_red_grid_cnt').value) || 0;
+                    var gt = avg * cn;
+                    var rgp = getRedGridAvgPrice(map);
+                    var rgs = gt * rgp;
+                    document.getElementById('su_red_grid_sub').textContent = fmt(rgs);
+                    total += rgs;
 
-                    var avgGrid = parseFloat(document.getElementById('su_red_grid_avg').value) || 0;
-                    var cntGrid = parseFloat(document.getElementById('su_red_grid_cnt').value) || 0;
-                    var gridTotal = avgGrid * cntGrid;
-                    var redGridPrice = getRedGridAvgPrice(map);
-                    var redGridSub = gridTotal * redGridPrice;
-                    document.getElementById('su_red_grid_sub').textContent = fmt(redGridSub);
-                    total += redGridSub;
-                    if (avgGrid > 0 && cntGrid > 0) inputCount++;
-
-                    var finalTotal = total;
+                    rawTotal = total;
+                    var factor = _getCalFactor(currentMap, total);
+                    var finalTotal = total * factor;
                     document.getElementById('suTotal').textContent = fmt(finalTotal);
                     var disc = dynamicRecDiscount(finalTotal);
                     var rec = finalTotal * disc;
                     if (currentMode === 'aggressive') rec = finalTotal * 0.95;
                     document.getElementById('suRec').textContent = fmt(rec);
-
-                    var conf = calcConfidence(inputCount, finalTotal);
-                    var fill = document.getElementById('suConfidenceFill');
-                    var label = document.getElementById('suConfidenceLabel');
+                    var conf = 0.80 + Math.min(0.15, cnt * 0.025);
+                    conf = Math.max(0.60, Math.min(0.95, conf));
+                    var fill = document.getElementById('suConfFill');
+                    var label = document.getElementById('suConfLabel');
                     if (fill) {
                         fill.style.width = (conf * 100) + '%';
                         fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#34d399,#6ee7b7)' : (conf > 0.65 ?
                             'linear-gradient(90deg,#fbbf24,#f59e0b)' : 'linear-gradient(90deg,#f87171,#ef4444)');
                     }
                     if (label) label.textContent = Math.round(conf * 100) + '%';
+                    updateQuickStats(rec, finalTotal, 0, finalTotal * 1.2);
 
-                    var high = finalTotal * 1.2;
-                    updateQuickActions(rec, finalTotal, 0, high);
-                    updateCalibrateStatusDisplay();
+                    var statusEl = document.getElementById('suCalStatus');
+                    if (statusEl) {
+                        var s = _getCalStatus(currentMap);
+                        statusEl.textContent = s ? '✓ 已校准' : '未校准';
+                        statusEl.className = 'calibrate-status' + (s ? ' active' : '');
+                    }
                 }
 
-                colorKeys.forEach(function(key) {
-                    document.getElementById('su_' + key).addEventListener('input', calcSu);
+                document.getElementById('suCalBtn').onclick = function() {
+                    var actual = parseFloat(document.getElementById('suActual').value);
+                    if (!actual || actual <= 0) { alert('请输入有效数值'); return; }
+                    if (rawTotal <= 0) { alert('请先输入数据计算估值'); return; }
+                    var ratio = actual / rawTotal;
+                    _setCalFactor(currentMap, rawTotal, ratio);
+                    document.getElementById('suActual').value = '';
+                    calcSu();
+                };
+
+                body.querySelectorAll('.qbtn[data-target]').forEach(function(b) {
+                    b.onclick = function() {
+                        var target = this.dataset.target;
+                        var delta = parseInt(this.dataset.delta) || 0;
+                        var inp = document.getElementById(target);
+                        if (!inp) return;
+                        var cur = parseFloat(inp.value) || 0;
+                        inp.value = Math.max(0, cur + delta);
+                        calcSu();
+                    };
                 });
+
+                keys.forEach(function(k) { document.getElementById('su_' + k).addEventListener('input', calcSu); });
                 document.getElementById('su_red_grid_avg').addEventListener('input', calcSu);
                 document.getElementById('su_red_grid_cnt').addEventListener('input', calcSu);
 
                 document.getElementById('suReset').onclick = function() {
-                    colorKeys.forEach(function(key) { document.getElementById('su_' + key).value = ''; });
+                    keys.forEach(function(k) { document.getElementById('su_' + k).value = ''; });
                     document.getElementById('su_red_grid_avg').value = '';
                     document.getElementById('su_red_grid_cnt').value = '';
+                    document.getElementById('suActual').value = '';
+                    rawTotal = 0;
                     calcSu();
                 };
                 calcSu();
             }
 
-            // ---- 安可 ----
             function renderAn() {
                 var el = document.getElementById('page-an');
                 var map = getMap();
                 var grids = map.gridOptions || [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
 
-                var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4ec97a,#2a9a5a);">安</div><div><div class="name">安可 · 红品均格反查</div><div class="role">输入平均格数，自动推算所有可能的红品组合及估值</div></div></div></div><div class="sec-body">';
+                el.innerHTML =
+                    '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#4ec97a,#2a9a5a);">安</div><div><div class="name">安可 · 红品均格反查（精准匹配）</div><div class="role">' +
+                    T.anRole + '</div></div></div></div><div class="sec-body" id="anBody"></div></div>';
 
-                html += '<div class="row">' +
-                    '<span class="lbl">📐 红均格</span>' +
-                    '<div class="qty"><input type="number" id="anAvg" step="0.1" min="0.5" max="16" value="" style="width:100%;"></div>' +
-                    '<span class="btn-group">' +
-                    '<button class="qbtn neg" id="anStepMinus1" data-delta="-1">-1</button>' +
-                    '<button class="qbtn neg" id="anStepMinus01" data-delta="-0.1">-0.1</button>' +
-                    '<button class="qbtn pos" id="anStepPlus01" data-delta="0.1">+0.1</button>' +
-                    '<button class="qbtn pos" id="anStepPlus1" data-delta="1">+1</button>' +
-                    '</span>' +
-                    '</div>';
+                var body = document.getElementById('anBody');
+                var html = '<div class="rev-input"><div class="field"><label>平均格数</label><input type="number" id="anAvg" step="0.1" min="0.5" max="16" value=""></div><div class="field"><label>红品数量（可选）</label><input type="number" id="anCount" min="1" max="50" value=""></div><div class="quick-btn-group"><button class="qbtn neg" id="anM1">-1</button><button class="qbtn neg" id="anM01">-0.1</button><button class="qbtn pos" id="anP01">+0.1</button><button class="qbtn pos" id="anP1">+1</button></div></div>';
 
-                html += '<div id="anResultSummary" class="an-result-summary" style="display:none;">' +
-                    '<span class="item"><span class="label">💰 推荐出价：</span><span class="value rec" id="anRec">0</span></span>' +
-                    '<span class="item"><span class="label">📦 仓库预估：</span><span class="value" id="anTotal">0</span></span>' +
-                    '<span class="item"><span class="label">🔢 组合数：</span><span class="value" id="anComboCount">0</span></span>' +
-                    '</div>';
+                html += '<div class="known-box"><label>已知格数（选填，用逗号分隔）</label><input type="text" id="anKnown" placeholder="如 4,6,8"></div>';
 
-                html += '<div id="anComboList"></div>';
+                html += '<div class="calibrate-row"><span class="lbl">📐 实际总价值</span>' +
+                    '<input type="number" id="anActual" min="0" step="1000" value="" placeholder="输入实际值">' +
+                    '<button class="calibrate-btn" id="anCalBtn">校准</button>' +
+                    '<span class="calibrate-status" id="anCalStatus">未校准</span></div>';
+
+                html += '<div class="total-bar"><div class="t-item"><span class="label">推荐出价</span><span class="value rec" id="anRec">0</span></div><div class="t-item"><span class="label">预估仓位价值</span><span class="value" id="anTotal">0</span></div></div>';
+
+                html += '<div class="rev-result" id="anResult"></div>';
                 html += '<div class="reset-row"><button class="btn-reset" id="anReset">重置数据</button></div>';
-                html += '</div></div>';
-                el.innerHTML = html;
+                body.innerHTML = html;
 
-                document.getElementById('anStepMinus1').onclick = function() { adjustAvg(-1); };
-                document.getElementById('anStepMinus01').onclick = function() { adjustAvg(-0.1); };
-                document.getElementById('anStepPlus01').onclick = function() { adjustAvg(0.1); };
-                document.getElementById('anStepPlus1').onclick = function() { adjustAvg(1); };
+                var rawTotal = 0;
 
-                function adjustAvg(delta) {
+                document.getElementById('anM1').onclick = function() { adjustAvg(-1); };
+                document.getElementById('anM01').onclick = function() { adjustAvg(-0.1); };
+                document.getElementById('anP01').onclick = function() { adjustAvg(0.1); };
+                document.getElementById('anP1').onclick = function() { adjustAvg(1); };
+
+                function adjustAvg(d) {
                     var inp = document.getElementById('anAvg');
                     var cur = parseFloat(inp.value) || 0;
-                    var newVal = Math.max(0.1, Math.round((cur + delta) * 10) / 10);
-                    inp.value = newVal;
+                    var nv = Math.max(0.1, Math.round((cur + d) * 10) / 10);
+                    inp.value = nv;
                     calcAn();
                 }
 
                 function calcAn() {
-                    var avgInput = parseFloat(document.getElementById('anAvg').value);
-                    var resultSummary = document.getElementById('anResultSummary');
-                    var comboList = document.getElementById('anComboList');
+                    var avg = parseFloat(document.getElementById('anAvg').value);
+                    var count = parseInt(document.getElementById('anCount').value) || 0;
+                    var knownStr = document.getElementById('anKnown').value.trim();
+                    var known = knownStr ? knownStr.split(',').map(function(s) { return parseInt(s.trim()); }).filter(
+                        function(n) { return !isNaN(n) && n > 0; }) : [];
+                    var result = document.getElementById('anResult');
 
-                    if (isNaN(avgInput) || avgInput < 0.1) {
-                        resultSummary.style.display = 'none';
-                        comboList.innerHTML = '<div class="an-empty">请输入有效的平均格数（≥0.1）</div>';
+                    if (isNaN(avg) || avg < 0.1) {
+                        result.innerHTML = '<div class="empty">请输入有效的平均格数</div>';
+                        document.getElementById('anRec').textContent = '0';
+                        document.getElementById('anTotal').textContent = '0';
                         return;
                     }
 
-                    var allCombos = [];
-                    var maxItems = 20;
-                    var redAvgPrice = getRedPiecePrice(map);
+                    var gridSet = new Set(grids);
+                    var combos = [];
+                    var maxN = count > 0 ? count : 20;
+                    var minN = count > 0 ? count : 1;
 
-                    for (var n = 1; n <= maxItems; n++) {
-                        var totalGrids = Math.round(avgInput * n);
-                        if (totalGrids < 1) continue;
+                    for (var n = minN; n <= maxN; n++) {
+                        var knownOk = true;
+                        for (var ki = 0; ki < known.length; ki++) { if (!gridSet.has(known[ki])) { knownOk = false; break; } }
+                        if (!knownOk) continue;
+                        var totalGrids = Math.round(avg * n);
                         var combosForN = [];
 
                         function findCombos(remaining, maxIdx, path) {
-                            if (remaining === 0 && path.length === n) {
-                                combosForN.push(path.slice());
-                                return;
-                            }
+                            if (remaining === 0 && path.length === n) { combosForN.push(path.slice()); return; }
                             if (path.length >= n) return;
                             for (var i = maxIdx; i < grids.length; i++) {
                                 var g = grids[i];
@@ -1744,186 +2334,467 @@
 
                         if (n <= 8) {
                             findCombos(totalGrids, 0, []);
-                            if (combosForN.length > 0) {
-                                allCombos.push({ n: n, total: totalGrids, combos: combosForN, approx: false });
-                            }
+                            if (combosForN.length > 0) combos.push({ n: n, total: totalGrids, combos: combosForN });
                         } else {
-                            var tempRemain = totalGrids;
-                            for (var gi = grids.length - 1; gi >= 0; gi--) {
-                                if (tempRemain >= grids[gi]) tempRemain -= grids[gi];
-                            }
-                            if (tempRemain === 0 || (tempRemain > 0 && tempRemain % grids[0] === 0)) {
-                                allCombos.push({ n: n, total: totalGrids, combos: null, approx: true });
-                            }
+                            combos.push({ n: n, total: totalGrids, combos: null, approx: true });
                         }
                     }
 
-                    if (allCombos.length === 0) {
-                        resultSummary.style.display = 'none';
-                        comboList.innerHTML = '<div class="an-empty">未找到匹配的组合，请调整平均格数</div>';
+                    if (combos.length === 0) {
+                        result.innerHTML = '<div class="empty">未找到匹配组合，请检查输入</div>';
+                        document.getElementById('anRec').textContent = '0';
+                        document.getElementById('anTotal').textContent = '0';
                         return;
                     }
 
-                    var totalEstimateSum = 0;
-                    var totalComboCount = 0;
+                    var html2 = '';
+                    var maxShow = 10;
+                    var redAvgPrice = getRedPiecePrice(map);
+                    var totalEst = 0;
+                    var totalCnt = 0;
 
-                    allCombos.forEach(function(group) {
-                        if (group.approx) return;
-                        group.combos.forEach(function(combo) {
-                            var sum = 0;
-                            combo.forEach(function(g) {
-                                var entry = map.redByGrid[g];
-                                if (entry && entry.avg) sum += entry.avg;
-                                else sum += redAvgPrice * g;
+                    combos.forEach(function(item) {
+                        var estValue = Math.round(item.n * redAvgPrice);
+                        var minValue = 0;
+                        if (item.combos) {
+                            var minTotal = Infinity;
+                            item.combos.forEach(function(combo) {
+                                var sum = 0;
+                                combo.forEach(function(g) {
+                                    var entry = map.redByGrid[g];
+                                    if (entry && entry.min) sum += entry.min;
+                                    else sum += 0;
+                                });
+                                if (sum < minTotal) minTotal = sum;
                             });
-                            totalEstimateSum += sum;
-                            totalComboCount++;
-                        });
+                            if (minTotal !== Infinity) minValue = minTotal;
+                        }
+                        var valueLabel = '预估：' + fmt(estValue);
+                        if (minValue > 0) valueLabel = '最低：' + fmt(minValue) + ' | 预估：' + fmt(estValue);
+                        html2 += '<div class="rev-group"><div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')"><span class="g-title">' +
+                            item.n + ' 个红品（' + valueLabel + '）</span><span class="g-meta">总格数 ' + item.total +
+                            ' | 共 ' + (item.combos ? item.combos.length : '多种') +
+                            ' 种组合 <span class="arrow">▶</span></span></div><div class="g-body">';
+
+                        if (item.approx || !item.combos || item.combos.length === 0) {
+                            html2 += '<span style="color:var(--text-secondary);font-size:12px;">组合较多，请减少红品数量或增加已知格数限制</span>';
+                        } else {
+                            var show = item.combos.slice(0, maxShow);
+                            show.forEach(function(c) { html2 += '<span class="combo">' + c.join(' + ') +
+                                    '</span>'; });
+                            if (item.combos.length > maxShow) html2 += '<span class="more-tag">…共 ' + item.combos
+                                .length + ' 种</span>';
+                        }
+                        html2 += '</div></div>';
+
+                        if (item.combos && item.combos.length > 0) {
+                            var avgEst = 0;
+                            var sumAll = 0;
+                            item.combos.forEach(function(combo) {
+                                var s = 0;
+                                combo.forEach(function(g) {
+                                    var entry = map.redByGrid[g];
+                                    if (entry && entry.avg) s += entry.avg;
+                                    else s += redAvgPrice * g;
+                                });
+                                sumAll += s;
+                            });
+                            avgEst = sumAll / item.combos.length;
+                            totalEst += avgEst * item.combos.length;
+                            totalCnt += item.combos.length;
+                        } else {
+                            totalEst += item.total * redAvgPrice;
+                            totalCnt++;
+                        }
                     });
 
-                    if (totalComboCount === 0) {
-                        allCombos.forEach(function(group) {
-                            if (group.approx) {
-                                var est = group.total * redAvgPrice;
-                                totalEstimateSum += est;
-                                totalComboCount++;
-                            }
-                        });
-                    }
-
-                    var avgEstimate = totalComboCount > 0 ? totalEstimateSum / totalComboCount : 0;
-                    var finalEstimate = avgEstimate;
+                    var avgEstimate = totalCnt > 0 ? totalEst / totalCnt : 0;
+                    var factor = _getCalFactor(currentMap, avgEstimate);
+                    var finalEstimate = avgEstimate * factor;
                     var disc = dynamicRecDiscount(finalEstimate);
                     var rec = finalEstimate * disc;
                     if (currentMode === 'aggressive') rec = finalEstimate * 0.95;
 
-                    resultSummary.style.display = 'flex';
                     document.getElementById('anRec').textContent = fmt(rec);
                     document.getElementById('anTotal').textContent = fmt(finalEstimate);
-                    document.getElementById('anComboCount').textContent = totalComboCount;
 
-                    var listHtml = '';
-                    var maxShow = 12;
-
-                    allCombos.forEach(function(group, idx) {
-                        var isOpen = idx === 0;
-                        var comboLabel = group.approx ? '（近似）' : '';
-                        var countLabel = group.approx ? '多种' : group.combos.length;
-
-                        listHtml += '<div class="an-combo-group' + (isOpen ? ' open' : '') + '">' +
-                            '<div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')">' +
-                            '<span class="g-title">' + group.n + ' 件藏品 ' + comboLabel + '</span>' +
-                            '<span class="g-meta">总格数 ' + group.total + ' | 共 ' + countLabel +
-                            ' 种组合 <span class="arrow">▶</span></span>' +
-                            '</div>' +
-                            '<div class="g-body">';
-
-                        if (group.approx || !group.combos || group.combos.length === 0) {
-                            var estVal = group.total * redAvgPrice;
-                            listHtml += '<span class="an-combo-item"><span class="grids">约 ' + group.total +
-                                ' 格</span> <span class="val">≈' + fmt(estVal) + '</span></span>';
-                        } else {
-                            var showCombos = group.combos.slice(0, maxShow);
-                            showCombos.forEach(function(combo) {
-                                var sum = 0;
-                                combo.forEach(function(g) {
-                                    var entry = map.redByGrid[g];
-                                    if (entry && entry.avg) sum += entry.avg;
-                                    else sum += redAvgPrice * g;
-                                });
-                                listHtml += '<span class="an-combo-item"><span class="grids">' + combo.join(
-                                    '+') +
-                                    '</span> <span class="val">' + fmt(sum) + '</span></span>';
-                            });
-                            if (group.combos.length > maxShow) {
-                                listHtml += '<span class="more-tag" style="font-size:10px;color:var(--text-secondary);">…共 ' +
-                                    group.combos.length + ' 种</span>';
-                            }
-                        }
-
-                        listHtml += '</div></div>';
-                    });
-
-                    comboList.innerHTML = listHtml;
-                    updateQuickActions(rec, finalEstimate, 0, finalEstimate * 1.2);
-                    updateCalibrateStatusDisplay();
+                    result.innerHTML = html2;
+                    rawTotal = avgEstimate;
+                    updateQuickStats(rec, finalEstimate, 0, finalEstimate * 1.2);
                 }
+
+                document.getElementById('anCalBtn').onclick = function() {
+                    var actual = parseFloat(document.getElementById('anActual').value);
+                    if (!actual || actual <= 0) { alert('请输入有效数值'); return; }
+                    if (rawTotal <= 0) { alert('请先输入数据计算估值'); return; }
+                    var ratio = actual / rawTotal;
+                    _setCalFactor(currentMap, rawTotal, ratio);
+                    document.getElementById('anActual').value = '';
+                    var statusEl = document.getElementById('anCalStatus');
+                    if (statusEl) {
+                        var s = _getCalStatus(currentMap);
+                        statusEl.textContent = s ? '✓ 已校准' : '未校准';
+                        statusEl.className = 'calibrate-status' + (s ? ' active' : '');
+                    }
+                    calcAn();
+                };
 
                 document.getElementById('anAvg').addEventListener('input', calcAn);
                 document.getElementById('anAvg').addEventListener('change', calcAn);
+                document.getElementById('anCount').addEventListener('input', calcAn);
+                document.getElementById('anKnown').addEventListener('input', calcAn);
 
                 document.getElementById('anReset').onclick = function() {
                     document.getElementById('anAvg').value = '';
-                    document.getElementById('anResultSummary').style.display = 'none';
-                    document.getElementById('anComboList').innerHTML = '<div class="an-empty">请输入平均格数开始推算</div>';
-                    updateQuickActions(0, 0, 0, 0);
+                    document.getElementById('anCount').value = '';
+                    document.getElementById('anKnown').value = '';
+                    document.getElementById('anActual').value = '';
+                    document.getElementById('anResult').innerHTML = '';
+                    document.getElementById('anRec').textContent = '0';
+                    document.getElementById('anTotal').textContent = '0';
+                    rawTotal = 0;
+                    updateQuickStats(0, 0, 0, 0);
+                };
+                calcAn();
+            }
+
+            function renderRev() {
+                var el = document.getElementById('page-rev');
+                var map = getMap();
+                var grids = map.gridOptions || [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
+
+                el.innerHTML =
+                    '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon" style="background:linear-gradient(135deg,#e8c468,#c9a23e);">?</div><div><div class="name">红品均格反查（精准匹配）</div><div class="role">' +
+                    T.revRole + '</div></div></div></div><div class="sec-body" id="revBody"></div></div>';
+
+                var body = document.getElementById('revBody');
+                var html = '<div class="rev-input"><div class="field"><label>平均格数</label><input type="number" id="revAvg" step="0.1" min="0.5" max="16" value=""></div><div class="field"><label>红品数量（可选）</label><input type="number" id="revCount" min="1" max="50" value=""></div><button class="btn-gold" id="revBtn">推算</button></div>';
+
+                html += '<div class="known-box"><label>已知格数（选填，用逗号分隔）</label><input type="text" id="revKnown" placeholder="如 4,6,8"></div>';
+                html += '<div class="rev-result" id="revResult"></div>';
+                html += '<div class="reset-row"><button class="btn-reset" id="revReset">重置数据</button></div>';
+                body.innerHTML = html;
+
+                document.getElementById('revBtn').onclick = function() {
+                    var avg = parseFloat(document.getElementById('revAvg').value);
+                    var count = parseInt(document.getElementById('revCount').value) || 0;
+                    var knownStr = document.getElementById('revKnown').value.trim();
+                    var known = knownStr ? knownStr.split(',').map(function(s) { return parseInt(s.trim()); }).filter(
+                        function(n) { return !isNaN(n) && n > 0; }) : [];
+                    var result = document.getElementById('revResult');
+
+                    if (isNaN(avg) || avg < 0.1) {
+                        result.innerHTML = '<div class="empty">请输入有效的平均格数</div>';
+                        return;
+                    }
+
+                    var gridSet = new Set(grids);
+                    var combos = [];
+                    var maxN = count > 0 ? count : 20;
+                    var minN = count > 0 ? count : 1;
+
+                    for (var n = minN; n <= maxN; n++) {
+                        var knownOk = true;
+                        for (var ki = 0; ki < known.length; ki++) { if (!gridSet.has(known[ki])) { knownOk = false; break; } }
+                        if (!knownOk) continue;
+                        var totalGrids = Math.round(avg * n);
+                        var combosForN = [];
+
+                        function findCombos(remaining, maxIdx, path) {
+                            if (remaining === 0 && path.length === n) { combosForN.push(path.slice()); return; }
+                            if (path.length >= n) return;
+                            for (var i = maxIdx; i < grids.length; i++) {
+                                var g = grids[i];
+                                if (g <= remaining) {
+                                    path.push(g);
+                                    findCombos(remaining - g, i, path);
+                                    path.pop();
+                                }
+                            }
+                        }
+
+                        if (n <= 8) {
+                            findCombos(totalGrids, 0, []);
+                            if (combosForN.length > 0) combos.push({ n: n, total: totalGrids, combos: combosForN });
+                        } else {
+                            combos.push({ n: n, total: totalGrids, combos: null, approx: true });
+                        }
+                    }
+
+                    if (combos.length === 0) {
+                        result.innerHTML = '<div class="empty">未找到匹配组合，请检查输入</div>';
+                        return;
+                    }
+
+                    var html2 = '';
+                    var maxShow = 10;
+                    var redAvgPrice = getRedPiecePrice(map);
+
+                    combos.forEach(function(item) {
+                        var estValue = Math.round(item.n * redAvgPrice);
+                        var minValue = 0;
+                        if (item.combos) {
+                            var minTotal = Infinity;
+                            item.combos.forEach(function(combo) {
+                                var sum = 0;
+                                combo.forEach(function(g) {
+                                    var entry = map.redByGrid[g];
+                                    if (entry && entry.min) sum += entry.min;
+                                    else sum += 0;
+                                });
+                                if (sum < minTotal) minTotal = sum;
+                            });
+                            if (minTotal !== Infinity) minValue = minTotal;
+                        }
+                        var valueLabel = '预估：' + fmt(estValue);
+                        if (minValue > 0) valueLabel = '最低：' + fmt(minValue) + ' | 预估：' + fmt(estValue);
+                        html2 += '<div class="rev-group"><div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')"><span class="g-title">' +
+                            item.n + ' 个红品（' + valueLabel + '）</span><span class="g-meta">总格数 ' + item.total +
+                            ' | 共 ' + (item.combos ? item.combos.length : '多种') +
+                            ' 种组合 <span class="arrow">▶</span></span></div><div class="g-body">';
+
+                        if (item.approx || !item.combos || item.combos.length === 0) {
+                            html2 += '<span style="color:var(--text-secondary);font-size:12px;">组合较多，请减少红品数量或增加已知格数限制</span>';
+                        } else {
+                            var show = item.combos.slice(0, maxShow);
+                            show.forEach(function(c) { html2 += '<span class="combo">' + c.join(' + ') +
+                                    '</span>'; });
+                            if (item.combos.length > maxShow) html2 += '<span class="more-tag">…共 ' + item.combos
+                                .length + ' 种</span>';
+                        }
+                        html2 += '</div></div>';
+                    });
+
+                    result.innerHTML = html2;
                 };
 
-                document.getElementById('anComboList').innerHTML = '<div class="an-empty">请输入平均格数开始推算</div>';
+                document.getElementById('revReset').onclick = function() {
+                    document.getElementById('revAvg').value = '';
+                    document.getElementById('revCount').value = '';
+                    document.getElementById('revKnown').value = '';
+                    document.getElementById('revResult').innerHTML = '';
+                };
             }
 
-            // ---- 切换控制 ----
-            function setMode(mode) {
-                currentMode = mode;
-                document.querySelectorAll('.mode-btn').forEach(function(btn) {
-                    btn.classList.toggle('active', btn.dataset.mode === mode);
-                });
-                var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
-                if (fn[currentTab]) fn[currentTab]();
+            // ---- 认证系统 ----
+            var appWrap = document.getElementById('appWrap');
+            var authOverlay = document.getElementById('authOverlay');
+            var cardInput = document.getElementById('cardInput');
+            var verifyBtn = document.getElementById('verifyBtn');
+            var authError = document.getElementById('authError');
+            var headerRemain = document.getElementById('remainPermanent');
+
+            function showApp(data) {
+                authOverlay.classList.add('hidden');
+                appWrap.classList.remove('hidden');
+                if (data) updateRemain(data);
+                updateCalibStatus();
             }
 
-            document.querySelectorAll('.mode-btn').forEach(function(btn) {
-                btn.onclick = function() { setMode(this.dataset.mode); };
-            });
-
-            function switchTab(tab) {
-                currentTab = tab;
-                document.querySelectorAll('[data-tab]').forEach(function(btn) {
-                    btn.classList.toggle('active', btn.dataset.tab === tab);
-                });
-                document.querySelectorAll('.page').forEach(function(page) {
-                    page.classList.toggle('active', page.id === 'page-' + tab);
-                });
-                var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
-                if (fn[tab]) fn[tab]();
+            function showAuth() {
+                authOverlay.classList.remove('hidden');
+                appWrap.classList.add('hidden');
             }
 
-            document.querySelectorAll('[data-tab]').forEach(function(btn) {
-                btn.onclick = function() { switchTab(this.dataset.tab); };
-            });
-
-            function setMap(mapKey) {
-                if (MAPS[mapKey]) {
-                    currentMap = mapKey;
-                    document.querySelectorAll('.map-switch button').forEach(function(btn) {
-                        btn.classList.toggle('on', btn.dataset.map === mapKey);
-                    });
-                    var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
-                    if (fn[currentTab]) fn[currentTab]();
+            function updateRemain(data) {
+                if (!data) return;
+                var el = document.getElementById('remainPermanent');
+                if (data.cardType === '永久卡') {
+                    el.textContent = '♾️ 剩余时间：永久';
+                    el.className = 'remain-permanent show';
+                    return;
                 }
+                var now = Date.now();
+                var elapsed = (now - data.verifyTime) / 1000;
+                var rm = Math.max(0, data.minutes - elapsed / 60);
+                var d = Math.floor(rm / 1440),
+                    h = Math.floor((rm % 1440) / 60),
+                    m = Math.floor(rm % 60);
+                var parts = [];
+                if (d > 0) parts.push(d + '天');
+                if (h > 0) parts.push(h + '小时');
+                if (m > 0 || parts.length === 0) parts.push(m + '分钟');
+                el.textContent = '⏱ 剩余时间：' + parts.join('');
+                el.className = 'remain-permanent show';
             }
 
-            document.querySelectorAll('.map-switch button').forEach(function(btn) {
-                btn.onclick = function() { setMap(this.dataset.map); };
+            var remainTimer = null;
+
+            function startRemainTimer(data) {
+                if (remainTimer) clearInterval(remainTimer);
+                updateRemain(data);
+                remainTimer = setInterval(function() {
+                    var cached = _getSecure();
+                    if (cached) {
+                        var now = Date.now();
+                        var elapsed = (now - cached._t) / 1000;
+                        var rm = Math.max(0, cached._d._m - elapsed / 60);
+                        if (rm <= 0) {
+                            clearInterval(remainTimer);
+                            remainTimer = null;
+                            _clearSecure();
+                            showAuth();
+                            return;
+                        }
+                        updateRemain({ cardType: cached._d._ct, minutes: cached._d._m, verifyTime: cached
+                                ._t });
+                    } else {
+                        clearInterval(remainTimer);
+                        remainTimer = null;
+                    }
+                }, 10000);
+            }
+
+            document.getElementById('unbindBtn').onclick = function() {
+                if (confirm('确定要解绑此设备吗？解绑后需要重新激活。')) {
+                    _clearSecure();
+                    if (remainTimer) clearInterval(remainTimer);
+                    showAuth();
+                    cardInput.value = '';
+                    location.reload();
+                }
+            };
+            document.getElementById('headerUnbindLink').onclick = document.getElementById('unbindBtn').onclick;
+
+            function initAuth() {
+                var cached = _getSecure();
+                if (cached) {
+                    var elapsed = (Date.now() - cached._t) / 1000;
+                    var rm = Math.max(0, cached._d._m - elapsed / 60);
+                    if (rm > 0) {
+                        showApp({ cardType: cached._d._ct, minutes: cached._d._m, verifyTime: cached._t });
+                        startRemainTimer({ cardType: cached._d._ct, minutes: cached._d._m, verifyTime: cached
+                                ._t });
+                        setTimeout(function() { renderMain(); }, 100);
+                        return;
+                    } else { _clearSecure(); }
+                }
+
+                verifyBtn.onclick = function() {
+                    var card = cardInput.value.trim();
+                    if (!card) { authError.textContent = '请输入卡密'; return; }
+                    authError.textContent = '';
+                    verifyBtn.disabled = true;
+                    verifyBtn.textContent = '⏳ 验证中…';
+                    _verifyWithKeyt(card, function(success, days, minutes, cardType, error) {
+                        verifyBtn.disabled = false;
+                        verifyBtn.textContent = '激活';
+                        if (success) {
+                            var data = { _c: card, _ct: cardType, _m: minutes, _d: days, _t: Date.now() };
+                            _saveSecure(card, { cardType: cardType, minutes: minutes, days: days });
+                            showApp({ cardType: cardType, minutes: minutes, verifyTime: Date.now() });
+                            startRemainTimer({ cardType: cardType, minutes: minutes, verifyTime: Date
+                                    .now() });
+                            renderMain();
+                        } else {
+                            authError.textContent = error === 'timeout' || error === 'network' ? '网络异常' :
+                                '卡密无效或已过期';
+                        }
+                    });
+                };
+                cardInput.onkeydown = function(e) { if (e.key === 'Enter') verifyBtn.click(); };
+                showAuth();
+            }
+
+            function renderMain() {
+                document.getElementById('guideText').textContent = T.guide;
+                var fns = { huo: renderHuo, gao: renderGao, su: renderSu, an: renderAn, rev: renderRev };
+                if (fns[currentTab]) fns[currentTab]();
+                updateCalibStatus();
+                var activeTab = document.querySelector('.tab-btn.active');
+                if (!activeTab) { document.querySelector('.tab-btn[data-tab="huo"]').classList.add('active'); }
+            }
+
+            // ---- 主题系统 ----
+            var themes = {
+                'default': { '--bg-page': '#0a0e1a', '--bg-card': '#111827', '--bg-card2': '#1a2332',
+                    '--bg-input': '#0d1422', '--border-color': '#2a3a5a', '--text-primary': '#e8eef8',
+                    '--text-secondary': '#8aa0c8', '--accent': '#e8c468', '--accent2': '#f5dd9a' },
+                'light': { '--bg-page': '#eef0f4', '--bg-card': '#ffffff', '--bg-card2': '#f5f7fa',
+                    '--bg-input': '#e4e8ee', '--border-color': '#c8d0d8', '--text-primary': '#1a2332',
+                    '--text-secondary': '#5a6f90', '--accent': '#d4a83a', '--accent2': '#c99a2e' },
+                'gold': { '--bg-page': '#1a150a', '--bg-card': '#2a2212', '--bg-card2': '#3a301a',
+                    '--bg-input': '#1f180c', '--border-color': '#5a4a2a', '--text-primary': '#f5e6c8',
+                    '--text-secondary': '#c9b28a', '--accent': '#e8b830', '--accent2': '#f5d060' },
+                'green': { '--bg-page': '#0a1a12', '--bg-card': '#142b1e', '--bg-card2': '#1a3828',
+                    '--bg-input': '#0c2216', '--border-color': '#2a5a3a', '--text-primary': '#d4f0e0',
+                    '--text-secondary': '#8ab8a0', '--accent': '#4ec97a', '--accent2': '#7ad8a0' },
+                'purple': { '--bg-page': '#120a1a', '--bg-card': '#221a30', '--bg-card2': '#2e2240',
+                    '--bg-input': '#1a1026', '--border-color': '#4a3a6a', '--text-primary': '#e8d8f5',
+                    '--text-secondary': '#b098d0', '--accent': '#a66be0', '--accent2': '#c89af0' },
+                'dark': { '--bg-page': '#080808', '--bg-card': '#161616', '--bg-card2': '#222222',
+                    '--bg-input': '#121212', '--border-color': '#3a3a3a', '--text-primary': '#e0e0e0',
+                    '--text-secondary': '#999999', '--accent': '#aaaaaa', '--accent2': '#cccccc' }
+            };
+
+            function applyTheme(themeName) {
+                var vars = themes[themeName];
+                if (!vars) return;
+                var root = document.documentElement;
+                for (var key in vars) root.style.setProperty(key, vars[key]);
+                localStorage.setItem('selectedTheme', themeName);
+                var opts = document.querySelectorAll('.t-opt');
+                opts.forEach(function(el) { el.classList.toggle('active', el.dataset.theme === themeName); });
+                document.getElementById('themePanel').classList.remove('show');
+            }
+
+            function initTheme() {
+                var saved = localStorage.getItem('selectedTheme');
+                if (saved && themes[saved]) applyTheme(saved);
+                else applyTheme('default');
+                var container = document.getElementById('themeOptions');
+                var html = '';
+                var themeNames = { 'default': '默认', 'light': '亮白', 'gold': '暖金', 'green': '翠绿', 'purple': '星紫',
+                    'dark': '暗夜' };
+                for (var key in themes) {
+                    var color = themes[key]['--accent'];
+                    html += '<div class="t-opt" data-theme="' + key + '" style="background:' + color + ';" title="' +
+                        themeNames[key] + '"></div>';
+                }
+                container.innerHTML = html;
+                container.querySelectorAll('.t-opt').forEach(function(el) {
+                    el.onclick = function() { applyTheme(el.dataset.theme); };
+                });
+                var saved2 = localStorage.getItem('selectedTheme') || 'default';
+                container.querySelectorAll('.t-opt').forEach(function(el) {
+                    el.classList.toggle('active', el.dataset.theme === saved2);
+                });
+            }
+
+            document.getElementById('themeToggleBtn').onclick = function(e) {
+                e.stopPropagation();
+                document.getElementById('themePanel').classList.toggle('show');
+            };
+            document.getElementById('themePanelClose').onclick = function() {
+                document.getElementById('themePanel').classList.remove('show');
+            };
+            document.addEventListener('click', function(e) {
+                var panel = document.getElementById('themePanel');
+                if (panel.classList.contains('show')) {
+                    var target = e.target;
+                    if (!panel.contains(target) && target !== document.getElementById('themeToggleBtn') && !document
+                        .getElementById('themeToggleBtn').contains(target)) {
+                        panel.classList.remove('show');
+                    }
+                }
             });
-
-            // ---- 主渲染 ----
-            function renderMainApp() {
-                document.querySelectorAll('.mode-btn').forEach(function(btn) {
-                    btn.classList.toggle('active', btn.dataset.mode === currentMode);
-                });
-                document.querySelectorAll('.map-switch button').forEach(function(btn) {
-                    btn.classList.toggle('on', btn.dataset.map === currentMap);
-                });
-                var fn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn };
-                if (fn[currentTab]) fn[currentTab]();
-                document.getElementById('configStatusText').textContent = '✅ 应用已启动 · 配置版 v5.0';
-                log('✅ 主界面渲染完成', 'success');
-            }
+            document.getElementById('applyCustomTheme').onclick = function() {
+                var primary = document.getElementById('customPrimary').value;
+                var bg = document.getElementById('customBg').value;
+                var root = document.documentElement;
+                root.style.setProperty('--bg-page', bg);
+                root.style.setProperty('--bg-card', bg);
+                root.style.setProperty('--accent', primary);
+                root.style.setProperty('--accent2', primary);
+                localStorage.setItem('selectedTheme', 'custom');
+                document.getElementById('themePanel').classList.remove('show');
+            };
 
             // ---- 启动 ----
+            initTheme();
             initAuth();
-
+            setTimeout(renderMain, 200);
+            console.log('✅ 俱乐大玩家超级AI v2.0 已加载（第一版UI + 所有新功能）');
         })();
     </script>
 </body>
