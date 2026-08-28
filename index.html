@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>俱乐大玩家超级AI · 霓虹纪元</title>
     <style>
-        /* ===== 全局重置 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -13,7 +12,6 @@
             -webkit-tap-highlight-color: transparent;
         }
 
-        /* ===== 自定义滚动条 ===== */
         ::-webkit-scrollbar {
             width: 4px;
             height: 4px;
@@ -26,7 +24,6 @@
             border-radius: 4px;
         }
 
-        /* ===== 全局变量 ===== */
         :root {
             --glass-bg: rgba(255, 255, 255, 0.04);
             --glass-border: rgba(255, 255, 255, 0.08);
@@ -50,7 +47,6 @@
             position: relative;
         }
 
-        /* ===== 动态光效背景 ===== */
         body::before {
             content: '';
             position: fixed;
@@ -81,7 +77,6 @@
             }
         }
 
-        /* ===== 背景粒子 ===== */
         #particles-canvas {
             position: fixed;
             top: 0;
@@ -92,7 +87,6 @@
             pointer-events: none;
         }
 
-        /* ===== 内容容器 ===== */
         #appWrap {
             position: relative;
             z-index: 1;
@@ -101,7 +95,6 @@
             padding: 20px 16px 40px;
         }
 
-        /* ===== 验证前隐藏内容 ===== */
         #appWrap,
         .top-bar,
         .warning-banner,
@@ -124,9 +117,6 @@
             display: block;
         }
 
-        /* ============================================================
-                   验证界面
-                   ============================================================ */
         #authBox {
             position: fixed;
             top: 0;
@@ -308,9 +298,6 @@
             transform: none !important;
         }
 
-        /* ============================================================
-                   主程序
-                   ============================================================ */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -742,7 +729,6 @@
             margin: 0;
         }
 
-        /* ---- 快捷按键样式 ---- */
         .qty-btns {
             display: flex;
             gap: 3px;
@@ -799,7 +785,6 @@
             color: #ff6b6b;
         }
 
-        /* 移动端适配 */
         @media (max-width: 480px) {
             .qty-btn {
                 min-width: 32px;
@@ -1411,15 +1396,13 @@
 </head>
 <body>
 
-    <!-- ===== 粒子背景 ===== -->
     <canvas id="particles-canvas"></canvas>
 
-    <!-- ===== 主界面 ===== -->
     <div id="appWrap">
         <div class="top-bar">
             <div class="left">
-                <span class="author-id" id="authorId">205263367</span>
-                <span class="vip-tag" id="cardTypeTag">✦ 超级AI</span>
+                <span class="author-id">205263367</span>
+                <span class="vip-tag">✦ 超级AI</span>
             </div>
             <div class="right">
                 <div class="theme-toggle" id="themeToggleBtn">✦</div>
@@ -1481,12 +1464,70 @@
         </div>
     </div>
 
-    <!-- ============================================================ -->
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js">
     </script>
 
-    <!-- ============================================================ -->
     <script>
+        // ============================================================
+        // 安全模块（无文字提示）
+        // ============================================================
+        (function() {
+            var devtools = /Chrome|Firefox|Safari|Edge|Opera/i.test(navigator.userAgent);
+
+            function detect() {
+                if (!devtools) return;
+                var threshold = 160;
+                var widthThreshold = window.outerWidth - window.innerWidth > threshold;
+                var heightThreshold = window.outerHeight - window.innerHeight > threshold;
+                if (widthThreshold || heightThreshold) {
+                    document.body.innerHTML = '';
+                    document.body.style.cssText = 'background:#08080e;min-height:100vh;display:flex;align-items:center;justify-content:center;';
+                    var msg = document.createElement('div');
+                    msg.style.cssText =
+                        'color:rgba(255,255,255,0.15);font-size:14px;font-family:sans-serif;letter-spacing:2px;text-align:center;';
+                    msg.textContent = '✦';
+                    document.body.appendChild(msg);
+                }
+            }
+
+            var timer = setInterval(detect, 500);
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                    (e.ctrlKey && e.key === 'U')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    return false;
+                }
+            });
+
+            document.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                return false;
+            });
+
+            window.addEventListener('resize', function() {
+                if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
+                    document.body.innerHTML = '';
+                    document.body.style.cssText = 'background:#08080e;min-height:100vh;display:flex;align-items:center;justify-content:center;';
+                    var msg = document.createElement('div');
+                    msg.style.cssText =
+                        'color:rgba(255,255,255,0.15);font-size:14px;font-family:sans-serif;letter-spacing:2px;text-align:center;';
+                    msg.textContent = '✦';
+                    document.body.appendChild(msg);
+                }
+            });
+
+            Object.defineProperty(document, 'hidden', { get: function() { return false; } });
+            Object.defineProperty(document, 'visibilityState', { get: function() { return 'visible'; } });
+
+            console.log = function() {};
+            console.warn = function() {};
+            console.error = function() {};
+            console.info = function() {};
+            console.debug = function() {};
+        })();
+
         // ============================================================
         // 粒子背景
         // ============================================================
@@ -1867,9 +1908,6 @@
             });
         }
 
-        // ============================================================
-        // 过期处理（修复版 - 不自动登出）
-        // ============================================================
         function handleCardExpired() {
             Storage.remove('card_verified');
             Storage.remove('remain_days');
@@ -1885,15 +1923,11 @@
             document.body.classList.remove('verified');
             document.getElementById('appWrap').style.display = 'none';
 
-            // 显示验证框让用户重新验证
             showAuthBox().then(function() {
                 location.reload();
             });
         }
 
-        // ============================================================
-        // 动态剩余时间（修复版 - 不会主动触发登出）
-        // ============================================================
         function updateRemainDisplay() {
             var el = document.getElementById('remainPermanent');
             if (!el) return;
@@ -1915,7 +1949,6 @@
             var now = Date.now();
             var remainingMs = expireTimestamp - now;
 
-            // ✅ 修复：只显示状态，不自动触发登出
             if (remainingMs <= 0) {
                 el.textContent = '⏱ 卡密已过期，请点击"解绑激活码"重新验证';
                 el.className = 'remain-permanent expired';
@@ -1948,9 +1981,6 @@
             }
         }
 
-        // ============================================================
-        // 心跳检测（修复版）
-        // ============================================================
         function startHeartbeat() {
             var card = Storage.get('card');
             if (!card) return;
@@ -1967,13 +1997,11 @@
                         var parts = response.split('|');
 
                         if (parts[0] !== 'ok') {
-                            console.warn('⚠️ 心跳检测失败，不触发登出');
                             return;
                         }
 
                         var minutes = parseInt(parts[3]) || 0;
                         if (minutes <= 0) {
-                            console.warn('⚠️ 卡密剩余时间为0，可能已过期');
                             return;
                         }
 
@@ -1984,26 +2012,18 @@
 
                         updateRemainDisplay();
 
-                    } catch (e) {
-                        console.warn('⚠️ 心跳处理异常:', e);
-                    }
+                    } catch (e) {}
                 });
             }, 60000);
         }
 
-        // ============================================================
-        // 启动程序
-        // ============================================================
         (function startApp() {
-            console.log('🚀 启动验证系统...');
-
             var verified = Storage.get('card_verified') === 'true';
             var expire = parseInt(Storage.get('card_expire')) || 0;
             var minutes = parseInt(Storage.get('remain_minutes')) || 0;
             var isValid = verified && (expire > Date.now()) && minutes > 0;
 
             if (isValid) {
-                console.log('✅ 卡密有效，直接进入主程序');
                 document.body.classList.add('verified');
                 document.getElementById('appWrap').style.display = 'block';
 
@@ -2015,16 +2035,12 @@
                     setTimeout(loadMainApp, 150);
                 }
             } else {
-                console.log('🔐 需要验证，显示验证框');
                 document.getElementById('appWrap').style.display = 'none';
                 document.body.classList.remove('verified');
 
                 showAuthBox().then(function(result) {
-                    console.log('✅ 验证成功:', result);
                     location.reload();
-                }).catch(function(err) {
-                    console.error('❌ 验证失败:', err);
-                });
+                }).catch(function(err) {});
             }
         })();
 
@@ -2032,8 +2048,6 @@
         // 主程序
         // ============================================================
         function loadMainApp() {
-            console.log('🌟 加载主程序...');
-
             document.getElementById('appWrap').style.display = 'block';
             document.body.classList.add('verified');
 
@@ -2357,9 +2371,11 @@
 
             function fmt(n) { if (!n && n !== 0) return '0'; return Math.round(n).toLocaleString(); }
 
-            // ---- 快捷按键辅助函数 ----
             function createQuickBtns(inputId, steps) {
-                var container = document.querySelector('#' + inputId).parentElement;
+                var input = document.getElementById(inputId);
+                if (!input) return;
+                var container = input.parentElement;
+                if (container.querySelector('.qty-btns')) return;
                 var btnsHtml = '<div class="qty-btns">';
                 steps.forEach(function(step) {
                     var cls = 'qty-btn';
@@ -2374,18 +2390,14 @@
                 container.querySelectorAll('.qty-btn').forEach(function(btn) {
                     btn.addEventListener('click', function(e) {
                         e.preventDefault();
-                        var input = document.getElementById(this.dataset.input);
-                        if (!input) return;
+                        var inp = document.getElementById(this.dataset.input);
+                        if (!inp) return;
                         var step = parseInt(this.dataset.step) || 0;
-                        var val = parseFloat(input.value) || 0;
+                        var val = parseFloat(inp.value) || 0;
                         var newVal = Math.max(0, val + step);
-                        input.value = newVal;
-                        // 触发input事件更新计算
+                        inp.value = newVal;
                         var evt = new Event('input', { bubbles: true });
-                        input.dispatchEvent(evt);
-                        // 触发change事件
-                        var evt2 = new Event('change', { bubbles: true });
-                        input.dispatchEvent(evt2);
+                        inp.dispatchEvent(evt);
                     });
                 });
             }
@@ -2502,6 +2514,9 @@
 
             var huoMode = 'classic';
 
+            // ============================================================
+            // 霍姑姑
+            // ============================================================
             function generateClassicHTML(map) {
                 var colors = [
                     { key: 'green', label: TEXT.colorGreen, dot: 'green', priceFn: function() { return getColorGridPrice(
@@ -2525,10 +2540,7 @@
                         price + '"></div>' +
                         '<span class="sub" id="' + inputId + '_sub">0</span></div>';
                 });
-                html += '<div class="total-bar">' +
-                    '<div class="t-item"><span class="label">' + TEXT.recLabel + '</span><span class="value rec" id="huoRec">0</span></div>' +
-                    '<div class="t-item"><span class="label">' + TEXT.totalLabel + '</span><span class="value" id="huoTotal">0</span></div>' +
-                    '</div>';
+
                 html += '<div class="car-pool-row" style="flex-wrap:wrap;gap:6px;">' +
                     '<span class="lbl">🚗 车零件</span>' +
                     '<div style="display:flex;align-items:center;gap:4px;background:rgba(0,0,0,0.2);padding:2px 8px 2px 4px;border-radius:8px;border:1px solid var(--glass-border);">' +
@@ -2547,7 +2559,26 @@
                     '</div>' +
                     '<span style="font-size:11px;color:var(--text-secondary);opacity:0.6;" id="carPoolTotalDisplay">扣减：0</span>' +
                     '</div>';
-                html += '<div class="confidence-bar"><span>' + TEXT.confidenceLabel + '</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:85%"></div></div><span class="label" id="huoConfidenceLabel">85%</span></div>';
+
+                html += '<div class="row" style="border-top:1px solid var(--glass-border);padding-top:8px;margin-top:4px;">' +
+                    '<span class="lbl">🏺 古董</span>' +
+                    '<div class="qty">' +
+                    '<input type="number" id="huoAntique12" min="0" step="1" value="" style="width:40px;min-width:32px;" placeholder="12格">' +
+                    '<span style="font-size:11px;color:var(--text-secondary);opacity:0.6;margin:0 2px;">−18万</span>' +
+                    '</div>' +
+                    '<div class="qty">' +
+                    '<input type="number" id="huoAntique16" min="0" step="1" value="" style="width:40px;min-width:32px;" placeholder="16格">' +
+                    '<span style="font-size:11px;color:var(--text-secondary);opacity:0.6;margin:0 2px;">−30万</span>' +
+                    '</div>' +
+                    '<span class="sub" id="huoAntiqueSub">0</span>' +
+                    '</div>';
+
+                html += '<div class="total-bar">' +
+                    '<div class="t-item"><span class="label">' + TEXT.recLabel + '</span><span class="value rec" id="huoRec">0</span></div>' +
+                    '<div class="t-item"><span class="label">' + TEXT.totalLabel + '</span><span class="value" id="huoTotal">0</span></div>' +
+                    '</div>';
+
+                html += '<div class="confidence-bar"><span>' + TEXT.confidenceLabel + '</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:90%"></div></div><span class="label" id="huoConfidenceLabel">90%</span></div>';
                 html += '<div class="reset-row"><button class="btn-reset" id="huoReset">' + TEXT.resetLabel +
                     '</button></div>';
                 return html;
@@ -2556,13 +2587,11 @@
             function initClassic(map) {
                 var colors = [{ key: 'green' }, { key: 'blue' }, { key: 'purple' }, { key: 'orange' }, { key: 'red' }];
 
-                // 添加快捷按键
                 var huoSteps = [-10, -5, -1, 1, 5, 10];
                 colors.forEach(function(col) {
                     var inputId = 'huo_' + col.key;
                     var input = document.getElementById(inputId);
                     if (input) {
-                        // 为每个输入框添加快捷按键
                         var container = input.parentElement;
                         var btnsHtml = '<div class="qty-btns">';
                         huoSteps.forEach(function(step) {
@@ -2575,6 +2604,31 @@
                         btnsHtml += '</div>';
                         container.insertAdjacentHTML('beforeend', btnsHtml);
 
+                        container.querySelectorAll('.qty-btn').forEach(function(btn) {
+                            btn.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                var inp = document.getElementById(this.dataset.input);
+                                if (!inp) return;
+                                var step = parseInt(this.dataset.step) || 0;
+                                var val = parseFloat(inp.value) || 0;
+                                var newVal = Math.max(0, val + step);
+                                inp.value = newVal;
+                                var evt = new Event('input', { bubbles: true });
+                                inp.dispatchEvent(evt);
+                            });
+                        });
+                    }
+                });
+
+                ['huoAntique12', 'huoAntique16'].forEach(function(id) {
+                    var input = document.getElementById(id);
+                    if (input) {
+                        var container = input.parentElement;
+                        var btnsHtml = '<div class="qty-btns">' +
+                            '<button class="qty-btn danger" data-input="' + id + '" data-step="-1">-1</button>' +
+                            '<button class="qty-btn primary" data-input="' + id + '" data-step="1">+1</button>' +
+                            '</div>';
+                        container.insertAdjacentHTML('beforeend', btnsHtml);
                         container.querySelectorAll('.qty-btn').forEach(function(btn) {
                             btn.addEventListener('click', function(e) {
                                 e.preventDefault();
@@ -2616,13 +2670,20 @@
                         var sub = val * price;
                         var subEl = document.getElementById('huo_' + col.key + '_sub');
                         if (subEl) subEl.textContent = fmt(sub);
-                        total += sub;
+                        total = total + sub;
                         if (val > 0) stats.push({ val: val, price: price, sub: sub });
                     });
 
-                    var deduction = calcCarDeduction();
-                    var carTotal = total - deduction;
-                    if (carTotal < 0) carTotal = 0;
+                    var antique12 = parseInt(document.getElementById('huoAntique12').value) || 0;
+                    var antique16 = parseInt(document.getElementById('huoAntique16').value) || 0;
+                    var antiqueDeduction = (antique12 * 180000) + (antique16 * 300000);
+                    var antiqueSub = -(antiqueDeduction);
+                    document.getElementById('huoAntiqueSub').textContent = fmt(antiqueSub);
+
+                    var carDeduction = calcCarDeduction();
+                    var totalDeduction = carDeduction + antiqueDeduction;
+                    var finalTotal = total - totalDeduction;
+                    if (finalTotal < 0) finalTotal = 0;
 
                     var displayEl = document.getElementById('carPoolTotalDisplay');
                     if (displayEl) {
@@ -2636,25 +2697,27 @@
                         } else if (body > 0) {
                             parts.push('车身×' + body + ' −' + fmt(body * 180000));
                         }
+                        if (antique12 > 0) parts.push('古董12格×' + antique12 + ' −' + fmt(antique12 * 180000));
+                        if (antique16 > 0) parts.push('古董16格×' + antique16 + ' −' + fmt(antique16 * 300000));
                         if (parts.length === 0) {
                             displayEl.textContent = '扣减：0';
                         } else {
-                            displayEl.textContent = '扣减：−' + fmt(deduction) + ' (' + parts.join(' ') + ')';
+                            displayEl.textContent = '扣减：−' + fmt(totalDeduction) + ' (' + parts.join(' ') + ')';
                         }
                     }
 
-                    document.getElementById('huoTotal').textContent = fmt(carTotal);
-                    var disc = dynamicRecDiscount(carTotal);
-                    document.getElementById('huoRec').textContent = fmt(carTotal * disc);
+                    document.getElementById('huoTotal').textContent = fmt(finalTotal);
+                    var disc = dynamicRecDiscount(finalTotal);
+                    document.getElementById('huoRec').textContent = fmt(finalTotal * disc);
 
-                    var conf = 0.85;
+                    var conf = 0.90;
                     if (stats.length > 0) {
                         var vals = stats.map(function(s) { return s.val; });
                         var maxV = Math.max.apply(null, vals);
                         var minV = Math.min.apply(null, vals);
                         var spread = (maxV - minV) / (maxV + 0.01);
-                        conf = 0.90 - spread * 0.35;
-                        conf = Math.max(0.60, Math.min(0.96, conf));
+                        conf = 0.90 - spread * 0.25;
+                        conf = Math.max(0.65, Math.min(0.96, conf));
                     }
                     var fill = document.getElementById('huoConfidenceFill');
                     var label = document.getElementById('huoConfidenceLabel');
@@ -2670,6 +2733,9 @@
                     var inp = document.getElementById('huo_' + col.key);
                     if (inp) inp.addEventListener('input', calcHuo);
                 });
+
+                document.getElementById('huoAntique12').addEventListener('input', calcHuo);
+                document.getElementById('huoAntique16').addEventListener('input', calcHuo);
 
                 document.querySelectorAll('.carPartBtn').forEach(function(btn) {
                     btn.onclick = function() {
@@ -2695,6 +2761,8 @@
                             .value = ''; });
                     document.getElementById('huoEngine').value = '';
                     document.getElementById('huoBody').value = '';
+                    document.getElementById('huoAntique12').value = '';
+                    document.getElementById('huoAntique16').value = '';
                     calcHuo();
                 };
                 calcHuo();
@@ -2720,7 +2788,7 @@
                     TEXT.advMultiplierRange + ': <span id="advMultiplierRange"></span><br/>' + TEXT.advRedBoost +
                     ': <span id="advRedBoost"></span> ｜ ' + TEXT.advDeduction + ': <span id="advDeduction"></span></div>';
                 html += '<div class="confidence-bar"><span>' + TEXT.advConfidence +
-                    '</span><div class="bar-track"><div class="bar-fill" id="advConfidenceFill" style="width:70%"></div></div><span class="label" id="advConfidenceLabel">70%</span></div>';
+                    '</span><div class="bar-track"><div class="bar-fill" id="advConfidenceFill" style="width:90%"></div></div><span class="label" id="advConfidenceLabel">90%</span></div>';
                 html += '</div>';
                 html += '<div class="reset-row"><button class="btn-reset" id="advClearBtn">' + TEXT.advClear +
                     '</button></div>';
@@ -2761,13 +2829,15 @@
                             2) + ', ' + result.redBoostMax.toFixed(2) + ']';
                         document.getElementById('advDeduction').textContent = '-' + result.deduction
                         .toLocaleString();
-                        var conf = 0.70;
+                        var conf = 0.90;
                         var inputs = 0;
                         if (revealed > 0) inputs++;
                         if (red > 0) inputs++;
                         if (gold > 0) inputs++;
-                        conf += inputs * 0.08;
-                        conf = Math.min(0.96, conf);
+                        if (inputs > 0) {
+                            conf = 0.90 + inputs * 0.02;
+                            conf = Math.min(0.96, conf);
+                        }
                         var fill = document.getElementById('advConfidenceFill');
                         var label = document.getElementById('advConfidenceLabel');
                         if (fill) {
@@ -2786,8 +2856,8 @@
                     document.getElementById('advResultContainer').style.display = 'none';
                     var fill = document.getElementById('advConfidenceFill');
                     var label = document.getElementById('advConfidenceLabel');
-                    if (fill) fill.style.width = '70%';
-                    if (label) label.textContent = '70%';
+                    if (fill) fill.style.width = '90%';
+                    if (label) label.textContent = '90%';
                 };
             }
 
@@ -2818,18 +2888,24 @@
                 else initAdvanced();
             }
 
+            // ============================================================
+            // 高进（已修复）
+            // ============================================================
             function renderGao() {
                 var el = document.getElementById('page-gao');
                 var map = getMap();
                 var gridOptions = map.gridOptions || [];
                 var threshold = CFG.gaoCollapseThreshold || 6;
+
                 el.innerHTML = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon">进</div><div><div class="name">' +
                     TEXT.gaoTitle + '</div><div class="role">' + TEXT.gaoRole + '<span class="tip2">' + TEXT.gaoTip +
                     '</span></div></div></div></div><div class="sec-body" id="gaoBody"></div></div>';
+
                 var body = document.getElementById('gaoBody');
                 var html = '';
                 var visible = gridOptions.filter(function(g) { return g <= threshold; });
                 var hidden = gridOptions.filter(function(g) { return g > threshold; });
+
                 visible.forEach(function(g) {
                     var price = getRedGridPrice(g, map);
                     var inputId = 'gao_grid_' + g;
@@ -2837,6 +2913,7 @@
                         '</span><div class="qty"><input type="number" id="' + inputId + '" min="0" step="1" value="" data-price="' +
                         price + '"></div><span class="sub" id="' + inputId + '_sub">0</span></div>';
                 });
+
                 html += '<div class="collapsed-rows" id="gaoCollapsedRows">';
                 hidden.forEach(function(g) {
                     var price = getRedGridPrice(g, map);
@@ -2849,10 +2926,9 @@
                 if (hidden.length > 0) html += '<div class="collapse-toggle" id="gaoCollapseToggle">' + TEXT
                     .expandMore + '</div>';
 
-                // 高进 - 紫色估价（带-1/+1按键）
                 html += '<div class="row"><span class="lbl">' + TEXT.purpleLabel +
                     '</span><div class="qty"><input type="number" id="gao_purple" min="0" step="100" value=""></div><span class="sub" id="gao_purple_sub">0</span></div>';
-                // 高进 - 橙色估价（带-1/+1按键）
+
                 html += '<div class="row"><span class="lbl">' + TEXT.orangeLabel +
                     '</span><div class="qty"><input type="number" id="gao_orange" min="0" step="100" value=""></div><span class="sub" id="gao_orange_sub">0</span></div>';
 
@@ -2862,55 +2938,45 @@
                     '</span><div class="qty"><input type="number" id="' + redPieceId + '" min="0" step="1" value="" data-price="' +
                     redPiecePrice + '"></div><span class="sub" id="' + redPieceId + '_sub">0</span></div>';
 
-                var redGridPrice = getRedGridAvgPrice(map);
                 html += '<div class="row"><span class="lbl">' + TEXT.redGridLabel +
                     '</span><div class="rg-fields"><input type="number" id="gao_red_grid_avg" min="0" step="0.1" placeholder="均格数" value="" style="width:64px;"><input type="number" id="gao_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:64px;"></div><span class="sub" id="gao_red_grid_sub">0</span></div>';
 
-                html += '<div class="total-bar"><div class="t-item"><span class="label">' + TEXT.recLabel +
-                    '</span><span class="value rec" id="gaoRec">0</span></div><div class="t-item"><span class="label">' +
-                    TEXT.totalLabel + '</span><span class="value" id="gaoTotal">0</span></div></div>';
+                html += '<div class="total-bar">' +
+                    '<div class="t-item"><span class="label">' + TEXT.recLabel + '</span><span class="value rec" id="gaoRec">0</span></div>' +
+                    '<div class="t-item"><span class="label">' + TEXT.totalLabel + '</span><span class="value" id="gaoTotal">0</span></div>' +
+                    '</div>';
+
                 html += '<div class="confidence-bar"><span>' + TEXT.confidenceLabel +
-                    '</span><div class="bar-track"><div class="bar-fill" id="gaoConfidenceFill" style="width:85%"></div></div><span class="label" id="gaoConfidenceLabel">85%</span></div>';
+                    '</span><div class="bar-track"><div class="bar-fill" id="gaoConfidenceFill" style="width:90%"></div></div><span class="label" id="gaoConfidenceLabel">90%</span></div>';
                 html += '<div class="reset-row"><button class="btn-reset" id="gaoReset">' + TEXT.resetLabel +
                     '</button></div>';
                 body.innerHTML = html;
 
-                // 为高进的输入框添加 -1/+1 快捷按键
-                var gaoInputs = ['gao_purple', 'gao_orange', 'gao_red_piece_cnt'];
-                gaoInputs.forEach(function(id) {
-                    var input = document.getElementById(id);
-                    if (input) {
-                        var container = input.parentElement;
-                        var btnsHtml = '<div class="qty-btns">' +
-                            '<button class="qty-btn danger" data-input="' + id + '" data-step="-1">-1</button>' +
-                            '<button class="qty-btn primary" data-input="' + id + '" data-step="1">+1</button>' +
-                            '</div>';
-                        container.insertAdjacentHTML('beforeend', btnsHtml);
-                        container.querySelectorAll('.qty-btn').forEach(function(btn) {
-                            btn.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                var inp = document.getElementById(this.dataset.input);
-                                if (!inp) return;
-                                var step = parseInt(this.dataset.step) || 0;
-                                var val = parseFloat(inp.value) || 0;
-                                var newVal = Math.max(0, val + step);
-                                inp.value = newVal;
-                                var evt = new Event('input', { bubbles: true });
-                                inp.dispatchEvent(evt);
-                            });
-                        });
-                    }
+                // ===== 添加快捷按键 =====
+                gridOptions.forEach(function(g) {
+                    var inputId = 'gao_grid_' + g;
+                    createQuickBtns(inputId, [-1, 1]);
                 });
+                createQuickBtns('gao_red_piece_cnt', [-1, 1]);
+                createQuickBtns('gao_red_grid_avg', [-1, 1]);
+                createQuickBtns('gao_red_grid_cnt', [-1, 1]);
 
                 var toggle = document.getElementById('gaoCollapseToggle');
                 var collapsedRows = document.getElementById('gaoCollapsedRows');
-                if (toggle) { toggle.onclick = function() { var open = collapsedRows.classList.toggle('open');
-                        toggle.textContent = open ? TEXT.collapseMore : TEXT.expandMore; }; }
+                if (toggle) {
+                    toggle.onclick = function() {
+                        var open = collapsedRows.classList.toggle('open');
+                        toggle.textContent = open ? TEXT.collapseMore : TEXT.expandMore;
+                    };
+                }
 
                 function calcGao() {
-                    var total = 0,
-                        inputCount = 0;
-                    gridOptions.forEach(function(g) {
+                    var total = 0;
+                    var inputCount = 0;
+                    var hasValue = false;
+
+                    for (var gi = 0; gi < gridOptions.length; gi++) {
+                        var g = gridOptions[gi];
                         var inp = document.getElementById('gao_grid_' + g);
                         if (inp) {
                             var val = parseFloat(inp.value) || 0;
@@ -2918,66 +2984,129 @@
                             var sub = val * price;
                             var subEl = document.getElementById('gao_grid_' + g + '_sub');
                             if (subEl) subEl.textContent = fmt(sub);
-                            total += sub;
-                            if (val > 0) inputCount++;
+                            total = total + sub;
+                            if (val > 0) {
+                                inputCount = inputCount + 1;
+                                hasValue = true;
+                            }
                         }
-                    });
-                    var purple = parseFloat(document.getElementById('gao_purple').value) || 0;
-                    document.getElementById('gao_purple_sub').textContent = fmt(purple);
-                    total += purple;
-                    var orange = parseFloat(document.getElementById('gao_orange').value) || 0;
-                    document.getElementById('gao_orange_sub').textContent = fmt(orange);
-                    total += orange;
-                    var redPieceCnt = parseFloat(document.getElementById('gao_red_piece_cnt').value) || 0;
-                    var redPiecePrice2 = parseFloat(document.getElementById('gao_red_piece_cnt').dataset.price) ||
-                        getRedPiecePrice(map);
+                    }
+
+                    var purpleInp = document.getElementById('gao_purple');
+                    var purple = 0;
+                    if (purpleInp) {
+                        purple = parseFloat(purpleInp.value) || 0;
+                    }
+                    var purpleSubEl = document.getElementById('gao_purple_sub');
+                    if (purpleSubEl) purpleSubEl.textContent = fmt(purple);
+                    total = total + purple;
+                    if (purple > 0) hasValue = true;
+
+                    var orangeInp = document.getElementById('gao_orange');
+                    var orange = 0;
+                    if (orangeInp) {
+                        orange = parseFloat(orangeInp.value) || 0;
+                    }
+                    var orangeSubEl = document.getElementById('gao_orange_sub');
+                    if (orangeSubEl) orangeSubEl.textContent = fmt(orange);
+                    total = total + orange;
+                    if (orange > 0) hasValue = true;
+
+                    var redPieceInp = document.getElementById('gao_red_piece_cnt');
+                    var redPieceCnt = 0;
+                    var redPiecePrice2 = getRedPiecePrice(map);
+                    if (redPieceInp) {
+                        redPieceCnt = parseFloat(redPieceInp.value) || 0;
+                        var redPiecePriceAttr = parseFloat(redPieceInp.dataset.price) || 0;
+                        if (redPiecePriceAttr > 0) redPiecePrice2 = redPiecePriceAttr;
+                    }
                     var redPieceSub = redPieceCnt * redPiecePrice2;
-                    document.getElementById('gao_red_piece_sub').textContent = fmt(redPieceSub);
-                    total += redPieceSub;
-                    var avgGrid = parseFloat(document.getElementById('gao_red_grid_avg').value) || 0;
-                    var cntGrid = parseFloat(document.getElementById('gao_red_grid_cnt').value) || 0;
+                    var redPieceSubEl = document.getElementById('gao_red_piece_sub');
+                    if (redPieceSubEl) redPieceSubEl.textContent = fmt(redPieceSub);
+                    total = total + redPieceSub;
+                    if (redPieceCnt > 0) hasValue = true;
+
+                    var avgGridInp = document.getElementById('gao_red_grid_avg');
+                    var cntGridInp = document.getElementById('gao_red_grid_cnt');
+                    var avgGrid = 0;
+                    var cntGrid = 0;
+                    if (avgGridInp) avgGrid = parseFloat(avgGridInp.value) || 0;
+                    if (cntGridInp) cntGrid = parseFloat(cntGridInp.value) || 0;
                     var gridTotal = avgGrid * cntGrid;
                     var redGridPrice2 = getRedGridAvgPrice(map);
                     var redGridSub = gridTotal * redGridPrice2;
-                    document.getElementById('gao_red_grid_sub').textContent = fmt(redGridSub);
-                    total += redGridSub;
-                    document.getElementById('gaoTotal').textContent = fmt(total);
+                    var redGridSubEl = document.getElementById('gao_red_grid_sub');
+                    if (redGridSubEl) redGridSubEl.textContent = fmt(redGridSub);
+                    total = total + redGridSub;
+                    if (avgGrid > 0 && cntGrid > 0) hasValue = true;
+
+                    var totalEl = document.getElementById('gaoTotal');
+                    if (totalEl) totalEl.textContent = fmt(total);
+
                     var disc = dynamicRecDiscount(total);
-                    document.getElementById('gaoRec').textContent = fmt(total * disc);
-                    var conf = 0.82 + Math.min(0.12, inputCount * 0.02);
-                    conf = Math.max(0.65, Math.min(0.95, conf));
+                    var recEl = document.getElementById('gaoRec');
+                    if (recEl) recEl.textContent = fmt(total * disc);
+
+                    var conf = 0.90;
+                    if (hasValue) {
+                        conf = 0.90 + Math.min(0.06, inputCount * 0.01);
+                        conf = Math.max(0.65, Math.min(0.96, conf));
+                    }
                     var fill = document.getElementById('gaoConfidenceFill');
                     var label = document.getElementById('gaoConfidenceLabel');
                     if (fill) {
                         fill.style.width = (conf * 100) + '%';
-                        fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#4ec97a,#6ee7b7)' : (conf >
-                            0.65 ? 'linear-gradient(90deg,#ffd93d,#f59e0b)' :
-                            'linear-gradient(90deg,#ff6b6b,#ef4444)');
+                        fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#4ec97a,#6ee7b7)' :
+                            (conf > 0.65 ? 'linear-gradient(90deg,#ffd93d,#f59e0b)' :
+                                'linear-gradient(90deg,#ff6b6b,#ef4444)');
                     }
                     if (label) label.textContent = Math.round(conf * 100) + '%';
                 }
-                gridOptions.forEach(function(g) {
+
+                for (var gi = 0; gi < gridOptions.length; gi++) {
+                    var g = gridOptions[gi];
                     var inp = document.getElementById('gao_grid_' + g);
                     if (inp) inp.addEventListener('input', calcGao);
-                });
-                document.getElementById('gao_purple').addEventListener('input', calcGao);
-                document.getElementById('gao_orange').addEventListener('input', calcGao);
-                document.getElementById('gao_red_piece_cnt').addEventListener('input', calcGao);
-                document.getElementById('gao_red_grid_avg').addEventListener('input', calcGao);
-                document.getElementById('gao_red_grid_cnt').addEventListener('input', calcGao);
-                document.getElementById('gaoReset').onclick = function() {
-                    gridOptions.forEach(function(g) { var inp = document.getElementById('gao_grid_' + g); if (inp)
-                            inp.value = ''; });
-                    document.getElementById('gao_purple').value = '';
-                    document.getElementById('gao_orange').value = '';
-                    document.getElementById('gao_red_piece_cnt').value = '';
-                    document.getElementById('gao_red_grid_avg').value = '';
-                    document.getElementById('gao_red_grid_cnt').value = '';
-                    calcGao();
-                };
+                }
+                var purpleInpBind = document.getElementById('gao_purple');
+                if (purpleInpBind) purpleInpBind.addEventListener('input', calcGao);
+                var orangeInpBind = document.getElementById('gao_orange');
+                if (orangeInpBind) orangeInpBind.addEventListener('input', calcGao);
+                var redPieceInpBind = document.getElementById('gao_red_piece_cnt');
+                if (redPieceInpBind) redPieceInpBind.addEventListener('input', calcGao);
+                var redGridAvgInpBind = document.getElementById('gao_red_grid_avg');
+                if (redGridAvgInpBind) redGridAvgInpBind.addEventListener('input', calcGao);
+                var redGridCntInpBind = document.getElementById('gao_red_grid_cnt');
+                if (redGridCntInpBind) redGridCntInpBind.addEventListener('input', calcGao);
+
+                var resetBtn = document.getElementById('gaoReset');
+                if (resetBtn) {
+                    resetBtn.onclick = function() {
+                        for (var gi2 = 0; gi2 < gridOptions.length; gi2++) {
+                            var g2 = gridOptions[gi2];
+                            var inp2 = document.getElementById('gao_grid_' + g2);
+                            if (inp2) inp2.value = '';
+                        }
+                        var purpleInp2 = document.getElementById('gao_purple');
+                        if (purpleInp2) purpleInp2.value = '';
+                        var orangeInp2 = document.getElementById('gao_orange');
+                        if (orangeInp2) orangeInp2.value = '';
+                        var redPieceInp2 = document.getElementById('gao_red_piece_cnt');
+                        if (redPieceInp2) redPieceInp2.value = '';
+                        var redGridAvgInp2 = document.getElementById('gao_red_grid_avg');
+                        if (redGridAvgInp2) redGridAvgInp2.value = '';
+                        var redGridCntInp2 = document.getElementById('gao_red_grid_cnt');
+                        if (redGridCntInp2) redGridCntInp2.value = '';
+                        calcGao();
+                    };
+                }
+
                 calcGao();
             }
 
+            // ============================================================
+            // 苏琦
+            // ============================================================
             function renderSu() {
                 var el = document.getElementById('page-su');
                 var map = getMap();
@@ -2999,53 +3128,36 @@
                 });
                 html += '<div class="row"><span class="lbl"><span class="dot red"></span>' + TEXT.colorRed +
                     '（格数）</span><div class="rg-fields"><input type="number" id="su_red_grid_avg" min="0" step="0.1" placeholder="均格数" value="" style="width:64px;"><input type="number" id="su_red_grid_cnt" min="0" step="1" placeholder="件数" value="" style="width:64px;"></div><span class="sub" id="su_red_grid_sub">0</span></div>';
-                html += '<div class="total-bar"><div class="t-item"><span class="label">' + TEXT.recLabel +
-                    '</span><span class="value rec" id="suRec">0</span></div><div class="t-item"><span class="label">' +
-                    TEXT.totalLabel + '</span><span class="value" id="suTotal">0</span></div></div>';
+                html += '<div class="total-bar">' +
+                    '<div class="t-item"><span class="label">' + TEXT.recLabel + '</span><span class="value rec" id="suRec">0</span></div>' +
+                    '<div class="t-item"><span class="label">' + TEXT.totalLabel + '</span><span class="value" id="suTotal">0</span></div>' +
+                    '</div>';
                 html += '<div class="confidence-bar"><span>' + TEXT.confidenceLabel +
-                    '</span><div class="bar-track"><div class="bar-fill" id="suConfidenceFill" style="width:85%"></div></div><span class="label" id="suConfidenceLabel">85%</span></div>';
+                    '</span><div class="bar-track"><div class="bar-fill" id="suConfidenceFill" style="width:90%"></div></div><span class="label" id="suConfidenceLabel">90%</span></div>';
                 html += '<div class="reset-row"><button class="btn-reset" id="suReset">' + TEXT.resetLabel +
                     '</button></div>';
                 body.innerHTML = html;
 
-                // 为苏琦的输入框添加 -1/+1 快捷按键
                 var suInputs = ['su_green', 'su_blue', 'su_purple', 'su_orange', 'su_red'];
                 suInputs.forEach(function(id) {
-                    var input = document.getElementById(id);
-                    if (input) {
-                        var container = input.parentElement;
-                        var btnsHtml = '<div class="qty-btns">' +
-                            '<button class="qty-btn danger" data-input="' + id + '" data-step="-1">-1</button>' +
-                            '<button class="qty-btn primary" data-input="' + id + '" data-step="1">+1</button>' +
-                            '</div>';
-                        container.insertAdjacentHTML('beforeend', btnsHtml);
-                        container.querySelectorAll('.qty-btn').forEach(function(btn) {
-                            btn.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                var inp = document.getElementById(this.dataset.input);
-                                if (!inp) return;
-                                var step = parseInt(this.dataset.step) || 0;
-                                var val = parseFloat(inp.value) || 0;
-                                var newVal = Math.max(0, val + step);
-                                inp.value = newVal;
-                                var evt = new Event('input', { bubbles: true });
-                                inp.dispatchEvent(evt);
-                            });
-                        });
-                    }
+                    createQuickBtns(id, [-1, 1]);
                 });
 
                 function calcSu() {
                     var total = 0,
                         inputCount = 0;
+                    var hasValue = false;
                     colorKeys.forEach(function(key) {
                         var inp = document.getElementById('su_' + key);
                         var val = parseFloat(inp.value) || 0;
                         var price = parseFloat(inp.dataset.price) || 0;
                         var sub = val * price;
                         document.getElementById('su_' + key + '_sub').textContent = fmt(sub);
-                        total += sub;
-                        if (val > 0) inputCount++;
+                        total = total + sub;
+                        if (val > 0) {
+                            inputCount = inputCount + 1;
+                            hasValue = true;
+                        }
                     });
                     var avgGrid = parseFloat(document.getElementById('su_red_grid_avg').value) || 0;
                     var cntGrid = parseFloat(document.getElementById('su_red_grid_cnt').value) || 0;
@@ -3053,12 +3165,16 @@
                     var redGridPrice = getRedGridAvgPrice(map);
                     var redGridSub = gridTotal * redGridPrice;
                     document.getElementById('su_red_grid_sub').textContent = fmt(redGridSub);
-                    total += redGridSub;
+                    total = total + redGridSub;
+                    if (avgGrid > 0 && cntGrid > 0) hasValue = true;
                     document.getElementById('suTotal').textContent = fmt(total);
                     var disc = dynamicRecDiscount(total);
                     document.getElementById('suRec').textContent = fmt(total * disc);
-                    var conf = 0.80 + Math.min(0.15, inputCount * 0.025);
-                    conf = Math.max(0.60, Math.min(0.95, conf));
+                    var conf = 0.90;
+                    if (hasValue) {
+                        conf = 0.90 + Math.min(0.06, inputCount * 0.01);
+                        conf = Math.max(0.65, Math.min(0.96, conf));
+                    }
                     var fill = document.getElementById('suConfidenceFill');
                     var label = document.getElementById('suConfidenceLabel');
                     if (fill) {
@@ -3083,6 +3199,9 @@
                 calcSu();
             }
 
+            // ============================================================
+            // 安可
+            // ============================================================
             function renderAn() {
                 var el = document.getElementById('page-an');
                 var map = getMap();
@@ -3192,6 +3311,9 @@
                 };
             }
 
+            // ============================================================
+            // 红品均格反查
+            // ============================================================
             function renderRev() {
                 var el = document.getElementById('page-rev');
                 var map = getMap();
@@ -3301,6 +3423,9 @@
                 };
             }
 
+            // ============================================================
+            // 初始化
+            // ============================================================
             renderHuo();
             renderGao();
             renderSu();
@@ -3308,9 +3433,6 @@
             renderRev();
 
             document.querySelector('.tab-btn.active')?.click();
-
-            console.log('✦ 俱乐大玩家超级AI · 霓虹纪元已启动（含迪城地图 + 快捷按键）');
-            console.log('✦ 卡密验证 · 动态倒计时 · 心跳检测');
         }
     </script>
 
