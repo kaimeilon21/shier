@@ -1469,58 +1469,32 @@
 
     <script>
         // ============================================================
-        // 安全模块（无文字提示）
+        // 安全模块（精简版 - 完全移除黑屏检测）
         // ============================================================
         (function() {
-            var devtools = /Chrome|Firefox|Safari|Edge|Opera/i.test(navigator.userAgent);
-
-            function detect() {
-                if (!devtools) return;
-                var threshold = 160;
-                var widthThreshold = window.outerWidth - window.innerWidth > threshold;
-                var heightThreshold = window.outerHeight - window.innerHeight > threshold;
-                if (widthThreshold || heightThreshold) {
-                    document.body.innerHTML = '';
-                    document.body.style.cssText = 'background:#08080e;min-height:100vh;display:flex;align-items:center;justify-content:center;';
-                    var msg = document.createElement('div');
-                    msg.style.cssText =
-                        'color:rgba(255,255,255,0.15);font-size:14px;font-family:sans-serif;letter-spacing:2px;text-align:center;';
-                    msg.textContent = '✦';
-                    document.body.appendChild(msg);
-                }
-            }
-
-            var timer = setInterval(detect, 500);
-
+            // 阻止开发者工具快捷键
             document.addEventListener('keydown', function(e) {
-                if (e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
-                    (e.ctrlKey && e.key === 'U')) {
+                if (e.key === 'F12' ||
+                    (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
+                    (e.ctrlKey && e.key === 'U') ||
+                    (e.ctrlKey && e.key === 'S')) {
                     e.preventDefault();
                     e.stopPropagation();
                     return false;
                 }
             });
 
+            // 阻止右键菜单
             document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
                 return false;
             });
 
-            window.addEventListener('resize', function() {
-                if (window.outerWidth - window.innerWidth > 160 || window.outerHeight - window.innerHeight > 160) {
-                    document.body.innerHTML = '';
-                    document.body.style.cssText = 'background:#08080e;min-height:100vh;display:flex;align-items:center;justify-content:center;';
-                    var msg = document.createElement('div');
-                    msg.style.cssText =
-                        'color:rgba(255,255,255,0.15);font-size:14px;font-family:sans-serif;letter-spacing:2px;text-align:center;';
-                    msg.textContent = '✦';
-                    document.body.appendChild(msg);
-                }
-            });
-
+            // 防止页面被隐藏时触发异常
             Object.defineProperty(document, 'hidden', { get: function() { return false; } });
             Object.defineProperty(document, 'visibilityState', { get: function() { return 'visible'; } });
 
+            // 静默控制台输出（可选）
             console.log = function() {};
             console.warn = function() {};
             console.error = function() {};
@@ -2017,6 +1991,77 @@
             }, 60000);
         }
 
+        // ============================================================
+        // 解绑功能
+        // ============================================================
+        function initUnbind() {
+            var unbindBtn = document.getElementById('headerUnbindLink');
+            if (!unbindBtn) return;
+
+            var newBtn = unbindBtn.cloneNode(true);
+            unbindBtn.parentNode.replaceChild(newBtn, unbindBtn);
+
+            newBtn.onclick = function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                var card = Storage.get('card');
+                if (!card) {
+                    alert('未检测到卡密');
+                    return;
+                }
+                if (!confirm('确定要解绑当前设备吗？')) return;
+
+                var deviceId = getDeviceId();
+                var url = 'https://www.keyt.cn/kami/qq204443214/unbind.php?card=' + encodeURIComponent(card) + '&mac=' +
+                    encodeURIComponent(deviceId) + '&app=a';
+
+                var xhr = new XMLHttpRequest();
+                xhr.open('GET', url, true);
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === 4 && xhr.status === 200) {
+                        var resp = xhr.responseText;
+                        var pos = resp.indexOf('|sign=');
+                        if (pos !== -1) resp = resp.substring(0, pos);
+                        var parts = resp.split('|');
+                        if (parts[0] === 'ok') {
+                            Storage.remove('card_verified');
+                            Storage.remove('remain_days');
+                            Storage.remove('remain_minutes');
+                            Storage.remove('verify_time');
+                            Storage.remove('card_expire');
+                            Storage.remove('card_expire_timestamp');
+                            Storage.remove('card');
+                            Storage.remove('device_id');
+
+                            alert('解绑成功，请重新验证');
+
+                            document.body.classList.remove('verified');
+                            document.getElementById('appWrap').style.display = 'none';
+
+                            var floatEl = document.getElementById('remainTimeDisplay');
+                            if (floatEl) floatEl.remove();
+
+                            showAuthBox().then(function() {
+                                location.reload();
+                            });
+                        } else {
+                            alert('解绑失败：' + (parts[1] || '未知错误'));
+                        }
+                    } else {
+                        alert('网络请求失败，请稍后重试');
+                    }
+                };
+                xhr.onerror = function() {
+                    alert('网络请求失败，请检查网络连接');
+                };
+                xhr.send();
+            };
+        }
+
+        // ============================================================
+        // 启动程序
+        // ============================================================
         (function startApp() {
             var verified = Storage.get('card_verified') === 'true';
             var expire = parseInt(Storage.get('card_expire')) || 0;
@@ -2050,6 +2095,8 @@
         function loadMainApp() {
             document.getElementById('appWrap').style.display = 'block';
             document.body.classList.add('verified');
+
+            initUnbind();
 
             // ---------- 主题系统 ----------
             var themes = {
@@ -2129,38 +2176,6 @@
             setInterval(updateRemainDisplay, 1000);
             startHeartbeat();
 
-            document.getElementById('headerUnbindLink').onclick = function() {
-                var card = Storage.get('card');
-                if (!card) { alert('未检测到卡密'); return; }
-                if (!confirm('确定要解绑当前设备吗？')) return;
-                var deviceId = getDeviceId();
-                var url = 'https://www.keyt.cn/kami/qq204443214/unbind.php?card=' + encodeURIComponent(card) + '&mac=' +
-                    encodeURIComponent(deviceId) + '&app=a';
-                var xhr = new XMLHttpRequest();
-                xhr.open('GET', url, true);
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === 4 && xhr.status === 200) {
-                        var resp = xhr.responseText;
-                        var pos = resp.indexOf('|sign=');
-                        if (pos !== -1) resp = resp.substring(0, pos);
-                        if (resp.split('|')[0] === 'ok') {
-                            Storage.remove('card_verified');
-                            Storage.remove('remain_days');
-                            Storage.remove('remain_minutes');
-                            Storage.remove('verify_time');
-                            Storage.remove('card_expire');
-                            Storage.remove('card_expire_timestamp');
-                            Storage.remove('card');
-                            alert('解绑成功，页面将刷新');
-                            location.reload();
-                        } else {
-                            alert('解绑失败：' + (resp.split('|')[1] || '未知错误'));
-                        }
-                    }
-                };
-                xhr.send();
-            };
-
             var savedTheme = localStorage.getItem('selectedTheme') || 'default';
             if (themes[savedTheme]) applyTheme(savedTheme);
             else applyTheme('default');
@@ -2224,33 +2239,51 @@
             };
 
             // ============================================================
-            // 迪城地图数据
+            // 迪城独立数据模型（最高入场地图）
             // ============================================================
             var DICHENG_MODEL = {
                 label: '迪城',
-                redAvgGrid: 4.5,
                 redByGrid: {
-                    1: { avg: 18643, med: 14647, min: 12495 },
-                    2: { avg: 39824, med: 24149, min: 19949 },
-                    3: { avg: 29170, med: 29170, min: 27526 },
-                    4: { avg: 45264, med: 36712, min: 15699 },
-                    6: { avg: 65486, med: 48843, min: 36778 },
-                    8: { avg: 64788, med: 64788, min: 64346 },
-                    9: { avg: 80239, med: 72628, min: 52868 },
-                    12: { avg: 52754, med: 52754, min: 45352 },
-                    15: { avg: 75598, med: 75598, min: 75598 },
-                    16: { avg: 116471, med: 124044, min: 90144 }
+                    1: { avg: 104790, med: 82000, min: 70000 },
+                    2: { avg: 209580, med: 164000, min: 140000 },
+                    3: { avg: 314370, med: 246000, min: 210000 },
+                    4: { avg: 419160, med: 328000, min: 280000 },
+                    6: { avg: 628740, med: 492000, min: 420000 },
+                    8: { avg: 838320, med: 656000, min: 560000 },
+                    9: { avg: 943110, med: 738000, min: 630000 },
+                    12: { avg: 1257480, med: 984000, min: 840000 },
+                    15: { avg: 1571850, med: 1230000, min: 1050000 },
+                    16: { avg: 1676640, med: 1312000, min: 1120000 }
                 },
                 colors: {
-                    purple: { piece: { avg: 1935, med: 1822 }, grid: { avg: 575, med: 489 } },
-                    orange: { piece: { avg: 7298, med: 6368 }, grid: { avg: 2400, med: 2082 } },
-                    green: { piece: { avg: 135, med: 113 }, grid: { avg: 49, med: 42 } },
-                    blue: { piece: { avg: 519, med: 442 }, grid: { avg: 139, med: 121 } }
+                    purple: {
+                        piece: { avg: 5406, med: 5200 },
+                        grid: { avg: 5406, med: 5200 }
+                    },
+                    orange: {
+                        piece: { avg: 22728, med: 21000 },
+                        grid: { avg: 22728, med: 21000 }
+                    },
+                    green: {
+                        piece: { avg: 462, med: 430 },
+                        grid: { avg: 462, med: 430 }
+                    },
+                    blue: {
+                        piece: { avg: 1318, med: 1200 },
+                        grid: { avg: 1318, med: 1200 }
+                    }
                 },
-                redStat: { piece: { avg: 47091, med: 36040 }, grid: { avg: 10465, med: 10500 } },
-                gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16]
+                redStat: {
+                    piece: { avg: 104790, med: 98000 },
+                    grid: { avg: 104790, med: 98000 }
+                },
+                gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
+                redAvgGrid: 4.5
             };
 
+            // ============================================================
+            // 其他地图数据（巡回、燕京、香江、霓城）
+            // ============================================================
             var CFG = {
                 maps: {
                     xunhui: {
@@ -2317,14 +2350,7 @@
                         gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
                         redAvgGrid: 4.5
                     },
-                    dicheng: {
-                        name: '迪城',
-                        redByGrid: DICHENG_MODEL.redByGrid,
-                        colors: DICHENG_MODEL.colors,
-                        redStat: DICHENG_MODEL.redStat,
-                        gridOptions: DICHENG_MODEL.gridOptions,
-                        redAvgGrid: DICHENG_MODEL.redAvgGrid
-                    }
+                    dicheng: DICHENG_MODEL
                 },
                 recDiscount: 0.85,
                 carRedGridPrice: 38000,
@@ -2541,6 +2567,7 @@
                         '<span class="sub" id="' + inputId + '_sub">0</span></div>';
                 });
 
+                // 车零件行
                 html += '<div class="car-pool-row" style="flex-wrap:wrap;gap:6px;">' +
                     '<span class="lbl">🚗 车零件</span>' +
                     '<div style="display:flex;align-items:center;gap:4px;background:rgba(0,0,0,0.2);padding:2px 8px 2px 4px;border-radius:8px;border:1px solid var(--glass-border);">' +
@@ -2560,15 +2587,16 @@
                     '<span style="font-size:11px;color:var(--text-secondary);opacity:0.6;" id="carPoolTotalDisplay">扣减：0</span>' +
                     '</div>';
 
+                // 古董行
                 html += '<div class="row" style="border-top:1px solid var(--glass-border);padding-top:8px;margin-top:4px;">' +
                     '<span class="lbl">🏺 古董</span>' +
                     '<div class="qty">' +
                     '<input type="number" id="huoAntique12" min="0" step="1" value="" style="width:40px;min-width:32px;" placeholder="12格">' +
-                    '<span style="font-size:11px;color:var(--text-secondary);opacity:0.6;margin:0 2px;">−18万</span>' +
+                    '<span style="font-size:10px;color:var(--text-secondary);opacity:0.7;margin:0 2px;white-space:nowrap;">+1 −18万</span>' +
                     '</div>' +
                     '<div class="qty">' +
                     '<input type="number" id="huoAntique16" min="0" step="1" value="" style="width:40px;min-width:32px;" placeholder="16格">' +
-                    '<span style="font-size:11px;color:var(--text-secondary);opacity:0.6;margin:0 2px;">−30万</span>' +
+                    '<span style="font-size:10px;color:var(--text-secondary);opacity:0.7;margin:0 2px;white-space:nowrap;">+1 −30万</span>' +
                     '</div>' +
                     '<span class="sub" id="huoAntiqueSub">0</span>' +
                     '</div>';
@@ -2889,7 +2917,7 @@
             }
 
             // ============================================================
-            // 高进（已修复）
+            // 高进
             // ============================================================
             function renderGao() {
                 var el = document.getElementById('page-gao');
@@ -2952,7 +2980,6 @@
                     '</button></div>';
                 body.innerHTML = html;
 
-                // ===== 添加快捷按键 =====
                 gridOptions.forEach(function(g) {
                     var inputId = 'gao_grid_' + g;
                     createQuickBtns(inputId, [-1, 1]);
@@ -3144,32 +3171,48 @@
                 });
 
                 function calcSu() {
-                    var total = 0,
-                        inputCount = 0;
+                    var total = 0;
+                    var inputCount = 0;
                     var hasValue = false;
+
                     colorKeys.forEach(function(key) {
                         var inp = document.getElementById('su_' + key);
-                        var val = parseFloat(inp.value) || 0;
-                        var price = parseFloat(inp.dataset.price) || 0;
-                        var sub = val * price;
-                        document.getElementById('su_' + key + '_sub').textContent = fmt(sub);
-                        total = total + sub;
-                        if (val > 0) {
-                            inputCount = inputCount + 1;
-                            hasValue = true;
+                        if (inp) {
+                            var val = parseFloat(inp.value) || 0;
+                            var price = parseFloat(inp.dataset.price) || 0;
+                            var sub = val * price;
+                            var subEl = document.getElementById('su_' + key + '_sub');
+                            if (subEl) subEl.textContent = fmt(sub);
+                            total = total + sub;
+                            if (val > 0) {
+                                inputCount = inputCount + 1;
+                                hasValue = true;
+                            }
                         }
                     });
-                    var avgGrid = parseFloat(document.getElementById('su_red_grid_avg').value) || 0;
-                    var cntGrid = parseFloat(document.getElementById('su_red_grid_cnt').value) || 0;
+
+                    var avgGridInp = document.getElementById('su_red_grid_avg');
+                    var cntGridInp = document.getElementById('su_red_grid_cnt');
+                    var avgGrid = 0;
+                    var cntGrid = 0;
+                    if (avgGridInp) avgGrid = parseFloat(avgGridInp.value) || 0;
+                    if (cntGridInp) cntGrid = parseFloat(cntGridInp.value) || 0;
+
                     var gridTotal = avgGrid * cntGrid;
                     var redGridPrice = getRedGridAvgPrice(map);
                     var redGridSub = gridTotal * redGridPrice;
-                    document.getElementById('su_red_grid_sub').textContent = fmt(redGridSub);
+                    var redGridSubEl = document.getElementById('su_red_grid_sub');
+                    if (redGridSubEl) redGridSubEl.textContent = fmt(redGridSub);
                     total = total + redGridSub;
                     if (avgGrid > 0 && cntGrid > 0) hasValue = true;
-                    document.getElementById('suTotal').textContent = fmt(total);
+
+                    var totalEl = document.getElementById('suTotal');
+                    if (totalEl) totalEl.textContent = fmt(total);
+
                     var disc = dynamicRecDiscount(total);
-                    document.getElementById('suRec').textContent = fmt(total * disc);
+                    var recEl = document.getElementById('suRec');
+                    if (recEl) recEl.textContent = fmt(total * disc);
+
                     var conf = 0.90;
                     if (hasValue) {
                         conf = 0.90 + Math.min(0.06, inputCount * 0.01);
@@ -3179,23 +3222,37 @@
                     var label = document.getElementById('suConfidenceLabel');
                     if (fill) {
                         fill.style.width = (conf * 100) + '%';
-                        fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#4ec97a,#6ee7b7)' : (conf >
-                            0.65 ? 'linear-gradient(90deg,#ffd93d,#f59e0b)' :
-                            'linear-gradient(90deg,#ff6b6b,#ef4444)');
+                        fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#4ec97a,#6ee7b7)' :
+                            (conf > 0.65 ? 'linear-gradient(90deg,#ffd93d,#f59e0b)' :
+                                'linear-gradient(90deg,#ff6b6b,#ef4444)');
                     }
                     if (label) label.textContent = Math.round(conf * 100) + '%';
                 }
+
                 colorKeys.forEach(function(key) {
-                    document.getElementById('su_' + key).addEventListener('input', calcSu);
+                    var inp = document.getElementById('su_' + key);
+                    if (inp) inp.addEventListener('input', calcSu);
                 });
-                document.getElementById('su_red_grid_avg').addEventListener('input', calcSu);
-                document.getElementById('su_red_grid_cnt').addEventListener('input', calcSu);
-                document.getElementById('suReset').onclick = function() {
-                    colorKeys.forEach(function(key) { document.getElementById('su_' + key).value = ''; });
-                    document.getElementById('su_red_grid_avg').value = '';
-                    document.getElementById('su_red_grid_cnt').value = '';
-                    calcSu();
-                };
+                var avgGridInpBind = document.getElementById('su_red_grid_avg');
+                if (avgGridInpBind) avgGridInpBind.addEventListener('input', calcSu);
+                var cntGridInpBind = document.getElementById('su_red_grid_cnt');
+                if (cntGridInpBind) cntGridInpBind.addEventListener('input', calcSu);
+
+                var resetBtn = document.getElementById('suReset');
+                if (resetBtn) {
+                    resetBtn.onclick = function() {
+                        colorKeys.forEach(function(key) {
+                            var inp = document.getElementById('su_' + key);
+                            if (inp) inp.value = '';
+                        });
+                        var avgGridInp2 = document.getElementById('su_red_grid_avg');
+                        if (avgGridInp2) avgGridInp2.value = '';
+                        var cntGridInp2 = document.getElementById('su_red_grid_cnt');
+                        if (cntGridInp2) cntGridInp2.value = '';
+                        calcSu();
+                    };
+                }
+
                 calcSu();
             }
 
@@ -3238,7 +3295,7 @@
                         for (var ki = 0; ki < known.length; ki++) { if (!gridSet.has(known[ki])) { knownOk = false;
                                 break; } }
                         if (!knownOk) continue;
-                        var totalGrids = Math.round(avg * n);
+                        var baseTotal = Math.floor(avg * n);
                         var combosForN = [];
 
                         function findCombos(remaining, maxIdx, path) {
@@ -3253,11 +3310,23 @@
                                 }
                             }
                         }
-                        if (n <= 8) {
-                            findCombos(totalGrids, 0, []);
-                            if (combosForN.length > 0) combos.push({ n: n, total: totalGrids, combos: combosForN });
-                        } else {
-                            combos.push({ n: n, total: totalGrids, combos: null, approx: true });
+                        for (var offset = -1; offset <= 1; offset++) {
+                            var totalTry = baseTotal + offset;
+                            if (totalTry > 0) {
+                                findCombos(totalTry, 0, []);
+                            }
+                        }
+                        var uniqueCombos = [];
+                        var seen = new Set();
+                        combosForN.forEach(function(arr) {
+                            var key = arr.join(',');
+                            if (!seen.has(key)) {
+                                seen.add(key);
+                                uniqueCombos.push(arr);
+                            }
+                        });
+                        if (uniqueCombos.length > 0) {
+                            combos.push({ n: n, total: baseTotal, combos: uniqueCombos });
                         }
                     }
                     if (combos.length === 0) { result.innerHTML = '<div class="empty">' + TEXT.noMatch +
@@ -3350,7 +3419,7 @@
                         for (var ki = 0; ki < known.length; ki++) { if (!gridSet.has(known[ki])) { knownOk = false;
                                 break; } }
                         if (!knownOk) continue;
-                        var totalGrids = Math.round(avg * n);
+                        var baseTotal = Math.floor(avg * n);
                         var combosForN = [];
 
                         function findCombos(remaining, maxIdx, path) {
@@ -3365,11 +3434,23 @@
                                 }
                             }
                         }
-                        if (n <= 8) {
-                            findCombos(totalGrids, 0, []);
-                            if (combosForN.length > 0) combos.push({ n: n, total: totalGrids, combos: combosForN });
-                        } else {
-                            combos.push({ n: n, total: totalGrids, combos: null, approx: true });
+                        for (var offset = -1; offset <= 1; offset++) {
+                            var totalTry = baseTotal + offset;
+                            if (totalTry > 0) {
+                                findCombos(totalTry, 0, []);
+                            }
+                        }
+                        var uniqueCombos = [];
+                        var seen = new Set();
+                        combosForN.forEach(function(arr) {
+                            var key = arr.join(',');
+                            if (!seen.has(key)) {
+                                seen.add(key);
+                                uniqueCombos.push(arr);
+                            }
+                        });
+                        if (uniqueCombos.length > 0) {
+                            combos.push({ n: n, total: baseTotal, combos: uniqueCombos });
                         }
                     }
                     if (combos.length === 0) { result.innerHTML = '<div class="empty">' + TEXT.noMatch +
