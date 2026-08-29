@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>俱乐大玩家超级AI · 霓虹纪元</title>
     <style>
+        /* ===== 基础样式重置 ===== */
         * {
             margin: 0;
             padding: 0;
@@ -63,18 +64,10 @@
         }
 
         @keyframes bgFloat {
-            0% {
-                transform: translate(0, 0) rotate(0deg);
-            }
-            33% {
-                transform: translate(2%, -2%) rotate(2deg);
-            }
-            66% {
-                transform: translate(-1%, 3%) rotate(-1deg);
-            }
-            100% {
-                transform: translate(1%, -1%) rotate(0deg);
-            }
+            0% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(2%, -2%) rotate(2deg); }
+            66% { transform: translate(-1%, 3%) rotate(-1deg); }
+            100% { transform: translate(1%, -1%) rotate(0deg); }
         }
 
         #particles-canvas {
@@ -95,14 +88,7 @@
             padding: 20px 16px 40px;
         }
 
-        #appWrap,
-        .top-bar,
-        .warning-banner,
-        .header,
-        .tour-guide,
-        .map-switch,
-        .tabs,
-        #pagesContainer {
+        #appWrap, .top-bar, .warning-banner, .header, .tour-guide, .map-switch, .tabs, #pagesContainer {
             display: none;
         }
 
@@ -117,6 +103,7 @@
             display: block;
         }
 
+        /* ===== 验证框 ===== */
         #authBox {
             position: fixed;
             top: 0;
@@ -133,14 +120,8 @@
         }
 
         @keyframes authFadeIn {
-            from {
-                opacity: 0;
-                transform: scale(0.95) translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
         }
 
         #authBox .auth-card {
@@ -158,12 +139,8 @@
         }
 
         @keyframes authCardFloat {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(-6px);
-            }
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-6px); }
         }
 
         #authBox .auth-card::before {
@@ -182,15 +159,9 @@
         }
 
         @keyframes borderGlow {
-            0% {
-                background-position: 0% 50%;
-            }
-            50% {
-                background-position: 100% 50%;
-            }
-            100% {
-                background-position: 0% 50%;
-            }
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         #authBox .auth-icon {
@@ -201,15 +172,8 @@
         }
 
         @keyframes iconPulse {
-            0%,
-            100% {
-                transform: scale(1);
-                filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.2));
-            }
-            50% {
-                transform: scale(1.05);
-                filter: drop-shadow(0 0 40px rgba(123, 47, 252, 0.4));
-            }
+            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.2)); }
+            50% { transform: scale(1.05); filter: drop-shadow(0 0 40px rgba(123, 47, 252, 0.4)); }
         }
 
         #authBox .auth-title {
@@ -298,6 +262,7 @@
             transform: none !important;
         }
 
+        /* ===== 顶部栏 ===== */
         .top-bar {
             display: flex;
             justify-content: space-between;
@@ -382,6 +347,7 @@
             margin-right: 8px;
         }
 
+        /* ===== 标题 ===== */
         .header {
             text-align: center;
             padding: 18px 0 14px;
@@ -407,13 +373,8 @@
         }
 
         @keyframes headerLine {
-            0%,
-            100% {
-                opacity: 0.3;
-            }
-            50% {
-                opacity: 1;
-            }
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
         }
 
         .header .main-title {
@@ -513,6 +474,7 @@
             border-left: 2px solid rgba(0, 212, 255, 0.2);
         }
 
+        /* ===== 地图切换 ===== */
         .map-switch {
             display: flex;
             gap: 6px;
@@ -550,6 +512,248 @@
             color: #fff;
         }
 
+        /* ===== 巡回面板 ===== */
+        #xunhuiFilterPanel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius);
+            padding: 16px 18px;
+            margin: 12px 0 16px;
+            box-shadow: var(--glass-shadow);
+            display: none;
+        }
+        #xunhuiFilterPanel .panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        #xunhuiFilterPanel .panel-header .title {
+            font-size: 18px;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        #xunhuiFilterPanel .panel-header .badge {
+            font-size: 12px;
+            color: #00d4ff;
+            background: rgba(0, 212, 255, 0.08);
+            padding: 2px 14px;
+            border-radius: 30px;
+            border: 1px solid rgba(0, 212, 255, 0.1);
+        }
+        .xunhui-filter-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 8px;
+        }
+        .xunhui-filter-row label {
+            font-size: 13px;
+            color: var(--text-secondary);
+            min-width: 70px;
+        }
+        .xunhui-filter-row input[type="text"],
+        .xunhui-filter-row input[type="number"] {
+            padding: 4px 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            text-align: center;
+            outline: none;
+            transition: all var(--transition);
+            width: 80px;
+        }
+        .xunhui-filter-row input:focus {
+            border-color: #00d4ff;
+        }
+        .xunhui-filter-row .ht-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 28px;
+            height: 28px;
+            padding: 0 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .xunhui-filter-row .ht-btn:active {
+            transform: scale(0.92);
+            background: rgba(0, 212, 255, 0.15);
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+        .xunhui-filter-row .ht-btn.primary {
+            background: rgba(0, 212, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.15);
+            color: #00d4ff;
+        }
+        .xunhui-filter-row .ht-btn.danger:active {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+        .xunhui-add-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 6px;
+        }
+        .xunhui-add-item input {
+            padding: 4px 8px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            outline: none;
+            transition: all var(--transition);
+        }
+        .xunhui-add-item input:focus {
+            border-color: #00d4ff;
+        }
+        .xunhui-add-item .name-input {
+            width: 120px;
+        }
+        .xunhui-add-item .value-input {
+            width: 100px;
+        }
+        .btn-xunhui-action {
+            padding: 6px 16px;
+            background: linear-gradient(135deg, #00d4ff, #7b2ffc);
+            border: none;
+            border-radius: 30px;
+            color: #fff;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .btn-xunhui-action:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+        }
+        .btn-xunhui-action.secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+        }
+        .btn-xunhui-action.secondary:hover {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+        .xunhui-result-group {
+            margin-top: 12px;
+            border-top: 1px solid var(--glass-border);
+            padding-top: 10px;
+        }
+        .xunhui-result-group .group-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+        }
+        .xunhui-result-card {
+            background: rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            padding: 10px 14px;
+            margin-bottom: 6px;
+        }
+        .xunhui-result-card .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .xunhui-result-card .card-header .count {
+            font-weight: 700;
+            color: #00d4ff;
+        }
+        .xunhui-result-card .card-header .meta {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .xunhui-result-card .card-body {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
+        .xunhui-result-card .card-body .combo-tag {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 12px;
+            font-family: monospace;
+            color: var(--text-secondary);
+        }
+        .xunhui-result-card .card-body .combo-tag .hl {
+            color: #4ec97a;
+            font-weight: 600;
+        }
+        .xunhui-empty {
+            color: var(--text-secondary);
+            font-size: 13px;
+            padding: 8px 0;
+        }
+
+        #xunhuiItemList {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 4px;
+        }
+        #xunhuiItemList .item-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(0, 212, 255, 0.06);
+            border: 1px solid rgba(0, 212, 255, 0.08);
+            border-radius: 30px;
+            padding: 2px 10px 2px 14px;
+            font-size: 12px;
+        }
+        #xunhuiItemList .item-tag .val {
+            color: #00d4ff;
+        }
+        #xunhuiItemList .item-tag .del {
+            cursor: pointer;
+            color: #ff6b6b;
+            margin-left: 2px;
+        }
+
+        @media (max-width: 600px) {
+            .xunhui-filter-row input {
+                width: 60px;
+            }
+            .xunhui-add-item .name-input {
+                width: 80px;
+            }
+            .xunhui-add-item .value-input {
+                width: 70px;
+            }
+        }
+
+        /* ===== Tabs ===== */
         .tabs {
             display: flex;
             gap: 6px;
@@ -585,6 +789,7 @@
             color: #fff;
         }
 
+        /* ===== Pages ===== */
         .page {
             display: none;
             animation: pageFade 0.4s ease;
@@ -595,16 +800,11 @@
         }
 
         @keyframes pageFade {
-            from {
-                opacity: 0;
-                transform: translateY(16px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ===== Section ===== */
         .section {
             background: var(--glass-bg);
             backdrop-filter: blur(24px);
@@ -672,6 +872,7 @@
             padding: 16px 18px 18px;
         }
 
+        /* ===== 通用组件 ===== */
         .row {
             display: flex;
             align-items: center;
@@ -680,18 +881,15 @@
             border-bottom: 1px solid rgba(255, 255, 255, 0.03);
             flex-wrap: wrap;
         }
-
         .row:last-child {
             border-bottom: none;
         }
-
         .row .lbl {
             min-width: 60px;
             font-weight: 600;
             font-size: 13px;
             color: var(--text-primary);
         }
-
         .row .qty {
             display: flex;
             align-items: center;
@@ -699,7 +897,6 @@
             flex: 1;
             min-width: 0;
         }
-
         .row .qty input[type="number"] {
             width: 50px;
             min-width: 40px;
@@ -716,13 +913,11 @@
             transition: all var(--transition);
             flex-shrink: 0;
         }
-
         .row .qty input[type="number"]:focus {
             border-color: #00d4ff;
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
             background: rgba(0, 0, 0, 0.4);
         }
-
         .row .qty input[type="number"]::-webkit-outer-spin-button,
         .row .qty input[type="number"]::-webkit-inner-spin-button {
             -webkit-appearance: none;
@@ -735,7 +930,6 @@
             flex-wrap: wrap;
             align-items: center;
         }
-
         .qty-btn {
             display: inline-flex;
             align-items: center;
@@ -752,78 +946,31 @@
             cursor: pointer;
             transition: all 0.2s ease;
             user-select: none;
-            -webkit-tap-highlight-color: transparent;
             touch-action: manipulation;
         }
-
         .qty-btn:active {
             transform: scale(0.92);
             background: rgba(0, 212, 255, 0.15);
             border-color: #00d4ff;
             color: #00d4ff;
         }
-
         .qty-btn:hover:not(:active) {
             background: rgba(255, 255, 255, 0.08);
             border-color: rgba(255, 255, 255, 0.15);
         }
-
         .qty-btn.primary {
             background: rgba(0, 212, 255, 0.08);
             border-color: rgba(0, 212, 255, 0.15);
             color: #00d4ff;
         }
-
         .qty-btn.primary:active {
             background: rgba(0, 212, 255, 0.25);
             border-color: #00d4ff;
         }
-
         .qty-btn.danger:active {
             background: rgba(255, 107, 107, 0.2);
             border-color: #ff6b6b;
             color: #ff6b6b;
-        }
-
-        @media (max-width: 480px) {
-            .qty-btn {
-                min-width: 32px;
-                height: 32px;
-                font-size: 12px;
-                padding: 0 8px;
-            }
-            .row .qty input[type="number"] {
-                width: 44px;
-                min-width: 36px;
-                font-size: 12px;
-                padding: 5px 3px;
-            }
-            .row .lbl {
-                min-width: 48px;
-                font-size: 12px;
-            }
-            .qty-btns {
-                gap: 2px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .qty-btn {
-                min-width: 26px;
-                height: 26px;
-                font-size: 10px;
-                padding: 0 4px;
-            }
-            .row .qty input[type="number"] {
-                width: 36px;
-                min-width: 30px;
-                font-size: 11px;
-                padding: 4px 2px;
-            }
-            .row .lbl {
-                min-width: 40px;
-                font-size: 11px;
-            }
         }
 
         .row .sub {
@@ -848,25 +995,21 @@
             flex-wrap: wrap;
             gap: 6px;
         }
-
         .total-bar .t-item {
             display: flex;
             align-items: center;
             gap: 8px;
             font-size: 14px;
         }
-
         .total-bar .t-item .label {
             color: var(--text-secondary);
             font-weight: 500;
         }
-
         .total-bar .t-item .value {
             font-weight: 800;
             color: #00d4ff;
             font-variant-numeric: tabular-nums;
         }
-
         .total-bar .t-item .value.rec {
             color: #4ec97a;
         }
@@ -876,7 +1019,6 @@
             display: flex;
             justify-content: flex-end;
         }
-
         .btn-reset {
             padding: 6px 20px;
             background: rgba(255, 255, 255, 0.03);
@@ -888,26 +1030,9 @@
             transition: all var(--transition);
             font-weight: 500;
         }
-
         .btn-reset:hover {
             border-color: #ff6b6b;
             color: #ff6b6b;
-        }
-
-        .car-pool-row {
-            margin-top: 8px;
-            padding-top: 8px;
-            border-top: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .car-pool-row .lbl {
-            font-weight: 600;
-            color: var(--text-secondary);
-            font-size: 13px;
         }
 
         .confidence-bar {
@@ -919,7 +1044,6 @@
             margin-top: 10px;
             padding: 4px 0;
         }
-
         .confidence-bar .bar-track {
             flex: 1;
             height: 4px;
@@ -928,20 +1052,34 @@
             overflow: hidden;
             min-width: 50px;
         }
-
         .confidence-bar .bar-fill {
             height: 100%;
             border-radius: 4px;
             transition: width 0.6s ease;
             background: linear-gradient(90deg, #ff6b6b, #ffd93d, #4ec97a);
         }
-
         .confidence-bar .label {
             font-weight: 600;
             min-width: 40px;
             text-align: right;
             color: #00d4ff;
         }
+
+        .dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 6px;
+            vertical-align: middle;
+            flex-shrink: 0;
+            box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
+        }
+        .dot.red { background: #ff6b6b; }
+        .dot.orange { background: #ff9f43; }
+        .dot.purple { background: #a66be0; }
+        .dot.blue { background: #4a9ae8; }
+        .dot.green { background: #4ec97a; }
 
         .collapse-toggle {
             padding: 8px 12px;
@@ -954,7 +1092,6 @@
             transition: color var(--transition);
             font-weight: 500;
         }
-
         .collapse-toggle:hover {
             color: #ff6fd8;
         }
@@ -965,18 +1102,109 @@
             display: block;
         }
 
+        .rg-fields {
+            display: flex;
+            gap: 6px;
+            flex: 1;
+            min-width: 0;
+        }
+        .rg-fields input {
+            flex: 1;
+            min-width: 0;
+            padding: 7px 6px;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            color: var(--text-primary);
+            font-size: 13px;
+            font-weight: 600;
+            text-align: center;
+            outline: none;
+            transition: all var(--transition);
+        }
+        .rg-fields input:focus {
+            border-color: #00d4ff;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
+        }
+
+        .exclude-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 4px;
+        }
+        .exclude-row .elbl {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            min-width: 72px;
+        }
+        .exclude-row .eval {
+            font-weight: 700;
+            color: #ff6b6b;
+            min-width: 40px;
+            text-align: center;
+        }
+        .exclude-row .exclude-hint {
+            font-size: 11px;
+            color: var(--text-secondary);
+            opacity: 0.5;
+            margin-left: 4px;
+        }
+        .exclude-row .exclude-deduction {
+            font-size: 12px;
+            color: #ff9f43;
+            min-width: 80px;
+            text-align: right;
+        }
+
+        .ht-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 28px;
+            height: 28px;
+            padding: 0 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-secondary);
+            font-size: 11px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+        .ht-btn:active {
+            transform: scale(0.92);
+            background: rgba(0, 212, 255, 0.15);
+            border-color: #00d4ff;
+            color: #00d4ff;
+        }
+        .ht-btn.primary {
+            background: rgba(0, 212, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.15);
+            color: #00d4ff;
+        }
+        .ht-btn.danger:active {
+            background: rgba(255, 107, 107, 0.2);
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
         .rev-input {
             display: flex;
             gap: 10px;
             align-items: flex-end;
             flex-wrap: wrap;
         }
-
         .rev-input .field {
             flex: 1;
             min-width: 100px;
         }
-
         .rev-input label {
             display: block;
             font-size: 11px;
@@ -998,12 +1226,10 @@
             transition: all var(--transition);
             min-height: 40px;
         }
-
         .btn-gold:hover {
             transform: translateY(-2px);
             box-shadow: 0 8px 40px rgba(0, 212, 255, 0.3);
         }
-
         .btn-gold:active {
             transform: scale(0.96);
         }
@@ -1011,7 +1237,6 @@
         .rev-result {
             margin-top: 14px;
         }
-
         .rev-group {
             background: rgba(0, 0, 0, 0.2);
             border: 1px solid var(--glass-border);
@@ -1020,11 +1245,9 @@
             overflow: hidden;
             transition: all var(--transition);
         }
-
         .rev-group:hover {
             border-color: rgba(0, 212, 255, 0.15);
         }
-
         .rev-group .g-head {
             padding: 10px 14px;
             display: flex;
@@ -1035,18 +1258,15 @@
             flex-wrap: wrap;
             gap: 4px;
         }
-
         .rev-group .g-head .g-title {
             font-weight: 700;
             font-size: 13px;
             color: #00d4ff;
         }
-
         .rev-group .g-head .g-meta {
             font-size: 11px;
             color: var(--text-secondary);
         }
-
         .rev-group .g-head .arrow {
             display: inline-block;
             margin-left: 4px;
@@ -1054,7 +1274,6 @@
             transition: transform 0.3s;
             font-size: 10px;
         }
-
         .rev-group.open .g-head .arrow {
             transform: rotate(90deg);
         }
@@ -1064,7 +1283,6 @@
             flex-wrap: wrap;
             gap: 4px;
         }
-
         .rev-group.open .g-body {
             display: flex;
             flex-wrap: wrap;
@@ -1083,19 +1301,16 @@
             white-space: nowrap;
             font-family: monospace;
         }
-
         .combo .val {
             color: #4ec97a;
             font-weight: 600;
         }
-
         .more-tag {
             font-size: 11px;
             color: #00d4ff;
             padding: 5px 3px;
             display: inline-block;
         }
-
         .empty {
             text-align: center;
             padding: 28px 10px;
@@ -1106,7 +1321,6 @@
         .known-box {
             margin-top: 12px;
         }
-
         .known-box label {
             display: block;
             font-size: 11px;
@@ -1114,7 +1328,6 @@
             margin-bottom: 4px;
             font-weight: 500;
         }
-
         .known-box input[type="text"] {
             width: 100%;
             padding: 8px 12px;
@@ -1127,88 +1340,12 @@
             outline: none;
             transition: all var(--transition);
         }
-
         .known-box input[type="text"]:focus {
             border-color: #00d4ff;
             box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
         }
 
-        .dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            margin-right: 6px;
-            vertical-align: middle;
-            flex-shrink: 0;
-            box-shadow: 0 0 12px rgba(255, 255, 255, 0.05);
-        }
-
-        .dot.red {
-            background: #ff6b6b;
-        }
-        .dot.orange {
-            background: #ff9f43;
-        }
-        .dot.purple {
-            background: #a66be0;
-        }
-        .dot.blue {
-            background: #4a9ae8;
-        }
-        .dot.green {
-            background: #4ec97a;
-        }
-
-        .rg-fields {
-            display: flex;
-            gap: 6px;
-            flex: 1;
-            min-width: 0;
-        }
-
-        .rg-fields input {
-            flex: 1;
-            min-width: 0;
-            padding: 7px 6px;
-            background: rgba(0, 0, 0, 0.2);
-            border: 1px solid var(--glass-border);
-            border-radius: 10px;
-            color: var(--text-primary);
-            font-size: 13px;
-            font-weight: 600;
-            text-align: center;
-            outline: none;
-            transition: all var(--transition);
-        }
-
-        .rg-fields input:focus {
-            border-color: #00d4ff;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.05);
-        }
-
-        .carPartBtn {
-            background: rgba(255, 255, 255, 0.04);
-            border: 1px solid var(--glass-border);
-            border-radius: 6px;
-            color: var(--text-primary);
-            width: 26px;
-            height: 26px;
-            cursor: pointer;
-            font-size: 14px;
-            line-height: 1;
-            transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .carPartBtn:hover {
-            background: rgba(0, 212, 255, 0.1);
-            border-color: #00d4ff;
-            color: #00d4ff;
-        }
-
+        /* ===== 主题面板 ===== */
         #themePanel {
             display: none;
             position: fixed;
@@ -1223,11 +1360,9 @@
             box-shadow: var(--glass-shadow);
             border: 1px solid rgba(255, 255, 255, 0.06);
         }
-
         #themePanel.show {
             display: block;
         }
-
         #themePanel .tp-title {
             font-size: 14px;
             font-weight: 700;
@@ -1235,14 +1370,12 @@
             text-align: center;
             margin-bottom: 14px;
         }
-
         .theme-options {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
             justify-content: center;
         }
-
         .theme-options .t-opt {
             width: 36px;
             height: 36px;
@@ -1251,17 +1384,14 @@
             cursor: pointer;
             transition: all var(--transition);
         }
-
         .theme-options .t-opt:hover {
             transform: scale(1.1);
         }
-
         .theme-options .t-opt.active {
             border-color: #00d4ff;
             box-shadow: 0 0 24px rgba(0, 212, 255, 0.2);
             transform: scale(1.08);
         }
-
         .custom-theme-row {
             display: flex;
             gap: 8px;
@@ -1270,12 +1400,10 @@
             align-items: center;
             flex-wrap: wrap;
         }
-
         .custom-theme-row label {
             font-size: 11px;
             color: var(--text-secondary);
         }
-
         .custom-theme-row input[type="color"] {
             width: 30px;
             height: 30px;
@@ -1285,7 +1413,6 @@
             cursor: pointer;
             border-radius: 6px;
         }
-
         #applyCustomTheme {
             background: linear-gradient(135deg, #00d4ff, #7b2ffc);
             border: none;
@@ -1297,17 +1424,14 @@
             font-size: 12px;
             transition: all var(--transition);
         }
-
         #applyCustomTheme:hover {
             transform: scale(1.04);
             box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
         }
-
         .tp-close {
             text-align: right;
             margin-top: 12px;
         }
-
         .tp-close button {
             background: none;
             border: none;
@@ -1317,7 +1441,6 @@
             text-decoration: underline;
             opacity: 0.4;
         }
-
         .tp-close button:hover {
             opacity: 0.8;
         }
@@ -1342,7 +1465,6 @@
             letter-spacing: 0.5px;
             transition: all var(--transition);
         }
-
         #remainTimeDisplay:hover {
             border-color: rgba(0, 212, 255, 0.2);
             box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 40px rgba(0, 212, 255, 0.03);
@@ -1392,6 +1514,659 @@
                 font-size: 22px;
             }
         }
+
+        /* ===== 进阶功能样式 ===== */
+        .adv-hint {
+            background: rgba(0, 212, 255, 0.04);
+            border: 1px solid rgba(0, 212, 255, 0.08);
+            border-radius: 10px;
+            padding: 12px 16px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .adv-hint:hover {
+            border-color: rgba(0, 212, 255, 0.2);
+            background: rgba(0, 212, 255, 0.07);
+        }
+        .adv-hint .hint-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+            color: #00d4ff;
+        }
+        .adv-hint .hint-header .arrow {
+            transition: transform 0.3s ease;
+            font-size: 12px;
+        }
+        .adv-hint .hint-body {
+            display: none;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.04);
+            margin-top: 10px;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .adv-hint.open .hint-body {
+            display: block;
+        }
+        .adv-hint.open .hint-header .arrow {
+            transform: rotate(180deg);
+        }
+        .adv-hint .hint-body .highlight {
+            color: #4ec97a;
+            font-weight: 500;
+        }
+        .adv-hint .hint-body .warn {
+            color: #ff9f43;
+            font-weight: 500;
+        }
+        .adv-hint .hint-body .danger {
+            color: #ff6b6b;
+            font-weight: 500;
+        }
+
+        .adv-dyn-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+        .adv-dyn-toggle label {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-primary);
+            cursor: pointer;
+            font-weight: 500;
+        }
+        .adv-dyn-toggle input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #00d4ff;
+            cursor: pointer;
+        }
+        .adv-dyn-toggle .dyn-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+
+        .adv-price-ref-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 12px;
+            background: rgba(0, 0, 0, 0.12);
+            border-radius: 10px;
+            padding: 10px 12px;
+        }
+        .adv-price-ref-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .adv-price-ref-item .plabel {
+            white-space: nowrap;
+            font-size: 11px;
+            opacity: 0.7;
+            min-width: 40px;
+        }
+        .adv-price-ref-item input {
+            width: 56px;
+            padding: 3px 4px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 12px;
+            text-align: center;
+            outline: none;
+            transition: all var(--transition);
+        }
+        .adv-price-ref-item input:focus {
+            border-color: #00d4ff;
+        }
+
+        .adv-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 0;
+            flex-wrap: wrap;
+        }
+        .adv-row .albl {
+            min-width: 72px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+        .adv-row input[type="text"],
+        .adv-row input[type="number"] {
+            width: 60px;
+            padding: 5px 4px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            text-align: center;
+            outline: none;
+            transition: all var(--transition);
+        }
+        .adv-row input[type="text"]:focus,
+        .adv-row input[type="number"]:focus {
+            border-color: #00d4ff;
+        }
+
+        .adv-remain {
+            font-weight: 700;
+            font-size: 16px;
+            color: #4ec97a;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .adv-total-box {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.04), rgba(123, 47, 252, 0.04));
+            border: 1px solid rgba(0, 212, 255, 0.06);
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .adv-total-box .adv-total-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .adv-total-box .adv-total-value {
+            font-weight: 800;
+            color: #00d4ff;
+            font-size: 18px;
+        }
+        .adv-total-box .adv-total-value.rec {
+            color: #4ec97a;
+        }
+
+        .adv-exclude-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 0;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 6px;
+        }
+        .adv-exclude-row .elbl {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        .adv-exclude-row .eval {
+            font-weight: 700;
+            color: #ff6b6b;
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .adv-xunhui-toggle {
+            padding: 8px 4px;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+        .adv-xunhui-toggle:hover {
+            color: #00d4ff;
+        }
+        .adv-xunhui-panel {
+            display: none;
+            padding: 8px 4px 4px;
+        }
+        .adv-xunhui-panel.open {
+            display: block;
+        }
+
+        .adv-zb-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 3px 0;
+            flex-wrap: wrap;
+        }
+        .adv-zb-row .zb-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            min-width: 72px;
+        }
+        .adv-zb-row input {
+            width: 100px;
+            padding: 4px 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 12px;
+            text-align: center;
+            outline: none;
+        }
+        .adv-zb-row input:focus {
+            border-color: #00d4ff;
+        }
+        .adv-match {
+            font-size: 12px;
+            color: #4ec97a;
+            min-width: 80px;
+        }
+
+        .adv-avg-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 0;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 8px;
+        }
+        .adv-avg-row .albl {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .adv-avg-row input {
+            width: 80px;
+            padding: 4px 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            text-align: center;
+            outline: none;
+        }
+        .adv-avg-row input:focus {
+            border-color: #00d4ff;
+        }
+
+        .adv-result-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+            margin-top: 8px;
+        }
+        .adv-combo {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-family: monospace;
+            color: var(--text-secondary);
+        }
+        .adv-combo .adv-highlight {
+            color: #4ec97a;
+            font-weight: 600;
+        }
+
+        .adv-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 12px 0 8px;
+        }
+        .adv-empty-tip {
+            text-align: center;
+            padding: 20px 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+
+        .adv-round-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 4px 0;
+            flex-wrap: wrap;
+        }
+        .adv-round-row .rlabel {
+            font-size: 13px;
+            color: var(--text-secondary);
+            min-width: 100px;
+        }
+        .adv-round-row .rval {
+            font-weight: 700;
+            font-size: 14px;
+            min-width: 60px;
+        }
+        .adv-round-row .rval.cons {
+            color: #4ec97a;
+        }
+        .adv-round-row .rval.avg {
+            color: #00d4ff;
+        }
+        .adv-round-row .rval.agg {
+            color: #ff9f43;
+        }
+
+        .adv-clear-btn {
+            padding: 4px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            border-radius: 30px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .adv-clear-btn:hover {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .adv-base-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 0;
+            flex-wrap: wrap;
+            background: rgba(0, 0, 0, 0.08);
+            border-radius: 8px;
+            padding: 6px 12px;
+            margin-bottom: 4px;
+        }
+        .adv-base-row .blbl {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .adv-base-row .bval {
+            font-weight: 700;
+            color: #ff9f43;
+        }
+        .adv-base-row .bnote {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: 0.6;
+        }
+
+        .huo-mode-switch {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 14px;
+        }
+        .huo-mode-switch button {
+            flex: 1;
+            padding: 10px 8px;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 40px;
+            color: var(--text-secondary);
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition);
+            white-space: nowrap;
+        }
+        .huo-mode-switch button.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(123, 47, 252, 0.15));
+            color: #00d4ff;
+            border-color: rgba(0, 212, 255, 0.2);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.05);
+        }
+        .huo-mode-switch button:hover:not(.active) {
+            border-color: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+
+        /* 隐藏所有"受地图影响"标签 */
+        .map-affect-tag {
+            display: none !important;
+        }
+
+        /* ===== 黄金瞳HT样式 ===== */
+        .ht-price-ref-bar {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            margin-bottom: 14px;
+            background: rgba(0, 0, 0, 0.15);
+            border-radius: 12px;
+            padding: 12px;
+        }
+        .ht-price-ref-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        .ht-price-ref-item .ht-label {
+            white-space: nowrap;
+            min-width: 60px;
+        }
+        .ht-price-ref-item input {
+            width: 80px;
+            padding: 4px 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 12px;
+            text-align: center;
+            outline: none;
+            transition: all var(--transition);
+        }
+        .ht-price-ref-item input:focus {
+            border-color: #00d4ff;
+        }
+
+        .ht-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 0;
+            flex-wrap: wrap;
+        }
+        .ht-row .ht-label {
+            min-width: 72px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--text-primary);
+        }
+        .ht-row input[type="text"] {
+            width: 60px;
+            padding: 5px 4px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            text-align: center;
+            outline: none;
+            transition: all var(--transition);
+            -moz-appearance: textfield;
+        }
+        .ht-row input[type="text"]:focus {
+            border-color: #00d4ff;
+        }
+
+        .ht-result {
+            font-weight: 700;
+            font-size: 14px;
+            color: #00d4ff;
+            min-width: 50px;
+        }
+
+        .ht-total-box {
+            margin-top: 12px;
+            padding: 12px 16px;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.04), rgba(123, 47, 252, 0.04));
+            border: 1px solid rgba(0, 212, 255, 0.06);
+            border-radius: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .ht-total-box .ht-total-label {
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        .ht-total-box .ht-total-value {
+            font-weight: 800;
+            color: #00d4ff;
+            font-size: 18px;
+        }
+        .ht-clear-btn {
+            padding: 4px 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            color: var(--text-secondary);
+            border-radius: 30px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all var(--transition);
+        }
+        .ht-clear-btn:hover {
+            border-color: #ff6b6b;
+            color: #ff6b6b;
+        }
+
+        .ht-xunhui-toggle {
+            padding: 8px 4px;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 8px;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+        }
+        .ht-xunhui-toggle:hover {
+            color: #00d4ff;
+        }
+        .ht-xunhui-panel {
+            display: none;
+            padding: 8px 4px 4px;
+        }
+        .ht-xunhui-panel.open {
+            display: block;
+        }
+
+        .ht-zb-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 3px 0;
+            flex-wrap: wrap;
+        }
+        .ht-zb-row .ht-zb-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            min-width: 72px;
+        }
+        .ht-zb-row input {
+            width: 100px;
+            padding: 4px 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 12px;
+            text-align: center;
+            outline: none;
+        }
+        .ht-zb-row input:focus {
+            border-color: #00d4ff;
+        }
+        .ht-match {
+            font-size: 12px;
+            color: #4ec97a;
+            min-width: 80px;
+        }
+
+        .ht-avg-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 0;
+            flex-wrap: wrap;
+            border-top: 1px solid var(--glass-border);
+            margin-top: 8px;
+        }
+        .ht-avg-row .ht-label {
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        .ht-avg-row input {
+            width: 80px;
+            padding: 4px 6px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-size: 13px;
+            text-align: center;
+            outline: none;
+        }
+        .ht-avg-row input:focus {
+            border-color: #00d4ff;
+        }
+
+        .ht-section-title {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 12px 0 8px;
+        }
+        .ht-empty-tip {
+            text-align: center;
+            padding: 20px 10px;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        .ht-result-area {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+        .ht-combo {
+            display: inline-block;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 6px;
+            padding: 3px 8px;
+            font-size: 12px;
+            font-family: monospace;
+            color: var(--text-secondary);
+        }
+        .ht-combo .ht-highlight {
+            color: #4ec97a;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -1399,6 +2174,7 @@
     <canvas id="particles-canvas"></canvas>
 
     <div id="appWrap">
+        <!-- 顶部栏 -->
         <div class="top-bar">
             <div class="left">
                 <span class="author-id">205263367</span>
@@ -1411,6 +2187,7 @@
 
         <div class="warning-banner">卡密频繁更换IP地址会导致锁卡，且卡密永久封禁无法解除</div>
 
+        <!-- 主题面板 -->
         <div id="themePanel">
             <div class="tp-title">✦ 主题选择</div>
             <div class="theme-options" id="themeOptions"></div>
@@ -1422,6 +2199,7 @@
             <div class="tp-close"><button id="themePanelClose">关闭</button></div>
         </div>
 
+        <!-- 标题 -->
         <div class="header">
             <div class="main-title">
                 <span class="gradient-text">俱乐大玩家超级AI</span>
@@ -1439,18 +2217,87 @@
             <p id="guideText">巡回模式（休闲）估价仅供参考，最稳的还是天真加至宝价值道具，低级巡回稳赚秘籍：使用天真，看到50万以上的货直接梭哈，没看到出价1，最后一轮还是没货直接梭哈，这样门票不至于亏多少，出大货就是稳赚，全程不用道具。PS：出价一样的情况，第六轮谁第一个提交就是谁的。登月计划物品已加入。</p>
         </div>
 
+        <!-- 地图切换 -->
         <div class="map-switch" id="mapSwitch">
-            <button class="on" data-map="xunhui">巡回</button>
             <button data-map="yanjing">燕京</button>
             <button data-map="xiangjiang">香江</button>
             <button data-map="nicheng">霓城</button>
             <button data-map="dicheng">迪城</button>
+            <button class="on" data-map="xunhui">巡回</button>
         </div>
 
+        <!-- ===== 巡回模式 · 红均格筛选面板 ===== -->
+        <div id="xunhuiFilterPanel">
+            <div class="panel-header">
+                <span class="title">巡回模式 · 红均格筛选</span>
+                <span class="badge">独立计算</span>
+            </div>
+            <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;">
+                输入红均格→筛选组合→至宝价值定位红品→估价
+            </div>
+            <!-- 按均格筛选开关 -->
+            <div class="xunhui-filter-row">
+                <label>按均格筛选</label>
+                <label style="display:flex;align-items:center;gap:6px;cursor:pointer;min-width:auto;">
+                    <input type="checkbox" id="xunhuiEnableFilter" checked onchange="xunhuiSearch()">
+                    <span style="font-size:12px;color:var(--text-secondary);">开启后根据红均格匹配组合</span>
+                </label>
+            </div>
+            <!-- 红均格 -->
+            <div class="xunhui-filter-row">
+                <label>红均格</label>
+                <input type="text" id="xunhuiAvg" inputmode="decimal" value="4.3" oninput="xunhuiSearch()">
+                <span class="ht-btn" onclick="xunhuiAdjustAvg(-0.1)">-0.1</span>
+                <span class="ht-btn primary" onclick="xunhuiAdjustAvg(0.1)">+0.1</span>
+                <span class="ht-btn" onclick="xunhuiAdjustAvg(-1)">-1</span>
+                <span class="ht-btn primary" onclick="xunhuiAdjustAvg(1)">+1</span>
+            </div>
+            <!-- 按格价值 -->
+            <div class="xunhui-filter-row">
+                <label>按格价值</label>
+                <input type="text" id="xunhuiPerGrid" inputmode="numeric" value="51438" oninput="xunhuiSearch()">
+                <span style="font-size:11px;color:var(--text-secondary);opacity:0.6;">（可自定义）</span>
+            </div>
+            <!-- 已知格数 -->
+            <div class="xunhui-filter-row">
+                <label>已知格数</label>
+                <input type="text" id="xunhuiKnownGrids" inputmode="numeric" value="0" oninput="xunhuiSearch()">
+                <span class="ht-btn" onclick="xunhuiAdjustKnown(-1)">-1</span>
+                <span class="ht-btn primary" onclick="xunhuiAdjustKnown(1)">+1</span>
+                <span style="font-size:11px;color:var(--text-secondary);opacity:0.6;">（已锁定红品格数）</span>
+            </div>
+            <!-- 添加已知红品 -->
+            <div class="xunhui-add-item">
+                <span style="font-size:13px;color:var(--text-secondary);">名称</span>
+                <input type="text" class="name-input" id="xunhuiItemName" placeholder="如古董名车">
+                <span style="font-size:13px;color:var(--text-secondary);">至宝价值</span>
+                <input type="text" class="value-input" id="xunhuiItemValue" inputmode="numeric" placeholder="输入价格">
+                <button class="btn-xunhui-action" onclick="xunhuiAddItem()">+添加</button>
+                <button class="btn-xunhui-action secondary" onclick="xunhuiClearItems()">清空</button>
+            </div>
+            <!-- 已添加的至宝价值列表 -->
+            <div id="xunhuiItemList"></div>
+            <!-- 搜索组合按钮 -->
+            <div style="margin-top:8px;">
+                <button class="btn-xunhui-action" onclick="xunhuiSearch()">🔍 搜索组合</button>
+                <button class="btn-xunhui-action secondary" onclick="xunhuiReset()" style="margin-left:8px;">清空</button>
+            </div>
+            <!-- 结果区域 -->
+            <div class="xunhui-result-group" id="xunhuiResultGroup">
+                <div class="group-title">可能出现的组合</div>
+                <div id="xunhuiResultArea">
+                    <span class="xunhui-empty">请填写红均格后查看组合</span>
+                </div>
+            </div>
+        </div>
+        <!-- ===== 巡回面板结束 ===== -->
+
+        <!-- Tabs -->
         <div class="tabs" id="tabsBar">
             <button class="tab-btn active" data-tab="huo">霍姑姑</button>
             <button class="tab-btn" data-tab="gao">高进</button>
             <button class="tab-btn" data-tab="su">苏琦</button>
+            <button class="tab-btn" data-tab="huangjintong">黄金瞳</button>
             <button class="tab-btn" data-tab="an">安可</button>
             <button class="tab-btn" data-tab="rev">红品均格反查</button>
         </div>
@@ -1459,6 +2306,7 @@
             <div class="page active" id="page-huo"></div>
             <div class="page" id="page-gao"></div>
             <div class="page" id="page-su"></div>
+            <div class="page" id="page-huangjintong"></div>
             <div class="page" id="page-an"></div>
             <div class="page" id="page-rev"></div>
         </div>
@@ -1466,13 +2314,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js">
     </script>
-
     <script>
         // ============================================================
-        // 安全模块（精简版 - 完全移除黑屏检测）
+        // 安全模块
         // ============================================================
         (function() {
-            // 阻止开发者工具快捷键
             document.addEventListener('keydown', function(e) {
                 if (e.key === 'F12' ||
                     (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J' || e.key === 'C')) ||
@@ -1483,18 +2329,12 @@
                     return false;
                 }
             });
-
-            // 阻止右键菜单
             document.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
                 return false;
             });
-
-            // 防止页面被隐藏时触发异常
             Object.defineProperty(document, 'hidden', { get: function() { return false; } });
             Object.defineProperty(document, 'visibilityState', { get: function() { return 'visible'; } });
-
-            // 静默控制台输出（可选）
             console.log = function() {};
             console.warn = function() {};
             console.error = function() {};
@@ -2182,7 +3022,7 @@
             buildThemeOptions();
 
             // ============================================================
-            // 估值核心
+            // 估值核心数据
             // ============================================================
             var TEXT = {
                 huoTitle: '霍姑姑 · 颜色格数估值',
@@ -2222,24 +3062,11 @@
                 expandMore: '展开更多格数 ▼',
                 collapseMore: '收起更多格数 ▲',
                 huoModeClassic: '经典估值',
-                huoModeAdvanced: '地图测算',
-                advRevealed: '已揭示总价值',
-                advRed: '红物质数量',
-                advGold: '金色物品数量',
-                advCalc: '估算价值',
-                advTotal: '总价值',
-                advRec: '推荐出价',
-                advMultiplier: '溢价系数',
-                advMultiplierRange: '系数范围',
-                advRedBoost: '红物质加成',
-                advDeduction: '基础扣除',
-                advClear: '清除数据',
-                advConfidence: '置信度',
-                advEmpty: '请填写有效数据',
+                huoModeAdvanced: '进阶功能',
             };
 
             // ============================================================
-            // 迪城独立数据模型（最高入场地图）
+            // 迪城独立数据模型
             // ============================================================
             var DICHENG_MODEL = {
                 label: '迪城',
@@ -2256,52 +3083,21 @@
                     16: { avg: 1676640, med: 1312000, min: 1120000 }
                 },
                 colors: {
-                    purple: {
-                        piece: { avg: 5406, med: 5200 },
-                        grid: { avg: 5406, med: 5200 }
-                    },
-                    orange: {
-                        piece: { avg: 22728, med: 21000 },
-                        grid: { avg: 22728, med: 21000 }
-                    },
-                    green: {
-                        piece: { avg: 462, med: 430 },
-                        grid: { avg: 462, med: 430 }
-                    },
-                    blue: {
-                        piece: { avg: 1318, med: 1200 },
-                        grid: { avg: 1318, med: 1200 }
-                    }
+                    purple: { piece: { avg: 5406, med: 5200 }, grid: { avg: 5406, med: 5200 } },
+                    orange: { piece: { avg: 22728, med: 21000 }, grid: { avg: 22728, med: 21000 } },
+                    green: { piece: { avg: 462, med: 430 }, grid: { avg: 462, med: 430 } },
+                    blue: { piece: { avg: 1318, med: 1200 }, grid: { avg: 1318, med: 1200 } }
                 },
-                redStat: {
-                    piece: { avg: 104790, med: 98000 },
-                    grid: { avg: 104790, med: 98000 }
-                },
+                redStat: { piece: { avg: 104790, med: 98000 }, grid: { avg: 104790, med: 98000 } },
                 gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
                 redAvgGrid: 4.5
             };
 
             // ============================================================
-            // 其他地图数据（巡回、燕京、香江、霓城）
+            // 其他地图数据（燕京、香江、霓城）- 不包含巡回
             // ============================================================
             var CFG = {
                 maps: {
-                    xunhui: {
-                        name: '巡回',
-                        redByGrid: { 1: { avg: 95746, med: 74970, min: 63950 }, 2: { avg: 209475, med: 124100,
-                                min: 105000 }, 3: { avg: 149100, med: 149100, min: 140700 }, 4: { avg: 235450,
-                                med: 190500, min: 80250 }, 6: { avg: 342343, med: 251900, min: 188000 }, 8: { avg: 333400,
-                                med: 333400, min: 333400 }, 9: { avg: 423625, med: 388300, min: 280600 }, 12: { avg: 269650,
-                                med: 269650, min: 231800 }, 15: { avg: 386400, med: 386400, min: 386400 }, 16: { avg: 607300,
-                                med: 656700, min: 475600 } },
-                        colors: { purple: { piece: { avg: 9676, med: 9111 }, grid: { avg: 2875.24, med: 2442.75 } },
-                            orange: { piece: { avg: 37925, med: 32630 }, grid: { avg: 12053.07, med: 10110 } },
-                            green: { piece: { avg: 674, med: 566 }, grid: { avg: 243, med: 211 } },
-                            blue: { piece: { avg: 2596, med: 2210 }, grid: { avg: 694, med: 606 } } },
-                        redStat: { piece: { avg: 236484, med: 187400 }, grid: { avg: 54573, med: 54988 } },
-                        gridOptions: [1, 2, 3, 4, 6, 8, 9, 12, 15, 16],
-                        redAvgGrid: 4.3
-                    },
                     yanjing: {
                         name: '燕京',
                         redByGrid: { 1: { avg: 95746, med: 74970, min: 63950 }, 2: { avg: 209475, med: 124100,
@@ -2357,6 +3153,9 @@
                 gaoCollapseThreshold: 6
             };
 
+            // ============================================================
+            // 辅助函数
+            // ============================================================
             function weightedPrice(stat) {
                 if (!stat) return 0;
                 var avg = stat.avg || 0;
@@ -2383,7 +3182,14 @@
                 return 0.74;
             }
 
-            function getMap() { return CFG.maps[currentMap]; }
+            // 地图数据获取：如果当前地图是 'xunhui'，回退到 'yanjing'
+            function getMap() {
+                var mapName = currentMap;
+                if (mapName === 'xunhui') {
+                    return CFG.maps['yanjing'];
+                }
+                return CFG.maps[mapName] || CFG.maps['yanjing'];
+            }
 
             function getRedGridPrice(grid, map) { var entry = map.redByGrid[grid]; return entry ? weightedPrice(entry) : 0; }
 
@@ -2428,101 +3234,41 @@
                 });
             }
 
-            // ---- 地图测算 ----
-            var MAP_EST_CONFIG = {
-                BASE_DEDUCTION: 30000,
-                GOLD_BONUS_MIN: 1800,
-                GOLD_BONUS_MAX: 5200,
-                RED_BOOST_TIERS: { 0: [0, 0], 1: [0.04, 0.07], 2: [0.10, 0.16], 3: [0.16, 0.24], 4: [0.22, 0.32] },
-                RED_BOOST_MAX_TIER: [0.28, 0.40],
-                GOLD_MULTIPLIER_PER: [0.020, 0.045],
-                VALUE_SCALE_THRESHOLD: 200000,
-                VALUE_SCALE_DECAY: 0.06,
-                FINAL_JITTER: 0.02
-            };
-            var MAP_EST_MAP_CONFIG = {
-                1: { name: '一图', minMultiplier: 1.15, maxMultiplier: 1.45 },
-                2: { name: '二图', minMultiplier: 1.25, maxMultiplier: 1.65 },
-                3: { name: '沪上风云', minMultiplier: 1.40, maxMultiplier: 1.85 }
-            };
-
-            function mapEstRandomFloat(a, b) { return Math.random() * (b - a) + a; }
-
-            function mapEstRandomInt(a, b) { return Math.floor(Math.random() * (b - a + 1)) + a; }
-
-            function mapEstEstimate(mapId, revealed, red, gold) {
-                var cfg = MAP_EST_MAP_CONFIG[mapId];
-                if (!cfg) throw new Error('未知地图');
-                var minMult = cfg.minMultiplier,
-                    maxMult = cfg.maxMultiplier;
-                var rMin, rMax;
-                if (red <= 0) { rMin = 0;
-                    rMax = 0; } else if (red === 1) { rMin = MAP_EST_CONFIG.RED_BOOST_TIERS[1][0];
-                    rMax = MAP_EST_CONFIG.RED_BOOST_TIERS[1][1]; } else if (red === 2) { rMin = MAP_EST_CONFIG.RED_BOOST_TIERS[2][0];
-                    rMax = MAP_EST_CONFIG.RED_BOOST_TIERS[2][1]; } else if (red === 3) { rMin = MAP_EST_CONFIG.RED_BOOST_TIERS[3][0];
-                    rMax = MAP_EST_CONFIG.RED_BOOST_TIERS[3][1]; } else if (red === 4) { rMin = MAP_EST_CONFIG.RED_BOOST_TIERS[4][0];
-                    rMax = MAP_EST_CONFIG.RED_BOOST_TIERS[4][1]; } else { rMin = MAP_EST_CONFIG.RED_BOOST_MAX_TIER[0];
-                    rMax = MAP_EST_CONFIG.RED_BOOST_MAX_TIER[1]; }
-                if (red > 5) { var extra = (red - 5) * 0.015;
-                    rMin += extra;
-                    rMax += extra * 1.2; }
-                minMult += rMin;
-                maxMult += rMax;
-                if (gold > 0) {
-                    var gMult = mapEstRandomFloat(MAP_EST_CONFIG.GOLD_MULTIPLIER_PER[0], MAP_EST_CONFIG
-                    .GOLD_MULTIPLIER_PER[1]) * gold;
-                    minMult += gMult * 0.7;
-                    maxMult += gMult;
-                }
-                if (revealed > MAP_EST_CONFIG.VALUE_SCALE_THRESHOLD) {
-                    var decay = MAP_EST_CONFIG.VALUE_SCALE_DECAY * Math.min(1, (revealed - MAP_EST_CONFIG
-                        .VALUE_SCALE_THRESHOLD) / 300000);
-                    minMult *= (1 - decay);
-                    maxMult *= (1 - decay);
-                }
-                minMult = Math.max(1.0, minMult);
-                maxMult = Math.max(minMult + 0.05, maxMult);
-                var mult = mapEstRandomFloat(minMult, maxMult);
-                var val = revealed * mult;
-                if (gold > 0) { var gBonus = mapEstRandomInt(MAP_EST_CONFIG.GOLD_BONUS_MIN, MAP_EST_CONFIG
-                    .GOLD_BONUS_MAX) * gold;
-                    val += gBonus; }
-                val -= MAP_EST_CONFIG.BASE_DEDUCTION;
-                val *= (1 + mapEstRandomFloat(-MAP_EST_CONFIG.FINAL_JITTER, MAP_EST_CONFIG.FINAL_JITTER));
-                val = Math.max(0, val);
-                return {
-                    mapName: cfg.name,
-                    value: val,
-                    multiplier: mult,
-                    minMultiplier: minMult,
-                    maxMultiplier: maxMult,
-                    redBoostMin: rMin,
-                    redBoostMax: rMax,
-                    deduction: MAP_EST_CONFIG.BASE_DEDUCTION,
-                    goldBonusTotal: gold > 0 ? mapEstRandomInt(MAP_EST_CONFIG.GOLD_BONUS_MIN, MAP_EST_CONFIG
-                        .GOLD_BONUS_MAX) * gold : 0
-                };
-            }
-
+            // ============================================================
+            // 地图切换与Tabs
+            // ============================================================
             var currentMap = 'xunhui';
+            var huoMode = 'classic';
+            var excludeState = { body: 0, engine: 0 };
+
             var mapBtns = document.querySelectorAll('.map-switch button');
             mapBtns.forEach(function(btn) {
                 btn.onclick = function() {
                     mapBtns.forEach(function(b) { b.classList.remove('on'); });
                     btn.classList.add('on');
                     currentMap = btn.dataset.map;
+
+                    // 控制巡回面板显示
+                    var panel = document.getElementById('xunhuiFilterPanel');
+                    if (currentMap === 'xunhui') {
+                        panel.style.display = 'block';
+                    } else {
+                        panel.style.display = 'none';
+                    }
+
+                    // 刷新当前激活的tab
                     var activeTab = document.querySelector('.tab-btn.active');
                     if (activeTab) {
                         var target = activeTab.dataset.tab;
-                        var pageFn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn,
-                            'rev': renderRev };
+                        var pageFn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'huangjintong': renderHuangjintong,
+                            'an': renderAn, 'rev': renderRev };
                         if (pageFn[target]) pageFn[target]();
                     }
                 };
             });
 
             var tabs = document.querySelectorAll('.tab-btn');
-            var pageIds = ['huo', 'gao', 'su', 'an', 'rev'];
+            var pageIds = ['huo', 'gao', 'su', 'huangjintong', 'an', 'rev'];
             var pages = {};
             pageIds.forEach(function(id) { pages[id] = document.getElementById('page-' + id); });
             tabs.forEach(function(tab) {
@@ -2532,34 +3278,335 @@
                     var target = tab.dataset.tab;
                     for (var id in pages) pages[id].classList.remove('active');
                     if (pages[target]) pages[target].classList.add('active');
-                    var pageFn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'an': renderAn,
-                        'rev': renderRev };
+                    var pageFn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'huangjintong': renderHuangjintong,
+                        'an': renderAn, 'rev': renderRev };
                     if (pageFn[target]) pageFn[target]();
                 };
             });
 
-            var huoMode = 'classic';
+            // ============================================================
+            // 进阶功能 - 独立数据模型
+            // ============================================================
+            var ADV_MODEL = {
+                greenPrice: 260,
+                bluePrice: 740,
+                purplePrice: 2400,
+                orangePrice: 9800,
+                redCons: 46000,
+                redAvg: 51438,
+                redAgg: 57000,
+                wroPrice: 24000,
+                dynRules: [
+                    { max: 12, price: 55000 },
+                    { max: 16, price: 53000 },
+                    { max: 35, price: 48000 },
+                    { max: 42, price: 46000 },
+                    { max: Infinity, price: 42000 }
+                ],
+                zhibaoMap: {
+                    50000: '白绿蓝',
+                    100000: '紫',
+                    200000: '橙',
+                    300000: '红'
+                }
+            };
+
+            var advState = {
+                dynEnabled: false,
+                totalGrids: 0,
+                green: 0,
+                blue: 0,
+                purple: 0,
+                orange: 0,
+                red: 0,
+                excludeBody: 0,
+                excludeEngine: 0,
+                zhibao: [0, 0, 0, 0, 0, 0],
+                avgInput: 0
+            };
 
             // ============================================================
-            // 霍姑姑
+            // 巡回面板独立逻辑
             // ============================================================
-            function generateClassicHTML(map) {
+            var xunhuiItems = [];
+
+            window.xunhuiAdjustAvg = function(delta) {
+                var inp = document.getElementById('xunhuiAvg');
+                if (!inp) return;
+                var val = parseFloat(inp.value) || 0;
+                var newVal = Math.max(0.1, val + delta);
+                inp.value = newVal.toFixed(1);
+                xunhuiSearch();
+            };
+
+            window.xunhuiAdjustKnown = function(delta) {
+                var inp = document.getElementById('xunhuiKnownGrids');
+                if (!inp) return;
+                var val = parseInt(inp.value) || 0;
+                var newVal = Math.max(0, val + delta);
+                inp.value = newVal;
+                xunhuiSearch();
+            };
+
+            window.xunhuiAddItem = function() {
+                var nameInp = document.getElementById('xunhuiItemName');
+                var valInp = document.getElementById('xunhuiItemValue');
+                var name = nameInp.value.trim();
+                var value = parseFloat(valInp.value);
+                if (!name) { alert('请输入名称'); return; }
+                if (isNaN(value) || value <= 0) { alert('请输入有效的至宝价值'); return; }
+                xunhuiItems.push({ name: name, value: value });
+                nameInp.value = '';
+                valInp.value = '';
+                renderXunhuiItems();
+                xunhuiSearch();
+            };
+
+            window.xunhuiClearItems = function() {
+                xunhuiItems = [];
+                renderXunhuiItems();
+                xunhuiSearch();
+            };
+
+            function renderXunhuiItems() {
+                var container = document.getElementById('xunhuiItemList');
+                if (!container) return;
+                if (xunhuiItems.length === 0) {
+                    container.innerHTML = '<span style="font-size:12px;color:var(--text-secondary);opacity:0.5;">暂无添加</span>';
+                    return;
+                }
+                var html = '';
+                xunhuiItems.forEach(function(item, idx) {
+                    html += '<span class="item-tag">' +
+                        item.name + ' <span class="val">' + fmt(item.value) + '</span>' +
+                        '<span class="del" onclick="xunhuiRemoveItem(' + idx + ')">✕</span>' +
+                        '</span>';
+                });
+                container.innerHTML = html;
+            }
+
+            window.xunhuiRemoveItem = function(idx) {
+                xunhuiItems.splice(idx, 1);
+                renderXunhuiItems();
+                xunhuiSearch();
+            };
+
+            window.xunhuiReset = function() {
+                document.getElementById('xunhuiAvg').value = '4.3';
+                document.getElementById('xunhuiPerGrid').value = '51438';
+                document.getElementById('xunhuiKnownGrids').value = '0';
+                xunhuiItems = [];
+                renderXunhuiItems();
+                xunhuiSearch();
+            };
+
+            window.xunhuiSearch = function() {
+                var avg = parseFloat(document.getElementById('xunhuiAvg').value) || 0;
+                var perGrid = parseFloat(document.getElementById('xunhuiPerGrid').value) || 51438;
+                var knownGrids = parseInt(document.getElementById('xunhuiKnownGrids').value) || 0;
+                var enableFilter = document.getElementById('xunhuiEnableFilter').checked;
+
+                var area = document.getElementById('xunhuiResultArea');
+                if (!area) return;
+
+                if (!enableFilter || avg <= 0) {
+                    area.innerHTML = '<span class="xunhui-empty">请开启按均格筛选并填写有效的红均格</span>';
+                    return;
+                }
+
+                // 至宝价值匹配格数
+                var gridMap = { 50000: 1, 100000: 2, 200000: 4, 300000: 6 };
+                var matchedGrids = [];
+                xunhuiItems.forEach(function(item) {
+                    var val = item.value;
+                    var keys = Object.keys(gridMap).map(Number);
+                    var closest = null,
+                        closestDiff = Infinity;
+                    keys.forEach(function(k) {
+                        var diff = Math.abs(val - k);
+                        if (diff < closestDiff) {
+                            closestDiff = diff;
+                            closest = k;
+                        }
+                    });
+                    if (closest && closestDiff < 50000) {
+                        matchedGrids.push(gridMap[closest]);
+                    }
+                });
+
+                var knownTotal = knownGrids + matchedGrids.reduce(function(a, b) { return a + b; }, 0);
+                var gridOptions = [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
+                var results = [];
+
+                for (var count = 1; count <= 8; count++) {
+                    var totalGrids = Math.round(avg * count);
+                    var remain = totalGrids - knownTotal;
+                    if (remain < 0) continue;
+                    var unknownCount = count - matchedGrids.length;
+                    if (unknownCount < 0) continue;
+                    if (unknownCount === 0 && remain === 0) {
+                        results.push({ count: count, totalGrids: totalGrids, combos: [matchedGrids.slice()] });
+                    } else if (unknownCount > 0) {
+                        var combos = [];
+                        findCombos(remain, unknownCount, gridOptions, [], combos);
+                        if (combos.length > 0) {
+                            combos.forEach(function(c) {
+                                var full = matchedGrids.concat(c);
+                                results.push({ count: count, totalGrids: totalGrids, combos: [full] });
+                            });
+                        }
+                    }
+                }
+
+                var uniqueResults = [];
+                var seen = new Set();
+                results.forEach(function(r) {
+                    r.combos.forEach(function(c) {
+                        var key = c.slice().sort().join(',');
+                        if (!seen.has(key)) {
+                            seen.add(key);
+                            uniqueResults.push({ count: r.count, totalGrids: r.totalGrids, combo: c });
+                        }
+                    });
+                });
+
+                if (uniqueResults.length === 0) {
+                    area.innerHTML = '<span class="xunhui-empty">未找到匹配的组合，请调整参数</span>';
+                    return;
+                }
+
+                var html = '';
+                var groups = {};
+                uniqueResults.forEach(function(r) {
+                    var key = r.count;
+                    if (!groups[key]) groups[key] = [];
+                    groups[key].push(r);
+                });
+                var sortedKeys = Object.keys(groups).sort(function(a, b) { return a - b; });
+                sortedKeys.forEach(function(count) {
+                    var items = groups[count];
+                    var totalGrids = items[0].totalGrids;
+                    var estValue = totalGrids * perGrid;
+                    var rec = Math.round(estValue * 0.85);
+                    var grids = items.map(function(r) { return r.combo.reduce(function(a, b) { return a + b; }, 0); });
+                    var minGrid = Math.min.apply(null, grids);
+                    var maxGrid = Math.max.apply(null, grids);
+                    var minEst = minGrid * perGrid;
+                    var maxEst = maxGrid * perGrid;
+
+                    html += '<div class="xunhui-result-card">';
+                    html += '<div class="card-header">';
+                    html += '<span class="count">' + count + '件藏品</span>';
+                    html += '<span class="meta">' + items.length + '种组合｜' + fmt(minEst) + '～' + fmt(maxEst) +
+                        '｜推荐 ' + fmt(rec) + '</span>';
+                    html += '</div>';
+                    html += '<div class="card-body">';
+                    items.slice(0, 8).forEach(function(r) {
+                        var comboStr = r.combo.join(' + ');
+                        var total = r.combo.reduce(function(a, b) { return a + b; }, 0);
+                        var avgG = (total / r.combo.length).toFixed(1);
+                        html += '<span class="combo-tag">' + comboStr + ' → 总格数 <span class="hl">' + total +
+                            '</span> (均格 ' + avgG + ')</span>';
+                    });
+                    if (items.length > 8) html += '<span class="combo-tag">…共 ' + items.length + ' 种</span>';
+                    html += '</div></div>';
+                });
+                area.innerHTML = html;
+            };
+
+            function findCombos(remaining, count, options, current, result) {
+                if (count === 0) {
+                    if (remaining === 0) result.push(current.slice());
+                    return;
+                }
+                for (var i = 0; i < options.length; i++) {
+                    var val = options[i];
+                    if (val <= remaining) {
+                        current.push(val);
+                        findCombos(remaining - val, count - 1, options, current, result);
+                        current.pop();
+                    }
+                }
+            }
+
+            // ============================================================
+            // 霍姑姑渲染
+            // ============================================================
+            function renderHuo() {
+                var el = document.getElementById('page-huo');
+                var html = `
+                <div class="section">
+                    <div class="sec-head">
+                        <div class="sec-title">
+                            <div class="icon">霍</div>
+                            <div>
+                                <div class="name">霍姑姑 · 估值系统</div>
+                                <div class="role">
+                                    推荐道具：红格怀表，巨物价值，四件放大镜，奢侈扫描仪，全藏放大镜
+                                    <span class="tip2">如红格数过多建议用奢侈扫描仪确认是否有车身，有则用车身池出价</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="sec-body">
+                        <div class="huo-mode-switch">
+                            <button class="${huoMode === 'classic' ? 'active' : ''}" data-mode="classic" onclick="switchHuoMode('classic')">
+                                📊 经典估值
+                            </button>
+                            <button class="${huoMode === 'advanced' ? 'active' : ''}" data-mode="advanced" onclick="switchHuoMode('advanced')">
+                                ⚡ 进阶功能
+                            </button>
+                        </div>
+
+                        <div id="huoClassicContainer" style="display:${huoMode === 'classic' ? 'block' : 'none'};">
+                            ${generateClassicHTML()}
+                        </div>
+                        <div id="huoAdvancedContainer" style="display:${huoMode === 'advanced' ? 'block' : 'none'};">
+                            ${generateAdvancedHTML()}
+                        </div>
+                    </div>
+                </div>
+                `;
+                el.innerHTML = html;
+                if (huoMode === 'classic') {
+                    initClassic();
+                } else {
+                    initAdvanced();
+                }
+            }
+
+            window.switchHuoMode = function(mode) {
+                huoMode = mode;
+                renderHuo();
+            };
+
+            // ============================================================
+            // 经典估值 - 使用地图数据
+            // ============================================================
+            function generateClassicHTML() {
+                var map = getMap();
                 var colors = [
-                    { key: 'green', label: TEXT.colorGreen, dot: 'green', priceFn: function() { return getColorGridPrice(
-                            'green', map); } },
-                    { key: 'blue', label: TEXT.colorBlue, dot: 'blue', priceFn: function() { return getColorGridPrice(
-                            'blue', map); } },
-                    { key: 'purple', label: TEXT.colorPurple, dot: 'purple', priceFn: function() { return getColorGridPrice(
-                            'purple', map); } },
-                    { key: 'orange', label: TEXT.colorOrange, dot: 'orange', priceFn: function() { return getColorGridPrice(
-                            'orange', map); } },
-                    { key: 'red', label: TEXT.colorRed, dot: 'red', priceFn: function() { return getRedGridAvgPrice(
-                            map); } }
+                    { key: 'green', label: TEXT.colorGreen, dot: 'green' },
+                    { key: 'blue', label: TEXT.colorBlue, dot: 'blue' },
+                    { key: 'purple', label: TEXT.colorPurple, dot: 'purple' },
+                    { key: 'orange', label: TEXT.colorOrange, dot: 'orange' },
+                    { key: 'red', label: TEXT.colorRed, dot: 'red' }
                 ];
                 var html = '';
+
+                html += `
+                <div class="adv-dyn-toggle" style="margin-bottom:12px;">
+                    <label>
+                        <input type="checkbox" id="huoClassicDynToggle" onchange="huoClassicDynToggle()">
+                        <span>按红格动态调率</span>
+                    </label>
+                    <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
+                </div>
+                `;
+
                 colors.forEach(function(col) {
-                    var price = col.priceFn();
                     var inputId = 'huo_' + col.key;
+                    var price = (col.key === 'red') ? getRedGridAvgPrice(map) : getColorGridPrice(col.key, map);
                     html += '<div class="row"><span class="lbl"><span class="dot ' + col.dot + '"></span>' + col
                         .label + '（格数）</span>' +
                         '<div class="qty"><input type="number" id="' + inputId + '" min="0" step="1" value="" data-price="' +
@@ -2567,62 +3614,73 @@
                         '<span class="sub" id="' + inputId + '_sub">0</span></div>';
                 });
 
-                // 车零件行
-                html += '<div class="car-pool-row" style="flex-wrap:wrap;gap:6px;">' +
-                    '<span class="lbl">🚗 车零件</span>' +
-                    '<div style="display:flex;align-items:center;gap:4px;background:rgba(0,0,0,0.2);padding:2px 8px 2px 4px;border-radius:8px;border:1px solid var(--glass-border);">' +
-                    '<span style="font-size:11px;color:var(--text-secondary);">引擎</span>' +
-                    '<button type="button" class="carPartBtn" data-target="huoEngine" data-delta="-1">−</button>' +
-                    '<input type="number" id="huoEngine" min="0" step="1" value="" style="width:40px;padding:2px 0;background:transparent;border:none;color:var(--text-primary);text-align:center;font-weight:600;font-size:13px;outline:none;">' +
-                    '<button type="button" class="carPartBtn" data-target="huoEngine" data-delta="1">+</button>' +
-                    '<span style="font-size:10px;color:var(--text-secondary);opacity:0.5;margin-left:2px;">−9万</span>' +
-                    '</div>' +
-                    '<div style="display:flex;align-items:center;gap:4px;background:rgba(0,0,0,0.2);padding:2px 8px 2px 4px;border-radius:8px;border:1px solid var(--glass-border);">' +
-                    '<span style="font-size:11px;color:var(--text-secondary);">车身</span>' +
-                    '<button type="button" class="carPartBtn" data-target="huoBody" data-delta="-1">−</button>' +
-                    '<input type="number" id="huoBody" min="0" step="1" value="" style="width:40px;padding:2px 0;background:transparent;border:none;color:var(--text-primary);text-align:center;font-weight:600;font-size:13px;outline:none;">' +
-                    '<button type="button" class="carPartBtn" data-target="huoBody" data-delta="1">+</button>' +
-                    '<span style="font-size:10px;color:var(--text-secondary);opacity:0.5;margin-left:2px;">−18万</span>' +
-                    '</div>' +
-                    '<span style="font-size:11px;color:var(--text-secondary);opacity:0.6;" id="carPoolTotalDisplay">扣减：0</span>' +
-                    '</div>';
-
-                // 古董行
-                html += '<div class="row" style="border-top:1px solid var(--glass-border);padding-top:8px;margin-top:4px;">' +
-                    '<span class="lbl">🏺 古董</span>' +
-                    '<div class="qty">' +
-                    '<input type="number" id="huoAntique12" min="0" step="1" value="" style="width:40px;min-width:32px;" placeholder="12格">' +
-                    '<span style="font-size:10px;color:var(--text-secondary);opacity:0.7;margin:0 2px;white-space:nowrap;">+1 −18万</span>' +
-                    '</div>' +
-                    '<div class="qty">' +
-                    '<input type="number" id="huoAntique16" min="0" step="1" value="" style="width:40px;min-width:32px;" placeholder="16格">' +
-                    '<span style="font-size:10px;color:var(--text-secondary);opacity:0.7;margin:0 2px;white-space:nowrap;">+1 −30万</span>' +
-                    '</div>' +
-                    '<span class="sub" id="huoAntiqueSub">0</span>' +
-                    '</div>';
+                html += `
+                <div class="exclude-row">
+                    <span class="elbl">排除车身</span>
+                    <span class="ht-btn danger" onclick="adjustExclude('body',-1)">-1</span>
+                    <span class="eval" id="excludeBodyVal">0件</span>
+                    <span class="ht-btn primary" onclick="adjustExclude('body',1)">+1</span>
+                    <span class="exclude-deduction" id="excludeBodyDeduction"></span>
+                </div>
+                <div class="exclude-row">
+                    <span class="elbl">排除引擎</span>
+                    <span class="ht-btn danger" onclick="adjustExclude('engine',-1)">-1</span>
+                    <span class="eval" id="excludeEngineVal">0件</span>
+                    <span class="ht-btn primary" onclick="adjustExclude('engine',1)">+1</span>
+                    <span class="exclude-deduction" id="excludeEngineDeduction"></span>
+                </div>
+                `;
 
                 html += '<div class="total-bar">' +
                     '<div class="t-item"><span class="label">' + TEXT.recLabel + '</span><span class="value rec" id="huoRec">0</span></div>' +
                     '<div class="t-item"><span class="label">' + TEXT.totalLabel + '</span><span class="value" id="huoTotal">0</span></div>' +
                     '</div>';
 
-                html += '<div class="confidence-bar"><span>' + TEXT.confidenceLabel + '</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:90%"></div></div><span class="label" id="huoConfidenceLabel">90%</span></div>';
+                html += '<div class="confidence-bar"><span>' + TEXT.confidenceLabel +
+                    '</span><div class="bar-track"><div class="bar-fill" id="huoConfidenceFill" style="width:90%"></div></div><span class="label" id="huoConfidenceLabel">90%</span></div>';
                 html += '<div class="reset-row"><button class="btn-reset" id="huoReset">' + TEXT.resetLabel +
                     '</button></div>';
+                html += '<div style="margin-top:8px;font-size:11px;color:var(--text-secondary);opacity:0.4;text-align:right;">📍 当前地图：' +
+                    map.name + ' · 数据来源：地图数据库</div>';
                 return html;
             }
 
-            function initClassic(map) {
-                var colors = [{ key: 'green' }, { key: 'blue' }, { key: 'purple' }, { key: 'orange' }, { key: 'red' }];
+            window.adjustExclude = function(type, delta) {
+                var key = type === 'body' ? 'body' : 'engine';
+                var newVal = Math.max(0, (excludeState[key] || 0) + delta);
+                excludeState[key] = newVal;
+                var valEl = document.getElementById('exclude' + (type === 'body' ? 'Body' : 'Engine') + 'Val');
+                if (valEl) valEl.textContent = newVal + '件';
+                calcHuoClassic();
+            };
 
-                var huoSteps = [-10, -5, -1, 1, 5, 10];
-                colors.forEach(function(col) {
-                    var inputId = 'huo_' + col.key;
+            window.huoClassicDynToggle = function() {
+                calcHuoClassic();
+            };
+
+            function getHuoClassicRedPrice(redGrids, map) {
+                var dynEnabled = document.getElementById('huoClassicDynToggle')?.checked || false;
+                var basePrice = getRedGridAvgPrice(map);
+                if (!dynEnabled) return basePrice;
+                var rules = ADV_MODEL.dynRules;
+                for (var i = 0; i < rules.length; i++) {
+                    if (redGrids <= rules[i].max) {
+                        return rules[i].price;
+                    }
+                }
+                return rules[rules.length - 1].price;
+            }
+
+            function initClassic() {
+                var colors = ['green', 'blue', 'purple', 'orange', 'red'];
+                var steps = [-10, -5, -1, 1, 5, 10];
+                colors.forEach(function(key) {
+                    var inputId = 'huo_' + key;
                     var input = document.getElementById(inputId);
                     if (input) {
                         var container = input.parentElement;
                         var btnsHtml = '<div class="qty-btns">';
-                        huoSteps.forEach(function(step) {
+                        steps.forEach(function(step) {
                             var cls = 'qty-btn';
                             if (step > 0) cls += ' primary';
                             if (step < 0) cls += ' danger';
@@ -2631,7 +3689,6 @@
                         });
                         btnsHtml += '</div>';
                         container.insertAdjacentHTML('beforeend', btnsHtml);
-
                         container.querySelectorAll('.qty-btn').forEach(function(btn) {
                             btn.addEventListener('click', function(e) {
                                 e.preventDefault();
@@ -2648,276 +3705,869 @@
                     }
                 });
 
-                ['huoAntique12', 'huoAntique16'].forEach(function(id) {
-                    var input = document.getElementById(id);
-                    if (input) {
-                        var container = input.parentElement;
-                        var btnsHtml = '<div class="qty-btns">' +
-                            '<button class="qty-btn danger" data-input="' + id + '" data-step="-1">-1</button>' +
-                            '<button class="qty-btn primary" data-input="' + id + '" data-step="1">+1</button>' +
-                            '</div>';
-                        container.insertAdjacentHTML('beforeend', btnsHtml);
-                        container.querySelectorAll('.qty-btn').forEach(function(btn) {
-                            btn.addEventListener('click', function(e) {
-                                e.preventDefault();
-                                var inp = document.getElementById(this.dataset.input);
-                                if (!inp) return;
-                                var step = parseInt(this.dataset.step) || 0;
-                                var val = parseFloat(inp.value) || 0;
-                                var newVal = Math.max(0, val + step);
-                                inp.value = newVal;
-                                var evt = new Event('input', { bubbles: true });
-                                inp.dispatchEvent(evt);
-                            });
-                        });
-                    }
+                colors.forEach(function(key) {
+                    var inp = document.getElementById('huo_' + key);
+                    if (inp) inp.addEventListener('input', calcHuoClassic);
                 });
-
-                function calcCarDeduction() {
-                    var engine = parseInt(document.getElementById('huoEngine').value) || 0;
-                    var body = parseInt(document.getElementById('huoBody').value) || 0;
-                    var deduction = 0;
-                    if (engine > 0 && body > 0) {
-                        deduction = 270000;
-                    } else if (engine > 0) {
-                        deduction = engine * 90000;
-                    } else if (body > 0) {
-                        deduction = body * 180000;
-                    }
-                    return deduction;
-                }
-
-                function calcHuo() {
-                    var total = 0,
-                        stats = [];
-                    colors.forEach(function(col) {
-                        var inp = document.getElementById('huo_' + col.key);
-                        if (!inp) return;
-                        var val = parseFloat(inp.value) || 0;
-                        var price = parseFloat(inp.dataset.price) || 0;
-                        var sub = val * price;
-                        var subEl = document.getElementById('huo_' + col.key + '_sub');
-                        if (subEl) subEl.textContent = fmt(sub);
-                        total = total + sub;
-                        if (val > 0) stats.push({ val: val, price: price, sub: sub });
-                    });
-
-                    var antique12 = parseInt(document.getElementById('huoAntique12').value) || 0;
-                    var antique16 = parseInt(document.getElementById('huoAntique16').value) || 0;
-                    var antiqueDeduction = (antique12 * 180000) + (antique16 * 300000);
-                    var antiqueSub = -(antiqueDeduction);
-                    document.getElementById('huoAntiqueSub').textContent = fmt(antiqueSub);
-
-                    var carDeduction = calcCarDeduction();
-                    var totalDeduction = carDeduction + antiqueDeduction;
-                    var finalTotal = total - totalDeduction;
-                    if (finalTotal < 0) finalTotal = 0;
-
-                    var displayEl = document.getElementById('carPoolTotalDisplay');
-                    if (displayEl) {
-                        var engine = parseInt(document.getElementById('huoEngine').value) || 0;
-                        var body = parseInt(document.getElementById('huoBody').value) || 0;
-                        var parts = [];
-                        if (engine > 0 && body > 0) {
-                            parts.push('引擎+车身 组合扣减 −270,000');
-                        } else if (engine > 0) {
-                            parts.push('引擎×' + engine + ' −' + fmt(engine * 90000));
-                        } else if (body > 0) {
-                            parts.push('车身×' + body + ' −' + fmt(body * 180000));
-                        }
-                        if (antique12 > 0) parts.push('古董12格×' + antique12 + ' −' + fmt(antique12 * 180000));
-                        if (antique16 > 0) parts.push('古董16格×' + antique16 + ' −' + fmt(antique16 * 300000));
-                        if (parts.length === 0) {
-                            displayEl.textContent = '扣减：0';
-                        } else {
-                            displayEl.textContent = '扣减：−' + fmt(totalDeduction) + ' (' + parts.join(' ') + ')';
-                        }
-                    }
-
-                    document.getElementById('huoTotal').textContent = fmt(finalTotal);
-                    var disc = dynamicRecDiscount(finalTotal);
-                    document.getElementById('huoRec').textContent = fmt(finalTotal * disc);
-
-                    var conf = 0.90;
-                    if (stats.length > 0) {
-                        var vals = stats.map(function(s) { return s.val; });
-                        var maxV = Math.max.apply(null, vals);
-                        var minV = Math.min.apply(null, vals);
-                        var spread = (maxV - minV) / (maxV + 0.01);
-                        conf = 0.90 - spread * 0.25;
-                        conf = Math.max(0.65, Math.min(0.96, conf));
-                    }
-                    var fill = document.getElementById('huoConfidenceFill');
-                    var label = document.getElementById('huoConfidenceLabel');
-                    if (fill) {
-                        fill.style.width = (conf * 100) + '%';
-                        fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#4ec97a,#6ee7b7)' : (conf > 0.65 ?
-                            'linear-gradient(90deg,#ffd93d,#f59e0b)' : 'linear-gradient(90deg,#ff6b6b,#ef4444)');
-                    }
-                    if (label) label.textContent = Math.round(conf * 100) + '%';
-                }
-
-                colors.forEach(function(col) {
-                    var inp = document.getElementById('huo_' + col.key);
-                    if (inp) inp.addEventListener('input', calcHuo);
-                });
-
-                document.getElementById('huoAntique12').addEventListener('input', calcHuo);
-                document.getElementById('huoAntique16').addEventListener('input', calcHuo);
-
-                document.querySelectorAll('.carPartBtn').forEach(function(btn) {
-                    btn.onclick = function() {
-                        var targetId = this.dataset.target;
-                        var delta = parseInt(this.dataset.delta) || 0;
-                        var input = document.getElementById(targetId);
-                        if (input) {
-                            var val = parseInt(input.value) || 0;
-                            var newVal = Math.max(0, val + delta);
-                            input.value = newVal;
-                            var evt = new Event('input', { bubbles: true });
-                            input.dispatchEvent(evt);
-                            calcHuo();
-                        }
-                    };
-                });
-
-                document.getElementById('huoEngine').addEventListener('input', calcHuo);
-                document.getElementById('huoBody').addEventListener('input', calcHuo);
 
                 document.getElementById('huoReset').onclick = function() {
-                    colors.forEach(function(col) { var inp = document.getElementById('huo_' + col.key); if (inp) inp
+                    colors.forEach(function(key) { var inp = document.getElementById('huo_' + key); if (inp) inp
                             .value = ''; });
-                    document.getElementById('huoEngine').value = '';
-                    document.getElementById('huoBody').value = '';
-                    document.getElementById('huoAntique12').value = '';
-                    document.getElementById('huoAntique16').value = '';
-                    calcHuo();
+                    excludeState.body = 0;
+                    excludeState.engine = 0;
+                    var bv = document.getElementById('excludeBodyVal');
+                    if (bv) bv.textContent = '0件';
+                    var ev = document.getElementById('excludeEngineVal');
+                    if (ev) ev.textContent = '0件';
+                    calcHuoClassic();
                 };
-                calcHuo();
+                calcHuoClassic();
             }
 
-            function generateAdvancedHTML() {
-                var html = '<div class="map-switch" id="advMapSwitch" style="margin-bottom:12px;">';
-                var maps = [{ id: 1, label: '一图' }, { id: 2, label: '二图' }, { id: 3, label: '沪上风云' }];
-                html += maps.map(function(m, idx) { return '<button class="' + (idx === 0 ? 'on' : '') +
-                    '" data-map="' + m.id + '">' + m.label + '</button>'; }).join('');
-                html += '</div>';
-                html += '<div class="row"><span class="lbl">' + TEXT.advRevealed + '</span><div class="qty" style="flex:1;width:auto;"><input type="number" id="advRevealed" min="0" step="1000" value="" style="width:100%;"></div></div>';
-                html += '<div class="row"><span class="lbl">' + TEXT.advRed + '</span><div class="qty" style="flex:1;width:auto;"><input type="number" id="advRed" min="0" step="1" value="" style="width:100%;"></div></div>';
-                html += '<div class="row"><span class="lbl">' + TEXT.advGold + '</span><div class="qty" style="flex:1;width:auto;"><input type="number" id="advGold" min="0" step="1" value="" style="width:100%;"></div></div>';
-                html += '<div style="margin-top:12px;"><button class="btn-gold" id="advCalcBtn" style="width:100%;">' +
-                    TEXT.advCalc + '</button></div>';
-                html += '<div id="advResultContainer" style="margin-top:12px;display:none;">';
-                html += '<div class="total-bar"><div class="t-item"><span class="label">' + TEXT.advTotal +
-                    '</span><span class="value" id="advTotal">0</span></div><div class="t-item"><span class="label">' +
-                    TEXT.advRec + '</span><span class="value rec" id="advRec">0</span></div></div>';
-                html += '<div style="padding:8px 4px;font-size:12px;color:var(--text-secondary);line-height:1.8;"><span id="advMapName" style="color:var(--accent);font-weight:600;"></span> ｜ ' +
-                    TEXT.advMultiplier + ': <span id="advMultiplier" style="color:var(--accent);"></span> ｜ ' +
-                    TEXT.advMultiplierRange + ': <span id="advMultiplierRange"></span><br/>' + TEXT.advRedBoost +
-                    ': <span id="advRedBoost"></span> ｜ ' + TEXT.advDeduction + ': <span id="advDeduction"></span></div>';
-                html += '<div class="confidence-bar"><span>' + TEXT.advConfidence +
-                    '</span><div class="bar-track"><div class="bar-fill" id="advConfidenceFill" style="width:90%"></div></div><span class="label" id="advConfidenceLabel">90%</span></div>';
-                html += '</div>';
-                html += '<div class="reset-row"><button class="btn-reset" id="advClearBtn">' + TEXT.advClear +
-                    '</button></div>';
-                return html;
-            }
-
-            function initAdvanced() {
-                var currentAdvMap = 1;
-                var advBtns = document.querySelectorAll('#advMapSwitch button');
-                advBtns.forEach(function(btn) {
-                    btn.onclick = function() {
-                        advBtns.forEach(function(b) { b.classList.remove('on'); });
-                        btn.classList.add('on');
-                        currentAdvMap = parseInt(btn.dataset.map);
-                        var container = document.getElementById('advResultContainer');
-                        if (container && container.style.display !== 'none') { document.getElementById(
-                                'advCalcBtn').click(); }
-                    };
-                });
-                document.getElementById('advCalcBtn').onclick = function() {
-                    var revealed = parseFloat(document.getElementById('advRevealed').value) || 0;
-                    var red = parseInt(document.getElementById('advRed').value) || 0;
-                    var gold = parseInt(document.getElementById('advGold').value) || 0;
-                    var container = document.getElementById('advResultContainer');
-                    if (revealed <= 0) { container.style.display = 'none';
-                        alert(TEXT.advEmpty); return; }
-                    try {
-                        var result = mapEstEstimate(currentAdvMap, revealed, red, gold);
-                        container.style.display = 'block';
-                        document.getElementById('advTotal').textContent = fmt(result.value);
-                        var rec = Math.round(result.value * dynamicRecDiscount(result.value));
-                        document.getElementById('advRec').textContent = fmt(rec);
-                        document.getElementById('advMapName').textContent = result.mapName;
-                        document.getElementById('advMultiplier').textContent = result.multiplier.toFixed(3);
-                        document.getElementById('advMultiplierRange').textContent = '[' + result.minMultiplier
-                            .toFixed(2) + ', ' + result.maxMultiplier.toFixed(2) + ']';
-                        document.getElementById('advRedBoost').textContent = '[' + result.redBoostMin.toFixed(
-                            2) + ', ' + result.redBoostMax.toFixed(2) + ']';
-                        document.getElementById('advDeduction').textContent = '-' + result.deduction
-                        .toLocaleString();
-                        var conf = 0.90;
-                        var inputs = 0;
-                        if (revealed > 0) inputs++;
-                        if (red > 0) inputs++;
-                        if (gold > 0) inputs++;
-                        if (inputs > 0) {
-                            conf = 0.90 + inputs * 0.02;
-                            conf = Math.min(0.96, conf);
-                        }
-                        var fill = document.getElementById('advConfidenceFill');
-                        var label = document.getElementById('advConfidenceLabel');
-                        if (fill) {
-                            fill.style.width = (conf * 100) + '%';
-                            fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#4ec97a,#6ee7b7)' : (conf >
-                                0.65 ? 'linear-gradient(90deg,#ffd93d,#f59e0b)' :
-                                'linear-gradient(90deg,#ff6b6b,#ef4444)');
-                        }
-                        if (label) label.textContent = Math.round(conf * 100) + '%';
-                    } catch (e) { alert('计算异常：' + e.message); }
-                };
-                document.getElementById('advClearBtn').onclick = function() {
-                    document.getElementById('advRevealed').value = '';
-                    document.getElementById('advRed').value = '';
-                    document.getElementById('advGold').value = '';
-                    document.getElementById('advResultContainer').style.display = 'none';
-                    var fill = document.getElementById('advConfidenceFill');
-                    var label = document.getElementById('advConfidenceLabel');
-                    if (fill) fill.style.width = '90%';
-                    if (label) label.textContent = '90%';
-                };
-            }
-
-            function renderHuo() {
-                var el = document.getElementById('page-huo');
+            function calcHuoClassic() {
                 var map = getMap();
-                var html = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon">霍</div><div><div class="name">' +
-                    TEXT.huoTitle + '</div><div class="role">' + TEXT.huoRole + '<span class="tip2">' + TEXT.huoTip +
-                    '</span></div></div></div></div><div class="sec-body">';
-                html += '<div style="display:flex;gap:6px;margin-bottom:12px;">';
-                html += '<button class="tab-btn' + (huoMode === 'classic' ? ' active' : '') +
-                    '" data-mode="classic" style="flex:1;">' + TEXT.huoModeClassic + '</button>';
-                html += '<button class="tab-btn' + (huoMode === 'advanced' ? ' active' : '') +
-                    '" data-mode="advanced" style="flex:1;">' + TEXT.huoModeAdvanced + '</button>';
-                html += '</div>';
-                html += '<div id="huoClassicContainer" style="display:' + (huoMode === 'classic' ? 'block' : 'none') +
-                    ';">' + generateClassicHTML(map) + '</div>';
-                html += '<div id="huoAdvancedContainer" style="display:' + (huoMode === 'advanced' ? 'block' : 'none') +
-                    ';">' + generateAdvancedHTML() + '</div>';
-                html += '</div></div>';
-                el.innerHTML = html;
-                var modeBtns = el.querySelectorAll('.tab-btn[data-mode]');
-                modeBtns.forEach(function(btn) {
-                    btn.onclick = function() { huoMode = this.dataset.mode;
-                        renderHuo(); };
+                var colors = ['green', 'blue', 'purple', 'orange', 'red'];
+                var total = 0,
+                    stats = [],
+                    redGrids = 0;
+
+                colors.forEach(function(key) {
+                    var inp = document.getElementById('huo_' + key);
+                    if (!inp) return;
+                    var val = parseFloat(inp.value) || 0;
+                    var price = 0;
+                    if (key === 'red') {
+                        price = getHuoClassicRedPrice(val, map);
+                        redGrids = val;
+                    } else {
+                        price = getColorGridPrice(key, map);
+                    }
+                    var sub = val * price;
+                    var subEl = document.getElementById('huo_' + key + '_sub');
+                    if (subEl) subEl.textContent = fmt(sub);
+                    total = total + sub;
+                    if (val > 0) stats.push({ val: val, price: price, sub: sub });
                 });
-                if (huoMode === 'classic') initClassic(map);
-                else initAdvanced();
+
+                var bodyCount = excludeState.body || 0;
+                var engineCount = excludeState.engine || 0;
+                var redPrice = getHuoClassicRedPrice(redGrids, map);
+                var bodyDeduction = 0,
+                    engineDeduction = 0;
+
+                if (bodyCount > 0) {
+                    var perBody = (redPrice * 12) - 231800;
+                    if (perBody < 0) perBody = 0;
+                    bodyDeduction = bodyCount * perBody;
+                }
+                if (engineCount > 0) {
+                    var perEngine = (redPrice * 9) - 280600;
+                    if (perEngine < 0) perEngine = 0;
+                    engineDeduction = engineCount * perEngine;
+                }
+                var totalDeduction = bodyDeduction + engineDeduction;
+                var finalTotal = total - totalDeduction;
+                if (finalTotal < 0) finalTotal = 0;
+
+                var bodyDedEl = document.getElementById('excludeBodyDeduction');
+                if (bodyDedEl) bodyDedEl.textContent = bodyCount > 0 ? '-' + fmt(bodyDeduction) : '';
+                var engineDedEl = document.getElementById('excludeEngineDeduction');
+                if (engineDedEl) engineDedEl.textContent = engineCount > 0 ? '-' + fmt(engineDeduction) : '';
+
+                document.getElementById('huoTotal').textContent = fmt(finalTotal);
+                var disc = dynamicRecDiscount(finalTotal);
+                document.getElementById('huoRec').textContent = fmt(finalTotal * disc);
+
+                var conf = 0.90;
+                if (stats.length > 0) {
+                    var vals = stats.map(function(s) { return s.val; });
+                    var maxV = Math.max.apply(null, vals);
+                    var minV = Math.min.apply(null, vals);
+                    var spread = (maxV - minV) / (maxV + 0.01);
+                    conf = 0.90 - spread * 0.25;
+                    conf = Math.max(0.65, Math.min(0.96, conf));
+                }
+                var fill = document.getElementById('huoConfidenceFill');
+                var label = document.getElementById('huoConfidenceLabel');
+                if (fill) {
+                    fill.style.width = (conf * 100) + '%';
+                    fill.style.background = conf > 0.8 ? 'linear-gradient(90deg,#4ec97a,#6ee7b7)' : (conf > 0.65 ?
+                        'linear-gradient(90deg,#ffd93d,#f59e0b)' : 'linear-gradient(90deg,#ff6b6b,#ef4444)');
+                }
+                if (label) label.textContent = Math.round(conf * 100) + '%';
             }
 
             // ============================================================
-            // 高进
+            // 进阶功能 - 独立算法
+            // ============================================================
+            function generateAdvancedHTML() {
+                return `
+                <div class="adv-hint" id="advHint">
+                    <div class="hint-header" onclick="toggleAdvHint()">
+                        <span>📖 玩法教程（点击展开）</span>
+                        <span class="arrow">▼</span>
+                    </div>
+                    <div class="hint-body">
+                        <p><span class="highlight">总格数估算：</span>物品总格数 ≈ 总仓行数 × 10 − 40。将估算结果填入"物品总格数"，后续逐轮填入绿蓝紫橙后会自动反推红白格数。<span class="warn">白色没有排除办法，当作估价误差适当忽略即可。</span></p>
+                        <p style="margin-top:6px;"><span class="danger">行数判断注意：</span>如果数到约15行，实际总格数不一定是110——全仓最少150格，藏品可能只铺了100或90格，对反推红白格数影响极大。此时建议等第五轮精确估价，或用轮廓值查看最后底格所在行数，重新定位总仓格数。</p>
+                        <p style="margin-top:6px;"><span class="highlight">奢品轮廊辅助：</span>带奢品轮廓可以优化总格数估算，还能定位引擎和车架——看到3×3就是引擎，3×4且红格数多默认有车架，估价时在选项中排除掉。</p>
+                        <p style="margin-top:6px;"><span class="highlight">节奏判断：</span></p>
+                        <ul style="padding-left:20px;margin:4px 0;">
+                            <li>第三轮输入紫色格数后，如果剩余格子多且别人出价不高，可以提前开手电提速直接秒仓</li>
+                            <li>第三、四轮都没机会就正常拖到第五轮，按原版方法打，看情况出价</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="adv-dyn-toggle">
+                    <label>
+                        <input type="checkbox" id="advDynToggle" onchange="toggleAdvDyn()">
+                        <span>按红格动态调率</span>
+                    </label>
+                    <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
+                </div>
+
+                <div class="adv-price-ref-bar">
+                    <div class="adv-price-ref-item"><span class="plabel">绿均价</span><input id="advGreenPrice" value="260" oninput="advCalc()"></div>
+                    <div class="adv-price-ref-item"><span class="plabel">蓝均价</span><input id="advBluePrice" value="740" oninput="advCalc()"></div>
+                    <div class="adv-price-ref-item"><span class="plabel">紫均价</span><input id="advPurplePrice" value="2400" oninput="advCalc()"></div>
+                    <div class="adv-price-ref-item"><span class="plabel">橙均价</span><input id="advOrangePrice" value="9800" oninput="advCalc()"></div>
+                    <div class="adv-price-ref-item"><span class="plabel">红保守</span><input id="advRedCons" value="46000" oninput="advCalc()"></div>
+                    <div class="adv-price-ref-item"><span class="plabel">红平均</span><input id="advRedAvg" value="51438" oninput="advCalc()"></div>
+                    <div class="adv-price-ref-item"><span class="plabel">红激进</span><input id="advRedAgg" value="57000" oninput="advCalc()"></div>
+                    <div class="adv-price-ref-item"><span class="plabel">白红橙均价</span><input id="advWroPrice" value="24000" oninput="advCalc()"></div>
+                </div>
+
+                <div class="adv-row">
+                    <span class="albl">物品总格数</span>
+                    <span class="ht-btn" onclick="advAdjust('total',-100)">-100</span>
+                    <span class="ht-btn" onclick="advAdjust('total',-10)">-10</span>
+                    <input type="text" id="advTotalGrids" inputmode="numeric" oninput="advCalc()">
+                    <span class="ht-btn primary" onclick="advAdjust('total',10)">+10</span>
+                    <span class="ht-btn primary" onclick="advAdjust('total',100)">+100</span>
+                </div>
+
+                <div class="adv-base-row" id="advBaseRow" style="display:none;">
+                    <span class="blbl">仓库底价范围</span>
+                    <span class="bval" id="advBaseRange">—</span>
+                    <span class="bnote" id="advBaseNote"></span>
+                </div>
+
+                <div class="adv-row">
+                    <span class="albl">剩余格数</span>
+                    <span class="adv-remain" id="advRemain">—</span>
+                </div>
+
+                <div class="adv-row">
+                    <span class="albl">绿色总格数</span>
+                    <span class="ht-btn" onclick="advAdjust('green',-10)">-10</span>
+                    <span class="ht-btn" onclick="advAdjust('green',-1)">-1</span>
+                    <input type="text" id="advGreen" inputmode="numeric" oninput="advCalc()">
+                    <span class="ht-btn primary" onclick="advAdjust('green',1)">+1</span>
+                    <span class="ht-btn primary" onclick="advAdjust('green',10)">+10</span>
+                </div>
+                <div class="adv-row">
+                    <span class="albl">蓝色总格数</span>
+                    <span class="ht-btn" onclick="advAdjust('blue',-10)">-10</span>
+                    <span class="ht-btn" onclick="advAdjust('blue',-1)">-1</span>
+                    <input type="text" id="advBlue" inputmode="numeric" oninput="advCalc()">
+                    <span class="ht-btn primary" onclick="advAdjust('blue',1)">+1</span>
+                    <span class="ht-btn primary" onclick="advAdjust('blue',10)">+10</span>
+                </div>
+                <div class="adv-row">
+                    <span class="albl">紫色总格数</span>
+                    <span class="ht-btn" onclick="advAdjust('purple',-10)">-10</span>
+                    <span class="ht-btn" onclick="advAdjust('purple',-1)">-1</span>
+                    <input type="text" id="advPurple" inputmode="numeric" oninput="advCalc()">
+                    <span class="ht-btn primary" onclick="advAdjust('purple',1)">+1</span>
+                    <span class="ht-btn primary" onclick="advAdjust('purple',10)">+10</span>
+                </div>
+                <div class="adv-row">
+                    <span class="albl">橙色总格数</span>
+                    <span class="ht-btn" onclick="advAdjust('orange',-10)">-10</span>
+                    <span class="ht-btn" onclick="advAdjust('orange',-1)">-1</span>
+                    <input type="text" id="advOrange" inputmode="numeric" oninput="advCalc()">
+                    <span class="ht-btn primary" onclick="advAdjust('orange',1)">+1</span>
+                    <span class="ht-btn primary" onclick="advAdjust('orange',10)">+10</span>
+                </div>
+                <div class="adv-row">
+                    <span class="albl">红色总格数</span>
+                    <span class="ht-btn" onclick="advAdjust('red',-10)">-10</span>
+                    <span class="ht-btn" onclick="advAdjust('red',-1)">-1</span>
+                    <input type="text" id="advRed" inputmode="numeric" oninput="advCalc()">
+                    <span class="ht-btn primary" onclick="advAdjust('red',1)">+1</span>
+                    <span class="ht-btn primary" onclick="advAdjust('red',10)">+10</span>
+                </div>
+
+                <div class="adv-exclude-row" id="advExcludeRow" style="display:none;">
+                    <span class="elbl">排除车身</span>
+                    <span class="ht-btn" onclick="advAdjustExclude(-1)">-1</span>
+                    <span class="eval" id="advExcludeVal">0件</span>
+                    <span class="ht-btn primary" onclick="advAdjustExclude(1)">+1</span>
+                </div>
+                <div class="adv-exclude-row" id="advEngineRow" style="display:none;">
+                    <span class="elbl">排除引擎</span>
+                    <span class="ht-btn" onclick="advAdjustEngine(-1)">-1</span>
+                    <span class="eval" id="advEngineVal">0件</span>
+                    <span class="ht-btn primary" onclick="advAdjustEngine(1)">+1</span>
+                </div>
+
+                <div class="adv-round-row">
+                    <span class="rlabel">第三轮粗略估价：</span>
+                    <span class="rval avg" id="advRound3">—</span>
+                </div>
+                <div class="adv-round-row">
+                    <span class="rlabel">第四轮全仓估价：</span>
+                    <span class="rval cons">🛡 保守 <span id="advRound4Cons">—</span></span>
+                    <span class="rval avg">📊 平均 <span id="advRound4Avg">—</span></span>
+                    <span class="rval agg">🔥 激进 <span id="advRound4Agg">—</span></span>
+                    <button class="adv-clear-btn" onclick="advClear()">清空</button>
+                </div>
+
+                <div class="adv-xunhui-toggle" onclick="advToggleXunhui()">
+                    <span style="font-size:13px;">🔍 已知价格反推板块</span>
+                    <span id="advXunhuiArrow" style="margin-left:auto;font-size:12px;color:var(--text-secondary);">展开 ▼</span>
+                </div>
+                <div class="adv-xunhui-panel" id="advXunhuiPanel">
+                    <div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;line-height:1.6;">
+                        输入已知红品的至宝价值，系统自动匹配物品并锁定对应格数...
+                    </div>
+                    ${[1,2,3,4,5,6].map(i => `
+                        <div class="adv-zb-row">
+                            <span class="zb-label">至宝价值${i}</span>
+                            <input type="text" class="adv-zb-input" id="advZhibao${i}" inputmode="numeric" placeholder="输入价格" oninput="advCalcZhibao()">
+                            <span class="adv-match" id="advMatch${i}"></span>
+                        </div>
+                    `).join('')}
+                </div>
+
+                <div class="adv-avg-row">
+                    <span class="albl">红均格(可选)</span>
+                    <span class="ht-btn" onclick="advAdjustAvg(-1)">-1</span>
+                    <span class="ht-btn" onclick="advAdjustAvg(-0.1)">-0.1</span>
+                    <input type="text" id="advAvgInput" placeholder="例如5.3" inputmode="decimal" oninput="advRender()">
+                    <span class="ht-btn primary" onclick="advAdjustAvg(0.1)">+0.1</span>
+                    <span class="ht-btn primary" onclick="advAdjustAvg(1)">+1</span>
+                </div>
+
+                <div class="adv-section-title">可能出现的格式</div>
+                <div class="adv-result-area" id="advResultArea"></div>
+                <div class="adv-empty-tip" id="advEmptyTip">请输入物品总格数及各品质总格数后查看结果</div>
+
+                <div style="margin-top:8px;font-size:11px;color:var(--text-secondary);opacity:0.4;text-align:right;">⚡ 进阶模式 · 独立计算不受地图影响</div>
+                `;
+            }
+
+            window.toggleAdvHint = function() {
+                var hint = document.getElementById('advHint');
+                if (hint) hint.classList.toggle('open');
+            };
+
+            window.toggleAdvDyn = function() {
+                var cb = document.getElementById('advDynToggle');
+                advState.dynEnabled = cb ? cb.checked : false;
+                advCalc();
+            };
+
+            window.advAdjust = function(field, delta) {
+                var idMap = {
+                    total: 'advTotalGrids',
+                    green: 'advGreen',
+                    blue: 'advBlue',
+                    purple: 'advPurple',
+                    orange: 'advOrange',
+                    red: 'advRed'
+                };
+                var input = document.getElementById(idMap[field]);
+                if (!input) return;
+                var val = parseFloat(input.value) || 0;
+                var newVal = Math.max(0, val + delta);
+                input.value = newVal;
+                advCalc();
+            };
+
+            window.advAdjustAvg = function(delta) {
+                var input = document.getElementById('advAvgInput');
+                if (!input) return;
+                var val = parseFloat(input.value) || 0;
+                var newVal = Math.max(0, val + delta);
+                input.value = newVal.toFixed(1);
+                advRender();
+            };
+
+            window.advAdjustExclude = function(delta) {
+                var el = document.getElementById('advExcludeVal');
+                if (!el) return;
+                var val = parseInt(el.textContent) || 0;
+                var newVal = Math.max(0, val + delta);
+                el.textContent = newVal + '件';
+                advState.excludeBody = newVal;
+                advCalc();
+            };
+
+            window.advAdjustEngine = function(delta) {
+                var el = document.getElementById('advEngineVal');
+                if (!el) return;
+                var val = parseInt(el.textContent) || 0;
+                var newVal = Math.max(0, val + delta);
+                el.textContent = newVal + '件';
+                advState.excludeEngine = newVal;
+                advCalc();
+            };
+
+            window.advToggleXunhui = function() {
+                var panel = document.getElementById('advXunhuiPanel');
+                var arrow = document.getElementById('advXunhuiArrow');
+                if (panel) {
+                    panel.classList.toggle('open');
+                    if (arrow) arrow.textContent = panel.classList.contains('open') ? '收起 ▲' : '展开 ▼';
+                }
+            };
+
+            window.advCalcZhibao = function() {
+                var zhibaoMap = ADV_MODEL.zhibaoMap;
+                var keys = Object.keys(zhibaoMap).map(Number);
+
+                for (var i = 1; i <= 6; i++) {
+                    var input = document.getElementById('advZhibao' + i);
+                    var matchEl = document.getElementById('advMatch' + i);
+                    if (!input || !matchEl) continue;
+                    var val = parseFloat(input.value);
+                    if (!val || val <= 0) {
+                        matchEl.textContent = '';
+                        continue;
+                    }
+                    var closest = null;
+                    var closestDiff = Infinity;
+                    keys.forEach(function(k) {
+                        var diff = Math.abs(val - k);
+                        if (diff < closestDiff) {
+                            closestDiff = diff;
+                            closest = k;
+                        }
+                    });
+                    if (closest && closestDiff < 50000) {
+                        var info = zhibaoMap[closest];
+                        matchEl.textContent = '✅ ' + info + ' (格数 ' + (i === 1 ? 1 : i) + ')';
+                        matchEl.style.color = '#4ec97a';
+                    } else {
+                        matchEl.textContent = '⚠️ 未匹配';
+                        matchEl.style.color = '#ff6b6b';
+                    }
+                }
+            };
+
+            function getDynRedPrice(redGrids) {
+                if (!advState.dynEnabled) {
+                    return parseFloat(document.getElementById('advRedAvg').value) || 51438;
+                }
+                var rules = ADV_MODEL.dynRules;
+                for (var i = 0; i < rules.length; i++) {
+                    if (redGrids <= rules[i].max) {
+                        return rules[i].price;
+                    }
+                }
+                return rules[rules.length - 1].price;
+            }
+
+            window.advCalc = function() {
+                var greenPrice = parseFloat(document.getElementById('advGreenPrice').value) || 260;
+                var bluePrice = parseFloat(document.getElementById('advBluePrice').value) || 740;
+                var purplePrice = parseFloat(document.getElementById('advPurplePrice').value) || 2400;
+                var orangePrice = parseFloat(document.getElementById('advOrangePrice').value) || 9800;
+                var redCons = parseFloat(document.getElementById('advRedCons').value) || 46000;
+                var redAvg = parseFloat(document.getElementById('advRedAvg').value) || 51438;
+                var redAgg = parseFloat(document.getElementById('advRedAgg').value) || 57000;
+                var wroPrice = parseFloat(document.getElementById('advWroPrice').value) || 24000;
+
+                var total = parseFloat(document.getElementById('advTotalGrids').value) || 0;
+                var green = parseFloat(document.getElementById('advGreen').value) || 0;
+                var blue = parseFloat(document.getElementById('advBlue').value) || 0;
+                var purple = parseFloat(document.getElementById('advPurple').value) || 0;
+                var orange = parseFloat(document.getElementById('advOrange').value) || 0;
+                var red = parseFloat(document.getElementById('advRed').value) || 0;
+
+                var excludeBody = advState.excludeBody || 0;
+                var excludeEngine = advState.excludeEngine || 0;
+                var totalExclude = excludeBody * 12 + excludeEngine * 9;
+
+                var redFromInput = red;
+                var inferredRed = 0;
+                var isRedManual = red > 0;
+
+                if (!isRedManual && total > 0) {
+                    inferredRed = total - green - blue - purple - orange - totalExclude;
+                    red = Math.max(0, inferredRed);
+                } else if (red > 0) {
+                    inferredRed = red;
+                }
+
+                var remain = total - green - blue - purple - orange - red - totalExclude;
+                var remainEl = document.getElementById('advRemain');
+                if (remainEl) {
+                    remainEl.textContent = remain >= 0 ? remain + ' 格' : '⚠️ 超出';
+                    remainEl.style.color = remain >= 0 ? '#4ec97a' : '#ff6b6b';
+                }
+
+                var baseRow = document.getElementById('advBaseRow');
+                var baseRange = document.getElementById('advBaseRange');
+                var baseNote = document.getElementById('advBaseNote');
+                if (total > 0 && remain >= 0) {
+                    baseRow.style.display = 'flex';
+                    var whiteRedOrange = remain - red;
+                    if (whiteRedOrange < 0) whiteRedOrange = 0;
+                    var baseMin = whiteRedOrange * 0 + red * 0;
+                    var baseMax = whiteRedOrange * wroPrice + red * (redCons + redAgg) / 2;
+                    baseRange.textContent = fmt(baseMin) + ' ~ ' + fmt(baseMax);
+                    baseNote.textContent = '(白红橙估算)';
+                } else {
+                    baseRow.style.display = 'none';
+                }
+
+                var dynRedPrice = getDynRedPrice(red);
+                var redPriceUsed = advState.dynEnabled ? dynRedPrice : redAvg;
+
+                var greenVal = green * greenPrice;
+                var blueVal = blue * bluePrice;
+                var purpleVal = purple * purplePrice;
+                var orangeVal = orange * orangePrice;
+                var redConsVal = red * redCons;
+                var redAvgVal = red * redPriceUsed;
+                var redAggVal = red * redAgg;
+
+                var totalCons = greenVal + blueVal + purpleVal + orangeVal + redConsVal;
+                var totalAvg = greenVal + blueVal + purpleVal + orangeVal + redAvgVal;
+                var totalAgg = greenVal + blueVal + purpleVal + orangeVal + redAggVal;
+
+                var round3 = purpleVal + orangeVal + redConsVal;
+
+                document.getElementById('advRound3').textContent = fmt(round3);
+                document.getElementById('advRound4Cons').textContent = fmt(totalCons);
+                document.getElementById('advRound4Avg').textContent = fmt(totalAvg);
+                document.getElementById('advRound4Agg').textContent = fmt(totalAgg);
+
+                var excludeRow = document.getElementById('advExcludeRow');
+                var engineRow = document.getElementById('advEngineRow');
+                if (excludeRow) excludeRow.style.display = 'flex';
+                if (engineRow) engineRow.style.display = 'flex';
+
+                advRender();
+            };
+
+            window.advRender = function() {
+                var area = document.getElementById('advResultArea');
+                var emptyTip = document.getElementById('advEmptyTip');
+                if (!area) return;
+
+                var total = parseFloat(document.getElementById('advTotalGrids').value) || 0;
+                var green = parseFloat(document.getElementById('advGreen').value) || 0;
+                var blue = parseFloat(document.getElementById('advBlue').value) || 0;
+                var purple = parseFloat(document.getElementById('advPurple').value) || 0;
+                var orange = parseFloat(document.getElementById('advOrange').value) || 0;
+                var red = parseFloat(document.getElementById('advRed').value) || 0;
+
+                var avgInput = document.getElementById('advAvgInput');
+                var avgGrid = parseFloat(avgInput ? avgInput.value : 0) || 0;
+
+                if (total <= 0) {
+                    area.innerHTML = '';
+                    if (emptyTip) emptyTip.style.display = 'block';
+                    return;
+                }
+                if (emptyTip) emptyTip.style.display = 'none';
+
+                var grids = [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
+                var combos = [];
+
+                if (avgGrid > 0 && (red > 0 || total > 0)) {
+                    var redCount = red > 0 ? red : Math.floor(total / avgGrid);
+                    if (redCount > 0) {
+                        var totalGrids = Math.round(avgGrid * redCount);
+                        for (var i = 0; i < grids.length; i++) {
+                            for (var j = i; j < grids.length; j++) {
+                                if (grids[i] + grids[j] === totalGrids && redCount === 2) {
+                                    combos.push([grids[i], grids[j]]);
+                                }
+                            }
+                        }
+                        if (totalGrids / redCount === avgGrid && grids.indexOf(totalGrids / redCount) !== -1) {
+                            combos.push([totalGrids / redCount]);
+                        }
+                    }
+                } else if (red > 0) {
+                    var minGrid = red * 1;
+                    var maxGrid = red * 16;
+                    var possibleTotal = Math.round((minGrid + maxGrid) / 2);
+                    combos.push([possibleTotal]);
+                } else if (total > 0 && green + blue + purple + orange > 0) {
+                    var remain = total - green - blue - purple - orange;
+                    if (remain > 0) {
+                        var remainGrids = [];
+                        for (var k = 0; k < grids.length; k++) {
+                            if (grids[k] <= remain) {
+                                remainGrids.push(grids[k]);
+                            }
+                        }
+                        if (remainGrids.length > 0) {
+                            combos.push([remainGrids[0]]);
+                        }
+                    }
+                }
+
+                var html = '';
+                if (combos.length === 0) {
+                    html = '<span style="color:var(--text-secondary);font-size:12px;">暂无可匹配的格数组合</span>';
+                } else {
+                    combos.forEach(function(c) {
+                        var totalGrids = c.reduce(function(a, b) { return a + b; }, 0);
+                        var avg = (totalGrids / (red > 0 ? red : 1)).toFixed(1);
+                        html += '<span class="adv-combo">' + c.join(' + ') +
+                            ' → 总格数 <span class="adv-highlight">' + totalGrids +
+                            '</span> (均格 ' + avg + ')</span>';
+                    });
+                }
+                area.innerHTML = html;
+            };
+
+            window.advClear = function() {
+                var ids = ['advTotalGrids', 'advGreen', 'advBlue', 'advPurple', 'advOrange', 'advRed', 'advAvgInput'];
+                ids.forEach(function(id) {
+                    var el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+                for (var i = 1; i <= 6; i++) {
+                    var zb = document.getElementById('advZhibao' + i);
+                    if (zb) zb.value = '';
+                    var match = document.getElementById('advMatch' + i);
+                    if (match) match.textContent = '';
+                }
+                var exVal = document.getElementById('advExcludeVal');
+                if (exVal) exVal.textContent = '0件';
+                var enVal = document.getElementById('advEngineVal');
+                if (enVal) enVal.textContent = '0件';
+                advState.excludeBody = 0;
+                advState.excludeEngine = 0;
+                advCalc();
+            };
+
+            function initAdvanced() {
+                var priceIds = ['advGreenPrice', 'advBluePrice', 'advPurplePrice', 'advOrangePrice', 'advRedCons',
+                    'advRedAvg', 'advRedAgg', 'advWroPrice'
+                ];
+                priceIds.forEach(function(id) {
+                    var el = document.getElementById(id);
+                    if (el) el.addEventListener('input', advCalc);
+                });
+
+                var inputIds = ['advTotalGrids', 'advGreen', 'advBlue', 'advPurple', 'advOrange', 'advRed'];
+                inputIds.forEach(function(id) {
+                    var el = document.getElementById(id);
+                    if (el) el.addEventListener('input', advCalc);
+                });
+
+                var avgInput = document.getElementById('advAvgInput');
+                if (avgInput) avgInput.addEventListener('input', advRender);
+
+                advCalc();
+            }
+
+            // ============================================================
+            // 黄金瞳 - 独立算法
+            // ============================================================
+            function renderHuangjintong() {
+                var el = document.getElementById('page-huangjintong');
+                el.innerHTML = `
+                    <div class="section">
+                        <div class="sec-head">
+                            <div class="sec-title">
+                                <div class="icon">瞳</div>
+                                <div>
+                                    <div class="name">黄金瞳 · 全仓估值</div>
+                                    <div class="role">
+                                        黄金瞳技能：开局可显示白绿蓝物品的品质与价值。<br>
+                                        <b>第一轮</b>：使用全仓件数荧光棒，数清白绿蓝物品共有多少件，填入计算器。<br>
+                                        <b>第二轮</b>：可不使用道具，或随意使用辅助道具。<br>
+                                        <b>第三轮</b>：根据透视结果分三种情况操作...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sec-body" id="htBody">
+                            <div class="ht-price-ref-bar">
+                                <div class="ht-price-ref-item">
+                                    <span class="ht-label">白绿蓝均价</span>
+                                    <input type="text" id="htWgbPrice" inputmode="numeric" value="210">
+                                </div>
+                                <div class="ht-price-ref-item">
+                                    <span class="ht-label">紫均价(件)</span>
+                                    <input type="text" id="htPurplePrice" inputmode="numeric" value="9100">
+                                </div>
+                                <div class="ht-price-ref-item">
+                                    <span class="ht-label">橙均价(件)</span>
+                                    <input type="text" id="htOrangePrice" inputmode="numeric" value="31000">
+                                </div>
+                                <div class="ht-price-ref-item">
+                                    <span class="ht-label">红均价(件)</span>
+                                    <input type="text" id="htRedPrice" inputmode="numeric" value="188500">
+                                </div>
+                            </div>
+
+                            <div class="ht-row">
+                                <span class="ht-label">全场总件数</span>
+                                <span class="ht-btn" onclick="htAdjust('total',-10)">-10</span>
+                                <span class="ht-btn" onclick="htAdjust('total',-1)">-1</span>
+                                <input type="text" id="htTotal" inputmode="numeric">
+                                <span class="ht-btn primary" onclick="htAdjust('total',1)">+1</span>
+                                <span class="ht-btn primary" onclick="htAdjust('total',10)">+10</span>
+                            </div>
+
+                            <div class="ht-row">
+                                <span class="ht-label">白绿蓝件数</span>
+                                <span class="ht-btn" onclick="htAdjust('wgb',-10)">-10</span>
+                                <span class="ht-btn" onclick="htAdjust('wgb',-1)">-1</span>
+                                <input type="text" id="htWgb" inputmode="numeric">
+                                <span class="ht-btn primary" onclick="htAdjust('wgb',1)">+1</span>
+                                <span class="ht-btn primary" onclick="htAdjust('wgb',10)">+10</span>
+                            </div>
+
+                            <div class="ht-row">
+                                <span class="ht-label">紫色件数</span>
+                                <span class="ht-btn" onclick="htAdjust('purple',-10)">-10</span>
+                                <span class="ht-btn" onclick="htAdjust('purple',-1)">-1</span>
+                                <input type="text" id="htPurple" inputmode="numeric">
+                                <span class="ht-btn primary" onclick="htAdjust('purple',1)">+1</span>
+                                <span class="ht-btn primary" onclick="htAdjust('purple',10)">+10</span>
+                            </div>
+
+                            <div class="ht-row">
+                                <span class="ht-label">橙色件数</span>
+                                <span class="ht-btn" onclick="htAdjust('orange',-10)">-10</span>
+                                <span class="ht-btn" onclick="htAdjust('orange',-1)">-1</span>
+                                <input type="text" id="htOrange" inputmode="numeric">
+                                <span class="ht-btn primary" onclick="htAdjust('orange',1)">+1</span>
+                                <span class="ht-btn primary" onclick="htAdjust('orange',10)">+10</span>
+                            </div>
+
+                            <div class="ht-row">
+                                <span class="ht-label">剩余红色件数：</span>
+                                <span class="ht-result" id="htRedCount">—</span>
+                            </div>
+
+                            <div class="ht-total-box">
+                                <span class="ht-total-label">整仓估价总和：</span>
+                                <div style="display:flex;align-items:center;gap:16px;">
+                                    <span class="ht-total-value" id="htTotalValue">—</span>
+                                    <button class="ht-clear-btn" onclick="htClear()">清空</button>
+                                </div>
+                            </div>
+
+                            <div class="ht-xunhui-toggle" onclick="htToggleXunhui()">
+                                <span style="font-size:13px;">🔍 已知价格反推板块</span>
+                                <span id="htXunhuiArrow" style="margin-left:auto;font-size:12px;color:var(--text-secondary);">展开 ▼</span>
+                            </div>
+                            <div class="ht-xunhui-panel" id="htXunhuiPanel">
+                                <div style="font-size:12px;color:var(--text-secondary);margin-bottom:8px;line-height:1.6;">
+                                    输入已知红品的至宝价值，系统自动匹配物品并锁定对应格数...
+                                </div>
+                                ${[1,2,3,4,5,6].map(i => `
+                                    <div class="ht-zb-row">
+                                        <span class="ht-zb-label">至宝价值${i}</span>
+                                        <input type="text" class="ht-zb-input" id="htZhibao${i}" inputmode="numeric" placeholder="输入价格" oninput="htCalcZhibao()">
+                                        <span class="ht-match" id="htMatch${i}"></span>
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <div class="ht-avg-row">
+                                <span class="ht-label">红均格(可选)</span>
+                                <span class="ht-btn" onclick="htAdjustAvg(-1)">-1</span>
+                                <span class="ht-btn" onclick="htAdjustAvg(-0.1)">-0.1</span>
+                                <input type="text" id="htAvgInput" placeholder="例如5.3" inputmode="decimal">
+                                <span class="ht-btn primary" onclick="htAdjustAvg(0.1)">+0.1</span>
+                                <span class="ht-btn primary" onclick="htAdjustAvg(1)">+1</span>
+                            </div>
+
+                            <div class="ht-section-title">可能出现的格式</div>
+                            <div class="ht-result-area" id="htResultArea"></div>
+                            <div class="ht-empty-tip" id="htEmptyTip">请输入全场总件数及白绿蓝紫橙件数后查看结果</div>
+                        </div>
+                    </div>
+                `;
+
+                var inputs = ['htWgbPrice', 'htPurplePrice', 'htOrangePrice', 'htRedPrice', 'htTotal', 'htWgb', 'htPurple',
+                    'htOrange'
+                ];
+                inputs.forEach(function(id) {
+                    var el = document.getElementById(id);
+                    if (el) el.addEventListener('input', htCalc);
+                });
+
+                var avgInput = document.getElementById('htAvgInput');
+                if (avgInput) avgInput.addEventListener('input', htRender);
+
+                htCalc();
+            }
+
+            window.htAdjust = function(field, delta) {
+                var idMap = { total: 'htTotal', wgb: 'htWgb', purple: 'htPurple', orange: 'htOrange' };
+                var input = document.getElementById(idMap[field]);
+                if (!input) return;
+                var val = parseFloat(input.value) || 0;
+                var newVal = Math.max(0, val + delta);
+                input.value = newVal;
+                htCalc();
+            };
+
+            window.htAdjustAvg = function(delta) {
+                var input = document.getElementById('htAvgInput');
+                if (!input) return;
+                var val = parseFloat(input.value) || 0;
+                var newVal = Math.max(0, val + delta);
+                input.value = newVal.toFixed(1);
+                htRender();
+            };
+
+            window.htToggleXunhui = function() {
+                var panel = document.getElementById('htXunhuiPanel');
+                var arrow = document.getElementById('htXunhuiArrow');
+                if (panel) {
+                    panel.classList.toggle('open');
+                    if (arrow) arrow.textContent = panel.classList.contains('open') ? '收起 ▲' : '展开 ▼';
+                }
+            };
+
+            window.htCalc = function() {
+                var wgbPrice = parseFloat(document.getElementById('htWgbPrice').value) || 210;
+                var purplePrice = parseFloat(document.getElementById('htPurplePrice').value) || 9100;
+                var orangePrice = parseFloat(document.getElementById('htOrangePrice').value) || 31000;
+                var redPrice = parseFloat(document.getElementById('htRedPrice').value) || 188500;
+
+                var total = parseFloat(document.getElementById('htTotal').value) || 0;
+                var wgb = parseFloat(document.getElementById('htWgb').value) || 0;
+                var purple = parseFloat(document.getElementById('htPurple').value) || 0;
+                var orange = parseFloat(document.getElementById('htOrange').value) || 0;
+
+                var red = total - wgb - purple - orange;
+                var redCountEl = document.getElementById('htRedCount');
+                if (redCountEl) redCountEl.textContent = red < 0 ? '⚠️ 件数超出' : red;
+
+                var totalValue = wgb * wgbPrice + purple * purplePrice + orange * orangePrice + red * redPrice;
+                var totalEl = document.getElementById('htTotalValue');
+                if (totalEl) totalEl.textContent = total >= 0 ? fmt(totalValue) : '—';
+
+                htRender();
+            };
+
+            window.htRender = function() {
+                var area = document.getElementById('htResultArea');
+                var emptyTip = document.getElementById('htEmptyTip');
+                if (!area) return;
+
+                var total = parseFloat(document.getElementById('htTotal').value) || 0;
+                var wgb = parseFloat(document.getElementById('htWgb').value) || 0;
+                var purple = parseFloat(document.getElementById('htPurple').value) || 0;
+                var orange = parseFloat(document.getElementById('htOrange').value) || 0;
+                var red = total - wgb - purple - orange;
+
+                var avgInput = document.getElementById('htAvgInput');
+                var avgGrid = parseFloat(avgInput ? avgInput.value : 0) || 0;
+
+                if (total <= 0 || red <= 0) {
+                    area.innerHTML = '';
+                    if (emptyTip) emptyTip.style.display = 'block';
+                    return;
+                }
+                if (emptyTip) emptyTip.style.display = 'none';
+
+                var grids = [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
+                var combos = [];
+
+                if (avgGrid > 0) {
+                    var totalGrids = Math.round(avgGrid * red);
+                    for (var i = 0; i < grids.length; i++) {
+                        for (var j = i; j < grids.length; j++) {
+                            if (grids[i] + grids[j] === totalGrids && red === 2) {
+                                combos.push([grids[i], grids[j]]);
+                            }
+                        }
+                    }
+                    if (totalGrids / red === avgGrid && grids.indexOf(totalGrids / red) !== -1) {
+                        combos.push([totalGrids / red]);
+                    }
+                } else {
+                    var minGrid = red * 1;
+                    var maxGrid = red * 16;
+                    var possibleTotal = Math.round((minGrid + maxGrid) / 2);
+                    combos.push([possibleTotal]);
+                }
+
+                var html = '';
+                if (combos.length === 0) {
+                    html = '<span style="color:var(--text-secondary);font-size:12px;">暂无可匹配的格数组合</span>';
+                } else {
+                    combos.forEach(function(c) {
+                        var totalGrids = c.reduce(function(a, b) { return a + b; }, 0);
+                        var avg = (totalGrids / red).toFixed(1);
+                        html += '<span class="ht-combo">' + c.join(' + ') +
+                            ' → 总格数 <span class="ht-highlight">' + totalGrids +
+                            '</span> (均格 ' + avg + ')</span>';
+                    });
+                }
+                area.innerHTML = html;
+            };
+
+            window.htCalcZhibao = function() {
+                var zhibaoMap = { 50000: '白绿蓝', 100000: '紫', 200000: '橙', 300000: '红' };
+
+                for (var i = 1; i <= 6; i++) {
+                    var input = document.getElementById('htZhibao' + i);
+                    var matchEl = document.getElementById('htMatch' + i);
+                    if (!input || !matchEl) continue;
+                    var val = parseFloat(input.value);
+                    if (!val || val <= 0) {
+                        matchEl.textContent = '';
+                        continue;
+                    }
+                    var keys = Object.keys(zhibaoMap).map(Number);
+                    var closest = null;
+                    var closestDiff = Infinity;
+                    keys.forEach(function(k) {
+                        var diff = Math.abs(val - k);
+                        if (diff < closestDiff) {
+                            closestDiff = diff;
+                            closest = k;
+                        }
+                    });
+                    if (closest && closestDiff < 50000) {
+                        var info = zhibaoMap[closest];
+                        matchEl.textContent = '✅ ' + info + ' (格数 ' + (i === 1 ? 1 : i) + ')';
+                        matchEl.style.color = '#4ec97a';
+                    } else {
+                        matchEl.textContent = '⚠️ 未匹配';
+                        matchEl.style.color = '#ff6b6b';
+                    }
+                }
+            };
+
+            window.htClear = function() {
+                var ids = ['htTotal', 'htWgb', 'htPurple', 'htOrange'];
+                ids.forEach(function(id) {
+                    var el = document.getElementById(id);
+                    if (el) el.value = '';
+                });
+                var avgInput = document.getElementById('htAvgInput');
+                if (avgInput) avgInput.value = '';
+                for (var i = 1; i <= 6; i++) {
+                    var zb = document.getElementById('htZhibao' + i);
+                    if (zb) zb.value = '';
+                    var match = document.getElementById('htMatch' + i);
+                    if (match) match.textContent = '';
+                }
+                htCalc();
+            };
+
+            // ============================================================
+            // 高进 - 使用地图数据
             // ============================================================
             function renderGao() {
                 var el = document.getElementById('page-gao');
@@ -3132,7 +4782,7 @@
             }
 
             // ============================================================
-            // 苏琦
+            // 苏琦 - 使用地图数据
             // ============================================================
             function renderSu() {
                 var el = document.getElementById('page-su');
@@ -3257,7 +4907,7 @@
             }
 
             // ============================================================
-            // 安可
+            // 安可 - 使用地图数据
             // ============================================================
             function renderAn() {
                 var el = document.getElementById('page-an');
@@ -3381,7 +5031,7 @@
             }
 
             // ============================================================
-            // 红品均格反查
+            // 红品均格反查 - 使用地图数据
             // ============================================================
             function renderRev() {
                 var el = document.getElementById('page-rev');
@@ -3507,13 +5157,27 @@
             // ============================================================
             // 初始化
             // ============================================================
+            // 默认巡回面板显示
+            var panel = document.getElementById('xunhuiFilterPanel');
+            if (currentMap === 'xunhui') {
+                panel.style.display = 'block';
+            } else {
+                panel.style.display = 'none';
+            }
+
             renderHuo();
             renderGao();
             renderSu();
+            renderHuangjintong();
             renderAn();
             renderRev();
 
             document.querySelector('.tab-btn.active')?.click();
+
+            // 初始化巡回面板搜索
+            setTimeout(function() {
+                xunhuiSearch();
+            }, 200);
         }
     </script>
 
