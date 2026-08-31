@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>俱乐大玩家超级AI · 霓虹纪元</title>
     <style>
-        /* ===== 基础样式重置（完全保留原样式）===== */
         * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         ::-webkit-scrollbar { width: 4px; height: 4px; }
         ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
         ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #00d4ff, #7b2ffc); border-radius: 4px; }
-
         :root {
             --glass-bg: rgba(255,255,255,0.04);
             --glass-border: rgba(255,255,255,0.08);
@@ -24,11 +22,9 @@
             --radius: 16px;
             --transition: 0.4s cubic-bezier(0.4,0,0.2,1);
         }
-
         body { background: var(--bg-page); min-height: 100vh; font-family: -apple-system, 'PingFang SC', 'Microsoft YaHei', 'Inter', sans-serif; color: var(--text-primary); overflow-x: hidden; position: relative; }
         body::before { content: ''; position: fixed; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at 20% 50%, rgba(0,212,255,0.06) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(123,47,252,0.08) 0%, transparent 40%), radial-gradient(ellipse at 50% 80%, rgba(255,111,216,0.04) 0%, transparent 50%); animation: bgFloat 30s ease-in-out infinite alternate; z-index: 0; pointer-events: none; }
         @keyframes bgFloat { 0% { transform: translate(0,0) rotate(0deg); } 33% { transform: translate(2%,-2%) rotate(2deg); } 66% { transform: translate(-1%,3%) rotate(-1deg); } 100% { transform: translate(1%,-1%) rotate(0deg); } }
-
         #particles-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
         #appWrap { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 20px 16px 40px; }
         #appWrap, .top-bar, .warning-banner, .header, .tour-guide, .map-switch, .tabs, #pagesContainer { display: none; }
@@ -40,8 +36,6 @@
         body.verified .map-switch,
         body.verified .tabs,
         body.verified #pagesContainer { display: block; }
-
-        /* ===== 验证框 ===== */
         #authBox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 999999; display: flex; align-items: center; justify-content: center; background: rgba(8,8,14,0.92); backdrop-filter: blur(20px); animation: authFadeIn 0.8s ease; }
         @keyframes authFadeIn { from { opacity: 0; transform: scale(0.95) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
         #authBox .auth-card { position: relative; width: 440px; max-width: 92%; padding: 48px 40px 40px; background: linear-gradient(145deg, rgba(20,20,40,0.8), rgba(10,10,25,0.9)); border-radius: 28px; border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 40px 80px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.04); text-align: center; overflow: hidden; animation: authCardFloat 3s ease-in-out infinite alternate; }
@@ -60,8 +54,6 @@
         #authBox .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 40px rgba(0,212,255,0.25); }
         #authBox .auth-btn:active { transform: scale(0.97); }
         #authBox .auth-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none !important; }
-
-        /* ===== 顶部栏 ===== */
         .top-bar { display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 60px; backdrop-filter: blur(24px); box-shadow: var(--glass-shadow); margin-bottom: 16px; position: relative; overflow: hidden; }
         .top-bar .left { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--text-secondary); position: relative; z-index: 1; }
         .top-bar .left .author-id { opacity: 0.3; font-size: 12px; }
@@ -69,11 +61,8 @@
         .top-bar .right { display: flex; gap: 8px; }
         .theme-toggle { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 30px; padding: 4px 14px; color: var(--text-secondary); font-size: 16px; cursor: pointer; transition: all var(--transition); user-select: none; line-height: 1.4; }
         .theme-toggle:hover { border-color: rgba(0,212,255,0.3); color: #00d4ff; }
-
         .warning-banner { background: rgba(255,107,107,0.06); border: 1px solid rgba(255,107,107,0.08); border-radius: 12px; padding: 10px 16px; margin: 8px 0 16px; text-align: center; font-size: 13px; color: #ff6b6b; backdrop-filter: blur(8px); }
         .warning-banner::before { content: '⚡'; margin-right: 8px; }
-
-        /* ===== 标题 ===== */
         .header { text-align: center; padding: 18px 0 14px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius); backdrop-filter: blur(24px); box-shadow: var(--glass-shadow); margin-bottom: 16px; position: relative; overflow: hidden; }
         .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #00d4ff, #7b2ffc, #ff6fd8, transparent); animation: headerLine 3s ease-in-out infinite; }
         @keyframes headerLine { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
@@ -87,50 +76,38 @@
         .header .header-actions .unbind-link:hover { background: rgba(255,107,107,0.12); border-color: rgba(255,107,107,0.3); }
         .header .remain-permanent { margin-top: 8px; font-size: 16px; color: #00d4ff; font-weight: 600; min-height: 28px; font-variant-numeric: tabular-nums; text-shadow: 0 0 30px rgba(0,212,255,0.1); }
         .header .remain-permanent.expired { color: #ff6b6b; text-shadow: 0 0 30px rgba(255,107,107,0.1); }
-
         .tour-guide { padding: 14px 18px; font-size: 13px; color: var(--text-secondary); line-height: 1.8; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: var(--radius); backdrop-filter: blur(12px); margin: 10px 0 16px; opacity: 0.7; border-left: 2px solid rgba(0,212,255,0.2); }
-
-        /* ===== 地图切换 ===== */
         .map-switch { display: flex; gap: 6px; margin-bottom: 14px; background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: 60px; padding: 4px; overflow-x: auto; }
         .map-switch button { flex: 1; padding: 10px 8px; background: transparent; border: none; border-radius: 40px; color: var(--text-secondary); font-size: 14px; font-weight: 600; cursor: pointer; transition: all var(--transition); white-space: nowrap; min-width: 50px; }
         .map-switch button.on { background: linear-gradient(135deg, #00d4ff, #7b2ffc); color: #fff; box-shadow: 0 4px 24px rgba(0,212,255,0.2); }
         .map-switch button:hover:not(.on) { color: #fff; }
-
-        /* ===== 巡回面板 ===== */
         #xunhuiFilterPanel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 16px 18px; margin: 12px 0 16px; box-shadow: var(--glass-shadow); display: none; }
         #xunhuiFilterPanel .panel-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
         #xunhuiFilterPanel .panel-header .title { font-size: 18px; font-weight: 700; background: linear-gradient(135deg, #00d4ff, #7b2ffc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         #xunhuiFilterPanel .panel-header .badge { font-size: 12px; color: #00d4ff; background: rgba(0,212,255,0.08); padding: 2px 14px; border-radius: 30px; border: 1px solid rgba(0,212,255,0.1); }
-
         .xunhui-filter-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 8px; }
         .xunhui-filter-row label { font-size: 13px; color: var(--text-secondary); min-width: 70px; }
         .xunhui-filter-row input[type="text"],
         .xunhui-filter-row input[type="number"] { padding: 4px 8px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-primary); font-size: 13px; text-align: center; outline: none; transition: all var(--transition); width: 80px; }
         .xunhui-filter-row input:focus { border-color: #00d4ff; }
-
         .xunhui-filter-row .ht-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 28px; padding: 0 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-secondary); font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; user-select: none; }
         .xunhui-filter-row .ht-btn:active { transform: scale(0.92); background: rgba(0,212,255,0.15); border-color: #00d4ff; color: #00d4ff; }
         .xunhui-filter-row .ht-btn.primary { background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.15); color: #00d4ff; }
         .xunhui-filter-row .ht-btn.danger:active { background: rgba(255,107,107,0.2); border-color: #ff6b6b; color: #ff6b6b; }
-
         .xunhui-grid-2col { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin: 6px 0 10px; }
         .xunhui-grid-2col .x-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); }
         .xunhui-grid-2col .x-item label { min-width: 90px; white-space: nowrap; }
         .xunhui-grid-2col .x-item input { flex: 1; padding: 4px 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-primary); font-size: 13px; text-align: center; outline: none; transition: all var(--transition); min-width: 50px; }
         .xunhui-grid-2col .x-item input:focus { border-color: #00d4ff; }
-
         .xunhui-grid-4col { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 16px; margin: 6px 0 10px; }
         .xunhui-grid-4col .x-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-secondary); }
         .xunhui-grid-4col .x-item label { min-width: 100px; white-space: nowrap; }
         .xunhui-grid-4col .x-item input { flex: 1; padding: 4px 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-primary); font-size: 13px; text-align: center; outline: none; transition: all var(--transition); min-width: 50px; }
         .xunhui-grid-4col .x-item input:focus { border-color: #00d4ff; }
-
         .xunhui-section-label { font-size: 14px; font-weight: 600; color: var(--text-primary); margin: 12px 0 4px; }
         .xunhui-section-label .sub { font-size: 12px; font-weight: 400; color: var(--text-secondary); opacity: 0.6; }
-
         .xunhui-known-info { margin: 10px 0; font-size: 14px; color: var(--text-secondary); }
         .xunhui-known-info span { color: #00d4ff; font-weight: 700; font-size: 16px; }
-
         .xunhui-result-group { margin-top: 12px; border-top: 1px solid var(--glass-border); padding-top: 10px; }
         .xunhui-result-group .group-title { font-size: 15px; font-weight: 700; color: var(--text-primary); margin-bottom: 8px; }
         .xunhui-result-card { background: rgba(0,0,0,0.15); border: 1px solid var(--glass-border); border-radius: 10px; padding: 10px 14px; margin-bottom: 6px; }
@@ -141,32 +118,24 @@
         .xunhui-result-card .card-body .combo-tag { background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 4px; padding: 2px 8px; font-size: 12px; font-family: monospace; color: var(--text-secondary); }
         .xunhui-result-card .card-body .combo-tag .hl { color: #4ec97a; font-weight: 600; }
         .xunhui-empty { color: var(--text-secondary); font-size: 13px; padding: 8px 0; }
-
         .btn-xunhui-action { padding: 6px 16px; background: linear-gradient(135deg, #00d4ff, #7b2ffc); border: none; border-radius: 30px; color: #fff; font-weight: 700; font-size: 13px; cursor: pointer; transition: all var(--transition); }
         .btn-xunhui-action:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(0,212,255,0.2); }
         .btn-xunhui-action.secondary { background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); color: var(--text-secondary); }
         .btn-xunhui-action.secondary:hover { border-color: #ff6b6b; color: #ff6b6b; }
         .xunhui-actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-
         @media (max-width:600px) {
             .xunhui-grid-2col, .xunhui-grid-4col { grid-template-columns: 1fr; }
             .xunhui-filter-row input { width: 60px; }
             .xunhui-grid-2col .x-item label,
             .xunhui-grid-4col .x-item label { min-width: 80px; }
         }
-
-        /* ===== Tabs ===== */
         .tabs { display: flex; gap: 6px; padding: 0 0 14px; overflow-x: auto; }
         .tab-btn { flex: 1; padding: 12px 6px; border-radius: 40px; border: 1px solid var(--glass-border); background: var(--glass-bg); backdrop-filter: blur(8px); color: var(--text-secondary); font-size: 14px; font-weight: 600; cursor: pointer; transition: all var(--transition); white-space: nowrap; min-width: 50px; }
         .tab-btn.active { background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(123,47,252,0.15)); color: #00d4ff; border-color: rgba(0,212,255,0.2); box-shadow: 0 0 30px rgba(0,212,255,0.05); }
         .tab-btn:hover:not(.active) { border-color: rgba(255,255,255,0.15); color: #fff; }
-
-        /* ===== Pages ===== */
         .page { display: none; animation: pageFade 0.4s ease; }
         .page.active { display: block; }
         @keyframes pageFade { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* ===== Sections ===== */
         .section { background: var(--glass-bg); backdrop-filter: blur(24px); border: 1px solid var(--glass-border); border-radius: var(--radius); margin-bottom: 16px; overflow: hidden; box-shadow: var(--glass-shadow); transition: all var(--transition); }
         .section:hover { border-color: rgba(255,255,255,0.12); }
         .sec-head { padding: 16px 20px; border-bottom: 1px solid var(--glass-border); background: rgba(255,255,255,0.02); }
@@ -176,8 +145,6 @@
         .sec-title .role { font-size: 13px; color: var(--text-secondary); opacity: 0.7; line-height: 1.5; }
         .sec-title .role .tip2 { color: #00d4ff; display: block; font-size: 12px; opacity: 0.8; margin-top: 2px; }
         .sec-body { padding: 16px 18px 18px; }
-
-        /* ===== 通用组件 ===== */
         .row { display: flex; align-items: center; gap: 8px; padding: 4px 2px; border-bottom: 1px solid rgba(255,255,255,0.03); flex-wrap: wrap; }
         .row:last-child { border-bottom: none; }
         .row .lbl { min-width: 60px; font-weight: 600; font-size: 13px; color: var(--text-primary); }
@@ -186,7 +153,6 @@
         .row .qty input[type="number"]:focus { border-color: #00d4ff; box-shadow: 0 0 20px rgba(0,212,255,0.05); background: rgba(0,0,0,0.4); }
         .row .qty input[type="number"]::-webkit-outer-spin-button,
         .row .qty input[type="number"]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-
         .qty-btns { display: flex; gap: 3px; flex-wrap: wrap; align-items: center; }
         .qty-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 28px; padding: 0 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-secondary); font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; user-select: none; touch-action: manipulation; }
         .qty-btn:active { transform: scale(0.92); background: rgba(0,212,255,0.15); border-color: #00d4ff; color: #00d4ff; }
@@ -205,91 +171,73 @@
             .row .qty input[type="number"] { width:36px; min-width:30px; font-size:11px; padding:4px 2px; }
             .row .lbl { min-width:40px; font-size:11px; }
         }
-
         .row .sub { text-align: right; font-weight: 700; font-size: 14px; color: #00d4ff; font-variant-numeric: tabular-nums; min-width: 50px; flex-shrink: 0; }
-
         .total-bar { margin-top: 12px; padding: 12px 16px; background: linear-gradient(135deg, rgba(0,212,255,0.04), rgba(123,47,252,0.04)); border: 1px solid rgba(0,212,255,0.06); border-radius: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px; }
         .total-bar .t-item { display: flex; align-items: center; gap: 8px; font-size: 14px; }
         .total-bar .t-item .label { color: var(--text-secondary); font-weight: 500; }
         .total-bar .t-item .value { font-weight: 800; color: #00d4ff; font-variant-numeric: tabular-nums; }
         .total-bar .t-item .value.rec { color: #4ec97a; }
-
         .reset-row { margin-top: 12px; display: flex; justify-content: flex-end; }
         .btn-reset { padding: 6px 20px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-secondary); border-radius: 30px; font-size: 12px; cursor: pointer; transition: all var(--transition); font-weight: 500; }
         .btn-reset:hover { border-color: #ff6b6b; color: #ff6b6b; }
-
         .confidence-bar { display: flex; align-items: center; gap: 12px; font-size: 12px; color: var(--text-secondary); margin-top: 10px; padding: 4px 0; }
         .confidence-bar .bar-track { flex: 1; height: 4px; background: rgba(255,255,255,0.06); border-radius: 4px; overflow: hidden; min-width: 50px; }
         .confidence-bar .bar-fill { height: 100%; border-radius: 4px; transition: width 0.6s ease; background: linear-gradient(90deg, #ff6b6b, #ffd93d, #4ec97a); }
         .confidence-bar .label { font-weight: 600; min-width: 40px; text-align: right; color: #00d4ff; }
-
         .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 6px; vertical-align: middle; flex-shrink: 0; box-shadow: 0 0 12px rgba(255,255,255,0.05); }
         .dot.red { background: #ff6b6b; }
         .dot.orange { background: #ff9f43; }
         .dot.purple { background: #a66be0; }
         .dot.blue { background: #4a9ae8; }
         .dot.green { background: #4ec97a; }
-
         .ht-btn { display: inline-flex; align-items: center; justify-content: center; min-width: 28px; height: 28px; padding: 0 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-secondary); font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s ease; user-select: none; }
         .ht-btn:active { transform: scale(0.92); background: rgba(0,212,255,0.15); border-color: #00d4ff; color: #00d4ff; }
         .ht-btn.primary { background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.15); color: #00d4ff; }
         .ht-btn.danger:active { background: rgba(255,107,107,0.2); border-color: #ff6b6b; color: #ff6b6b; }
-
         .exclude-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; flex-wrap: wrap; border-top: 1px solid var(--glass-border); margin-top: 4px; }
         .exclude-row .elbl { font-size: 13px; color: var(--text-secondary); font-weight: 500; min-width: 72px; }
         .exclude-row .eval { font-weight: 700; color: #ff6b6b; min-width: 40px; text-align: center; }
         .exclude-row .exclude-hint { font-size: 11px; color: var(--text-secondary); opacity: 0.5; margin-left: 4px; }
         .exclude-row .exclude-deduction { font-size: 12px; color: #ff9f43; min-width: 80px; text-align: right; }
-
         .ht-price-ref-bar { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; background: rgba(0,0,0,0.15); border-radius: 12px; padding: 12px; }
         .ht-price-ref-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-secondary); }
         .ht-price-ref-item .ht-label { white-space: nowrap; min-width: 60px; }
         .ht-price-ref-item input { width: 80px; padding: 4px 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-primary); font-size: 12px; text-align: center; outline: none; transition: all var(--transition); }
         .ht-price-ref-item input:focus { border-color: #00d4ff; }
-
         .ht-row { display: flex; align-items: center; gap: 6px; padding: 4px 0; flex-wrap: wrap; }
         .ht-row .ht-label { min-width: 72px; font-weight: 600; font-size: 13px; color: var(--text-primary); }
         .ht-row input[type="text"] { width: 60px; padding: 5px 4px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-primary); font-size: 13px; text-align: center; outline: none; transition: all var(--transition); -moz-appearance: textfield; }
         .ht-row input[type="text"]:focus { border-color: #00d4ff; }
         .ht-result { font-weight: 700; font-size: 14px; color: #00d4ff; min-width: 50px; }
-
         .ht-total-box { margin-top: 12px; padding: 12px 16px; background: linear-gradient(135deg, rgba(0,212,255,0.04), rgba(123,47,252,0.04)); border: 1px solid rgba(0,212,255,0.06); border-radius: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
         .ht-total-box .ht-total-label { color: var(--text-secondary); font-weight: 500; font-size: 14px; }
         .ht-total-box .ht-total-value { font-weight: 800; color: #00d4ff; font-size: 18px; }
         .ht-clear-btn { padding: 4px 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-secondary); border-radius: 30px; font-size: 12px; cursor: pointer; transition: all var(--transition); }
         .ht-clear-btn:hover { border-color: #ff6b6b; color: #ff6b6b; }
-
         .ht-xunhui-toggle { padding: 8px 4px; border-top: 1px solid var(--glass-border); margin-top: 8px; display: flex; align-items: center; font-size: 13px; color: var(--text-secondary); cursor: pointer; user-select: none; }
         .ht-xunhui-toggle:hover { color: #00d4ff; }
         .ht-xunhui-panel { display: none; padding: 8px 4px 4px; }
         .ht-xunhui-panel.open { display: block; }
-
         .ht-zb-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; flex-wrap: wrap; }
         .ht-zb-row .ht-zb-label { font-size: 12px; color: var(--text-secondary); min-width: 72px; }
         .ht-zb-row input { width: 100px; padding: 4px 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-primary); font-size: 12px; text-align: center; outline: none; }
         .ht-zb-row input:focus { border-color: #00d4ff; }
         .ht-match { font-size: 12px; color: #4ec97a; min-width: 80px; }
-
         .ht-avg-row { display: flex; align-items: center; gap: 6px; padding: 6px 0; flex-wrap: wrap; border-top: 1px solid var(--glass-border); margin-top: 8px; }
         .ht-avg-row .ht-label { font-size: 13px; color: var(--text-secondary); }
         .ht-avg-row input { width: 80px; padding: 4px 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-primary); font-size: 13px; text-align: center; outline: none; }
         .ht-avg-row input:focus { border-color: #00d4ff; }
-
         .ht-section-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin: 12px 0 8px; }
         .ht-empty-tip { text-align: center; padding: 20px 10px; color: var(--text-secondary); font-size: 13px; }
         .ht-result-area { display: flex; flex-wrap: wrap; gap: 4px; }
         .ht-combo { display: inline-block; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; padding: 3px 8px; font-size: 12px; font-family: monospace; color: var(--text-secondary); }
         .ht-combo .ht-highlight { color: #4ec97a; font-weight: 600; }
-
-        /* ===== 黄金瞳教程折叠 ===== */
         .tutorial-toggle { display: inline-block; color: #00d4ff; cursor: pointer; font-weight: 600; font-size: 13px; margin-top: 4px; user-select: none; transition: color 0.2s; }
         .tutorial-toggle:hover { color: #ff6fd8; }
         .tutorial-full { display: none; padding-top: 8px; line-height: 1.8; font-size: 13px; color: var(--text-secondary); }
         .tutorial-full.open { display: block; }
         .tutorial-full .step { margin-top: 4px; }
         .tutorial-full .step strong { color: var(--text-primary); }
-
-        /* ===== 霍姑姑进阶样式 ===== */
         .adv-hint { background: rgba(0,212,255,0.04); border: 1px solid rgba(0,212,255,0.08); border-radius: 10px; padding: 12px 16px; margin-bottom: 14px; font-size: 13px; line-height: 1.8; color: var(--text-secondary); cursor: pointer; transition: all 0.3s ease; }
         .adv-hint:hover { border-color: rgba(0,212,255,0.2); background: rgba(0,212,255,0.07); }
         .adv-hint .hint-header { display: flex; justify-content: space-between; align-items: center; font-weight: 600; color: #00d4ff; }
@@ -300,82 +248,64 @@
         .adv-hint .hint-body .highlight { color: #4ec97a; font-weight: 500; }
         .adv-hint .hint-body .warn { color: #ff9f43; font-weight: 500; }
         .adv-hint .hint-body .danger { color: #ff6b6b; font-weight: 500; }
-
         .adv-dyn-toggle { display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: rgba(0,0,0,0.15); border-radius: 10px; margin-bottom: 12px; flex-wrap: wrap; }
         .adv-dyn-toggle label { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-primary); cursor: pointer; font-weight: 500; }
         .adv-dyn-toggle input[type="checkbox"] { width: 16px; height: 16px; accent-color: #00d4ff; cursor: pointer; }
         .adv-dyn-toggle .dyn-hint { font-size: 12px; color: var(--text-secondary); opacity: 0.7; }
-
         .adv-price-ref-bar { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; margin-bottom: 12px; background: rgba(0,0,0,0.12); border-radius: 10px; padding: 10px 12px; }
         .adv-price-ref-item { display: flex; align-items: center; gap: 4px; font-size: 12px; color: var(--text-secondary); }
         .adv-price-ref-item .plabel { white-space: nowrap; font-size: 11px; opacity: 0.7; min-width: 40px; }
         .adv-price-ref-item input { width: 56px; padding: 3px 4px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 4px; color: var(--text-primary); font-size: 12px; text-align: center; outline: none; transition: all var(--transition); }
         .adv-price-ref-item input:focus { border-color: #00d4ff; }
-
         .adv-row { display: flex; align-items: center; gap: 6px; padding: 4px 0; flex-wrap: wrap; }
         .adv-row .albl { min-width: 72px; font-weight: 600; font-size: 13px; color: var(--text-primary); }
         .adv-row input[type="text"],
         .adv-row input[type="number"] { width: 60px; padding: 5px 4px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-primary); font-size: 13px; text-align: center; outline: none; transition: all var(--transition); }
         .adv-row input[type="text"]:focus,
         .adv-row input[type="number"]:focus { border-color: #00d4ff; }
-
         .adv-remain { font-weight: 700; font-size: 16px; color: #4ec97a; min-width: 60px; text-align: center; }
-
         .adv-total-box { margin-top: 12px; padding: 12px 16px; background: linear-gradient(135deg, rgba(0,212,255,0.04), rgba(123,47,252,0.04)); border: 1px solid rgba(0,212,255,0.06); border-radius: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
         .adv-total-box .adv-total-label { color: var(--text-secondary); font-weight: 500; font-size: 14px; }
         .adv-total-box .adv-total-value { font-weight: 800; color: #00d4ff; font-size: 18px; }
         .adv-total-box .adv-total-value.rec { color: #4ec97a; }
-
         .adv-exclude-row { display: flex; align-items: center; gap: 8px; padding: 6px 0; flex-wrap: wrap; border-top: 1px solid var(--glass-border); margin-top: 6px; }
         .adv-exclude-row .elbl { font-size: 13px; color: var(--text-secondary); font-weight: 500; }
         .adv-exclude-row .eval { font-weight: 700; color: #ff6b6b; min-width: 40px; text-align: center; }
-
         .adv-xunhui-toggle { padding: 8px 4px; border-top: 1px solid var(--glass-border); margin-top: 8px; display: flex; align-items: center; font-size: 13px; color: var(--text-secondary); cursor: pointer; user-select: none; }
         .adv-xunhui-toggle:hover { color: #00d4ff; }
         .adv-xunhui-panel { display: none; padding: 8px 4px 4px; }
         .adv-xunhui-panel.open { display: block; }
-
         .adv-zb-row { display: flex; align-items: center; gap: 8px; padding: 3px 0; flex-wrap: wrap; }
         .adv-zb-row .zb-label { font-size: 12px; color: var(--text-secondary); min-width: 72px; }
         .adv-zb-row input { width: 100px; padding: 4px 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-primary); font-size: 12px; text-align: center; outline: none; }
         .adv-zb-row input:focus { border-color: #00d4ff; }
         .adv-match { font-size: 12px; color: #4ec97a; min-width: 80px; }
-
         .adv-avg-row { display: flex; align-items: center; gap: 6px; padding: 6px 0; flex-wrap: wrap; border-top: 1px solid var(--glass-border); margin-top: 8px; }
         .adv-avg-row .albl { font-size: 13px; color: var(--text-secondary); }
         .adv-avg-row input { width: 80px; padding: 4px 6px; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; color: var(--text-primary); font-size: 13px; text-align: center; outline: none; }
         .adv-avg-row input:focus { border-color: #00d4ff; }
-
         .adv-result-area { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
         .adv-combo { display: inline-block; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 6px; padding: 3px 8px; font-size: 12px; font-family: monospace; color: var(--text-secondary); }
         .adv-combo .adv-highlight { color: #4ec97a; font-weight: 600; }
-
         .adv-section-title { font-size: 13px; font-weight: 600; color: var(--text-primary); margin: 12px 0 8px; }
         .adv-empty-tip { text-align: center; padding: 20px 10px; color: var(--text-secondary); font-size: 13px; }
-
         .adv-round-row { display: flex; align-items: center; gap: 12px; padding: 4px 0; flex-wrap: wrap; }
         .adv-round-row .rlabel { font-size: 13px; color: var(--text-secondary); min-width: 100px; }
         .adv-round-row .rval { font-weight: 700; font-size: 14px; min-width: 60px; }
         .adv-round-row .rval.cons { color: #4ec97a; }
         .adv-round-row .rval.avg { color: #00d4ff; }
         .adv-round-row .rval.agg { color: #ff9f43; }
-
         .adv-clear-btn { padding: 4px 16px; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); color: var(--text-secondary); border-radius: 30px; font-size: 12px; cursor: pointer; transition: all var(--transition); }
         .adv-clear-btn:hover { border-color: #ff6b6b; color: #ff6b6b; }
-
         .adv-base-row { display: flex; align-items: center; gap: 8px; padding: 4px 0; flex-wrap: wrap; background: rgba(0,0,0,0.08); border-radius: 8px; padding: 6px 12px; margin-bottom: 4px; }
         .adv-base-row .blbl { font-size: 13px; color: var(--text-secondary); }
         .adv-base-row .bval { font-weight: 700; color: #ff9f43; }
         .adv-base-row .bnote { font-size: 12px; color: var(--text-secondary); opacity: 0.6; }
-
         .huo-mode-switch { display: flex; gap: 6px; margin-bottom: 14px; }
         .huo-mode-switch button { flex: 1; padding: 10px 8px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 40px; color: var(--text-secondary); font-size: 14px; font-weight: 600; cursor: pointer; transition: all var(--transition); white-space: nowrap; }
         .huo-mode-switch button.active { background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(123,47,252,0.15)); color: #00d4ff; border-color: rgba(0,212,255,0.2); box-shadow: 0 0 30px rgba(0,212,255,0.05); }
         .huo-mode-switch button:hover:not(.active) { border-color: rgba(255,255,255,0.15); color: #fff; }
-
         .map-affect-tag { display: none !important; }
-
-        /* ===== 主题面板 ===== */
         #themePanel { display: none; position: fixed; top: 76px; right: 16px; z-index: 200; background: rgba(12,12,24,0.95); backdrop-filter: blur(24px); border-radius: var(--radius); padding: 20px 22px; min-width: 200px; box-shadow: var(--glass-shadow); border: 1px solid rgba(255,255,255,0.06); }
         #themePanel.show { display: block; }
         #themePanel .tp-title { font-size: 14px; font-weight: 700; color: #00d4ff; text-align: center; margin-bottom: 14px; }
@@ -391,10 +321,8 @@
         .tp-close { text-align: right; margin-top: 12px; }
         .tp-close button { background: none; border: none; color: var(--text-secondary); font-size: 11px; cursor: pointer; text-decoration: underline; opacity: 0.4; }
         .tp-close button:hover { opacity: 0.8; }
-
         #remainTimeDisplay { position: fixed; top: 20px; right: 20px; background: rgba(8,8,14,0.85); backdrop-filter: blur(16px); color: #00d4ff; padding: 8px 20px; border-radius: 30px; font-size: 14px; z-index: 9999; font-family: 'Inter', sans-serif; border: 1px solid rgba(0,212,255,0.1); box-shadow: 0 8px 32px rgba(0,0,0,0.5); cursor: move; user-select: none; font-weight: 500; letter-spacing: 0.5px; transition: all var(--transition); }
         #remainTimeDisplay:hover { border-color: rgba(0,212,255,0.2); box-shadow: 0 8px 40px rgba(0,0,0,0.6), 0 0 40px rgba(0,212,255,0.03); }
-
         @media (max-width:480px) {
             #remainTimeDisplay { top:12px; right:12px; font-size:12px; padding:6px 14px; }
             .header .main-title { font-size:22px; }
@@ -412,7 +340,6 @@
     <canvas id="particles-canvas"></canvas>
 
     <div id="appWrap">
-        <!-- 顶部栏 -->
         <div class="top-bar">
             <div class="left">
                 <span class="author-id">205263367</span>
@@ -425,7 +352,6 @@
 
         <div class="warning-banner">卡密频繁更换IP地址会导致锁卡，且卡密永久封禁无法解除</div>
 
-        <!-- 主题面板 -->
         <div id="themePanel">
             <div class="tp-title">✦ 主题选择</div>
             <div class="theme-options" id="themeOptions"></div>
@@ -437,7 +363,6 @@
             <div class="tp-close"><button id="themePanelClose">关闭</button></div>
         </div>
 
-        <!-- 标题 -->
         <div class="header">
             <div class="main-title">
                 <span class="gradient-text">俱乐大玩家超级AI</span>
@@ -455,7 +380,6 @@
             <p id="guideText">巡回模式（休闲）估价仅供参考，最稳的还是天真加至宝价值道具，低级巡回稳赚秘籍：使用天真，看到50万以上的货直接梭哈，没看到出价1，最后一轮还是没货直接梭哈，这样门票不至于亏多少，出大货就是稳赚，全程不用道具。PS：出价一样的情况，第六轮谁第一个提交就是谁的。登月计划物品已加入。</p>
         </div>
 
-        <!-- 地图切换 -->
         <div class="map-switch" id="mapSwitch">
             <button data-map="yanjing">燕京</button>
             <button data-map="xiangjiang">香江</button>
@@ -464,7 +388,6 @@
             <button class="on" data-map="xunhui">巡回</button>
         </div>
 
-        <!-- ===== 巡回面板 ===== -->
         <div id="xunhuiFilterPanel">
             <div class="panel-header">
                 <span class="title">巡回模式 · 红均格筛选</span>
@@ -473,7 +396,6 @@
             <div style="font-size:12px;color:var(--text-secondary);margin-bottom:10px;line-height:1.6;">
                 输入红均格→筛选组合→至宝价值定位红品→估价
             </div>
-
             <div class="xunhui-filter-row">
                 <label>按均格筛选</label>
                 <label style="display:flex;align-items:center;gap:6px;cursor:pointer;min-width:auto;">
@@ -481,7 +403,6 @@
                     <span style="font-size:12px;color:var(--text-secondary);">开启后根据红均格匹配组合</span>
                 </label>
             </div>
-
             <div class="xunhui-filter-row">
                 <label>红均格</label>
                 <span class="ht-btn" onclick="xunhuiAdjustAvg(-1)">-1</span>
@@ -491,13 +412,11 @@
                 <span class="ht-btn primary" onclick="xunhuiAdjustAvg(1)">+1</span>
                 <button class="btn-xunhui-action secondary" onclick="xunhuiClearAvg()" style="padding:2px 12px;font-size:12px;">清空</button>
             </div>
-
             <div class="xunhui-filter-row">
                 <label>按格价值</label>
-                <input type="text" id="xunhuiPerGrid" inputmode="numeric" value="51438" oninput="xunhuiSearch()" style="width:100px;">
+                <input type="text" id="xunhuiPerGrid" inputmode="numeric" value="49898" oninput="xunhuiSearch()" style="width:100px;">
                 <span style="font-size:11px;color:var(--text-secondary);opacity:0.6;">（可自定义）</span>
             </div>
-
             <div class="xunhui-filter-row">
                 <label>已知格数</label>
                 <span class="ht-btn" onclick="xunhuiAdjustKnown(-1)">-1</span>
@@ -505,7 +424,6 @@
                 <span class="ht-btn primary" onclick="xunhuiAdjustKnown(1)">+1</span>
                 <span style="font-size:11px;color:var(--text-secondary);opacity:0.6;">（已锁定红品格数）</span>
             </div>
-
             <div class="xunhui-section-label">至宝价值眼镜 <span class="sub">（输入价格定位红品）</span></div>
             <div class="xunhui-grid-2col">
                 <div class="x-item"><label>至宝价值1</label><input type="text" class="xunhui-zhibao" id="xunhuiZhibao1" inputmode="numeric" placeholder="输入价格" oninput="xunhuiSearch()"></div>
@@ -515,7 +433,6 @@
                 <div class="x-item"><label>至宝价值5</label><input type="text" class="xunhui-zhibao" id="xunhuiZhibao5" inputmode="numeric" placeholder="输入价格" oninput="xunhuiSearch()"></div>
                 <div class="x-item"><label>至宝价值6</label><input type="text" class="xunhui-zhibao" id="xunhuiZhibao6" inputmode="numeric" placeholder="输入价格" oninput="xunhuiSearch()"></div>
             </div>
-
             <div class="xunhui-section-label">估价平板 <span class="sub">（选填，输入各品质总价值）</span></div>
             <div class="xunhui-grid-4col">
                 <div class="x-item"><label>绿平板估价</label><input type="text" id="xunhuiGreenVal" inputmode="numeric" placeholder="绿色品质总价值" oninput="xunhuiSearch()"></div>
@@ -523,14 +440,11 @@
                 <div class="x-item"><label>紫平板估价</label><input type="text" id="xunhuiPurpleVal" inputmode="numeric" placeholder="紫色品质总价值" oninput="xunhuiSearch()"></div>
                 <div class="x-item"><label>橙平板估价</label><input type="text" id="xunhuiOrangeVal" inputmode="numeric" placeholder="橙色品质总价值" oninput="xunhuiSearch()"></div>
             </div>
-
             <div class="xunhui-known-info">已知信息价格：<span id="xunhuiKnownInfo">—</span></div>
-
             <div class="xunhui-actions">
                 <button class="btn-xunhui-action" onclick="xunhuiSearch()">🔍 搜索组合</button>
                 <button class="btn-xunhui-action secondary" onclick="xunhuiReset()">清空</button>
             </div>
-
             <div class="xunhui-result-group" id="xunhuiResultGroup">
                 <div class="group-title">可能出现的组合</div>
                 <div id="xunhuiResultArea">
@@ -539,7 +453,6 @@
             </div>
         </div>
 
-        <!-- Tabs -->
         <div class="tabs" id="tabsBar">
             <button class="tab-btn active" data-tab="huo">霍姑姑</button>
             <button class="tab-btn" data-tab="gao">高进</button>
@@ -683,7 +596,7 @@
         })();
 
         // ============================================================
-        // 验证系统（修改：支持终身卡）
+        // 验证系统
         // ============================================================
         var CONFIG = {
             API_URL: 'https://www.keyt.cn/kami/qq204443214/check.php',
@@ -790,7 +703,6 @@
                         var days = parts[2] || '未知';
                         var minutes = parseInt(parts[3]) || 0;
                         var now = Date.now();
-                        // 判断是否为终身卡（支持 '永久' 和 '终身'）
                         var isPermanent = (days === '永久' || days === '终身' || minutes >= 999999);
                         if (isPermanent) {
                             Storage.set('card_verified', 'true');
@@ -1009,7 +921,6 @@
             var expireTimestamp = parseInt(Storage.get('card_expire_timestamp')) || 0;
             var daysStr = Storage.get('remain_days') || '';
 
-            // 判断是否为终身卡（支持 '永久' 和 '终身'）
             if (daysStr === '永久' || daysStr === '终身' || expireTimestamp >= 9999999999999) {
                 el.textContent = '♾️ 剩余时间：终身有效';
                 el.className = 'remain-permanent';
@@ -1103,14 +1014,10 @@
             }, 60000);
         }
 
-        // ============================================================
-        // 解绑功能（已修复）
-        // ============================================================
         function initUnbind() {
             var unbindBtn = document.getElementById('headerUnbindLink');
             if (!unbindBtn) return;
 
-            // 移除旧监听器，避免重复绑定
             var newBtn = unbindBtn.cloneNode(true);
             unbindBtn.parentNode.replaceChild(newBtn, unbindBtn);
 
@@ -1131,19 +1038,17 @@
 
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', url, true);
-                xhr.timeout = 5000; // 5秒超时
+                xhr.timeout = 5000;
 
                 xhr.onreadystatechange = function() {
                     if (xhr.readyState === 4) {
                         if (xhr.status === 200) {
                             var resp = xhr.responseText;
-                            // 去除签名部分
                             var pos = resp.indexOf('|sign=');
                             if (pos !== -1) resp = resp.substring(0, pos);
                             var parts = resp.split('|');
 
                             if (parts[0] === 'ok') {
-                                // 清除所有相关存储
                                 Storage.remove('card_verified');
                                 Storage.remove('remain_days');
                                 Storage.remove('remain_minutes');
@@ -1154,10 +1059,8 @@
                                 Storage.remove('device_id');
 
                                 alert('✅ 解绑成功，页面即将刷新，请重新输入卡密');
-                                // 直接刷新，不再弹出验证框
                                 window.location.reload();
                             } else {
-                                // 显示具体错误
                                 var errorMsg = parts[1] || '未知错误';
                                 var msgMap = {
                                     'invalid_card': '卡密无效或不存在',
@@ -1219,13 +1122,13 @@
         })();
 
         // ============================================================
-        // 主程序（完全保留原有功能，仅替换 initUnbind）
+        // 主程序
         // ============================================================
         function loadMainApp() {
             document.getElementById('appWrap').style.display = 'block';
             document.body.classList.add('verified');
 
-            initUnbind(); // 使用修复后的版本
+            initUnbind();
 
             // ---------- 主题系统 ----------
             var themes = {
@@ -1355,78 +1258,38 @@
             };
 
             // ============================================================
-            // 迪城独立数据模型 - 校准版（53,000/格 基准）
+            // 迪城独立数据模型 - 校准版（基于霓城截图反推）
             // ============================================================
             var DICHENG_MODEL = {
                 label: '迪城（校准版）',
-                redByGrid: {
-                    1: { avg: 53000, med: 51000, min: 47000 },
-                    2: { avg: 106000, med: 102000, min: 94000 },
-                    3: { avg: 159000, med: 153000, min: 141000 },
-                    4: { avg: 212000, med: 204000, min: 188000 },
-                    5: { avg: 265000, med: 255000, min: 235000 },
-                    6: { avg: 318000, med: 306000, min: 282000 },
-                    7: { avg: 371000, med: 357000, min: 329000 },
-                    8: { avg: 424000, med: 408000, min: 376000 },
-                    9: { avg: 477000, med: 459000, min: 423000 },
-                    10: { avg: 530000, med: 510000, min: 470000 },
-                    11: { avg: 583000, med: 561000, min: 517000 },
-                    12: { avg: 636000, med: 612000, min: 564000 },
-                    13: { avg: 689000, med: 663000, min: 611000 },
-                    14: { avg: 742000, med: 714000, min: 658000 },
-                    15: { avg: 795000, med: 765000, min: 705000 },
-                    16: { avg: 848000, med: 816000, min: 752000 },
-                    17: { avg: 901000, med: 867000, min: 799000 },
-                    18: { avg: 954000, med: 918000, min: 846000 },
-                    19: { avg: 1007000, med: 969000, min: 893000 },
-                    20: { avg: 1060000, med: 1020000, min: 940000 },
-                    21: { avg: 1113000, med: 1071000, min: 987000 },
-                    22: { avg: 1166000, med: 1122000, min: 1034000 },
-                    23: { avg: 1219000, med: 1173000, min: 1081000 },
-                    24: { avg: 1272000, med: 1224000, min: 1128000 },
-                    25: { avg: 1325000, med: 1275000, min: 1175000 },
-                    26: { avg: 1378000, med: 1326000, min: 1222000 },
-                    27: { avg: 1431000, med: 1377000, min: 1269000 },
-                    28: { avg: 1484000, med: 1428000, min: 1316000 },
-                    29: { avg: 1537000, med: 1479000, min: 1363000 },
-                    30: { avg: 1590000, med: 1530000, min: 1410000 },
-                    31: { avg: 1643000, med: 1581000, min: 1457000 },
-                    32: { avg: 1696000, med: 1632000, min: 1504000 },
-                    33: { avg: 1749000, med: 1683000, min: 1551000 },
-                    34: { avg: 1802000, med: 1734000, min: 1598000 },
-                    35: { avg: 1855000, med: 1785000, min: 1645000 },
-                    36: { avg: 1908000, med: 1836000, min: 1692000 },
-                    37: { avg: 1961000, med: 1887000, min: 1739000 },
-                    38: { avg: 2014000, med: 1938000, min: 1786000 },
-                    39: { avg: 2067000, med: 1989000, min: 1833000 },
-                    40: { avg: 2120000, med: 2040000, min: 1880000 },
-                    41: { avg: 2173000, med: 2091000, min: 1927000 },
-                    42: { avg: 2226000, med: 2142000, min: 1974000 },
-                    43: { avg: 2279000, med: 2193000, min: 2021000 },
-                    44: { avg: 2332000, med: 2244000, min: 2068000 },
-                    45: { avg: 2385000, med: 2295000, min: 2115000 },
-                    46: { avg: 2438000, med: 2346000, min: 2162000 },
-                    47: { avg: 2491000, med: 2397000, min: 2209000 },
-                    48: { avg: 2544000, med: 2448000, min: 2256000 },
-                    49: { avg: 2597000, med: 2499000, min: 2303000 },
-                    50: { avg: 2650000, med: 2550000, min: 2350000 }
-                },
+                redByGrid: (function() {
+                    var base = 48000; // 红均格 48,000（匹配截图）
+                    var map = {};
+                    for (var i = 1; i <= 50; i++) {
+                        map[i] = {
+                            avg: Math.round(base * i),
+                            med: Math.round((base * 0.96) * i),
+                            min: Math.round((base * 0.88) * i)
+                        };
+                    }
+                    return map;
+                })(),
                 colors: {
-                    purple: { piece: { avg: 5406, med: 5200 }, grid: { avg: 5406, med: 5200 } },
-                    orange: { piece: { avg: 22728, med: 21000 }, grid: { avg: 22728, med: 21000 } },
-                    green: { piece: { avg: 462, med: 430 }, grid: { avg: 462, med: 430 } },
-                    blue: { piece: { avg: 1318, med: 1200 }, grid: { avg: 1318, med: 1200 } }
+                    purple: { piece: { avg: 2521.6, med: 2400 }, grid: { avg: 2521.6, med: 2400 } },
+                    orange: { piece: { avg: 10631.5, med: 10000 }, grid: { avg: 10631.5, med: 10000 } },
+                    green: { piece: { avg: 215.4, med: 200 }, grid: { avg: 215.4, med: 200 } },
+                    blue: { piece: { avg: 617.0, med: 600 }, grid: { avg: 617.0, med: 600 } }
                 },
                 redStat: {
-                    piece: { avg: 53000, med: 51000 },
-                    grid: { avg: 53000, med: 51000 }
+                    piece: { avg: 48000, med: 46000 },
+                    grid: { avg: 48000, med: 46000 }
                 },
-                gridOptions: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50],
+                gridOptions: Array.from({ length: 50 }, (_, i) => i + 1),
                 redAvgGrid: 4.5
             };
 
             // ============================================================
-            // 其他地图数据（燕京、香江、霓城）- 燕京红格均改为 54824
+            // 其他地图数据（燕京、香江、霓城）
             // ============================================================
             var CFG = {
                 maps: {
@@ -1531,19 +1394,17 @@
                 return avg * avgWeight + med * medWeight + min * minWeight;
             }
 
-            function dynamicRecDiscount(total) {
-                if (total < 500000) return 0.85;
-                if (total < 2000000) return 0.82;
-                if (total < 5000000) return 0.78;
-                return 0.74;
+            // 修正后的折扣函数：完全匹配截图（纯分段，忽略红品件数）
+            function dynamicRecDiscount(total, redCount) {
+                if (total < 500000) return 0.88;
+                else if (total < 2000000) return 0.82;
+                else if (total < 5000000) return 0.78;
+                else return 0.74;
             }
 
-            // 地图数据获取：如果当前地图是 'xunhui'，回退到 'yanjing'
             function getMap() {
                 var mapName = currentMap;
-                if (mapName === 'xunhui') {
-                    return CFG.maps['yanjing'];
-                }
+                if (mapName === 'xunhui') return CFG.maps['yanjing'];
                 return CFG.maps[mapName] || CFG.maps['yanjing'];
             }
 
@@ -1604,7 +1465,6 @@
                     btn.classList.add('on');
                     currentMap = btn.dataset.map;
 
-                    // 控制巡回面板显示
                     var panel = document.getElementById('xunhuiFilterPanel');
                     if (currentMap === 'xunhui') {
                         panel.style.display = 'block';
@@ -1612,7 +1472,6 @@
                         panel.style.display = 'none';
                     }
 
-                    // 刷新当前激活的tab
                     var activeTab = document.querySelector('.tab-btn.active');
                     if (activeTab) {
                         var target = activeTab.dataset.tab;
@@ -1684,7 +1543,6 @@
             // ============================================================
             // 巡回面板独立逻辑
             // ============================================================
-
             window.xunhuiAdjustAvg = function(delta) {
                 var inp = document.getElementById('xunhuiAvg');
                 if (!inp) return;
@@ -1710,7 +1568,7 @@
 
             window.xunhuiReset = function() {
                 document.getElementById('xunhuiAvg').value = '4.3';
-                document.getElementById('xunhuiPerGrid').value = '51438';
+                document.getElementById('xunhuiPerGrid').value = '49898';
                 document.getElementById('xunhuiKnownGrids').value = '0';
                 for (var i = 1; i <= 6; i++) {
                     document.getElementById('xunhuiZhibao' + i).value = '';
@@ -1725,7 +1583,7 @@
 
             window.xunhuiSearch = function() {
                 var avg = parseFloat(document.getElementById('xunhuiAvg').value) || 0;
-                var perGrid = parseFloat(document.getElementById('xunhuiPerGrid').value) || 51438;
+                var perGrid = parseFloat(document.getElementById('xunhuiPerGrid').value) || 49898;
                 var knownGrids = parseInt(document.getElementById('xunhuiKnownGrids').value) || 0;
                 var enableFilter = document.getElementById('xunhuiEnableFilter').checked;
 
@@ -1738,7 +1596,6 @@
                     return;
                 }
 
-                // 读取至宝价值
                 var zhibaoValues = [];
                 for (var i = 1; i <= 6; i++) {
                     var inp = document.getElementById('xunhuiZhibao' + i);
@@ -1746,19 +1603,16 @@
                     if (!isNaN(val) && val > 0) zhibaoValues.push(val);
                 }
 
-                // 读取估价平板
                 var greenVal = parseFloat(document.getElementById('xunhuiGreenVal')?.value) || 0;
                 var blueVal = parseFloat(document.getElementById('xunhuiBlueVal')?.value) || 0;
                 var purpleVal = parseFloat(document.getElementById('xunhuiPurpleVal')?.value) || 0;
                 var orangeVal = parseFloat(document.getElementById('xunhuiOrangeVal')?.value) || 0;
 
-                // 计算已知信息价格
                 var zhibaoSum = zhibaoValues.reduce(function(a, b) { return a + b; }, 0);
                 var tabletSum = greenVal + blueVal + purpleVal + orangeVal;
                 var knownTotal = zhibaoSum + tabletSum;
                 updateKnownInfo(knownTotal);
 
-                // 至宝价值匹配格数（固定映射）
                 var gridMap = { 50000: 1, 100000: 2, 200000: 4, 300000: 6 };
                 var matchedGrids = [];
                 zhibaoValues.forEach(function(val) {
@@ -1777,7 +1631,6 @@
                     }
                 });
 
-                // 平板反推格数（固定价格）
                 var fixedPrices = { green: 260, blue: 740, purple: 2400, orange: 9800 };
                 var greenGrids = greenVal > 0 ? Math.round(greenVal / fixedPrices.green) : 0;
                 var blueGrids = blueVal > 0 ? Math.round(blueVal / fixedPrices.blue) : 0;
@@ -2954,7 +2807,7 @@
             };
 
             // ============================================================
-            // 高进 - 使用地图数据（布局已放大）
+            // 高进 - 使用地图数据
             // ============================================================
             function renderGao() {
                 var el = document.getElementById('page-gao');
@@ -3010,13 +2863,11 @@
 
                 body.innerHTML = html;
 
-                // 绑定事件
                 var allInputs = body.querySelectorAll('input[type="number"]');
                 allInputs.forEach(function(inp) {
                     inp.addEventListener('input', calcGao);
                 });
 
-                // 折叠切换
                 var toggle = document.getElementById('gaoCollapseToggle');
                 var collapsedRows = document.getElementById('gaoCollapsedRows');
                 if (toggle) {
@@ -3026,7 +2877,6 @@
                     };
                 }
 
-                // 重置
                 var resetBtn = document.getElementById('gaoReset');
                 if (resetBtn) {
                     resetBtn.onclick = function() {
@@ -3038,7 +2888,6 @@
                 calcGao();
             }
 
-            // 高进 - 构建单行（大号版）
             function buildGaoRow(grid, inputId, price) {
                 return `
                     <div class="row">
@@ -3055,7 +2904,6 @@
                 `;
             }
 
-            // 高进 - 颜色行
             function buildGaoColorRow(label, inputId, price) {
                 return `
                     <div class="row" style="border-top:1px solid rgba(255,255,255,0.04);padding-top:8px;margin-top:4px;">
@@ -3072,7 +2920,6 @@
                 `;
             }
 
-            // 高进 - 红色格数行
             function buildGaoRedGridRow(map) {
                 var redGridPrice = getRedGridAvgPrice(map);
                 return `
@@ -3167,9 +3014,9 @@
                 var totalEl = document.getElementById('gaoTotal');
                 if (totalEl) totalEl.textContent = fmt(total);
 
-                var disc = dynamicRecDiscount(total);
+                var rec = total * dynamicRecDiscount(total);
                 var recEl = document.getElementById('gaoRec');
-                if (recEl) recEl.textContent = fmt(total * disc);
+                if (recEl) recEl.textContent = fmt(rec);
 
                 var conf = 0.90;
                 if (hasValue) {
@@ -3265,9 +3112,9 @@
                     var totalEl = document.getElementById('suTotal');
                     if (totalEl) totalEl.textContent = fmt(total);
 
-                    var disc = dynamicRecDiscount(total);
+                    var rec = total * dynamicRecDiscount(total);
                     var recEl = document.getElementById('suRec');
-                    if (recEl) recEl.textContent = fmt(total * disc);
+                    if (recEl) recEl.textContent = fmt(rec);
 
                     var conf = 0.90;
                     if (hasValue) {
