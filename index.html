@@ -81,10 +81,6 @@
         .map-switch button { flex: 1; padding: 10px 8px; background: transparent; border: none; border-radius: 40px; color: var(--text-secondary); font-size: 14px; font-weight: 600; cursor: pointer; transition: all var(--transition); white-space: nowrap; min-width: 50px; }
         .map-switch button.on { background: linear-gradient(135deg, #00d4ff, #7b2ffc); color: #fff; box-shadow: 0 4px 24px rgba(0,212,255,0.2); }
         .map-switch button:hover:not(.on) { color: #fff; }
-        #globalDynToggleWrap { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 10px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-        #globalDynToggleWrap label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-primary); cursor: pointer; font-weight: 500; }
-        #globalDynToggleWrap input[type="checkbox"] { width: 18px; height: 18px; accent-color: #00d4ff; cursor: pointer; }
-        #globalDynToggleWrap .hint { font-size: 12px; color: var(--text-secondary); opacity: 0.6; }
         #xunhuiFilterPanel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 16px 18px; margin: 12px 0 16px; box-shadow: var(--glass-shadow); display: none; }
         #xunhuiFilterPanel .panel-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
         #xunhuiFilterPanel .panel-header .title { font-size: 18px; font-weight: 700; background: linear-gradient(135deg, #00d4ff, #7b2ffc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -370,7 +366,6 @@
         .lu-page .combo { color: #88ccff; font-size: 10px; }
         .lu-page .section-title { font-size: 13px; color: #ffd24a; font-weight: bold; margin: 0 0 8px; }
         .lu-page .main-title { font-size: 16px; color: #ffd24a; font-weight: bold; margin-bottom: 12px; padding: 0 2px; }
-        .lu-page .announce { background: rgba(255,107,107,0.04); border: 1px solid rgba(255,107,107,0.08); border-radius: 8px; padding: 10px 12px; margin: 12px 0; font-size: 12px; color: #d4b870; line-height: 1.6; }
         .lu-page .act-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 12px; }
         .lu-page .act-time { background: rgba(0,212,255,0.08); color: #00d4ff; padding: 4px 10px; border-radius: 12px; }
         .collapse-toggle { padding: 6px 12px; margin: 6px 0; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 30px; color: var(--text-secondary); font-size: 12px; cursor: pointer; text-align: center; transition: all var(--transition); user-select: none; }
@@ -445,6 +440,7 @@
             <p id="guideText">巡回模式（休闲）估价仅供参考，最稳的还是天真加至宝价值道具，低级巡回稳赚秘籍：使用天真，看到50万以上的货直接梭哈，没看到出价1，最后一轮还是没货直接梭哈，这样门票不至于亏多少，出大货就是稳赚，全程不用道具。PS：出价一样的情况，第六轮谁第一个提交就是谁的。登月计划物品已加入。</p>
         </div>
 
+        <!-- 地图切换栏（含迪城） -->
         <div class="map-switch" id="mapSwitch">
             <button data-map="yanjing">燕京</button>
             <button data-map="xiangjiang">香江</button>
@@ -453,14 +449,7 @@
             <button class="on" data-map="xunhui">巡回</button>
         </div>
 
-        <!-- 全局动态红价开关（霍姑姑算法同步开关） -->
-        <div id="globalDynToggleWrap">
-            <label>
-                <input type="checkbox" id="globalDynToggle" onchange="window._globalDynEnabled = this.checked; renderAllTabs();">
-                <span>⚡ 启用霍姑姑动态红价算法（全角色生效）</span>
-            </label>
-            <span class="hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
-        </div>
+        <!-- 全局动态红价UI已删除 -->
 
         <div id="xunhuiFilterPanel">
             <div class="panel-header">
@@ -670,7 +659,7 @@
         })();
 
         // ============================================================
-        // 验证系统（保持原样）
+        // 验证系统
         // ============================================================
         var CONFIG = {
             API_URL: 'https://www.keyt.cn/kami/qq204443214/check.php',
@@ -1523,7 +1512,7 @@
             }
 
             // ============================================================
-            // 全局动态红价（霍姑姑算法核心）
+            // 全局动态红价变量（仅霍姑姑使用，其他角色不用）
             // ============================================================
             var dynRules = [
                 { max: 12, price: 55000 },
@@ -1532,41 +1521,6 @@
                 { max: 42, price: 46000 },
                 { max: Infinity, price: 42000 }
             ];
-
-            window._globalDynEnabled = false;
-
-            window.getDynRedPrice = function(redGrids) {
-                if (!window._globalDynEnabled) {
-                    var map = getMap();
-                    return getRedGridAvgPrice(map);
-                }
-                for (var i = 0; i < dynRules.length; i++) {
-                    if (redGrids <= dynRules[i].max) {
-                        return dynRules[i].price;
-                    }
-                }
-                return dynRules[dynRules.length - 1].price;
-            };
-
-            window.calcConfidence = function(inputValues) {
-                if (!inputValues || inputValues.length === 0) return 0.90;
-                var maxV = Math.max.apply(null, inputValues);
-                var minV = Math.min.apply(null, inputValues);
-                if (maxV === 0) return 0.90;
-                var spread = (maxV - minV) / (maxV + 0.01);
-                var conf = 0.90 - spread * 0.25;
-                return Math.max(0.65, Math.min(0.96, conf));
-            };
-
-            window.renderAllTabs = function() {
-                var activeTab = document.querySelector('.tab-btn.active');
-                if (activeTab) {
-                    var target = activeTab.dataset.tab;
-                    var pageFn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'huangjintong': renderHuangjintong,
-                        'an': renderAn, 'lu': renderLu };
-                    if (pageFn[target]) pageFn[target]();
-                }
-            };
 
             // ============================================================
             // 地图切换与Tabs
@@ -1922,7 +1876,7 @@
                         <input type="checkbox" id="huoClassicDynToggle" onchange="huoClassicDynToggle()">
                         <span>按红格动态调率</span>
                     </label>
-                    <span class="dyn-hint">（待测）≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
+                    <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
                 </div>
                 `;
 
@@ -2918,7 +2872,7 @@
             };
 
             // ============================================================
-            // 高进（只显示 1~16 格，并使用霍姑姑动态红价 + 置信度算法）
+            // 高进（只显示 1~16 格，使用地图固定价格）
             // ============================================================
             function renderGao() {
                 var el = document.getElementById('page-gao');
@@ -2933,17 +2887,6 @@
 
                 var body = document.getElementById('gaoBody');
                 var html = '';
-
-                // 高进独立动态开关（默认跟随全局）
-                html += `
-                <div class="adv-dyn-toggle" style="margin-bottom:12px;">
-                    <label>
-                        <input type="checkbox" id="gaoDynToggle" onchange="calcGao()" ${window._globalDynEnabled ? 'checked' : ''}>
-                        <span>按红格动态调率（霍姑姑算法）</span>
-                    </label>
-                    <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
-                </div>
-                `;
 
                 var visible = gridOptions.filter(function(g) { return g <= threshold; });
                 var hidden = gridOptions.filter(function(g) { return g > threshold; });
@@ -3081,24 +3024,11 @@
                 var hasValue = false;
                 var allVals = [];
 
-                // 同步全局动态开关到高进独立开关
-                var gaoDyn = document.getElementById('gaoDynToggle');
-                if (gaoDyn && gaoDyn.checked !== window._globalDynEnabled) {
-                    gaoDyn.checked = window._globalDynEnabled;
-                }
-
                 gridOptions.forEach(function(g) {
                     var inp = document.getElementById('gao_grid_' + g);
                     if (inp) {
                         var val = parseFloat(inp.value) || 0;
-                        // 使用霍姑姑动态红价
-                        var dynEnabled = (document.getElementById('gaoDynToggle')?.checked || window._globalDynEnabled || false);
-                        var price;
-                        if (dynEnabled && val > 0) {
-                            price = window.getDynRedPrice(g);
-                        } else {
-                            price = parseFloat(inp.dataset.price) || 0;
-                        }
+                        var price = parseFloat(inp.dataset.price) || 0;
                         var sub = val * price;
                         var subEl = document.getElementById('gao_grid_' + g + '_sub');
                         if (subEl) subEl.textContent = fmt(sub);
@@ -3142,14 +3072,7 @@
                     var avgGrid = parseFloat(avgGridInp.value) || 0;
                     var cntGrid = parseFloat(cntGridInp.value) || 0;
                     var gridTotal = avgGrid * cntGrid;
-                    // 使用霍姑姑动态红价
-                    var dynEnabled = (document.getElementById('gaoDynToggle')?.checked || window._globalDynEnabled || false);
-                    var redGridPrice;
-                    if (dynEnabled && avgGrid > 0) {
-                        redGridPrice = window.getDynRedPrice(avgGrid);
-                    } else {
-                        redGridPrice = getRedGridAvgPrice(map);
-                    }
+                    var redGridPrice = getRedGridAvgPrice(map);
                     var redGridSub = gridTotal * redGridPrice;
                     var redGridSubEl = document.getElementById('gao_red_grid_sub');
                     if (redGridSubEl) redGridSubEl.textContent = fmt(redGridSub);
@@ -3164,8 +3087,12 @@
                 var recEl = document.getElementById('gaoRec');
                 if (recEl) recEl.textContent = fmt(rec);
 
-                // 使用霍姑姑置信度算法
-                var conf = window.calcConfidence(allVals);
+                // 使用高进自己的置信度（基于输入数量）
+                var conf = 0.90;
+                if (hasValue) {
+                    conf = 0.90 + Math.min(0.06, inputCount * 0.01);
+                    conf = Math.max(0.65, Math.min(0.96, conf));
+                }
                 var fill = document.getElementById('gaoConfidenceFill');
                 var label = document.getElementById('gaoConfidenceLabel');
                 if (fill) {
@@ -3178,7 +3105,7 @@
             }
 
             // ============================================================
-            // 苏琦（使用霍姑姑动态红价 + 置信度算法）
+            // 苏琦（使用地图固定价格）
             // ============================================================
             function renderSu() {
                 var el = document.getElementById('page-su');
@@ -3188,15 +3115,7 @@
                     '</span></div></div></div></div><div class="sec-body" id="suBody"></div></div>';
                 var body = document.getElementById('suBody');
 
-                var html = `
-                <div class="adv-dyn-toggle" style="margin-bottom:12px;">
-                    <label>
-                        <input type="checkbox" id="suDynToggle" onchange="calcSu()" ${window._globalDynEnabled ? 'checked' : ''}>
-                        <span>按红格动态调率（霍姑姑算法）</span>
-                    </label>
-                    <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
-                </div>
-                `;
+                var html = '';
 
                 var colorKeys = ['green', 'blue', 'purple', 'orange', 'red'];
                 var colorLabels = [TEXT.colorGreen, TEXT.colorBlue, TEXT.colorPurple, TEXT.colorOrange, TEXT.colorRed];
@@ -3227,30 +3146,16 @@
                     createQuickBtns(id, [-1, 1]);
                 });
 
-                // 同步全局开关
-                var suDyn = document.getElementById('suDynToggle');
-                if (suDyn && suDyn.checked !== window._globalDynEnabled) {
-                    suDyn.checked = window._globalDynEnabled;
-                }
-
                 function calcSu() {
                     var total = 0;
                     var inputCount = 0;
                     var hasValue = false;
-                    var allVals = [];
-
-                    var dynEnabled = (document.getElementById('suDynToggle')?.checked || window._globalDynEnabled || false);
 
                     colorKeys.forEach(function(key) {
                         var inp = document.getElementById('su_' + key);
                         if (inp) {
                             var val = parseFloat(inp.value) || 0;
                             var price = parseFloat(inp.dataset.price) || 0;
-                            // 红色件数也使用动态红价（按均格近似）
-                            if (key === 'red' && dynEnabled && val > 0) {
-                                var avgGrid = parseFloat(document.getElementById('su_red_grid_avg')?.value) || 4.5;
-                                price = window.getDynRedPrice(avgGrid);
-                            }
                             var sub = val * price;
                             var subEl = document.getElementById('su_' + key + '_sub');
                             if (subEl) subEl.textContent = fmt(sub);
@@ -3258,7 +3163,6 @@
                             if (val > 0) {
                                 inputCount = inputCount + 1;
                                 hasValue = true;
-                                allVals.push(val);
                             }
                         }
                     });
@@ -3271,12 +3175,7 @@
                     if (cntGridInp) cntGrid = parseFloat(cntGridInp.value) || 0;
 
                     var gridTotal = avgGrid * cntGrid;
-                    var redGridPrice;
-                    if (dynEnabled && avgGrid > 0) {
-                        redGridPrice = window.getDynRedPrice(avgGrid);
-                    } else {
-                        redGridPrice = getRedGridAvgPrice(map);
-                    }
+                    var redGridPrice = getRedGridAvgPrice(map);
                     var redGridSub = gridTotal * redGridPrice;
                     var redGridSubEl = document.getElementById('su_red_grid_sub');
                     if (redGridSubEl) redGridSubEl.textContent = fmt(redGridSub);
@@ -3290,8 +3189,11 @@
                     var recEl = document.getElementById('suRec');
                     if (recEl) recEl.textContent = fmt(rec);
 
-                    // 使用霍姑姑置信度算法
-                    var conf = window.calcConfidence(allVals);
+                    var conf = 0.90;
+                    if (hasValue) {
+                        conf = 0.90 + Math.min(0.06, inputCount * 0.01);
+                        conf = Math.max(0.65, Math.min(0.96, conf));
+                    }
                     var fill = document.getElementById('suConfidenceFill');
                     var label = document.getElementById('suConfidenceLabel');
                     if (fill) {
@@ -3331,7 +3233,7 @@
             }
 
             // ============================================================
-            // 安可（使用霍姑姑动态红价）
+            // 安可（使用地图固定价格）
             // ============================================================
             function renderAn() {
                 var el = document.getElementById('page-an');
@@ -3344,13 +3246,6 @@
                 var body = document.getElementById('anBody');
 
                 body.innerHTML = `
-                <div class="adv-dyn-toggle" style="margin-bottom:12px;">
-                    <label>
-                        <input type="checkbox" id="anDynToggle" onchange="anSearch()" ${window._globalDynEnabled ? 'checked' : ''}>
-                        <span>按红格动态调率（霍姑姑算法）</span>
-                    </label>
-                    <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
-                </div>
                 <div class="rev-input">
                     <div class="field"><label>平均格数</label><input type="number" id="anAvg" step="0.1" min="1" max="16" placeholder="如 3.5"></div>
                     <div class="field"><label>红品数量（可选）</label><input type="number" id="anCount" min="1" max="50" placeholder="不限"></div>
@@ -3361,13 +3256,7 @@
                 <div class="reset-row"><button class="btn-reset" id="anReset">重置数据</button></div>
                 `;
 
-                // 同步全局开关
-                var anDyn = document.getElementById('anDynToggle');
-                if (anDyn && anDyn.checked !== window._globalDynEnabled) {
-                    anDyn.checked = window._globalDynEnabled;
-                }
-
-                window.anSearch = function() {
+                document.getElementById('anBtn').onclick = function() {
                     var avg = parseFloat(document.getElementById('anAvg').value);
                     var count = parseInt(document.getElementById('anCount').value) || 0;
                     var knownStr = document.getElementById('anKnown').value.trim();
@@ -3376,9 +3265,6 @@
                     var result = document.getElementById('anResult');
                     if (isNaN(avg) || avg < 1) { result.innerHTML =
                             '<div class="empty">请输入有效的平均格数</div>'; return; }
-
-                    var dynEnabled = (document.getElementById('anDynToggle')?.checked || window._globalDynEnabled || false);
-
                     var combos = [];
                     var maxN = count > 0 ? count : 20;
                     var minN = count > 0 ? count : 1;
@@ -3425,23 +3311,18 @@
                         '</div>'; return; }
                     var html = '';
                     var maxShow = 10;
+                    var redAvgPrice = getRedPiecePrice(map);
                     combos.forEach(function(item) {
-                        // 使用动态红价
-                        var avgGridPrice = dynEnabled ? window.getDynRedPrice(avg) : getRedPiecePrice(map);
-                        var estValue = Math.round(item.n * avgGridPrice);
+                        var estValue = Math.round(item.n * redAvgPrice);
                         var minValue = 0;
                         if (item.combos) {
                             var minTotal = Infinity;
                             item.combos.forEach(function(combo) {
                                 var sum = 0;
                                 combo.forEach(function(g) {
-                                    if (dynEnabled) {
-                                        sum += window.getDynRedPrice(g);
-                                    } else {
-                                        var entry = map.redByGrid[g];
-                                        if (entry && entry.min) sum += entry.min;
-                                        else sum += 0;
-                                    }
+                                    var entry = map.redByGrid[g];
+                                    if (entry && entry.min) sum += entry.min;
+                                    else sum += 0;
                                 });
                                 if (sum < minTotal) minTotal = sum;
                             });
@@ -3470,7 +3351,6 @@
                     result.innerHTML = html;
                 };
 
-                document.getElementById('anBtn').onclick = window.anSearch;
                 document.getElementById('anReset').onclick = function() {
                     document.getElementById('anAvg').value = '';
                     document.getElementById('anCount').value = '';
@@ -3480,7 +3360,7 @@
             }
 
             // ============================================================
-            // 陆星坤（使用霍姑姑动态红价）
+            // 陆星坤（使用地图固定价格，已删除巡回公告）
             // ============================================================
             function renderLu() {
                 var el = document.getElementById('page-lu');
@@ -3489,17 +3369,14 @@
                     <div class="act-bar">
                         <span class="act-time">📍 当前地图：<span id="luMapName">${getMap().name}</span></span>
                     </div>
-
                     <div class="main-title">陆星坤 · 整仓底价</div>
-
-                    <!-- 操作流程 -->
                     <div class="flow-card">
                         <div class="flow-head">操作流程</div>
                         <div class="flow-step">
                             <div class="flow-badge">1</div>
                             <div>
                                 <div class="flow-title">整仓底价</div>
-                                <span class="flow-action">本局无红时直接填整仓件数，按每件10格固定底价（8.3/10.6/13.7万）</span>
+                                <span class="flow-action">本局无红时直接填整仓件数，按每件10格固定底价（1.5/2.2/3.0万）</span>
                             </div>
                         </div>
                         <div class="flow-step">
@@ -3518,30 +3395,27 @@
                         </div>
                     </div>
 
-                    <!-- 动态红价开关 -->
-                    <div class="adv-dyn-toggle" style="margin:10px 0;">
-                        <label>
-                            <input type="checkbox" id="luDynToggle" onchange="window.luAutoCalc()" ${window._globalDynEnabled ? 'checked' : ''}>
-                            <span>按红格动态调率（霍姑姑算法）</span>
-                        </label>
-                        <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
+                    <!-- 估价折扣滑块 -->
+                    <div style="background:rgba(0,0,0,0.12);border-radius:8px;padding:10px 14px;margin:10px 0;">
+                        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                            <span style="font-size:13px;color:var(--text-secondary);">估价折扣：</span>
+                            <input type="range" id="luDiscountSlider" min="0.60" max="1.00" step="0.01" value="0.80" style="flex:1;min-width:100px;accent-color:#00d4ff;" oninput="document.getElementById('luDiscountLabel').textContent = (this.value * 100).toFixed(0) + '%'; window.luAutoCalc();">
+                            <span id="luDiscountLabel" style="font-weight:700;color:#00d4ff;min-width:50px;">80%</span>
+                            <span style="font-size:11px;color:var(--text-secondary);opacity:0.6;">（调低可降低出价）</span>
+                        </div>
                     </div>
 
-                    <!-- 计算面板 -->
                     <div class="calc-card">
                         <h3>整仓底价 / 红均格</h3>
-                        <div class="calc-sub">整仓模式按每件10格固定底价；或填红均格反查（基于当前地图数据 + 霍姑姑动态红价）。</div>
-
+                        <div class="calc-sub">整仓模式按每件10格固定底价；或填红均格反查（基于当前地图数据）。</div>
                         <div class="field-row">
                             <span class="flabel">整仓件数</span>
                             <input type="number" id="luTotalCount" placeholder="物品件数（整仓）" min="0" oninput="window.luAutoCalc()">
                         </div>
-
                         <div class="field-row">
                             <span class="flabel">红均格</span>
                             <input type="number" id="luAvgGrid" placeholder="可选，如 2.3" step="0.1" min="0" oninput="window.luAutoCalc()">
                         </div>
-
                         <div class="known-label">已知格数（最多8个，配合红均格，留空即可）</div>
                         <div class="known-grid">
                             <input type="number" class="lu-known-input" value="" min="0" oninput="window.luAutoCalc()">
@@ -3554,8 +3428,6 @@
                             <input type="number" class="lu-known-input" value="" min="0" oninput="window.luAutoCalc()">
                         </div>
                     </div>
-
-                    <!-- 结果区域 -->
                     <div class="result-card" id="luResultArea">
                         <div class="result-empty">填写数据后自动估算</div>
                     </div>
@@ -3563,27 +3435,17 @@
                 `;
                 el.innerHTML = html;
 
-                // 同步全局开关
-                var luDyn = document.getElementById('luDynToggle');
-                if (luDyn && luDyn.checked !== window._globalDynEnabled) {
-                    luDyn.checked = window._globalDynEnabled;
-                }
-
                 window.luAutoCalc = function() {
                     var map = getMap();
-                    var dynEnabled = (document.getElementById('luDynToggle')?.checked || window._globalDynEnabled || false);
+                    var discount = parseFloat(document.getElementById('luDiscountSlider')?.value) || 0.80;
 
-                    // 构建当前地图的格数价格字典（使用霍姑姑动态红价）
+                    // 构建当前地图的格数价格字典（使用固定地图价格）
                     var gridPrices = {};
                     var grids = map.gridOptions || [];
                     grids.forEach(function(g) {
-                        if (dynEnabled) {
-                            gridPrices[g] = window.getDynRedPrice(g);
-                        } else {
-                            var entry = map.redByGrid[g];
-                            if (entry) {
-                                gridPrices[g] = weightedPrice(entry);
-                            }
+                        var entry = map.redByGrid[g];
+                        if (entry) {
+                            gridPrices[g] = weightedPrice(entry);
                         }
                     });
 
@@ -3600,23 +3462,23 @@
                     var htmlOut = '';
                     var hasResult = false;
 
-                    // ----- 整仓底价（三档固定） -----
+                    // 整仓底价（三档固定，第六次下调）
                     if (count > 0) {
                         hasResult = true;
-                        var conservative = count * 83000;
-                        var neutral = count * 106000;
-                        var aggressive = count * 137000;
+                        var conservative = Math.round(count * 15000 * discount);
+                        var neutral = Math.round(count * 22000 * discount);
+                        var aggressive = Math.round(count * 30000 * discount);
                         htmlOut += `<div class="section-title">整仓底价估算（${count}件）</div>`;
                         htmlOut += `<div class="tier-row"><span class="tier-name">保守底价</span><span class="tier-val cons">${conservative.toLocaleString()}</span></div>`;
                         htmlOut += `<div class="tier-row"><span class="tier-name">中性底价</span><span class="tier-val">${neutral.toLocaleString()}</span></div>`;
                         htmlOut += `<div class="tier-row"><span class="tier-name">乐观底价</span><span class="tier-val aggr">${aggressive.toLocaleString()}</span></div>`;
                     }
 
-                    // ----- 红均格反查（使用霍姑姑动态红价） -----
+                    // 红均格反查（使用地图固定价格）
                     if (!isNaN(avg) && avg > 0 && Object.keys(gridPrices).length > 0) {
                         hasResult = true;
                         if (count > 0) htmlOut += '<div style="height:12px"></div>';
-                        htmlOut += `<div class="section-title">红均格反查（均格 ${avg}，地图：${map.name}，动态红价：${dynEnabled ? '✅ 已开启' : '❌ 关闭'}）</div>`;
+                        htmlOut += `<div class="section-title">红均格反查（均格 ${avg}，地图：${map.name}，折扣：${Math.round(discount*100)}%）</div>`;
 
                         function solveDP(targetN, targetG, known) {
                             var knownSum = known.reduce(function(a, b) { return a + b; }, 0);
@@ -3624,13 +3486,11 @@
                             var remainN = targetN - knownCnt;
                             var remainG = targetG - knownSum;
                             if (remainN < 0 || remainG < 0 || remainG > 200) return null;
-
                             var dp = Array.from({ length: remainN + 1 }, function() { return Array(201).fill(
                                 null); });
                             dp[0][0] = { price: 0, last: 0 };
                             var gridKeys = Object.keys(gridPrices).map(Number).sort(function(a, b) { return a -
                                     b; });
-
                             for (var i = 1; i <= remainN; i++) {
                                 for (var j = 0; j <= 200; j++) {
                                     for (var ki = 0; ki < gridKeys.length; ki++) {
@@ -3645,7 +3505,6 @@
                                 }
                             }
                             if (!dp[remainN][remainG]) return null;
-
                             var combo = known.slice();
                             var i2 = remainN,
                                 j2 = remainG;
@@ -3656,12 +3515,11 @@
                                 i2--;
                             }
                             combo.sort(function(a, b) { return a - b; });
-
                             var totalPrice = dp[remainN][remainG].price + known.reduce(function(s, g) { return s +
                                     gridPrices[g]; }, 0);
                             return {
                                 price: totalPrice,
-                                suggestPrice: Math.round(totalPrice * 0.85),
+                                suggestPrice: Math.round(totalPrice * discount),
                                 combo: combo
                             };
                         }
@@ -3672,13 +3530,11 @@
                             var remainN = targetN - knownCnt;
                             var remainG = targetG - knownSum;
                             if (remainN < 0 || remainG < 0 || remainG > 200) return 0;
-
                             var dp = Array.from({ length: remainN + 1 }, function() { return Array(201).fill(
                                 0); });
                             dp[0][0] = 1;
                             var gridKeys = Object.keys(gridPrices).map(Number).sort(function(a, b) { return a -
                                     b; });
-
                             for (var i = 1; i <= remainN; i++) {
                                 for (var j = 0; j <= 200; j++) {
                                     for (var ki = 0; ki < gridKeys.length; ki++) {
@@ -3699,18 +3555,11 @@
                                 var res = solveDP(n, g, known);
                                 if (res) {
                                     var cnt = countCombos(n, g, known);
-                                    results.push({
-                                        n: n,
-                                        g: g,
-                                        price: res.price,
-                                        suggestPrice: res.suggestPrice,
-                                        combo: res.combo,
-                                        cnt: cnt
-                                    });
+                                    results.push({ n: n, g: g, price: res.price, suggestPrice: res.suggestPrice,
+                                        combo: res.combo, cnt: cnt });
                                 }
                             }
                         }
-
                         var byCount = {};
                         results.forEach(function(r) {
                             if (!byCount[r.n] || r.price < byCount[r.n].price) {
@@ -3718,12 +3567,11 @@
                             }
                         });
                         var list = Object.values(byCount).sort(function(a, b) { return a.n - b.n; }).slice(0, 12);
-
                         if (!list || list.length === 0) {
                             htmlOut += '<div class="result-empty">未找到匹配的组合</div>';
                         } else {
                             htmlOut +=
-                                '<table><tr><th>红品数</th><th>总格数</th><th>最低价值</th><th>建议出价</th><th>组合</th></tr>';
+                                '<table><tr><th>红品数</th><th>总格数</th><th>最低价值</th><th>建议出价（已折扣）</th><th>组合</th></tr>';
                             list.forEach(function(r) {
                                 htmlOut += `<tr>
                                     <td>${r.n}</td>
@@ -3736,16 +3584,11 @@
                             htmlOut += '</table>';
                         }
                     }
-
                     resultArea.innerHTML = hasResult ? htmlOut : '<div class="result-empty">填写数据后自动估算</div>';
                 };
 
-                var mapNameEl = document.getElementById('luMapName');
-                if (mapNameEl) mapNameEl.textContent = getMap().name;
-
-                setTimeout(function() {
-                    window.luAutoCalc();
-                }, 50);
+                document.getElementById('luMapName').textContent = getMap().name;
+                setTimeout(window.luAutoCalc, 50);
             }
 
             // ============================================================
