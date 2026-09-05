@@ -81,6 +81,10 @@
         .map-switch button { flex: 1; padding: 10px 8px; background: transparent; border: none; border-radius: 40px; color: var(--text-secondary); font-size: 14px; font-weight: 600; cursor: pointer; transition: all var(--transition); white-space: nowrap; min-width: 50px; }
         .map-switch button.on { background: linear-gradient(135deg, #00d4ff, #7b2ffc); color: #fff; box-shadow: 0 4px 24px rgba(0,212,255,0.2); }
         .map-switch button:hover:not(.on) { color: #fff; }
+        #globalDynToggleWrap { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 10px 16px; margin-bottom: 14px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+        #globalDynToggleWrap label { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-primary); cursor: pointer; font-weight: 500; }
+        #globalDynToggleWrap input[type="checkbox"] { width: 18px; height: 18px; accent-color: #00d4ff; cursor: pointer; }
+        #globalDynToggleWrap .hint { font-size: 12px; color: var(--text-secondary); opacity: 0.6; }
         #xunhuiFilterPanel { background: var(--glass-bg); backdrop-filter: blur(12px); border: 1px solid var(--glass-border); border-radius: var(--radius); padding: 16px 18px; margin: 12px 0 16px; box-shadow: var(--glass-shadow); display: none; }
         #xunhuiFilterPanel .panel-header { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
         #xunhuiFilterPanel .panel-header .title { font-size: 18px; font-weight: 700; background: linear-gradient(135deg, #00d4ff, #7b2ffc); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
@@ -333,6 +337,67 @@
             #authBox .auth-card { padding:32px 20px 28px; }
             #authBox .auth-title { font-size:22px; }
         }
+        .lu-page .flow-card { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; border-left: 3px solid #00d4ff; }
+        .lu-page .flow-card .flow-head { font-weight: 700; color: #ffd24a; font-size: 14px; margin-bottom: 6px; }
+        .lu-page .flow-card .flow-step { display: flex; gap: 8px; padding: 4px 0; line-height: 1.6; }
+        .lu-page .flow-card .flow-badge { flex: 0 0 22px; height: 22px; background: #ffd24a; color: #1a1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; margin-top: 2px; }
+        .lu-page .flow-card .flow-title { font-weight: 600; color: #d6deea; font-size: 13px; }
+        .lu-page .flow-card .flow-action { font-size: 12.5px; color: #8595ac; }
+        .lu-page .calc-card { background: rgba(0,0,0,0.15); border: 1px solid var(--glass-border); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+        .lu-page .calc-card h3 { font-size: 16px; color: #ffd24a; margin-bottom: 2px; }
+        .lu-page .calc-card .calc-sub { font-size: 11px; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5; }
+        .lu-page .field-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
+        .lu-page .field-row .flabel { flex: none; width: 70px; font-size: 13px; color: var(--text-secondary); }
+        .lu-page .field-row input { flex: 1; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 8px; padding: 10px 12px; color: var(--text-primary); font-size: 14px; outline: none; transition: all var(--transition); }
+        .lu-page .field-row input:focus { border-color: #00d4ff; }
+        .lu-page .field-row input::placeholder { color: var(--text-secondary); opacity: 0.4; }
+        .lu-page .known-label { font-size: 12px; color: var(--text-secondary); margin: 12px 0 6px; }
+        .lu-page .known-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+        .lu-page .known-grid input { width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--glass-border); border-radius: 8px; padding: 10px 4px; color: var(--text-primary); font-size: 14px; text-align: center; outline: none; transition: all var(--transition); }
+        .lu-page .known-grid input:focus { border-color: #00d4ff; }
+        .lu-page .result-card { background: rgba(0,0,0,0.15); border: 1px solid var(--glass-border); border-radius: 10px; padding: 14px; margin-bottom: 12px; font-size: 13.5px; color: var(--text-primary); line-height: 1.7; }
+        .lu-page .result-empty { color: var(--text-secondary); text-align: center; padding: 14px 0; }
+        .lu-page .tier-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px dashed rgba(255,255,255,0.05); }
+        .lu-page .tier-row:last-child { border-bottom: none; }
+        .lu-page .tier-name { color: var(--text-secondary); font-size: 13px; }
+        .lu-page .tier-val { font-weight: bold; font-size: 17px; color: #ffd24a; }
+        .lu-page .tier-val.cons { color: #8fbaff; }
+        .lu-page .tier-val.aggr { color: #ff9d6b; }
+        .lu-page table { width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 8px; }
+        .lu-page th { background: rgba(0,212,255,0.08); color: #ffd24a; padding: 8px 4px; text-align: center; font-size: 11px; }
+        .lu-page td { padding: 8px 4px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.04); }
+        .lu-page .price { color: #ffd24a; font-weight: bold; }
+        .lu-page .combo { color: #88ccff; font-size: 10px; }
+        .lu-page .section-title { font-size: 13px; color: #ffd24a; font-weight: bold; margin: 0 0 8px; }
+        .lu-page .main-title { font-size: 16px; color: #ffd24a; font-weight: bold; margin-bottom: 12px; padding: 0 2px; }
+        .lu-page .announce { background: rgba(255,107,107,0.04); border: 1px solid rgba(255,107,107,0.08); border-radius: 8px; padding: 10px 12px; margin: 12px 0; font-size: 12px; color: #d4b870; line-height: 1.6; }
+        .lu-page .act-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; font-size: 12px; }
+        .lu-page .act-time { background: rgba(0,212,255,0.08); color: #00d4ff; padding: 4px 10px; border-radius: 12px; }
+        .collapse-toggle { padding: 6px 12px; margin: 6px 0; background: rgba(255,255,255,0.03); border: 1px solid var(--glass-border); border-radius: 30px; color: var(--text-secondary); font-size: 12px; cursor: pointer; text-align: center; transition: all var(--transition); user-select: none; }
+        .collapse-toggle:hover { border-color: rgba(0,212,255,0.2); color: #00d4ff; }
+        .collapsed-rows { display: none; }
+        .collapsed-rows.open { display: block; }
+        .rev-input { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; align-items: flex-end; }
+        .rev-input .field { flex: 1; min-width: 80px; }
+        .rev-input .field label { display: block; font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; }
+        .rev-input .field input { width: 100%; padding: 8px 10px; background: rgba(0,0,0,0.2); border: 1px solid var(--glass-border); border-radius: 8px; color: var(--text-primary); font-size: 14px; outline: none; transition: all var(--transition); box-sizing: border-box; }
+        .rev-input .field input:focus { border-color: #00d4ff; }
+        .btn-gold { padding: 8px 24px; background: linear-gradient(135deg, #ffd93d, #f59e0b); border: none; border-radius: 8px; color: #1a1a1a; font-weight: 700; font-size: 14px; cursor: pointer; transition: all var(--transition); }
+        .btn-gold:hover { transform: translateY(-1px); box-shadow: 0 4px 20px rgba(255,217,61,0.2); }
+        .rev-result .rev-group { background: rgba(0,0,0,0.12); border: 1px solid var(--glass-border); border-radius: 8px; margin-bottom: 6px; overflow: hidden; }
+        .rev-result .g-head { padding: 10px 14px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 4px; transition: background 0.2s; }
+        .rev-result .g-head:hover { background: rgba(255,255,255,0.02); }
+        .rev-result .g-title { font-weight: 600; font-size: 13px; color: var(--text-primary); }
+        .rev-result .g-meta { font-size: 12px; color: var(--text-secondary); }
+        .rev-result .g-meta .arrow { display: inline-block; transition: transform 0.3s; }
+        .rev-result .rev-group.open .g-meta .arrow { transform: rotate(90deg); }
+        .rev-result .g-body { display: none; padding: 6px 14px 14px; flex-wrap: wrap; gap: 4px; }
+        .rev-result .rev-group.open .g-body { display: flex; }
+        .rev-result .combo { background: rgba(0,0,0,0.25); border-radius: 4px; padding: 2px 8px; font-size: 12px; font-family: monospace; color: var(--text-secondary); }
+        .rev-result .more-tag { font-size: 11px; color: var(--text-secondary); opacity: 0.6; padding: 2px 6px; }
+        .rev-result .empty { color: var(--text-secondary); font-size: 13px; padding: 14px 0; text-align: center; }
+        .known-box { margin: 10px 0; }
+        .known-box label { font-size: 12px; color: var(--text-secondary); display: block; margin-bottom: 4px; }
     </style>
 </head>
 <body>
@@ -386,6 +451,15 @@
             <button data-map="nicheng">霓城</button>
             <button data-map="dicheng">迪城</button>
             <button class="on" data-map="xunhui">巡回</button>
+        </div>
+
+        <!-- 全局动态红价开关（霍姑姑算法同步开关） -->
+        <div id="globalDynToggleWrap">
+            <label>
+                <input type="checkbox" id="globalDynToggle" onchange="window._globalDynEnabled = this.checked; renderAllTabs();">
+                <span>⚡ 启用霍姑姑动态红价算法（全角色生效）</span>
+            </label>
+            <span class="hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
         </div>
 
         <div id="xunhuiFilterPanel">
@@ -459,7 +533,7 @@
             <button class="tab-btn" data-tab="su">苏琦</button>
             <button class="tab-btn" data-tab="huangjintong">黄金瞳</button>
             <button class="tab-btn" data-tab="an">安可</button>
-            <button class="tab-btn" data-tab="rev">红品均格反查</button>
+            <button class="tab-btn" data-tab="lu">陆星坤</button>
         </div>
 
         <div id="pagesContainer">
@@ -468,7 +542,7 @@
             <div class="page" id="page-su"></div>
             <div class="page" id="page-huangjintong"></div>
             <div class="page" id="page-an"></div>
-            <div class="page" id="page-rev"></div>
+            <div class="page" id="page-lu"></div>
         </div>
     </div>
 
@@ -596,7 +670,7 @@
         })();
 
         // ============================================================
-        // 验证系统
+        // 验证系统（保持原样）
         // ============================================================
         var CONFIG = {
             API_URL: 'https://www.keyt.cn/kami/qq204443214/check.php',
@@ -1033,8 +1107,8 @@
                 if (!confirm('确定要解绑当前设备吗？解绑后需重新输入卡密才能使用。')) return;
 
                 var deviceId = getDeviceId();
-                var url = 'https://www.keyt.cn/kami/qq204443214/unbind.php?card=' + encodeURIComponent(card) + 
-                          '&mac=' + encodeURIComponent(deviceId) + '&app=a';
+                var url = 'https://www.keyt.cn/kami/qq204443214/unbind.php?card=' + encodeURIComponent(card) +
+                    '&mac=' + encodeURIComponent(deviceId) + '&app=a';
 
                 var xhr = new XMLHttpRequest();
                 xhr.open('GET', url, true);
@@ -1228,8 +1302,6 @@
                 suTip: '用红品件数估算误差较大，建议使用红格道具，用格数算。',
                 anTitle: '安可 · 红品均格反查',
                 anRole: '第一回合用红格道具，每回合看到轮廊后把格数输进去缩小范围。',
-                revTitle: '红品平均格数反查',
-                revRole: '输入显示的平均格数（截断1位小数）→ 推算红品数量与格数组合',
                 resetLabel: '重置数据',
                 recLabel: '推荐出价',
                 totalLabel: '预估仓位价值',
@@ -1258,12 +1330,12 @@
             };
 
             // ============================================================
-            // 迪城独立数据模型 - 校准版（基于霓城截图反推）
+            // 迪城独立数据模型 - 校准版
             // ============================================================
             var DICHENG_MODEL = {
                 label: '迪城（校准版）',
                 redByGrid: (function() {
-                    var base = 48000; // 红均格 48,000（匹配截图）
+                    var base = 55000;
                     var map = {};
                     for (var i = 1; i <= 50; i++) {
                         map[i] = {
@@ -1394,7 +1466,6 @@
                 return avg * avgWeight + med * medWeight + min * minWeight;
             }
 
-            // 修正后的折扣函数：完全匹配截图（纯分段，忽略红品件数）
             function dynamicRecDiscount(total, redCount) {
                 if (total < 500000) return 0.88;
                 else if (total < 2000000) return 0.82;
@@ -1452,6 +1523,52 @@
             }
 
             // ============================================================
+            // 全局动态红价（霍姑姑算法核心）
+            // ============================================================
+            var dynRules = [
+                { max: 12, price: 55000 },
+                { max: 16, price: 53000 },
+                { max: 35, price: 48000 },
+                { max: 42, price: 46000 },
+                { max: Infinity, price: 42000 }
+            ];
+
+            window._globalDynEnabled = false;
+
+            window.getDynRedPrice = function(redGrids) {
+                if (!window._globalDynEnabled) {
+                    var map = getMap();
+                    return getRedGridAvgPrice(map);
+                }
+                for (var i = 0; i < dynRules.length; i++) {
+                    if (redGrids <= dynRules[i].max) {
+                        return dynRules[i].price;
+                    }
+                }
+                return dynRules[dynRules.length - 1].price;
+            };
+
+            window.calcConfidence = function(inputValues) {
+                if (!inputValues || inputValues.length === 0) return 0.90;
+                var maxV = Math.max.apply(null, inputValues);
+                var minV = Math.min.apply(null, inputValues);
+                if (maxV === 0) return 0.90;
+                var spread = (maxV - minV) / (maxV + 0.01);
+                var conf = 0.90 - spread * 0.25;
+                return Math.max(0.65, Math.min(0.96, conf));
+            };
+
+            window.renderAllTabs = function() {
+                var activeTab = document.querySelector('.tab-btn.active');
+                if (activeTab) {
+                    var target = activeTab.dataset.tab;
+                    var pageFn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'huangjintong': renderHuangjintong,
+                        'an': renderAn, 'lu': renderLu };
+                    if (pageFn[target]) pageFn[target]();
+                }
+            };
+
+            // ============================================================
             // 地图切换与Tabs
             // ============================================================
             var currentMap = 'xunhui';
@@ -1476,14 +1593,14 @@
                     if (activeTab) {
                         var target = activeTab.dataset.tab;
                         var pageFn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'huangjintong': renderHuangjintong,
-                            'an': renderAn, 'rev': renderRev };
+                            'an': renderAn, 'lu': renderLu };
                         if (pageFn[target]) pageFn[target]();
                     }
                 };
             });
 
             var tabs = document.querySelectorAll('.tab-btn');
-            var pageIds = ['huo', 'gao', 'su', 'huangjintong', 'an', 'rev'];
+            var pageIds = ['huo', 'gao', 'su', 'huangjintong', 'an', 'lu'];
             var pages = {};
             pageIds.forEach(function(id) { pages[id] = document.getElementById('page-' + id); });
             tabs.forEach(function(tab) {
@@ -1494,13 +1611,13 @@
                     for (var id in pages) pages[id].classList.remove('active');
                     if (pages[target]) pages[target].classList.add('active');
                     var pageFn = { 'huo': renderHuo, 'gao': renderGao, 'su': renderSu, 'huangjintong': renderHuangjintong,
-                        'an': renderAn, 'rev': renderRev };
+                        'an': renderAn, 'lu': renderLu };
                     if (pageFn[target]) pageFn[target]();
                 };
             });
 
             // ============================================================
-            // 进阶功能 - 独立数据模型
+            // 进阶功能 - 独立数据模型（保留）
             // ============================================================
             var ADV_MODEL = {
                 greenPrice: 260,
@@ -1511,13 +1628,7 @@
                 redAvg: 51438,
                 redAgg: 57000,
                 wroPrice: 24000,
-                dynRules: [
-                    { max: 12, price: 55000 },
-                    { max: 16, price: 53000 },
-                    { max: 35, price: 48000 },
-                    { max: 42, price: 46000 },
-                    { max: Infinity, price: 42000 }
-                ],
+                dynRules: dynRules,
                 zhibaoMap: {
                     50000: '白绿蓝',
                     100000: '紫',
@@ -1541,7 +1652,7 @@
             };
 
             // ============================================================
-            // 巡回面板独立逻辑
+            // 巡回面板独立逻辑（保留）
             // ============================================================
             window.xunhuiAdjustAvg = function(delta) {
                 var inp = document.getElementById('xunhuiAvg');
@@ -2011,7 +2122,7 @@
             }
 
             // ============================================================
-            // 进阶功能 - 独立算法
+            // 进阶功能（保留）
             // ============================================================
             function generateAdvancedHTML() {
                 return `
@@ -2485,7 +2596,7 @@
             }
 
             // ============================================================
-            // 黄金瞳 - 独立算法
+            // 黄金瞳（固定价格，不参与算法同步）
             // ============================================================
             function renderHuangjintong() {
                 var el = document.getElementById('page-huangjintong');
@@ -2807,12 +2918,13 @@
             };
 
             // ============================================================
-            // 高进 - 使用地图数据
+            // 高进（只显示 1~16 格，并使用霍姑姑动态红价 + 置信度算法）
             // ============================================================
             function renderGao() {
                 var el = document.getElementById('page-gao');
                 var map = getMap();
-                var gridOptions = map.gridOptions || [];
+                var rawGridOptions = map.gridOptions || [];
+                var gridOptions = rawGridOptions.filter(function(g) { return g <= 16; });
                 var threshold = CFG.gaoCollapseThreshold || 6;
 
                 el.innerHTML = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon">进</div><div><div class="name">' +
@@ -2821,6 +2933,18 @@
 
                 var body = document.getElementById('gaoBody');
                 var html = '';
+
+                // 高进独立动态开关（默认跟随全局）
+                html += `
+                <div class="adv-dyn-toggle" style="margin-bottom:12px;">
+                    <label>
+                        <input type="checkbox" id="gaoDynToggle" onchange="calcGao()" ${window._globalDynEnabled ? 'checked' : ''}>
+                        <span>按红格动态调率（霍姑姑算法）</span>
+                    </label>
+                    <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
+                </div>
+                `;
+
                 var visible = gridOptions.filter(function(g) { return g <= threshold; });
                 var hidden = gridOptions.filter(function(g) { return g > threshold; });
 
@@ -2950,21 +3074,36 @@
 
             function calcGao() {
                 var map = getMap();
-                var gridOptions = map.gridOptions || [];
+                var rawGridOptions = map.gridOptions || [];
+                var gridOptions = rawGridOptions.filter(function(g) { return g <= 16; });
                 var total = 0;
                 var inputCount = 0;
                 var hasValue = false;
+                var allVals = [];
+
+                // 同步全局动态开关到高进独立开关
+                var gaoDyn = document.getElementById('gaoDynToggle');
+                if (gaoDyn && gaoDyn.checked !== window._globalDynEnabled) {
+                    gaoDyn.checked = window._globalDynEnabled;
+                }
 
                 gridOptions.forEach(function(g) {
                     var inp = document.getElementById('gao_grid_' + g);
                     if (inp) {
                         var val = parseFloat(inp.value) || 0;
-                        var price = parseFloat(inp.dataset.price) || 0;
+                        // 使用霍姑姑动态红价
+                        var dynEnabled = (document.getElementById('gaoDynToggle')?.checked || window._globalDynEnabled || false);
+                        var price;
+                        if (dynEnabled && val > 0) {
+                            price = window.getDynRedPrice(g);
+                        } else {
+                            price = parseFloat(inp.dataset.price) || 0;
+                        }
                         var sub = val * price;
                         var subEl = document.getElementById('gao_grid_' + g + '_sub');
                         if (subEl) subEl.textContent = fmt(sub);
                         total += sub;
-                        if (val > 0) { inputCount++; hasValue = true; }
+                        if (val > 0) { inputCount++; hasValue = true; allVals.push(val); }
                     }
                 });
 
@@ -3003,7 +3142,14 @@
                     var avgGrid = parseFloat(avgGridInp.value) || 0;
                     var cntGrid = parseFloat(cntGridInp.value) || 0;
                     var gridTotal = avgGrid * cntGrid;
-                    var redGridPrice = getRedGridAvgPrice(map);
+                    // 使用霍姑姑动态红价
+                    var dynEnabled = (document.getElementById('gaoDynToggle')?.checked || window._globalDynEnabled || false);
+                    var redGridPrice;
+                    if (dynEnabled && avgGrid > 0) {
+                        redGridPrice = window.getDynRedPrice(avgGrid);
+                    } else {
+                        redGridPrice = getRedGridAvgPrice(map);
+                    }
                     var redGridSub = gridTotal * redGridPrice;
                     var redGridSubEl = document.getElementById('gao_red_grid_sub');
                     if (redGridSubEl) redGridSubEl.textContent = fmt(redGridSub);
@@ -3018,11 +3164,8 @@
                 var recEl = document.getElementById('gaoRec');
                 if (recEl) recEl.textContent = fmt(rec);
 
-                var conf = 0.90;
-                if (hasValue) {
-                    conf = 0.90 + Math.min(0.06, inputCount * 0.01);
-                    conf = Math.max(0.65, Math.min(0.96, conf));
-                }
+                // 使用霍姑姑置信度算法
+                var conf = window.calcConfidence(allVals);
                 var fill = document.getElementById('gaoConfidenceFill');
                 var label = document.getElementById('gaoConfidenceLabel');
                 if (fill) {
@@ -3035,7 +3178,7 @@
             }
 
             // ============================================================
-            // 苏琦 - 使用地图数据
+            // 苏琦（使用霍姑姑动态红价 + 置信度算法）
             // ============================================================
             function renderSu() {
                 var el = document.getElementById('page-su');
@@ -3044,10 +3187,20 @@
                     TEXT.suTitle + '</div><div class="role">' + TEXT.suRole + '<span class="tip2">' + TEXT.suTip +
                     '</span></div></div></div></div><div class="sec-body" id="suBody"></div></div>';
                 var body = document.getElementById('suBody');
+
+                var html = `
+                <div class="adv-dyn-toggle" style="margin-bottom:12px;">
+                    <label>
+                        <input type="checkbox" id="suDynToggle" onchange="calcSu()" ${window._globalDynEnabled ? 'checked' : ''}>
+                        <span>按红格动态调率（霍姑姑算法）</span>
+                    </label>
+                    <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
+                </div>
+                `;
+
                 var colorKeys = ['green', 'blue', 'purple', 'orange', 'red'];
                 var colorLabels = [TEXT.colorGreen, TEXT.colorBlue, TEXT.colorPurple, TEXT.colorOrange, TEXT.colorRed];
                 var colorDots = ['green', 'blue', 'purple', 'orange', 'red'];
-                var html = '';
                 colorKeys.forEach(function(key, idx) {
                     var price = (key === 'red') ? getRedPiecePrice(map) : getColorPiecePrice(key, map);
                     var inputId = 'su_' + key;
@@ -3066,6 +3219,7 @@
                     '</span><div class="bar-track"><div class="bar-fill" id="suConfidenceFill" style="width:90%"></div></div><span class="label" id="suConfidenceLabel">90%</span></div>';
                 html += '<div class="reset-row"><button class="btn-reset" id="suReset">' + TEXT.resetLabel +
                     '</button></div>';
+
                 body.innerHTML = html;
 
                 var suInputs = ['su_green', 'su_blue', 'su_purple', 'su_orange', 'su_red'];
@@ -3073,16 +3227,30 @@
                     createQuickBtns(id, [-1, 1]);
                 });
 
+                // 同步全局开关
+                var suDyn = document.getElementById('suDynToggle');
+                if (suDyn && suDyn.checked !== window._globalDynEnabled) {
+                    suDyn.checked = window._globalDynEnabled;
+                }
+
                 function calcSu() {
                     var total = 0;
                     var inputCount = 0;
                     var hasValue = false;
+                    var allVals = [];
+
+                    var dynEnabled = (document.getElementById('suDynToggle')?.checked || window._globalDynEnabled || false);
 
                     colorKeys.forEach(function(key) {
                         var inp = document.getElementById('su_' + key);
                         if (inp) {
                             var val = parseFloat(inp.value) || 0;
                             var price = parseFloat(inp.dataset.price) || 0;
+                            // 红色件数也使用动态红价（按均格近似）
+                            if (key === 'red' && dynEnabled && val > 0) {
+                                var avgGrid = parseFloat(document.getElementById('su_red_grid_avg')?.value) || 4.5;
+                                price = window.getDynRedPrice(avgGrid);
+                            }
                             var sub = val * price;
                             var subEl = document.getElementById('su_' + key + '_sub');
                             if (subEl) subEl.textContent = fmt(sub);
@@ -3090,6 +3258,7 @@
                             if (val > 0) {
                                 inputCount = inputCount + 1;
                                 hasValue = true;
+                                allVals.push(val);
                             }
                         }
                     });
@@ -3102,7 +3271,12 @@
                     if (cntGridInp) cntGrid = parseFloat(cntGridInp.value) || 0;
 
                     var gridTotal = avgGrid * cntGrid;
-                    var redGridPrice = getRedGridAvgPrice(map);
+                    var redGridPrice;
+                    if (dynEnabled && avgGrid > 0) {
+                        redGridPrice = window.getDynRedPrice(avgGrid);
+                    } else {
+                        redGridPrice = getRedGridAvgPrice(map);
+                    }
                     var redGridSub = gridTotal * redGridPrice;
                     var redGridSubEl = document.getElementById('su_red_grid_sub');
                     if (redGridSubEl) redGridSubEl.textContent = fmt(redGridSub);
@@ -3116,11 +3290,8 @@
                     var recEl = document.getElementById('suRec');
                     if (recEl) recEl.textContent = fmt(rec);
 
-                    var conf = 0.90;
-                    if (hasValue) {
-                        conf = 0.90 + Math.min(0.06, inputCount * 0.01);
-                        conf = Math.max(0.65, Math.min(0.96, conf));
-                    }
+                    // 使用霍姑姑置信度算法
+                    var conf = window.calcConfidence(allVals);
                     var fill = document.getElementById('suConfidenceFill');
                     var label = document.getElementById('suConfidenceLabel');
                     if (fill) {
@@ -3160,7 +3331,7 @@
             }
 
             // ============================================================
-            // 安可 - 使用地图数据
+            // 安可（使用霍姑姑动态红价）
             // ============================================================
             function renderAn() {
                 var el = document.getElementById('page-an');
@@ -3171,17 +3342,32 @@
                     TEXT.anTitle + '</div><div class="role">' + TEXT.anRole +
                     '</div></div></div></div><div class="sec-body" id="anBody"></div></div>';
                 var body = document.getElementById('anBody');
-                body.innerHTML = '<div class="rev-input"><div class="field"><label>' + TEXT.avgGridLabel +
-                    '</label><input type="number" id="anAvg" step="0.1" min="1" max="16" placeholder="如 3.5"></div><div class="field"><label>' +
-                    TEXT.countLabel +
-                    '</label><input type="number" id="anCount" min="1" max="50" placeholder="不限"></div><button class="btn-gold" id="anBtn">' +
-                    TEXT.calcBtn + '</button></div>' +
-                    '<div class="known-box"><label>' + TEXT.knownLabel +
-                    '</label><input type="text" id="anKnown" placeholder="如 4,6,8" style="width:100%;padding:8px 12px;background:rgba(0,0,0,0.2);border:1px solid var(--glass-border);border-radius:10px;color:var(--text-primary);outline:none;transition:all var(--transition);"></div>' +
-                    '<div class="rev-result" id="anResult"></div>' +
-                    '<div class="reset-row"><button class="btn-reset" id="anReset">' + TEXT.resetLabel +
-                    '</button></div>';
-                document.getElementById('anBtn').onclick = function() {
+
+                body.innerHTML = `
+                <div class="adv-dyn-toggle" style="margin-bottom:12px;">
+                    <label>
+                        <input type="checkbox" id="anDynToggle" onchange="anSearch()" ${window._globalDynEnabled ? 'checked' : ''}>
+                        <span>按红格动态调率（霍姑姑算法）</span>
+                    </label>
+                    <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
+                </div>
+                <div class="rev-input">
+                    <div class="field"><label>平均格数</label><input type="number" id="anAvg" step="0.1" min="1" max="16" placeholder="如 3.5"></div>
+                    <div class="field"><label>红品数量（可选）</label><input type="number" id="anCount" min="1" max="50" placeholder="不限"></div>
+                    <button class="btn-gold" id="anBtn">推算</button>
+                </div>
+                <div class="known-box"><label>已知格数（选填，用逗号分隔）</label><input type="text" id="anKnown" placeholder="如 4,6,8" style="width:100%;padding:8px 12px;background:rgba(0,0,0,0.2);border:1px solid var(--glass-border);border-radius:10px;color:var(--text-primary);outline:none;transition:all var(--transition);"></div>
+                <div class="rev-result" id="anResult"></div>
+                <div class="reset-row"><button class="btn-reset" id="anReset">重置数据</button></div>
+                `;
+
+                // 同步全局开关
+                var anDyn = document.getElementById('anDynToggle');
+                if (anDyn && anDyn.checked !== window._globalDynEnabled) {
+                    anDyn.checked = window._globalDynEnabled;
+                }
+
+                window.anSearch = function() {
                     var avg = parseFloat(document.getElementById('anAvg').value);
                     var count = parseInt(document.getElementById('anCount').value) || 0;
                     var knownStr = document.getElementById('anKnown').value.trim();
@@ -3190,6 +3376,9 @@
                     var result = document.getElementById('anResult');
                     if (isNaN(avg) || avg < 1) { result.innerHTML =
                             '<div class="empty">请输入有效的平均格数</div>'; return; }
+
+                    var dynEnabled = (document.getElementById('anDynToggle')?.checked || window._globalDynEnabled || false);
+
                     var combos = [];
                     var maxN = count > 0 ? count : 20;
                     var minN = count > 0 ? count : 1;
@@ -3236,18 +3425,23 @@
                         '</div>'; return; }
                     var html = '';
                     var maxShow = 10;
-                    var redAvgPrice = getRedPiecePrice(map);
                     combos.forEach(function(item) {
-                        var estValue = Math.round(item.n * redAvgPrice);
+                        // 使用动态红价
+                        var avgGridPrice = dynEnabled ? window.getDynRedPrice(avg) : getRedPiecePrice(map);
+                        var estValue = Math.round(item.n * avgGridPrice);
                         var minValue = 0;
                         if (item.combos) {
                             var minTotal = Infinity;
                             item.combos.forEach(function(combo) {
                                 var sum = 0;
                                 combo.forEach(function(g) {
-                                    var entry = map.redByGrid[g];
-                                    if (entry && entry.min) sum += entry.min;
-                                    else sum += 0;
+                                    if (dynEnabled) {
+                                        sum += window.getDynRedPrice(g);
+                                    } else {
+                                        var entry = map.redByGrid[g];
+                                        if (entry && entry.min) sum += entry.min;
+                                        else sum += 0;
+                                    }
                                 });
                                 if (sum < minTotal) minTotal = sum;
                             });
@@ -3275,6 +3469,8 @@
                     });
                     result.innerHTML = html;
                 };
+
+                document.getElementById('anBtn').onclick = window.anSearch;
                 document.getElementById('anReset').onclick = function() {
                     document.getElementById('anAvg').value = '';
                     document.getElementById('anCount').value = '';
@@ -3284,127 +3480,272 @@
             }
 
             // ============================================================
-            // 红品均格反查 - 使用地图数据
+            // 陆星坤（使用霍姑姑动态红价）
             // ============================================================
-            function renderRev() {
-                var el = document.getElementById('page-rev');
-                var map = getMap();
-                var grids = map.gridOptions || [1, 2, 3, 4, 6, 8, 9, 12, 15, 16];
-                var gridSet = new Set(grids);
-                el.innerHTML = '<div class="section"><div class="sec-head"><div class="sec-title"><div class="icon">?</div><div><div class="name">' +
-                    TEXT.revTitle + '</div><div class="role">' + TEXT.revRole +
-                    '</div></div></div></div><div class="sec-body" id="revBody"></div></div>';
-                var body = document.getElementById('revBody');
-                body.innerHTML = '<div class="rev-input"><div class="field"><label>' + TEXT.avgGridLabel +
-                    '</label><input type="number" id="revAvg" step="0.1" min="1" max="16" placeholder="如 3.5"></div><div class="field"><label>' +
-                    TEXT.countLabel +
-                    '</label><input type="number" id="revCount" min="1" max="50" placeholder="不限"></div><button class="btn-gold" id="revBtn">' +
-                    TEXT.calcBtn + '</button></div>' +
-                    '<div class="known-box"><label>' + TEXT.knownLabel +
-                    '</label><input type="text" id="revKnown" placeholder="如 4,6,8" style="width:100%;padding:8px 12px;background:rgba(0,0,0,0.2);border:1px solid var(--glass-border);border-radius:10px;color:var(--text-primary);outline:none;transition:all var(--transition);"></div>' +
-                    '<div class="rev-result" id="revResult"></div>' +
-                    '<div class="reset-row"><button class="btn-reset" id="revReset">' + TEXT.resetLabel +
-                    '</button></div>';
-                document.getElementById('revBtn').onclick = function() {
-                    var avg = parseFloat(document.getElementById('revAvg').value);
-                    var count = parseInt(document.getElementById('revCount').value) || 0;
-                    var knownStr = document.getElementById('revKnown').value.trim();
-                    var known = knownStr ? knownStr.split(',').map(function(s) { return parseInt(s.trim()); })
-                        .filter(function(n) { return !isNaN(n) && n > 0; }) : [];
-                    var result = document.getElementById('revResult');
-                    if (isNaN(avg) || avg < 1) { result.innerHTML =
-                            '<div class="empty">请输入有效的平均格数</div>'; return; }
-                    var combos = [];
-                    var maxN = count > 0 ? count : 20;
-                    var minN = count > 0 ? count : 1;
-                    for (var n = minN; n <= maxN; n++) {
-                        var knownOk = true;
-                        for (var ki = 0; ki < known.length; ki++) { if (!gridSet.has(known[ki])) { knownOk = false;
-                                break; } }
-                        if (!knownOk) continue;
-                        var baseTotal = Math.floor(avg * n);
-                        var combosForN = [];
+            function renderLu() {
+                var el = document.getElementById('page-lu');
+                var html = `
+                <div class="lu-page">
+                    <div class="act-bar">
+                        <span class="act-time">📍 当前地图：<span id="luMapName">${getMap().name}</span></span>
+                    </div>
 
-                        function findCombos(remaining, maxIdx, path) {
-                            if (remaining === 0 && path.length === n) { combosForN.push(path.slice()); return; }
-                            if (path.length >= n) return;
-                            for (var i = maxIdx; i < grids.length; i++) {
-                                var g = grids[i];
-                                if (g <= remaining) {
-                                    path.push(g);
-                                    findCombos(remaining - g, i, path);
-                                    path.pop();
+                    <div class="main-title">陆星坤 · 整仓底价</div>
+
+                    <!-- 操作流程 -->
+                    <div class="flow-card">
+                        <div class="flow-head">操作流程</div>
+                        <div class="flow-step">
+                            <div class="flow-badge">1</div>
+                            <div>
+                                <div class="flow-title">整仓底价</div>
+                                <span class="flow-action">本局无红时直接填整仓件数，按每件10格固定底价（8.3/10.6/13.7万）</span>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-badge">2</div>
+                            <div>
+                                <div class="flow-title">探红均格</div>
+                                <span class="flow-action">或用红均格怀表探出红均格后填入，走均格反查</span>
+                            </div>
+                        </div>
+                        <div class="flow-step">
+                            <div class="flow-badge">3</div>
+                            <div>
+                                <div class="flow-title">出价</div>
+                                <span class="flow-action">查看红均格范围与整仓底价范围后出价</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 动态红价开关 -->
+                    <div class="adv-dyn-toggle" style="margin:10px 0;">
+                        <label>
+                            <input type="checkbox" id="luDynToggle" onchange="window.luAutoCalc()" ${window._globalDynEnabled ? 'checked' : ''}>
+                            <span>按红格动态调率（霍姑姑算法）</span>
+                        </label>
+                        <span class="dyn-hint">≤12格55k / 13-16渐降 / 17-35格48k / 36-42渐降 / ≥43格42k</span>
+                    </div>
+
+                    <!-- 计算面板 -->
+                    <div class="calc-card">
+                        <h3>整仓底价 / 红均格</h3>
+                        <div class="calc-sub">整仓模式按每件10格固定底价；或填红均格反查（基于当前地图数据 + 霍姑姑动态红价）。</div>
+
+                        <div class="field-row">
+                            <span class="flabel">整仓件数</span>
+                            <input type="number" id="luTotalCount" placeholder="物品件数（整仓）" min="0" oninput="window.luAutoCalc()">
+                        </div>
+
+                        <div class="field-row">
+                            <span class="flabel">红均格</span>
+                            <input type="number" id="luAvgGrid" placeholder="可选，如 2.3" step="0.1" min="0" oninput="window.luAutoCalc()">
+                        </div>
+
+                        <div class="known-label">已知格数（最多8个，配合红均格，留空即可）</div>
+                        <div class="known-grid">
+                            <input type="number" class="lu-known-input" value="" min="0" oninput="window.luAutoCalc()">
+                            <input type="number" class="lu-known-input" value="" min="0" oninput="window.luAutoCalc()">
+                            <input type="number" class="lu-known-input" value="" min="0" oninput="window.luAutoCalc()">
+                            <input type="number" class="lu-known-input" value="" min="0" oninput="window.luAutoCalc()">
+                            <input type="number" class="lu-known-input" value="" min="0" oninput="window.luAutoCalc()">
+                            <input type="number" class="lu-known-input" value="" min="0" oninput="window.luAutoCalc()">
+                            <input type="number" class="lu-known-input" value="" min="0" oninput="window.luAutoCalc()">
+                            <input type="number" class="lu-known-input" value="" min="0" oninput="window.luAutoCalc()">
+                        </div>
+                    </div>
+
+                    <!-- 结果区域 -->
+                    <div class="result-card" id="luResultArea">
+                        <div class="result-empty">填写数据后自动估算</div>
+                    </div>
+                </div>
+                `;
+                el.innerHTML = html;
+
+                // 同步全局开关
+                var luDyn = document.getElementById('luDynToggle');
+                if (luDyn && luDyn.checked !== window._globalDynEnabled) {
+                    luDyn.checked = window._globalDynEnabled;
+                }
+
+                window.luAutoCalc = function() {
+                    var map = getMap();
+                    var dynEnabled = (document.getElementById('luDynToggle')?.checked || window._globalDynEnabled || false);
+
+                    // 构建当前地图的格数价格字典（使用霍姑姑动态红价）
+                    var gridPrices = {};
+                    var grids = map.gridOptions || [];
+                    grids.forEach(function(g) {
+                        if (dynEnabled) {
+                            gridPrices[g] = window.getDynRedPrice(g);
+                        } else {
+                            var entry = map.redByGrid[g];
+                            if (entry) {
+                                gridPrices[g] = weightedPrice(entry);
+                            }
+                        }
+                    });
+
+                    var count = parseInt(document.getElementById('luTotalCount').value) || 0;
+                    var avg = parseFloat(document.getElementById('luAvgGrid').value);
+                    var knownInputs = document.querySelectorAll('.lu-known-input');
+                    var known = Array.from(knownInputs)
+                        .map(function(inp) { return parseInt(inp.value); })
+                        .filter(function(v) { return !isNaN(v) && v > 0; });
+
+                    var resultArea = document.getElementById('luResultArea');
+                    if (!resultArea) return;
+
+                    var htmlOut = '';
+                    var hasResult = false;
+
+                    // ----- 整仓底价（三档固定） -----
+                    if (count > 0) {
+                        hasResult = true;
+                        var conservative = count * 83000;
+                        var neutral = count * 106000;
+                        var aggressive = count * 137000;
+                        htmlOut += `<div class="section-title">整仓底价估算（${count}件）</div>`;
+                        htmlOut += `<div class="tier-row"><span class="tier-name">保守底价</span><span class="tier-val cons">${conservative.toLocaleString()}</span></div>`;
+                        htmlOut += `<div class="tier-row"><span class="tier-name">中性底价</span><span class="tier-val">${neutral.toLocaleString()}</span></div>`;
+                        htmlOut += `<div class="tier-row"><span class="tier-name">乐观底价</span><span class="tier-val aggr">${aggressive.toLocaleString()}</span></div>`;
+                    }
+
+                    // ----- 红均格反查（使用霍姑姑动态红价） -----
+                    if (!isNaN(avg) && avg > 0 && Object.keys(gridPrices).length > 0) {
+                        hasResult = true;
+                        if (count > 0) htmlOut += '<div style="height:12px"></div>';
+                        htmlOut += `<div class="section-title">红均格反查（均格 ${avg}，地图：${map.name}，动态红价：${dynEnabled ? '✅ 已开启' : '❌ 关闭'}）</div>`;
+
+                        function solveDP(targetN, targetG, known) {
+                            var knownSum = known.reduce(function(a, b) { return a + b; }, 0);
+                            var knownCnt = known.length;
+                            var remainN = targetN - knownCnt;
+                            var remainG = targetG - knownSum;
+                            if (remainN < 0 || remainG < 0 || remainG > 200) return null;
+
+                            var dp = Array.from({ length: remainN + 1 }, function() { return Array(201).fill(
+                                null); });
+                            dp[0][0] = { price: 0, last: 0 };
+                            var gridKeys = Object.keys(gridPrices).map(Number).sort(function(a, b) { return a -
+                                    b; });
+
+                            for (var i = 1; i <= remainN; i++) {
+                                for (var j = 0; j <= 200; j++) {
+                                    for (var ki = 0; ki < gridKeys.length; ki++) {
+                                        var g = gridKeys[ki];
+                                        if (j >= g && dp[i - 1][j - g]) {
+                                            var price = dp[i - 1][j - g].price + gridPrices[g];
+                                            if (!dp[i][j] || price < dp[i][j].price) {
+                                                dp[i][j] = { price: price, last: g };
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            if (!dp[remainN][remainG]) return null;
+
+                            var combo = known.slice();
+                            var i2 = remainN,
+                                j2 = remainG;
+                            while (i2 > 0) {
+                                var g2 = dp[i2][j2].last;
+                                combo.push(g2);
+                                j2 -= g2;
+                                i2--;
+                            }
+                            combo.sort(function(a, b) { return a - b; });
+
+                            var totalPrice = dp[remainN][remainG].price + known.reduce(function(s, g) { return s +
+                                    gridPrices[g]; }, 0);
+                            return {
+                                price: totalPrice,
+                                suggestPrice: Math.round(totalPrice * 0.85),
+                                combo: combo
+                            };
+                        }
+
+                        function countCombos(targetN, targetG, known) {
+                            var knownSum = known.reduce(function(a, b) { return a + b; }, 0);
+                            var knownCnt = known.length;
+                            var remainN = targetN - knownCnt;
+                            var remainG = targetG - knownSum;
+                            if (remainN < 0 || remainG < 0 || remainG > 200) return 0;
+
+                            var dp = Array.from({ length: remainN + 1 }, function() { return Array(201).fill(
+                                0); });
+                            dp[0][0] = 1;
+                            var gridKeys = Object.keys(gridPrices).map(Number).sort(function(a, b) { return a -
+                                    b; });
+
+                            for (var i = 1; i <= remainN; i++) {
+                                for (var j = 0; j <= 200; j++) {
+                                    for (var ki = 0; ki < gridKeys.length; ki++) {
+                                        var g = gridKeys[ki];
+                                        if (j >= g) dp[i][j] += dp[i - 1][j - g];
+                                    }
+                                }
+                            }
+                            return dp[remainN][remainG];
+                        }
+
+                        var results = [];
+                        var minN = Math.max(1, known.length);
+                        for (var n = minN; n <= 20; n++) {
+                            var gMin = Math.ceil(avg * n);
+                            var gMax = Math.floor((avg + 0.1) * n - 0.001);
+                            for (var g = gMin; g <= gMax; g++) {
+                                var res = solveDP(n, g, known);
+                                if (res) {
+                                    var cnt = countCombos(n, g, known);
+                                    results.push({
+                                        n: n,
+                                        g: g,
+                                        price: res.price,
+                                        suggestPrice: res.suggestPrice,
+                                        combo: res.combo,
+                                        cnt: cnt
+                                    });
                                 }
                             }
                         }
-                        for (var offset = -1; offset <= 1; offset++) {
-                            var totalTry = baseTotal + offset;
-                            if (totalTry > 0) {
-                                findCombos(totalTry, 0, []);
-                            }
-                        }
-                        var uniqueCombos = [];
-                        var seen = new Set();
-                        combosForN.forEach(function(arr) {
-                            var key = arr.join(',');
-                            if (!seen.has(key)) {
-                                seen.add(key);
-                                uniqueCombos.push(arr);
+
+                        var byCount = {};
+                        results.forEach(function(r) {
+                            if (!byCount[r.n] || r.price < byCount[r.n].price) {
+                                byCount[r.n] = r;
                             }
                         });
-                        if (uniqueCombos.length > 0) {
-                            combos.push({ n: n, total: baseTotal, combos: uniqueCombos });
+                        var list = Object.values(byCount).sort(function(a, b) { return a.n - b.n; }).slice(0, 12);
+
+                        if (!list || list.length === 0) {
+                            htmlOut += '<div class="result-empty">未找到匹配的组合</div>';
+                        } else {
+                            htmlOut +=
+                                '<table><tr><th>红品数</th><th>总格数</th><th>最低价值</th><th>建议出价</th><th>组合</th></tr>';
+                            list.forEach(function(r) {
+                                htmlOut += `<tr>
+                                    <td>${r.n}</td>
+                                    <td>${r.g}</td>
+                                    <td class="price">${r.price.toLocaleString()}</td>
+                                    <td class="price">${r.suggestPrice.toLocaleString()}</td>
+                                    <td class="combo">${r.combo.join('+')}格<br>(${r.cnt}种)</td>
+                                </tr>`;
+                            });
+                            htmlOut += '</table>';
                         }
                     }
-                    if (combos.length === 0) { result.innerHTML = '<div class="empty">' + TEXT.noMatch +
-                        '</div>'; return; }
-                    var html = '';
-                    var maxShow = 10;
-                    var redAvgPrice = getRedPiecePrice(map);
-                    combos.forEach(function(item) {
-                        var estValue = Math.round(item.n * redAvgPrice);
-                        var minValue = 0;
-                        if (item.combos) {
-                            var minTotal = Infinity;
-                            item.combos.forEach(function(combo) {
-                                var sum = 0;
-                                combo.forEach(function(g) {
-                                    var entry = map.redByGrid[g];
-                                    if (entry && entry.min) sum += entry.min;
-                                    else sum += 0;
-                                });
-                                if (sum < minTotal) minTotal = sum;
-                            });
-                            if (minTotal !== Infinity) minValue = minTotal;
-                        }
-                        var valueLabel = '预估价值：' + fmt(estValue);
-                        if (minValue > 0) valueLabel = '最低价值：' + fmt(minValue) + ' | 预估价值：' + fmt(
-                            estValue);
-                        var rec = Math.round(estValue * dynamicRecDiscount(estValue));
-                        html += '<div class="rev-group"><div class="g-head" onclick="this.parentElement.classList.toggle(\'open\')"><span class="g-title">' +
-                            item.n + ' 个红品（' + valueLabel + '）</span><span class="g-meta">推荐出价：<span style="color:#4ec97a;font-weight:700;">' +
-                            fmt(rec) + '</span> | 总格数 ' + item.total + ' | 共 ' + (item.combos ? item.combos
-                            .length : '多种') + ' 种组合 <span class="arrow">▶</span></span></div><div class="g-body">';
-                        if (item.approx || !item.combos || item.combos.length === 0) {
-                            html += '<span style="color:var(--text-secondary);font-size:12px;">' + TEXT
-                                .comboMany + '</span>';
-                        } else {
-                            var show = item.combos.slice(0, maxShow);
-                            show.forEach(function(c) { html += '<span class="combo">' + c.join(' + ') +
-                                '</span>'; });
-                            if (item.combos.length > maxShow) html += '<span class="more-tag">…共 ' + item
-                                .combos.length + ' 种</span>';
-                        }
-                        html += '</div></div>';
-                    });
-                    result.innerHTML = html;
+
+                    resultArea.innerHTML = hasResult ? htmlOut : '<div class="result-empty">填写数据后自动估算</div>';
                 };
-                document.getElementById('revReset').onclick = function() {
-                    document.getElementById('revAvg').value = '';
-                    document.getElementById('revCount').value = '';
-                    document.getElementById('revKnown').value = '';
-                    document.getElementById('revResult').innerHTML = '';
-                };
+
+                var mapNameEl = document.getElementById('luMapName');
+                if (mapNameEl) mapNameEl.textContent = getMap().name;
+
+                setTimeout(function() {
+                    window.luAutoCalc();
+                }, 50);
             }
 
             // ============================================================
@@ -3422,7 +3763,7 @@
             renderSu();
             renderHuangjintong();
             renderAn();
-            renderRev();
+            renderLu();
 
             document.querySelector('.tab-btn.active')?.click();
 
