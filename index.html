@@ -779,6 +779,78 @@ body {
   padding: 16px 20px !important;
   font-size: 16px !important;
 }
+
+/* ===== 修复标签被截断 ===== */
+.sq-row, .adv-row, .row {
+  justify-content: flex-start !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+.sq-label, .albl, .elbl {
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+@media (max-width: 768px) {
+  .sq-row, .adv-row, .row {
+    flex-wrap: wrap !important;
+  }
+  .sq-label, .albl, .elbl {
+    width: 100% !important;
+    text-align: left !important;
+    margin-bottom: 4px !important;
+  }
+}
+
+/* ===== 彻底修复手机端显示 ===== */
+/* 所有输入行强制换行 */
+.sq-row, .adv-row, .row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+/* 标签单独占一行 */
+.sq-label, .albl, .elbl {
+  width: 100% !important;
+  text-align: left !important;
+  margin-bottom: 4px !important;
+  font-size: 15px !important;
+}
+/* 输入框和按钮在第二行 */
+.sq-input, .adj-btn, .sq-btn, .ht-btn {
+  flex-shrink: 1 !important;
+  min-width: 40px !important;
+}
+/* 角色标签横向滚动 */
+.char-tabs {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+.char-tab {
+  flex-shrink: 0 !important;
+}
+/* 子标签横向滚动 */
+.gj-tabs, .ht-sub-tabs {
+  overflow-x: auto !important;
+}
+.gj-tab, .ht-sub-tab {
+  flex-shrink: 0 !important;
+}
+
+/* ===== 修复地图按钮栏 ===== */
+.map-tabs {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+.map-btn {
+  flex-shrink: 0 !important;
+}
 </style>
 </head>
 <body>
@@ -833,12 +905,12 @@ body {
 
   
 
-  <div class="map-switch">
-    <div class="map-btn active" onclick="switchMap('yanjing')">燕京</div>
-    <div class="map-btn" onclick="switchMap('xiangjiang')">香江</div>
-    <div class="map-btn" onclick="switchMap('nicheng')">霓城</div>
-    <div class="map-btn" onclick="switchMap('dicheng')">迪城</div>
-    <div class="map-btn" onclick="switchMap('xunhui')">巡回</div>
+  <div class="map-switch" style="display: flex !important; flex-wrap: nowrap !important; overflow-x: auto !important; white-space: nowrap !important; gap: 8px !important;">
+    <div class="map-btn active" onclick="switchMap('yanjing')" style="flex-shrink: 0 !important;">燕京</div>
+    <div class="map-btn" onclick="switchMap('xiangjiang')" style="flex-shrink: 0 !important;">香江</div>
+    <div class="map-btn" onclick="switchMap('nicheng')" style="flex-shrink: 0 !important;">霓城</div>
+    <div class="map-btn" onclick="switchMap('dicheng')" style="flex-shrink: 0 !important;">迪城</div>
+    <div class="map-btn" onclick="switchMap('xunhui')" style="flex-shrink: 0 !important;">巡回</div>
   </div>
   <div class="char-tabs">
     <div class="char-tab" onclick="switchTab('huogugu')">霍姑姑</div>
@@ -9552,6 +9624,78 @@ body {
   flex: none !important;
   padding: 16px 20px !important;
   font-size: 16px !important;
+}
+
+/* ===== 修复标签被截断 ===== */
+.sq-row, .adv-row, .row {
+  justify-content: flex-start !important;
+  padding-left: 12px !important;
+  padding-right: 12px !important;
+}
+.sq-label, .albl, .elbl {
+  white-space: nowrap !important;
+  overflow: visible !important;
+}
+@media (max-width: 768px) {
+  .sq-row, .adv-row, .row {
+    flex-wrap: wrap !important;
+  }
+  .sq-label, .albl, .elbl {
+    width: 100% !important;
+    text-align: left !important;
+    margin-bottom: 4px !important;
+  }
+}
+
+/* ===== 彻底修复手机端显示 ===== */
+/* 所有输入行强制换行 */
+.sq-row, .adv-row, .row {
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 10px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+/* 标签单独占一行 */
+.sq-label, .albl, .elbl {
+  width: 100% !important;
+  text-align: left !important;
+  margin-bottom: 4px !important;
+  font-size: 15px !important;
+}
+/* 输入框和按钮在第二行 */
+.sq-input, .adj-btn, .sq-btn, .ht-btn {
+  flex-shrink: 1 !important;
+  min-width: 40px !important;
+}
+/* 角色标签横向滚动 */
+.char-tabs {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+.char-tab {
+  flex-shrink: 0 !important;
+}
+/* 子标签横向滚动 */
+.gj-tabs, .ht-sub-tabs {
+  overflow-x: auto !important;
+}
+.gj-tab, .ht-sub-tab {
+  flex-shrink: 0 !important;
+}
+
+/* ===== 修复地图按钮栏 ===== */
+.map-tabs {
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+.map-btn {
+  flex-shrink: 0 !important;
 }
 </style>
 </body>
