@@ -1279,7 +1279,46 @@ body {
   background: #00b8d4 !important;
   color: #fff !important;
   border: none !important;
-}</style>
+}
+/* ===== 移动端全面适配 ===== */
+html, body {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.container {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 16px 12px !important;
+  box-sizing: border-box !important;
+}
+/* 确保所有行和元素不溢出 */
+.sq-row, .adv-row, .row, .price-ref-bar {
+  flex-wrap: wrap !important;
+  max-width: 100% !important;
+}
+.sq-label, .albl, .elbl, .blbl {
+  min-width: auto !important;
+  flex-shrink: 1 !important;
+}
+/* 确保输入框和按钮自适应 */
+.sq-input, .adv-row input, .row input {
+  min-width: 0 !important;
+  flex: 1 !important;
+}
+/* 卡片内边距缩小 */
+.sec-body, .format-card {
+  padding: 12px 10px !important;
+}
+/* 地图和角色标签栏 */
+.map-tabs, .char-tabs {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+</style>
 </head>
 <body>
 <canvas id="particles-canvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;"></canvas>
@@ -9393,6 +9432,45 @@ body {
   background: #00b8d4 !important;
   color: #fff !important;
   border: none !important;
-}</style>
+}
+/* ===== 移动端全面适配 ===== */
+html, body {
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: hidden !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.container {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 16px 12px !important;
+  box-sizing: border-box !important;
+}
+/* 确保所有行和元素不溢出 */
+.sq-row, .adv-row, .row, .price-ref-bar {
+  flex-wrap: wrap !important;
+  max-width: 100% !important;
+}
+.sq-label, .albl, .elbl, .blbl {
+  min-width: auto !important;
+  flex-shrink: 1 !important;
+}
+/* 确保输入框和按钮自适应 */
+.sq-input, .adv-row input, .row input {
+  min-width: 0 !important;
+  flex: 1 !important;
+}
+/* 卡片内边距缩小 */
+.sec-body, .format-card {
+  padding: 12px 10px !important;
+}
+/* 地图和角色标签栏 */
+.map-tabs, .char-tabs {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+}
+</style>
 </body>
 </html>
