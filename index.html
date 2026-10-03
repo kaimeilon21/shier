@@ -919,6 +919,7 @@ body {
     <div class="char-tab" onclick="switchTab('suqi')">苏琦</div>
     <div class="char-tab active" onclick="switchTab('general')">安可</div>
     <div class="char-tab" onclick="switchTab('huangjintong')">黄金瞳</div>
+    <div class="char-tab" onclick="switchTab('wuzhao')">武昭</div>
   </div>
 
   <!-- 通用计算器面板 -->
@@ -1102,6 +1103,138 @@ body {
   <div id="resultArea"></div>
   <div class="empty-tip" id="emptyTip">请输入条件后点击"计算"</div>
   </div><!-- /panel-general -->
+
+  <!-- 武昭面板（适配本地霓虹UI） -->
+  <div class="char-panel" id="panel-wuzhao">
+    <div class="section" style="margin-bottom:20px;">
+      <div class="sec-head">
+        <div class="sec-title">
+          <div class="icon" style="background:linear-gradient(135deg,#c9a7e8,#7b2ffc);">武</div>
+          <div>
+            <div class="name">武昭 · 信息汇总估价</div>
+            <div class="role">随机复制他人技能/道具，把各路信息汇总进一张卡估价
+              <span class="tip2">拼出来什么就填什么：分色格数/件数、估价平板、红格式均可，系统自动取高汇总。</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 使用教程 -->
+    <div style="background:rgba(0,212,255,0.06);border:1px solid rgba(0,212,255,0.2);border-radius:10px;padding:10px 12px;margin-bottom:14px;font-size:12px;color:#bbb;line-height:1.9;">
+      <div style="color:#00d4ff;font-weight:600;margin-bottom:4px;">📖 使用教程</div>
+      <div>1. <b style="color:#ce93d8;">分色数量</b>：按紫/橙/红分别填写格数（或件数），系统自动按单格价/单件价取高计算。</div>
+      <div>2. <b style="color:#81c784;">估价平板</b>（选填）：如果包里有估价平板读出的总价，直接填绿/蓝/紫/橙平板，填了就按平板总价计。</div>
+      <div>3. <b style="color:#ff7a00;">红格式</b>（选填）：点下方数字格（1/2/3/4/6/8/9/12/15/16）反推红品组合，自动算格数。</div>
+      <div>4. <b style="color:#fff;">藏品总格数/总件数</b>（选填）：填了会显示仓库预估价格区间，辅助判断。</div>
+      <div>5. <b style="color:#ef5350;">手动溢价</b>：额外想加的价格直接填这里。</div>
+      <div style="margin-top:4px;color:#888;">💡 三档估价：🛡保守=底价、📊平均=中间值、🔥激进=顶价，交易时按行情选用。</div>
+    </div>
+
+    <!-- 单格价/单件价参考 -->
+    <div style="display:none;">单格价 / 单件价（默认参考，可改，已隐藏）</div>
+    <div style="display:none;grid-template-columns:repeat(3,1fr);gap:6px 10px;margin-bottom:10px;">
+      <div><div style="font-size:11px;color:#ce93d8;margin-bottom:3px;">紫·单格</div><input type="text" class="sq-input" id="wzPurpleCell" value="2400" oninput="wzCalc()" style="width:100%;font-size:13px;"></div>
+      <div><div style="font-size:11px;color:#ce93d8;margin-bottom:3px;">紫·单件</div><input type="text" class="sq-input" id="wzPurplePiece" value="7300" oninput="wzCalc()" style="width:100%;font-size:13px;"></div>
+      <div><div style="font-size:11px;color:#ce93d8;margin-bottom:3px;">&nbsp;</div><div style="font-size:12px;color:#666;line-height:32px;">紫取高</div></div>
+      <div><div style="font-size:11px;color:#ffb74d;margin-bottom:3px;">橙·单格</div><input type="text" class="sq-input" id="wzOrangeCell" value="9800" oninput="wzCalc()" style="width:100%;font-size:13px;"></div>
+      <div><div style="font-size:11px;color:#ffb74d;margin-bottom:3px;">橙·单件</div><input type="text" class="sq-input" id="wzOrangePiece" value="26000" oninput="wzCalc()" style="width:100%;font-size:13px;"></div>
+      <div><div style="font-size:11px;color:#ffb74d;margin-bottom:3px;">&nbsp;</div><div style="font-size:12px;color:#666;line-height:32px;">橙取高</div></div>
+      <div><div style="font-size:11px;color:#ef5350;margin-bottom:3px;">红·单格</div><input type="text" class="sq-input" id="wzRedCell" value="51438" oninput="wzCalc()" style="width:100%;font-size:13px;"></div>
+      <div><div style="font-size:11px;color:#ef5350;margin-bottom:3px;">红·单件</div><input type="text" class="sq-input" id="wzRedPiece" value="188500" oninput="wzCalc()" style="width:100%;font-size:13px;"></div>
+      <div><div style="font-size:11px;color:#ef5350;margin-bottom:3px;">&nbsp;</div><div style="font-size:12px;color:#666;line-height:32px;">红取高</div></div>
+    </div>
+
+    <!-- 藏品规模 -->
+    <div style="font-size:13px;color:#00d4ff;margin:10px 0 8px;font-weight:600;">藏品规模</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+      <div style="flex:1;min-width:120px;"><div style="font-size:12px;color:#888;margin-bottom:4px;">藏品总格数</div><input type="text" class="sq-input" id="wzTotalGrid" placeholder="如120" oninput="wzCalc()" style="width:100%;"></div>
+      <div style="flex:1;min-width:120px;"><div style="font-size:12px;color:#888;margin-bottom:4px;">藏品总件数</div><input type="text" class="sq-input" id="wzTotalCount" placeholder="如20" oninput="wzCalc()" style="width:100%;"></div>
+    </div>
+    <div style="font-size:13px;color:#ff7a00;margin-bottom:8px;">仓库预估价格区间：<span id="wzBaseRange" style="font-weight:600;">—</span> <span id="wzBaseNote" style="font-size:11px;color:#999;"></span></div>
+
+    <!-- 分色数量 -->
+    <div style="font-size:13px;color:#00d4ff;margin:10px 0 8px;font-weight:600;">分色数量（格数 / 件数）</div>
+    <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:8px;">
+      <div style="display:flex;align-items:center;gap:6px;background:rgba(171,71,188,0.08);border-radius:10px;padding:8px 10px;">
+        <span style="color:#ce93d8;font-weight:700;width:24px;">紫</span>
+        <span class="adj-btn" onclick="wzStep('wzPurpleGrid',-1)">-</span>
+        <input type="text" class="sq-input" id="wzPurpleGrid" placeholder="紫格数" oninput="wzCalc()" style="flex:1;min-width:0;">
+        <span class="adj-btn" onclick="wzStep('wzPurpleGrid',1)">+</span>
+        <span style="color:#666;">件</span>
+        <span class="adj-btn" onclick="wzStep('wzPurpleCount',-1)">-</span>
+        <input type="text" class="sq-input" id="wzPurpleCount" placeholder="0" oninput="wzCalc()" style="flex:1;min-width:0;">
+        <span class="adj-btn" onclick="wzStep('wzPurpleCount',1)">+</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;background:rgba(245,124,0,0.08);border-radius:10px;padding:8px 10px;">
+        <span style="color:#ffb74d;font-weight:700;width:24px;">橙</span>
+        <span class="adj-btn" onclick="wzStep('wzOrangeGrid',-1)">-</span>
+        <input type="text" class="sq-input" id="wzOrangeGrid" placeholder="橙格数" oninput="wzCalc()" style="flex:1;min-width:0;">
+        <span class="adj-btn" onclick="wzStep('wzOrangeGrid',1)">+</span>
+        <span style="color:#666;">件</span>
+        <span class="adj-btn" onclick="wzStep('wzOrangeCount',-1)">-</span>
+        <input type="text" class="sq-input" id="wzOrangeCount" placeholder="0" oninput="wzCalc()" style="flex:1;min-width:0;">
+        <span class="adj-btn" onclick="wzStep('wzOrangeCount',1)">+</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;background:rgba(229,57,53,0.08);border-radius:10px;padding:8px 10px;">
+        <span style="color:#ef5350;font-weight:700;width:24px;">红</span>
+        <span class="adj-btn" onclick="wzStep('wzRedGrid',-1)">-</span>
+        <input type="text" class="sq-input" id="wzRedGrid" placeholder="红格数" oninput="wzCalc()" style="flex:1;min-width:0;">
+        <span class="adj-btn" onclick="wzStep('wzRedGrid',1)">+</span>
+        <span style="color:#666;">件</span>
+        <span class="adj-btn" onclick="wzStep('wzRedCount',-1)">-</span>
+        <input type="text" class="sq-input" id="wzRedCount" placeholder="0" oninput="wzCalc()" style="flex:1;min-width:0;">
+        <span class="adj-btn" onclick="wzStep('wzRedCount',1)">+</span>
+      </div>
+    </div>
+
+    <!-- 估价平板 -->
+    <div style="font-size:13px;color:#00d4ff;margin:10px 0 8px;font-weight:600;">📟 估价平板（选填，填了按总价计）</div>
+    <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px 10px;margin-bottom:8px;">
+      <div><div style="font-size:11px;color:#81c784;margin-bottom:3px;">绿平板</div><input type="text" class="sq-input" id="wzGreenPad" placeholder="绿色总价值" oninput="wzCalc()" style="width:100%;"></div>
+      <div><div style="font-size:11px;color:#64b5f6;margin-bottom:3px;">蓝平板</div><input type="text" class="sq-input" id="wzBluePad" placeholder="蓝色总价值" oninput="wzCalc()" style="width:100%;"></div>
+      <div><div style="font-size:11px;color:#ce93d8;margin-bottom:3px;">紫平板</div><input type="text" class="sq-input" id="wzPurplePad" placeholder="紫色总价值" oninput="wzCalc()" style="width:100%;"></div>
+      <div><div style="font-size:11px;color:#ffb74d;margin-bottom:3px;">橙平板</div><input type="text" class="sq-input" id="wzOrangePad" placeholder="橙色总价值" oninput="wzCalc()" style="width:100%;"></div>
+    </div>
+
+    <!-- 红格式快速选择 -->
+    <div style="font-size:13px;color:#00d4ff;margin:10px 0 8px;font-weight:600;">红格式选择（点格数反推红品组合，选填）</div>
+    <div class="fmt-picker-row" style="margin-bottom:6px;">
+      <span class="fmt-key-btn" onclick="wzAddFmt(1)">1</span>
+      <span class="fmt-key-btn" onclick="wzAddFmt(2)">2</span>
+      <span class="fmt-key-btn" onclick="wzAddFmt(3)">3</span>
+      <span class="fmt-key-btn" onclick="wzAddFmt(4)">4</span>
+      <span class="fmt-key-btn" onclick="wzAddFmt(6)">6</span>
+      <span class="fmt-key-btn fmt-key-undo" onclick="wzUndoFmt()">回退</span>
+    </div>
+    <div class="fmt-picker-row" style="margin-bottom:6px;">
+      <span class="fmt-key-btn" onclick="wzAddFmt(8)">8</span>
+      <span class="fmt-key-btn" onclick="wzAddFmt(9)">9</span>
+      <span class="fmt-key-btn" onclick="wzAddFmt(12)">12</span>
+      <span class="fmt-key-btn" onclick="wzAddFmt(15)">15</span>
+      <span class="fmt-key-btn" onclick="wzAddFmt(16)">16</span>
+      <span class="fmt-key-btn fmt-key-clear" onclick="wzClearFmt()">清空</span>
+    </div>
+    <div class="fmt-seq-display" style="margin-bottom:8px;"><span class="fmt-seq-label">已选格式：</span><span id="wzFmtText" class="fmt-seq-text">未选择</span></div>
+
+    <div class="sq-row" style="margin-top:6px;">
+      <span class="sq-label">手动溢价</span>
+      <input type="text" class="sq-input" id="wzPremium" placeholder="额外加的价格" oninput="wzCalc()" style="flex:1;min-width:0;">
+    </div>
+
+    <!-- 三档估价 -->
+    <div class="sq-total-box" style="margin-top:12px;">
+      <span class="sq-total-label">最终估价：</span>
+      <div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-left:10px;align-items:center;">
+        <span style="font-size:14px;color:#388e3c;">🛡 保守 <b id="wzCons" style="font-size:15px;margin-left:4px;">—</b></span>
+        <span style="font-size:14px;color:#1976d2;">📊 平均 <b id="wzAvg" style="font-size:16px;margin-left:4px;">—</b></span>
+        <span style="font-size:14px;color:#d32f2f;">🔥 激进 <b id="wzAgg" style="font-size:15px;margin-left:4px;">—</b></span>
+        <button class="sq-clear-btn" onclick="wzClearAll()">清空</button>
+      </div>
+    </div>
+    <div id="wzDetail" style="font-size:12px;color:#aaa;line-height:1.8;margin-top:8px;"></div>
+  </div><!-- /panel-wuzhao -->
+
 
   <!-- 苏琦面板 -->
   <div class="char-panel" id="panel-suqi">
@@ -1350,6 +1483,7 @@ body {
       <div class="ht-sub-tab active" id="htSubOrig" onclick="htSwitchSub('orig')" style="padding:8px 18px;background:#1976d2;color:#fff;border-radius:8px 8px 0 0;font-size:14px;font-weight:600;cursor:pointer;">原版估价</div>
       <div class="ht-sub-tab" id="htSubWgb" onclick="htSwitchSub('wgb')" style="padding:8px 18px;background:#2a2a3a;color:#aaa;border-radius:8px 8px 0 0;font-size:14px;font-weight:600;cursor:pointer;">白绿蓝反推格数</div>
       <div class="ht-sub-tab" id="htSubSmall" onclick="htSwitchSub('small')" style="padding:8px 18px;background:#2a2a3a;color:#aaa;border-radius:8px 8px 0 0;font-size:14px;font-weight:600;cursor:pointer;">小仓估价</div>
+      <div class="ht-sub-tab" id="htSubHammer" onclick="htSwitchSub('hammer')" style="padding:8px 18px;background:#2a2a3a;color:#aaa;border-radius:8px 8px 0 0;font-size:14px;font-weight:600;cursor:pointer;">品质锤</div>
     </div>
 
     <div id="htSubPanelOrig">
@@ -1647,11 +1781,85 @@ body {
       </div>
       <div id="htSmDetail" style="font-size:13px;color:#aaa;line-height:1.8;margin-top:8px;"></div>
     </div><!-- /htSubPanelSmall -->
+    <div id="htSubPanelHammer" style="display:none;">
+      <div class="sq-hint">
+        <div style="font-size:12px;color:#bbb;line-height:1.9;padding:8px 0;">
+          🔨 <b>品质锤鉴定玩法</b>：适合小仓（燕京、香江）。前两轮尽量不用锤子，第三轮技能发动后从
+          <b>8件鉴定 / 6件鉴定 / 4件鉴定 / 2件鉴定</b> 里选三种敲（超过8件会敲到重复）。敲完看到几个紫、橙、红就填进去；
+          再用均价车跑一遍红色价值修正估价。件均价已按619局结算标定（紫7,300 / 橙26,000 / 红188,500）。
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px 10px;margin:10px 0;">
+        <div><div style="font-size:11px;color:#ce93d8;margin-bottom:3px;">紫均价(件)</div><input type="text" class="sq-input" id="hmPurplePrice" value="7300" oninput="hmCalc()" style="width:100%;font-size:13px;"></div>
+        <div><div style="font-size:11px;color:#ffb74d;margin-bottom:3px;">橙均价(件)</div><input type="text" class="sq-input" id="hmOrangePrice" value="26000" oninput="hmCalc()" style="width:100%;font-size:13px;"></div>
+        <div><div style="font-size:11px;color:#ef5350;margin-bottom:3px;">红均价(件)</div><input type="text" class="sq-input" id="hmRedPrice" value="188500" oninput="hmCalc()" style="width:100%;font-size:13px;"></div>
+      </div>
+
+      <div class="sq-row"><span class="sq-label">白绿蓝总价</span><input type="text" class="sq-input" id="hmWgb" placeholder="第一轮透视到的白绿蓝总价值" oninput="hmCalc()" style="flex:1;min-width:0;"></div>
+
+      <div class="sq-row"><span class="sq-label">紫色件数</span>
+        <span class="adj-btn" onclick="hmStep('hmPurpleCount',-1)">-1</span>
+        <input type="text" class="sq-input" id="hmPurpleCount" oninput="hmCalc()" style="width:80px;text-align:center;">
+        <span class="adj-btn" onclick="hmStep('hmPurpleCount',1)">+1</span>
+      </div>
+      <div class="sq-row"><span class="sq-label">橙色件数</span>
+        <span class="adj-btn" onclick="hmStep('hmOrangeCount',-1)">-1</span>
+        <input type="text" class="sq-input" id="hmOrangeCount" oninput="hmCalc()" style="width:80px;text-align:center;">
+        <span class="adj-btn" onclick="hmStep('hmOrangeCount',1)">+1</span>
+      </div>
+      <div class="sq-row"><span class="sq-label">红色件数</span>
+        <span class="adj-btn" onclick="hmStep('hmRedCount',-1)">-1</span>
+        <input type="text" class="sq-input" id="hmRedCount" oninput="hmCalc()" style="width:80px;text-align:center;">
+        <span class="adj-btn" onclick="hmStep('hmRedCount',1)">+1</span>
+      </div>
+
+      <!-- 红品轮廓 -->
+      <div style="font-size:12px;color:#888;margin:10px 0 4px;">红品轮廓（透视到红品形状时点格数，选填）</div>
+      <div class="fmt-picker-row" style="margin-bottom:4px;">
+        <span class="fmt-key-btn" onclick="hmAddShape(1)">1</span><span class="fmt-key-btn" onclick="hmAddShape(2)">2</span>
+        <span class="fmt-key-btn" onclick="hmAddShape(3)">3</span><span class="fmt-key-btn" onclick="hmAddShape(4)">4</span>
+        <span class="fmt-key-btn" onclick="hmAddShape(6)">6</span><span class="fmt-key-btn" onclick="hmAddShape(8)">8</span>
+      </div>
+      <div class="fmt-picker-row" style="margin-bottom:6px;">
+        <span class="fmt-key-btn" onclick="hmAddShape(9)">9</span><span class="fmt-key-btn" onclick="hmAddShape(12)">12</span>
+        <span class="fmt-key-btn" onclick="hmAddShape(15)">15</span><span class="fmt-key-btn" onclick="hmAddShape(16)">16</span>
+        <span class="fmt-key-btn fmt-key-undo" onclick="hmUndoShape()">回退</span>
+        <span class="fmt-key-btn fmt-key-clear" onclick="hmClearShape()">清空</span>
+      </div>
+      <div style="font-size:12px;color:#aaa;margin-bottom:8px;">已选轮廓：<span id="hmShapeText">未选择</span></div>
+
+      <!-- 均价车 -->
+      <div style="font-size:12px;color:#00d4ff;margin:10px 0 6px;font-weight:600;">🚗 均价车（选填）：棋盘跑10格汇报经过藏品的平均价</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:6px 10px;margin-bottom:8px;">
+        <div><div style="font-size:11px;color:#888;margin-bottom:3px;">均价车均价</div><input type="text" class="sq-input" id="hmCarPrice" placeholder="如52000" oninput="hmCalc()" style="width:100%;"></div>
+        <div><div style="font-size:11px;color:#888;margin-bottom:3px;">预估经过件数</div><input type="text" class="sq-input" id="hmCarCount" placeholder="如3" oninput="hmCalc()" style="width:100%;"></div>
+        <div><div style="font-size:11px;color:#ce93d8;margin-bottom:3px;">经过紫色件数</div><input type="text" class="sq-input" id="hmCarPurple" value="0" oninput="hmCalc()" style="width:100%;"></div>
+        <div><div style="font-size:11px;color:#ffb74d;margin-bottom:3px;">经过橙色件数</div><input type="text" class="sq-input" id="hmCarOrange" value="0" oninput="hmCalc()" style="width:100%;"></div>
+        <div><div style="font-size:11px;color:#ef5350;margin-bottom:3px;">经过红色件数</div><input type="text" class="sq-input" id="hmCarRed" value="0" oninput="hmCalc()" style="width:100%;"></div>
+      </div>
+
+      <div class="sq-total-box" style="margin-top:12px;">
+        <span class="sq-total-label">整仓估价：</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px 14px;margin-left:10px;align-items:center;">
+          <span style="font-size:14px;color:#388e3c;">🛡 保守 <b id="hmCons" style="font-size:15px;margin-left:4px;">—</b></span>
+          <span style="font-size:14px;color:#1976d2;">📊 平均 <b id="hmAvg" style="font-size:16px;margin-left:4px;">—</b></span>
+          <span style="font-size:14px;color:#d32f2f;">🔥 激进 <b id="hmAgg" style="font-size:15px;margin-left:4px;">—</b></span>
+          <button class="sq-clear-btn" onclick="hmClear()">清空</button>
+        </div>
+      </div>
+      <div id="hmDetail" style="font-size:12px;color:#aaa;line-height:1.8;margin-top:8px;"></div>
+    </div><!-- /htSubPanelHammer -->
+
+
 
 
   
 
   </div><!-- /panel-huangjintong -->
+
+
+
 
   <div class="char-panel" id="panel-xunhui">
     <div class="sq-hint">
@@ -1785,24 +1993,22 @@ const COLLECTIBLES = {
     {name:"日出红宝石", cat:"珠宝", value:64680, tier:"normal"},
     {name:"冰种飘花翡翠", cat:"珠宝", value:63950, tier:"normal"},
     {name:"陀飞轮钻石怀表", cat:"奢品", value:63660, tier:"normal"},
-    // 稀有
     {name:"非洲之心", cat:"珠宝", value:13145200, tier:"rare"},
     {name:"和氏璧", cat:"珠宝", value:2646000, tier:"rare"},
-    // 高价值
     {name:"翡光星穹腕表", cat:"奢品", value:1870000, tier:"highval"},
-    // 珠宝活动藏品(市场价用于估价，actualValue用于巡回模式价格反查)
     {name:"待琢灵珠", cat:"珠宝", value:1095000, actualValue:642400, tier:"zhubao"},
     {name:"待琢金刚石", cat:"珠宝", value:900000, actualValue:257000, tier:"zhubao"},
     {name:"待琢蓝宝石", cat:"珠宝", value:600000, actualValue:182600, tier:"zhubao"},
     {name:"待琢猫眼", cat:"珠宝", value:400000, actualValue:115000, tier:"zhubao"},
     {name:"待琢绯钻", cat:"珠宝", value:160000, actualValue:67620, tier:"zhubao"},
-    // 特战活动藏品(市场价用于估价，actualValue用于巡回模式价格反查)
     {name:"破片手榴弹", cat:"奢品", value:210000, actualValue:152300, tier:"tezhan"},
-    // 古董活动藏品
     {name:"阿波罗任务徽章", cat:"珠宝", value:235200, tier:"dengyue"},
-    // 名车活动藏品
     {name:"普通涂装喷漆", cat:"奢品", value:200000, tier:"mingche"},
-    {name:"高级涂装喷漆", cat:"奢品", value:600000, tier:"mingche"}
+    {name:"高级涂装喷漆", cat:"奢品", value:600000, tier:"mingche"},
+    {name:"波斯之泪", cat:"珠宝", value:1323000, tier:"highval"},
+    {name:"帕拉伊巴碧玺", cat:"珠宝", value:81590, tier:"s2"},
+    {name:"三叶虫化石", cat:"化石", value:730800, tier:"highval"},
+    {name:"工程凭证", cat:"化石", value:600000, tier:"highval"}
   ],
   2: [
     {name:"格鳞灵蛇腕表", cat:"奢品", value:483000, tier:"normal"},
@@ -1810,10 +2016,8 @@ const COLLECTIBLES = {
     {name:"雅叶珐琅项链", cat:"奢品", value:293000, tier:"normal"},
     {name:"香江翡翠王", cat:"珠宝", value:237600, tier:"normal"},
     {name:"未鉴彩俑", cat:"古董", value:180600, tier:"gudong"},
-    // 名酿活动藏品
     {name:"未鉴白瓷坛", cat:"名酿", value:68970, tier:"mingniang"},
     {name:"未鉴紫晶坛", cat:"名酿", value:249900, tier:"mingniang"},
-    // 字画活动藏品
     {name:"未鉴丹青", cat:"字画", value:111400, tier:"zihua"},
     {name:"未鉴残卷", cat:"字画", value:71090, tier:"zihua"},
     {name:"未鉴画卷", cat:"字画", value:180400, tier:"zihua"},
@@ -1828,12 +2032,18 @@ const COLLECTIBLES = {
     {name:"老普洱茶", cat:"名酿", value:105000, tier:"normal"},
     {name:"萧何月下瓶", cat:"古董", value:99990, tier:"normal"},
     {name:"龄酿40年威士忌", cat:"名酿", value:97960, tier:"normal"},
-    // 特战活动藏品(市场价用于估价，actualValue用于巡回模式价格反查)
-    {name:"特战军牌", cat:"奢品", value:335000, actualValue:210000, tier:"tezhan"}
+    {name:"特战军牌", cat:"奢品", value:335000, actualValue:210000, tier:"tezhan"},
+    {name:"指点江山笔", cat:"古董", value:16360000, tier:"rare"},
+    {name:"御制江山水晶壶", cat:"古董", value:967700, tier:"highval"},
+    {name:"鎏金步摇", cat:"珠宝", value:214000, tier:"s2"}
   ],
   3: [
     {name:"翡翠观音", cat:"古董", value:157500, tier:"normal"},
-    {name:"齐白石《虾》", cat:"字画", value:140700, tier:"normal"}
+    {name:"齐白石《虾》", cat:"字画", value:140700, tier:"normal"},
+    {name:"金鸾竹笛", cat:"古董", value:147200, tier:"guochao"},
+    {name:"雪茄保湿柜", cat:"奢品", value:142300, tier:"s2"},
+    {name:"菲醇1982", cat:"名酿", value:287300, tier:"s2"},
+    {name:"康园黑皮诺", cat:"名酿", value:547300, tier:"s2"}
   ],
   4: [
     {name:"伯吉斯页岩化石", cat:"化石", value:762000, tier:"normal"},
@@ -1863,39 +2073,37 @@ const COLLECTIBLES = {
     {name:"铁陨石切片", cat:"化石", value:155700, tier:"normal"},
     {name:"诗珑问号项链", cat:"奢品", value:144600, tier:"normal"},
     {name:"民国画报全集", cat:"字画", value:137100, tier:"normal"},
-    // 稀有
     {name:"江山永固·金杯", cat:"珠宝", value:20260000, tier:"rare"},
     {name:"《女史箴图》", cat:"字画", value:7283000, tier:"rare"},
-    // 高价值
     {name:"传国玉玺", cat:"古董", value:1883000, tier:"highval"},
-    // 原石活动藏品(市场价用于估价，actualValue用于巡回模式价格反查)
     {name:"帝王绿原石", cat:"化石", value:2880000, actualValue:609700, tier:"yuanshi"},
     {name:"高冰种原石", cat:"化石", value:680000, actualValue:242900, tier:"yuanshi"},
     {name:"色带料原石", cat:"化石", value:400000, actualValue:176400, tier:"yuanshi"},
     {name:"黄沙皮原石", cat:"化石", value:280000, actualValue:108500, tier:"yuanshi"},
     {name:"青皮料原石", cat:"化石", value:200000, actualValue:64600, tier:"yuanshi"},
-    // 特战活动藏品(市场价用于估价，actualValue用于巡回模式价格反查)
     {name:"三级甲", cat:"奢品", value:510000, actualValue:357000, tier:"tezhan"},
     {name:"三级头", cat:"奢品", value:440000, actualValue:321300, tier:"tezhan"},
-    // 名车活动藏品
     {name:"名车轮胎", cat:"奢品", value:136800, tier:"mingche"},
     {name:"名车转向", cat:"奢品", value:80250, tier:"mingche"},
-    // 古董活动藏品
     {name:"浑天仪", cat:"古董", value:148100, tier:"dengyue"},
     {name:"未鉴宫灯", cat:"古董", value:69460, tier:"gudong"},
     {name:"未鉴奔马俑", cat:"古董", value:109700, tier:"gudong"},
     {name:"未鉴驼俑", cat:"古董", value:255900, tier:"gudong"},
-    // 名酿活动藏品
     {name:"未鉴黄釉坛", cat:"名酿", value:119000, tier:"mingniang"},
     {name:"未鉴琥珀坛", cat:"名酿", value:178400, tier:"mingniang"},
-    // 字画活动藏品
     {name:"未鉴秘卷", cat:"字画", value:265100, tier:"zihua"},
-    // 奢品活动藏品
     {name:"待养行匣", cat:"奢品", value:67830, tier:"shepin"},
     {name:"待养手袋", cat:"奢品", value:112500, tier:"shepin"},
     {name:"待养织毯", cat:"奢品", value:187400, tier:"shepin"},
     {name:"待养华服", cat:"奢品", value:267800, tier:"shepin"},
-    {name:"待养裘衣", cat:"奢品", value:615800, tier:"shepin"}
+    {name:"待养裘衣", cat:"奢品", value:615800, tier:"shepin"},
+    {name:"青筠和笙", cat:"古董", value:182800, tier:"guochao"},
+    {name:"千金封坛酒", cat:"名酿", value:499600, tier:"s2"},
+    {name:"七璜玉组佩", cat:"古董", value:155400, tier:"s2"},
+    {name:"《汉宫春晓图》", cat:"字画", value:539800, tier:"s2"},
+    {name:"《丽人行》", cat:"字画", value:169600, tier:"s2"},
+    {name:"名筑基座", cat:"化石", value:132500, tier:"zhumeng"},
+    {name:"名筑屋顶", cat:"化石", value:165600, tier:"zhumeng"}
   ],
   6: [
     {name:"《千里江山图》", cat:"字画", value:688000, tier:"normal"},
@@ -1905,53 +2113,60 @@ const COLLECTIBLES = {
     {name:"南海神图", cat:"字画", value:243100, tier:"normal"},
     {name:"腔棘鱼化石", cat:"化石", value:241600, tier:"normal"},
     {name:"敦煌绢画画稿", cat:"字画", value:240800, tier:"normal"},
-    // 高价值
     {name:"《清明上河图》", cat:"字画", value:1880000, tier:"highval"},
     {name:"东方剑齿象骨架", cat:"化石", value:1275000, tier:"highval"},
-    // 名车活动藏品
     {name:"名车座椅", cat:"奢品", value:171100, tier:"mingche"},
-    // 古董活动藏品
     {name:"彗星观测手册", cat:"字画", value:188000, tier:"dengyue"},
-    // 字画活动藏品
-    {name:"未鉴古卷", cat:"字画", value:625000, tier:"zihua"}
+    {name:"未鉴古卷", cat:"字画", value:625000, tier:"zihua"},
+    {name:"云螭七弦", cat:"古董", value:244600, tier:"guochao"},
+    {name:"鸾凤琵琶", cat:"古董", value:293500, tier:"guochao"},
+    {name:"华庭通天树", cat:"古董", value:1125000, tier:"highval"},
+    {name:"金玉满堂图", cat:"字画", value:733800, tier:"s2"},
+    {name:"古董放映机", cat:"奢品", value:415600, tier:"s2"},
+    {name:"鸾鸣琵琶", cat:"古董", value:293500, tier:"normal"},
+    {name:"美人·飞燕", cat:"奢品", value:1180000, tier:"collection"},
+    {name:"美人·昭君", cat:"奢品", value:1180000, tier:"collection"},
+    {name:"美人·西施", cat:"奢品", value:6880000, tier:"collection"},
+    {name:"美人·貂蝉", cat:"奢品", value:6880000, tier:"collection"},
+    {name:"美人·贵妃", cat:"奢品", value:6880000, tier:"collection"},
+    {name:"美人·嫦娥", cat:"奢品", value:26880000, tier:"collection"},
+    {name:"名筑露台", cat:"化石", value:192900, tier:"zhumeng"},
+    {name:"名筑结构", cat:"化石", value:226100, tier:"zhumeng"}
   ],
   8: [
     {name:"南越王铁剑", cat:"古董", value:333400, tier:"normal"},
-    // 高价值
     {name:"越王勾践剑", cat:"古董", value:1280000, tier:"highval"},
+    {name:"名筑墙体", cat:"化石", value:283300, tier:"zhumeng"}
   ],
   9: [
     {name:"青铜大立人像", cat:"古董", value:637300, tier:"normal"},
     {name:"红宝石王冠", cat:"珠宝", value:422500, tier:"normal"},
     {name:"百代唱片", cat:"古董", value:354100, tier:"normal"},
     {name:"邓氏鱼化石", cat:"化石", value:338400, tier:"normal"},
-    // 高价值
     {name:"《夜宴图》", cat:"字画", value:1050000, tier:"highval"},
-    // 名车活动藏品
     {name:"名车引擎", cat:"奢品", value:280600, tier:"mingche"},
-    // 古董活动藏品
-    {name:"未鉴珐琅炉", cat:"古董", value:618000, tier:"gudong"}
+    {name:"未鉴珐琅炉", cat:"古董", value:618000, tier:"gudong"},
+    {name:"镇山战鼓", cat:"古董", value:643800, tier:"guochao"},
+    {name:"贵州龙化石", cat:"化石", value:306300, tier:"s2"}
   ],
   12: [
-    // 特战活动藏品(市场价用于估价，actualValue用于巡回模式价格反查)
     {name:"AWM狙击枪", cat:"奢品", value:2930000, actualValue:600600, tier:"tezhan"},
-    // 名车活动藏品
     {name:"名车车身", cat:"奢品", value:231800, tier:"mingche"},
-    // 登月活动藏品
-    {name:"天文望远镜", cat:"古董", value:307500, tier:"dengyue"}
+    {name:"天文望远镜", cat:"古董", value:307500, tier:"dengyue"},
+    {name:"三角钢琴", cat:"奢品", value:367900, tier:"s2"},
+    {name:"泸州原坛老酒", cat:"名酿", value:346600, tier:"s2"}
   ],
   15: [
     {name:"宫毯", cat:"奢品", value:750000, tier:"normal"},
     {name:"唐代古茶饼", cat:"名酿", value:386400, tier:"normal"},
-    // 高价值
-    {name:"贾湖遗址古酒", cat:"名酿", value:1452000, tier:"highval"},
+    {name:"贾湖遗址古酒", cat:"名酿", value:1452000, tier:"highval"}
   ],
   16: [
     {name:"马门溪龙骨架", cat:"化石", value:689600, tier:"normal"},
     {name:"民国粉彩大瓶", cat:"古董", value:475600, tier:"normal"},
     {name:"死海古卷", cat:"古董", value:416700, tier:"normal"},
-    // 古董活动藏品
-    {name:"月球岩样标本", cat:"化石", value:656700, tier:"dengyue"}
+    {name:"月球岩样标本", cat:"化石", value:656700, tier:"dengyue"},
+    {name:"巨型山东龙", cat:"化石", value:903000, tier:"s2"}
   ]
 };
 
@@ -2766,12 +2981,17 @@ function htSwitchSub(which) {
   if (elOrig) elOrig.style.cssText = which === 'orig' ? stOn : stOff;
   if (elWgb) elWgb.style.cssText = which === 'wgb' ? stOn : stOff;
   if (elSmall) elSmall.style.cssText = which === 'small' ? stOn : stOff;
+  const elHammer = document.getElementById('htSubHammer');
+  if (elHammer) elHammer.classList.toggle('active', which === 'hammer');
+  if (elHammer) elHammer.style.cssText = which === 'hammer' ? stOn : stOff;
   const pOrig = document.getElementById('htSubPanelOrig');
   const pWgb = document.getElementById('htSubPanelWgb');
   const pSmall = document.getElementById('htSubPanelSmall');
   if (pOrig) pOrig.style.display = which === 'orig' ? '' : 'none';
   if (pWgb) pWgb.style.display = which === 'wgb' ? '' : 'none';
   if (pSmall) pSmall.style.display = which === 'small' ? '' : 'none';
+  const pHammer = document.getElementById('htSubPanelHammer');
+  if (pHammer) pHammer.style.display = which === 'hammer' ? '' : 'none';
   if (which === 'orig' && typeof htCalc === 'function') htCalc();
   if (which === 'wgb' && typeof htWgbCalc === 'function') htWgbCalc();
   if (which === 'small' && typeof htSmCalc === 'function') htSmCalc();
@@ -3460,7 +3680,7 @@ function _buildDetailHTML(parts) {
     } else {
       const sorted = [...items].sort((a, b) => b.value - a.value);
       sorted.forEach(item => {
-        tagsHtml += `<span class="item-tag item-${item.tier}" title="${item.name} - ${size}格 - 价值${item.value.toLocaleString()}">${item.name}(${formatMoney(item.value)})</span>`;
+        tagsHtml += `<span class="item-tag item-${item.tier}" title="${item.name} - ${size}格 - 价值${item.value.toLocaleString()}">${item.name}</span>`;
       });
     }
     html += `<div class="slot-row"><div class="slot-label">${size}格</div><div class="slot-items">${tagsHtml}</div></div>`;
@@ -3543,7 +3763,7 @@ function gjBuildDetailHTML(parts, fmtSeq, hideRefItems) {
       const sorted = [...displayItems].sort((a, b) => b.value - a.value);
       sorted.forEach(item => {
         const lockedMark = (lockedBySize[size] === undefined && outlineBySize[size] === undefined) ? '' : '';
-        tagsHtml += `<span class="item-tag item-${item.tier}" title="${item.name} - ${size}格 - 价值${item.value.toLocaleString()}">${item.name}(${formatMoney(item.value)})</span>`;
+        tagsHtml += `<span class="item-tag item-${item.tier}" title="${item.name} - ${size}格 - 价值${item.value.toLocaleString()}">${item.name}</span>`;
       });
     }
     html += `<div class="${slotClass}"><div class="slot-label">${slotLabel}</div><div class="slot-items">${tagsHtml}</div></div>`;
@@ -4303,8 +4523,213 @@ _genSyncPickerUI();
 genUpdateFmtDisplay();
 render();
 
+
+
+// ========== 黄金瞳 · 品质锤鉴定玩法（含均价车修正） ==========
+var hmShapeList = [];
+function hmNum(id) {
+  var el = document.getElementById(id);
+  if (!el) return 0;
+  var v = parseFloat(String(el.value).replace(/[^0-9.\-]/g, ''));
+  return isNaN(v) ? 0 : v;
+}
+function hmMoney(v) {
+  if (typeof formatMoney === 'function') return formatMoney(v);
+  return Math.round(v).toLocaleString();
+}
+function hmStep(id, delta) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var cur = parseFloat(el.value) || 0;
+  el.value = Math.max(0, Math.round((cur + delta) * 10) / 10);
+  hmCalc();
+}
+function hmAddShape(n) { hmShapeList.push(n); hmRenderShape(); hmCalc(); }
+function hmUndoShape() { hmShapeList.pop(); hmRenderShape(); hmCalc(); }
+function hmClearShape() { hmShapeList = []; hmRenderShape(); hmCalc(); }
+function hmRenderShape() {
+  var el = document.getElementById('hmShapeText');
+  if (el) el.textContent = hmShapeList.length ? hmShapeList.join('+') : '未选择';
+}
+function hmCalc() {
+  var purpleP = hmNum('hmPurplePrice'), orangeP = hmNum('hmOrangePrice'), redP = hmNum('hmRedPrice');
+  var wgb = hmNum('hmWgb');
+  var pc = hmNum('hmPurpleCount'), oc = hmNum('hmOrangeCount'), rc = hmNum('hmRedCount');
+
+  // 基础估价：白绿蓝 + 紫/橙/红件数×件均价
+  var purpleV = pc * purpleP;
+  var orangeV = oc * orangeP;
+  var redV = rc * redP;
+
+  // 红轮廓：如果选了轮廓格数，用 _getSlotPricesCached 平均价替代红件数估价
+  if (hmShapeList.length > 0 && typeof _getSlotPricesCached === 'function') {
+    var shapeAvg = 0;
+    hmShapeList.forEach(function(sz) {
+      var p = _getSlotPricesCached(sz);
+      shapeAvg += p.median;
+    });
+    if (shapeAvg > redV) redV = shapeAvg;  // 轮廓估价比件数高时取轮廓
+  }
+
+  var base = wgb + purpleV + orangeV + redV;
+
+  // 均价车修正：均价×经过件数 计入；扣除经过的紫/橙/红（按件均价），避免重复
+  var carPrice = hmNum('hmCarPrice'), carCount = hmNum('hmCarCount');
+  var carPurple = hmNum('hmCarPurple'), carOrange = hmNum('hmCarOrange'), carRed = hmNum('hmCarRed');
+  var carAdd = 0, carNote = '';
+  if (carPrice > 0 && carCount > 0) {
+    carAdd = carPrice * carCount;
+    // 扣除经过的紫/橙/红（这些已在上面按件均价计入）
+    carAdd -= carPurple * purpleP;
+    carAdd -= carOrange * orangeP;
+    carAdd -= carRed * redP;
+    carNote = '；均价车 +' + hmMoney(carAdd) + '（均价' + hmMoney(carPrice) + '×' + carCount + '件，已扣经过紫/橙/红）';
+  }
+
+  var avg = base + carAdd;
+  var cons = avg * 0.85;
+  var agg = avg * 1.2;
+
+  var hasInput = wgb > 0 || pc > 0 || oc > 0 || rc > 0 || hmShapeList.length > 0 || (carPrice > 0 && carCount > 0);
+  document.getElementById('hmCons').textContent = hasInput ? hmMoney(cons) : '—';
+  document.getElementById('hmAvg').textContent  = hasInput ? hmMoney(avg) : '—';
+  document.getElementById('hmAgg').textContent  = hasInput ? hmMoney(agg) : '—';
+
+  var d = document.getElementById('hmDetail');
+  if (d) {
+    if (!hasInput) { d.innerHTML = ''; }
+    else {
+      var parts = [];
+      if (wgb > 0) parts.push('白绿蓝 ' + hmMoney(wgb));
+      if (purpleV > 0) parts.push('紫 ' + pc + '件×' + hmMoney(purpleP) + '=' + hmMoney(purpleV));
+      if (orangeV > 0) parts.push('橙 ' + oc + '件×' + hmMoney(orangeP) + '=' + hmMoney(orangeV));
+      if (redV > 0) parts.push('红 ' + hmMoney(redV) + (hmShapeList.length ? '（轮廓' + hmShapeList.join('+') + '）' : '（' + rc + '件）'));
+      d.innerHTML = parts.join('<br>') + carNote;
+    }
+  }
+}
+function hmClear() {
+  ['hmWgb','hmPurpleCount','hmOrangeCount','hmRedCount','hmCarPrice','hmCarCount','hmCarPurple','hmCarOrange','hmCarRed'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  hmClearShape();
+  hmCalc();
+}
+
+// ========== 武昭 · 信息汇总估价（自包含，复用本地引擎） ==========
+var wzFmtList = [];
+function wzNum(id) {
+  var el = document.getElementById(id);
+  if (!el) return 0;
+  var v = parseFloat(String(el.value).replace(/[^0-9.\-]/g, ''));
+  return isNaN(v) ? 0 : v;
+}
+function wzFmtMoney(v) {
+  if (typeof formatMoney === 'function') return formatMoney(v);
+  return Math.round(v).toLocaleString();
+}
+function wzStep(id, delta) {
+  var el = document.getElementById(id);
+  if (!el) return;
+  var cur = parseFloat(el.value) || 0;
+  el.value = Math.round((cur + delta) * 10) / 10;
+  wzCalc();
+}
+function wzAddFmt(n) { wzFmtList.push(n); wzRenderFmt(); wzCalc(); }
+function wzUndoFmt() { wzFmtList.pop(); wzRenderFmt(); wzCalc(); }
+function wzClearFmt() { wzFmtList = []; wzRenderFmt(); wzCalc(); }
+function wzRenderFmt() {
+  var el = document.getElementById('wzFmtText');
+  if (el) el.textContent = wzFmtList.length ? wzFmtList.join('+') : '未选择';
+}
+function wzColorVal(cellId, pieceId, gridId, countId) {
+  var cp = wzNum(cellId), pp = wzNum(pieceId);
+  var g = wzNum(gridId), cnt = wzNum(countId);
+  var byCell = (g > 0 && cp > 0) ? g * cp : 0;
+  var byPiece = (cnt > 0 && pp > 0) ? cnt * pp : 0;
+  return Math.max(byCell, byPiece);
+}
+function wzCalc() {
+  var purpleV = wzColorVal('wzPurpleCell','wzPurplePiece','wzPurpleGrid','wzPurpleCount');
+  var orangeV = wzColorVal('wzOrangeCell','wzOrangePiece','wzOrangeGrid','wzOrangeCount');
+  var redCellP = wzNum('wzRedCell'), redPieceP = wzNum('wzRedPiece');
+  var redGrid = wzNum('wzRedGrid'), redCount = wzNum('wzRedCount');
+
+  var greenPad = wzNum('wzGreenPad'), bluePad = wzNum('wzBluePad');
+  var purplePad = wzNum('wzPurplePad'), orangePad = wzNum('wzOrangePad');
+
+  var redCons = 0, redAvg = 0, redAgg = 0;
+  if (wzFmtList.length > 0) {
+    wzFmtList.forEach(function(sz) {
+      if (typeof _getSlotPricesCached === 'function') {
+        var p = _getSlotPricesCached(sz);
+        redCons += p.min; redAvg += p.median; redAgg += p.max;
+      }
+    });
+    var covered = wzFmtList.reduce(function(a,b){return a+b;},0);
+    var unknownG = Math.max(0, redGrid - covered);
+    if (unknownG > 0 && redCellP > 0) {
+      redCons += unknownG * redCellP * 0.85;
+      redAvg += unknownG * redCellP;
+      redAgg += unknownG * redCellP * 1.2;
+    }
+  } else {
+    var byGrid = (redGrid > 0 && redCellP > 0) ? redGrid * redCellP : 0;
+    var byPiece = (redCount > 0 && redPieceP > 0) ? redCount * redPieceP : 0;
+    var base = Math.max(byGrid, byPiece);
+    redCons = base * 0.85; redAvg = base; redAgg = base * 1.2;
+  }
+
+  var purpleTotal = purplePad > 0 ? purplePad : purpleV;
+  var orangeTotal = orangePad > 0 ? orangePad : orangeV;
+
+  var premium = wzNum('wzPremium');
+  var cons = redCons + purpleTotal*0.85 + orangeTotal*0.85 + greenPad*0.85 + bluePad*0.85 + premium;
+  var avg  = redAvg  + purpleTotal   + orangeTotal   + greenPad   + bluePad   + premium;
+  var agg  = redAgg  + purpleTotal*1.2 + orangeTotal*1.2 + greenPad*1.2 + bluePad*1.2 + premium;
+
+  var hasInput = (wzFmtList.length>0) || purpleV>0 || orangeV>0 || (redGrid>0||redCount>0)
+    || purplePad>0 || orangePad>0 || greenPad>0 || bluePad>0 || premium>0;
+
+  document.getElementById('wzCons').textContent = hasInput ? wzFmtMoney(cons) : '—';
+  document.getElementById('wzAvg').textContent  = hasInput ? wzFmtMoney(avg) : '—';
+  document.getElementById('wzAgg').textContent  = hasInput ? wzFmtMoney(agg) : '—';
+
+  var tGrid = wzNum('wzTotalGrid'), tCount = wzNum('wzTotalCount');
+  var baseEl = document.getElementById('wzBaseRange');
+  if (tGrid > 0 && redCellP > 0) {
+    baseEl.textContent = wzFmtMoney(tGrid * redCellP * 0.3) + ' ~ ' + wzFmtMoney(tGrid * redCellP * 0.6);
+  } else if (tCount > 0 && redPieceP > 0) {
+    baseEl.textContent = wzFmtMoney(tCount * redPieceP * 0.3) + ' ~ ' + wzFmtMoney(tCount * redPieceP * 0.6);
+  } else { baseEl.textContent = '—'; }
+
+  var d = document.getElementById('wzDetail');
+  if (d) {
+    if (!hasInput) { d.innerHTML = ''; }
+    else {
+      var parts = [];
+      if (wzFmtList.length) parts.push('红格式 ' + wzFmtList.join('+') + '：' + wzFmtMoney(redCons) + ' / ' + wzFmtMoney(redAvg) + ' / ' + wzFmtMoney(redAgg));
+      else if (redAvg > 0) parts.push('红：' + wzFmtMoney(redCons) + ' / ' + wzFmtMoney(redAvg) + ' / ' + wzFmtMoney(redAgg));
+      if (purpleTotal > 0) parts.push('紫 ' + wzFmtMoney(purpleTotal));
+      if (orangeTotal > 0) parts.push('橙 ' + wzFmtMoney(orangeTotal));
+      if (greenPad > 0) parts.push('绿平板 ' + wzFmtMoney(greenPad));
+      if (bluePad > 0) parts.push('蓝平板 ' + wzFmtMoney(bluePad));
+      if (premium > 0) parts.push('溢价 ' + wzFmtMoney(premium));
+      d.innerHTML = parts.join('<br>');
+    }
+  }
+}
+function wzClearAll() {
+  ['wzTotalGrid','wzTotalCount','wzPurpleGrid','wzPurpleCount','wzOrangeGrid','wzOrangeCount',
+   'wzRedGrid','wzRedCount','wzGreenPad','wzBluePad','wzPurplePad','wzOrangePad','wzPremium'].forEach(function(id){
+    var el = document.getElementById(id); if (el) el.value = '';
+  });
+  wzClearFmt();
+}
+function wzRender() { wzRenderFmt(); wzCalc(); }
+
 // ========== 角色标签切换 ==========
-const TAB_LIST = ['huogugu','gaojin','suqi','general','huangjintong'];
+const TAB_LIST = ['huogugu','gaojin','suqi','general','huangjintong','wuzhao'];
 function switchTab(name) {
   document.querySelectorAll('.char-tab').forEach((t, i) => {
     if (t.classList.contains('disabled')) return;
@@ -4330,6 +4755,7 @@ function switchTab(name) {
     }
   }
   if (name === 'huangjintong' && typeof htRender === 'function') htRender();
+  if (name === 'wuzhao' && typeof wzRender === 'function') wzRender();
   if (target) setTimeout(function() { target.scrollIntoView({block: 'start', behavior: 'smooth'}); }, 50);
 }
 
